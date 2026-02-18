@@ -1268,6 +1268,70 @@ button {
   gap: 6px;
 }
 
+/* ── External Link Cards ── */
+.external-link-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  color: inherit;
+}
+
+.external-link-card:hover {
+  border-color: var(--accent-alpha-25);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+  color: inherit;
+}
+
+.external-link-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-alpha-08);
+  border-radius: var(--radius-md);
+  color: var(--accent);
+}
+
+.external-link-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.external-link-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink-bright);
+}
+
+.external-link-desc {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+}
+
+.external-link-arrow {
+  margin-left: auto;
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  color: var(--ink-dim);
+  transition: transform 0.3s var(--easing), color 0.25s ease;
+}
+
+.external-link-card:hover .external-link-arrow {
+  transform: translate(3px, -3px);
+  color: var(--accent);
+}
+
 /* ── 404 Page ── */
 .not-found {
   text-align: center;

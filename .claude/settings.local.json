@@ -15,7 +15,24 @@
       "Bash(gh auth status:*)",
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(brew install:*)",
+      "Bash(sudo chown:*)",
+      "Bash(chmod:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)",
+      "Bash(export PATH=\"/tmp/gh/gh_2.86.0_macOS_arm64/bin:$PATH\")",
+      "Bash(gh auth login:*)",
+      "Bash(gh repo create:*)",
+      "Bash(gh auth refresh:*)",
+      "Bash(git push:*)",
+      "Bash(export GIT_ASKPASS=\"\")",
+      "Bash(export GIT_TERMINAL_PROMPT=0)",
+      "Bash(gh auth setup-git:*)",
+      "Bash(gh api:*)",
+      "Bash(1 <<'EOF'\n{\"build_type\":\"workflow\",\"source\":{\"branch\":\"main\",\"path\":\"/\"}}\nEOF)",
+      "Bash(gh run list:*)",
+      "Bash(gh run watch:*)"
     ]
   }
 }

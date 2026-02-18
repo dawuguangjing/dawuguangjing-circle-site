@@ -39,4 +39,10 @@ export const footerNav = [
       { label: 'プライバシー', href: withBase('privacy/') },
     ],
   },
+  {
+    heading: '外部リンク',
+    items: [
+      { label: 'Ci-en', href: 'https://ci-en.dlsite.com/creator/35269' },
+    ],
+  },
 ];

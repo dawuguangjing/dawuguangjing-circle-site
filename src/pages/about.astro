@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/withBase';
+import { EXTERNAL_LINKS } from '../utils/constants';
 ---
 
 <BaseLayout title="サークル情報" description="サークル概要と方針。">
@@ -29,6 +30,26 @@ import { withBase } from '../utils/withBase';
         </p>
         <a class="button secondary" href={withBase('privacy/')}>プライバシー</a>
       </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-header">
+      <h2 class="section-title">外部リンク</h2>
+    </div>
+    <div class="grid grid-2">
+      <a class="external-link-card" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
+        <div class="external-link-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </div>
+        <div class="external-link-body">
+          <span class="external-link-name">Ci-en</span>
+          <span class="external-link-desc">活動報告・制作裏話を発信しています</span>
+        </div>
+        <span class="external-link-arrow" aria-hidden="true">&#8599;</span>
+      </a>
     </div>
   </section>
   </div>
