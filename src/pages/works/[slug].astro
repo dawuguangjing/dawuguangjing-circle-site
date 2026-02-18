@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
-import { aiLevelLabels } from '../../utils/labels';
+import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 
@@ -159,7 +159,7 @@ const trialLinks = data.trialLinks
               </tr>
               <tr>
                 <td>分岐</td>
-                <td>{data.volume.branching}</td>
+                <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
               </tr>
             </tbody>
           </table>

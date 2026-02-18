@@ -291,6 +291,73 @@ button {
   box-shadow: var(--shadow-accent-hover);
 }
 
+/* Store-specific colors */
+.store-button[data-track*="fanza"] {
+  background: #E83655;
+}
+
+.store-button[data-track*="fanza"]:hover {
+  background: #EC4060;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(232, 54, 85, 0.35);
+}
+
+.store-button[data-track*="fanza"]:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 6px rgba(232, 54, 85, 0.2);
+  transition-duration: 0.1s;
+}
+
+.store-button[data-track*="dlsite"] {
+  background: #2952CC;
+}
+
+.store-button[data-track*="dlsite"]:hover {
+  background: #3560D8;
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 6px 20px rgba(41, 82, 204, 0.35);
+}
+
+.store-button[data-track*="dlsite"]:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 2px 6px rgba(41, 82, 204, 0.2);
+  transition-duration: 0.1s;
+}
+
+.store-button[data-track*="fanza"] .arrow,
+.store-button[data-track*="dlsite"] .arrow {
+  transition: transform 0.3s var(--easing);
+}
+
+.store-button[data-track*="fanza"]:hover .arrow,
+.store-button[data-track*="dlsite"]:hover .arrow {
+  transform: translateX(4px);
+}
+
+.store-button--trial[data-track*="fanza"] {
+  background: var(--panel);
+  color: #EE2737;
+  border: 1px solid #EE2737;
+}
+
+.store-button--trial[data-track*="fanza"]:hover {
+  background: rgba(238, 39, 55, 0.05);
+  color: #d42232;
+  box-shadow: 0 4px 12px rgba(238, 39, 55, 0.12);
+}
+
+.store-button--trial[data-track*="dlsite"] {
+  background: var(--panel);
+  color: #052A83;
+  border: 1px solid #052A83;
+}
+
+.store-button--trial[data-track*="dlsite"]:hover {
+  background: rgba(5, 42, 131, 0.05);
+  color: #041e63;
+  box-shadow: 0 4px 12px rgba(5, 42, 131, 0.12);
+}
+
 .store-button .arrow {
   font-size: 0.75rem;
   opacity: 0.7;
