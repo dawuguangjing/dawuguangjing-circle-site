@@ -1,0 +1,93 @@
+---
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { AGE_GATE_STORAGE_KEY } from '../utils/constants';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  type?: string;
+  noIndex?: boolean;
+  hideHeader?: boolean;
+  hideFooter?: boolean;
+  disableAgeGate?: boolean;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title,
+  description,
+  image,
+  type,
+  noIndex = false,
+  hideHeader = false,
+  hideFooter = false,
+  disableAgeGate = false,
+  jsonLd
+} = Astro.props;
+const base = import.meta.env.BASE_URL;
+const ageKey = AGE_GATE_STORAGE_KEY;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} />
+    <link rel="manifest" href={`${base}manifest.webmanifest`} />
+    <link rel="alternate" type="application/rss+xml" title="ダウグアングジング 更新履歴" href={`${base}rss.xml`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
+    {!disableAgeGate && (
+      <script is:inline define:vars={{ base, ageKey }}>
+        const key = ageKey;
+        const now = Date.now();
+        const saved = Number(sessionStorage.getItem(key) || 0);
+        if (saved && saved > now) {
+          document.addEventListener('DOMContentLoaded', function() {
+            var el = document.getElementById('age-gate-protected');
+            if (el) el.classList.add('age-verified');
+          });
+        } else {
+          const returnTo = encodeURIComponent(
+            window.location.pathname + window.location.search + window.location.hash
+          );
+          window.location.href = base + 'age/?returnTo=' + returnTo;
+        }
+      </script>
+    )}
+    {!disableAgeGate && (
+      <noscript>
+        <div class="noscript-block">
+          <h1>年齢確認が必要です</h1>
+          <p>当サイトは成人向け製品を取り扱っており、年齢確認にJavaScriptが必要です。</p>
+          <p>ブラウザのJavaScriptを有効にしてからアクセスしてください。</p>
+        </div>
+      </noscript>
+    )}
+    {!disableAgeGate ? (
+      <div id="age-gate-protected" class="age-gate-protected">
+        {!hideHeader && <SiteHeader />}
+        <main id="main-content"><slot /></main>
+        {!hideFooter && <SiteFooter />}
+      </div>
+    ) : (
+      <Fragment>
+        {!hideHeader && <SiteHeader />}
+        <main id="main-content"><slot /></main>
+        {!hideFooter && <SiteFooter />}
+      </Fragment>
+    )}
+  </body>
+</html>

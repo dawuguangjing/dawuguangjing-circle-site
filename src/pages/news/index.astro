@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { withBase } from '../../utils/withBase';
+import { getSortedNews, getWorkIndex } from '../../utils/collections';
+
+const news = await getSortedNews();
+const workIndex = await getWorkIndex();
+---
+
+<BaseLayout title="更新履歴" description="告知、更新、セール情報。">
+  <div class="page-content">
+    <section class="section container">
+      <div class="section-header">
+        <h1 class="section-title">更新履歴</h1>
+      </div>
+
+      <div class="grid">
+        {news.map((entry) => (
+          <NewsCard
+            slug={entry.slug}
+            title={entry.data.title}
+            date={entry.data.date}
+            category={entry.data.category}
+          >
+            {entry.data.relatedWorkSlugs && entry.data.relatedWorkSlugs.length > 0 && (
+              <div class="related-works">
+                {entry.data.relatedWorkSlugs.map((slug) => {
+                  const work = workIndex.get(slug);
+                  return work ? (
+                    <a class="related-work-link" href={withBase(`works/${slug}/`)}>
+                      <span class="related-work-label">関連作品</span>
+                      <span class="related-work-title">{work.data.title}</span>
+                      <span class="related-work-arrow">→</span>
+                    </a>
+                  ) : null;
+                })}
+              </div>
+            )}
+          </NewsCard>
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

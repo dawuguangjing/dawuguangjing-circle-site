@@ -1,0 +1,235 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { withBase } from '../../utils/withBase';
+import { formatDate } from '../../utils/format';
+import { aiLevelLabels } from '../../utils/labels';
+import { SITE_NAME } from '../../utils/constants';
+import { buildProductSchema } from '../../utils/schema';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+
+type StoreLink = { label: string; href: string; track: string };
+const buildLinks = (
+  sources: Record<string, string | undefined>,
+  entries: { key: string; label: string; track: string }[]
+): StoreLink[] =>
+  entries.flatMap(({ key, label, track }) =>
+    sources[key] ? [{ label, href: sources[key]!, track }] : []
+  );
+
+const productJsonLd = buildProductSchema({
+  title: data.title,
+  description: data.shortDescription,
+  os: data.environments.windows ? 'Windows' : 'Web Browser',
+  datePublished: data.releaseDate,
+});
+
+const platformLinks = buildLinks(data.platformLinks, [
+  { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza' },
+  { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite' },
+]);
+
+const trialLinks = data.trialLinks
+  ? buildLinks(data.trialLinks, [
+      { key: 'fanza', label: 'FANZA 体験版', track: 'click_trial_fanza' },
+      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite' },
+    ])
+  : [];
+---
+
+<BaseLayout
+  title={`${data.title} | ${SITE_NAME}`}
+  description={data.shortDescription}
+  image={data.images.cover}
+  jsonLd={productJsonLd}
+>
+  <div class="page-content">
+    <!-- Hero Banner -->
+    <section class="section container">
+      <div class="detail-title-wrapper">
+        <h1 class="section-title detail-title">{data.title}</h1>
+        <p class="muted detail-catch">{data.catch}</p>
+      </div>
+
+      <div class="detail-layout">
+        <!-- Main Column -->
+        <div class="detail-main">
+          <!-- Cover Image -->
+          <div class="work-cover">
+            <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" />
+          </div>
+
+          <!-- Screenshots -->
+          {data.images.screenshots.length > 0 && (
+            <div class="gallery-grid">
+              {data.images.screenshots.map((image) => (
+                <div class="gallery-item">
+                  <img src={withBase(image)} alt={`${data.title} screenshot`} loading="lazy" width="400" height="225" />
+                </div>
+              ))}
+            </div>
+          )}
+
+          <!-- Description Block -->
+          <div class="detail-block">
+            <h2>概要</h2>
+            <p>{data.shortDescription}</p>
+            <Content />
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="store-sidebar">
+          <!-- Age Rating -->
+          <div>
+            {data.isR18
+              ? <span class="badge badge--r18">R18 作品</span>
+              : <span class="badge">全年齢</span>
+            }
+          </div>
+
+          <!-- Purchase Buttons -->
+          <h3>購入する</h3>
+          <div class="store-button-group">
+            {platformLinks.map((link) => (
+              <a
+                class="store-button"
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-track={link.track}
+              >
+                <span>{link.label}</span>
+                <span class="arrow">→</span>
+              </a>
+            ))}
+          </div>
+
+          <!-- Trial Buttons -->
+          {trialLinks.length > 0 && (
+            <>
+              <h3>体験版</h3>
+              <div class="store-button-group">
+                {trialLinks.map((link) => (
+                  <a
+                    class="store-button store-button--trial"
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-track={link.track}
+                  >
+                    <span>{link.label}</span>
+                    <span class="arrow">→</span>
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
+
+          <!-- Spec Table -->
+          <h3>仕様</h3>
+          <table class="spec-table">
+            <tbody>
+              <tr>
+                <td>リリース日</td>
+                <td>{formatDate(data.releaseDate)}</td>
+              </tr>
+              <tr>
+                <td>プレイ時間</td>
+                <td>{data.volume.playTimeMin} 分</td>
+              </tr>
+              <tr>
+                <td>CG枚数</td>
+                <td>{data.volume.cgCount} 枚</td>
+              </tr>
+              <tr>
+                <td>Hシーン</td>
+                <td>{data.volume.hSceneCount} シーン</td>
+              </tr>
+              <tr>
+                <td>分岐</td>
+                <td>{data.volume.branching}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Environment -->
+          <h3>対応環境</h3>
+          <div class="env-tags">
+            <span class={`env-tag ${data.environments.windows ? 'env-tag--yes' : 'env-tag--no'}`}>
+              Windows
+            </span>
+            <span class={`env-tag ${data.environments.browserPc ? 'env-tag--yes' : 'env-tag--no'}`}>
+              ブラウザ PC
+            </span>
+            <span class={`env-tag ${data.environments.browserMobileBeta ? 'env-tag--yes' : 'env-tag--no'}`}>
+              モバイル β
+            </span>
+          </div>
+
+          <!-- AI Usage -->
+          <div class="sidebar-divider">
+            <p class="sidebar-small">
+              AI使用: {aiLevelLabels[data.aiUsage.level] ?? data.aiUsage.level}
+            </p>
+            <p class="sidebar-xsmall">
+              {data.aiUsage.noteShort}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
+      <button class="lightbox-close" aria-label="閉じる">&times;</button>
+      <img src="" alt="" />
+    </div>
+
+    <section class="container section--compact">
+      <div class="notice">
+        販売・決済・納品は外部ストアが担当します。
+      </div>
+      <div class="back-link">
+        <a class="section-link" href={withBase('works/')}>← 作品一覧へ戻る</a>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lbImg = lightbox?.querySelector('img');
+    const lbClose = lightbox?.querySelector('.lightbox-close');
+
+    document.querySelectorAll('.gallery-item img').forEach((img) => {
+      img.addEventListener('click', () => {
+        if (lightbox && lbImg) {
+          lbImg.src = (img as HTMLImageElement).src;
+          lbImg.alt = (img as HTMLImageElement).alt;
+          lightbox.classList.add('is-active');
+          lightbox.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+
+    function closeLightbox() {
+      lightbox?.classList.remove('is-active');
+      lightbox?.setAttribute('aria-hidden', 'true');
+    }
+
+    lbClose?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+    lightbox?.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+</BaseLayout>

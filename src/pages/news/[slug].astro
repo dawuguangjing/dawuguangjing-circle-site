@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { withBase } from '../../utils/withBase';
+import { formatDate } from '../../utils/format';
+import { categoryLabels } from '../../utils/labels';
+import { getWorkIndex } from '../../utils/collections';
+import { buildArticleSchema } from '../../utils/schema';
+
+export async function getStaticPaths() {
+  const news = await getCollection('news');
+  return news.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const data = entry.data;
+
+const workIndex = await getWorkIndex();
+const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: data.date });
+---
+
+<BaseLayout title={`${data.title} | 更新履歴`} description={data.title} jsonLd={articleJsonLd}>
+  <div class="page-content">
+    <section class="section container">
+      <article class="article">
+        <div class="article-header">
+          <span class="badge badge--category">{categoryLabels[data.category] ?? data.category}</span>
+          <time class="article-date">{formatDate(data.date)}</time>
+        </div>
+        <h1 class="article-title">{data.title}</h1>
+        <div class="article-body">
+          <Content />
+        </div>
+        {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (
+          <div class="article-related">
+            <h3>関連作品</h3>
+            <div class="related-works">
+              {data.relatedWorkSlugs.map((slug) => {
+                const work = workIndex.get(slug);
+                return work ? (
+                  <a class="section-link" href={withBase(`works/${slug}/`)}>
+                    {work.data.title} →
+                  </a>
+                ) : null;
+              })}
+            </div>
+          </div>
+        )}
+      </article>
+      <div class="back-link">
+        <a class="section-link" href={withBase('news/')}>← 更新履歴へ戻る</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

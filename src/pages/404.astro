@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/withBase';
+---
+
+<BaseLayout title="ページが見つかりません" description="404 Not Found" noIndex={true} disableAgeGate={true}>
+  <div class="page-content">
+    <section class="section container">
+      <div class="not-found">
+        <h1 class="not-found-code">404</h1>
+        <p class="not-found-message">お探しのページは見つかりませんでした。</p>
+        <a class="button" href={withBase('')}>トップページへ戻る</a>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

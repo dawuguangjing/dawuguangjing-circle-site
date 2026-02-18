@@ -1,0 +1,6 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#15121B"/>
+  <circle cx="300" cy="300" r="180" fill="rgba(255, 122, 26, 0.5)"/>
+  <circle cx="840" cy="520" r="220" fill="rgba(40, 215, 183, 0.45)"/>
+  <text x="100" y="780" fill="#F6F3FB" font-family="Syne, sans-serif" font-size="48">Screenshot Placeholder</text>
+</svg>

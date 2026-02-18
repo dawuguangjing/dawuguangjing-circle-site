@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WorkCard from '../components/WorkCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { withBase } from '../utils/withBase';
+import { HOME_NEWS_LIMIT, SITE_NAME } from '../utils/constants';
+import { getSortedWorks, getSortedNews } from '../utils/collections';
+
+const allWorks = await getSortedWorks();
+const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
+---
+
+<BaseLayout
+  title={SITE_NAME}
+  description="作品・告知・外部リンクをまとめた公式ハブ。"
+>
+  <div class="page-content">
+    <section class="section container">
+      <div class="section-header">
+        <h2 class="section-title">作品</h2>
+        <a class="section-link" href={withBase('works/')}>すべて見る →</a>
+      </div>
+      <div class="works-grid">
+        {allWorks.map((entry) => (
+          <WorkCard
+            slug={entry.slug}
+            title={entry.data.title}
+            cover={entry.data.images.cover}
+            description={entry.data.shortDescription}
+            releaseDate={entry.data.releaseDate}
+            isR18={entry.data.isR18}
+          />
+        ))}
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-header">
+        <h2 class="section-title">更新履歴</h2>
+        <a class="section-link" href={withBase('news/')}>すべて見る →</a>
+      </div>
+      <div class="grid">
+        {news.map((entry) => (
+          <NewsCard
+            slug={entry.slug}
+            title={entry.data.title}
+            date={entry.data.date}
+            category={entry.data.category}
+          />
+        ))}
+      </div>
+    </section>
+  </div>
+</BaseLayout>

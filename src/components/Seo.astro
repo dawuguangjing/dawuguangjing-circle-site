@@ -1,0 +1,46 @@
+---
+import { SITE_NAME, SITE_DESCRIPTION } from '../utils/constants';
+import { buildOrgSchema } from '../utils/schema';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: string;
+  noIndex?: boolean;
+  jsonLd?: Record<string, unknown>;
+}
+
+const {
+  title = SITE_NAME,
+  description = SITE_DESCRIPTION,
+  image = 'images/og/og-default.svg',
+  type = 'website',
+  noIndex = false,
+  jsonLd
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const normalizedImage =
+  typeof image === 'string' && image.startsWith('/')
+    ? image.slice(1)
+    : image;
+const ogImage = new URL(normalizedImage, Astro.site).toString();
+const orgSchema = buildOrgSchema(Astro.site?.toString());
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={type} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:locale" content="ja_JP" />
+<meta property="og:site_name" content={SITE_NAME} />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#0068B7" />
+{noIndex && <meta name="robots" content="noindex" />}
+<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

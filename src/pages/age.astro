@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/withBase';
+import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS } from '../utils/constants';
+
+const base = import.meta.env.BASE_URL;
+const returnTo = Astro.url.searchParams.get('returnTo') ?? base;
+const ageKey = AGE_GATE_STORAGE_KEY;
+const ageTtl = AGE_GATE_TTL_MS;
+---
+
+<BaseLayout title="年齢確認" description="年齢確認" noIndex={true} disableAgeGate={true}>
+  <div class="age-gate">
+    <div class="age-gate-card">
+      <h1>年齢確認</h1>
+      <p>
+        本サークルでは成人向け製品を取り扱っております。<br />
+        あなたは18歳以上ですか？
+      </p>
+      <div class="age-gate-actions">
+        <button class="button" id="age-confirm">はい（18歳以上）</button>
+        <button class="button secondary" id="age-deny">いいえ</button>
+      </div>
+      <div class="age-gate-denied" id="age-denied" hidden>
+        18歳未満の方はご利用いただけません。ブラウザを閉じてください。
+      </div>
+    </div>
+  </div>
+
+  <script is:inline define:vars={{ returnTo, base, ageKey, ageTtl }}>
+    const key = ageKey;
+    const ttlMs = ageTtl;
+    const button = document.getElementById('age-confirm');
+    const deny = document.getElementById('age-deny');
+    const denied = document.getElementById('age-denied');
+
+    function safeRedirect(raw) {
+      if (!raw) return base;
+      try {
+        var decoded = decodeURIComponent(raw);
+        // Only allow same-origin paths (must start with / or the base path)
+        if (decoded.startsWith('/') && !decoded.startsWith('//')) return decoded;
+      } catch (e) {}
+      return base;
+    }
+
+    button?.addEventListener('click', () => {
+      const expiry = Date.now() + ttlMs;
+      sessionStorage.setItem(key, String(expiry));
+      window.location.href = safeRedirect(returnTo);
+    });
+
+    deny?.addEventListener('click', () => {
+      sessionStorage.removeItem(key);
+      denied?.removeAttribute('hidden');
+    });
+  </script>
+</BaseLayout>

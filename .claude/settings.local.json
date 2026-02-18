@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "WebFetch(domain:ci-en.net)",
+      "WebSearch",
+      "WebFetch(domain:ci-en.dlsite.com)",
+      "WebFetch(domain:ci-en.jp)",
+      "WebFetch(domain:www.dlsite.com)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(xargs:*)",
+      "Bash(npm install:*)",
+      "Bash(node -e:*)",
+      "Bash(gh auth status:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

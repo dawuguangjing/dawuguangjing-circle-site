@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { withBase } from '../utils/withBase';
+---
+
+<BaseLayout title="サークル情報" description="サークル概要と方針。">
+  <div class="page-content">
+  <section class="section container">
+    <h1 class="section-title">サークル情報</h1>
+    <p class="section-lead">
+      訪問者・ストア・関係者向けの簡潔なプロフィールです。
+    </p>
+    <div class="grid grid-2">
+      <div class="card">
+        <h2 class="section-title">サークル概要</h2>
+        <p>
+          短編のストーリー作品を中心に制作しています。公式リンクと告知はこのハブに集約しています。
+        </p>
+        <ul class="list-inline">
+          <li class="badge">ビジュアルノベル</li>
+          <li class="badge">ストーリー</li>
+          <li class="badge">インディー</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="section-title">ポリシー</h2>
+        <p>
+          決済・納品・アカウント対応は外部ストアが担当します。当サイトは決済情報を保持しません。
+        </p>
+        <a class="button secondary" href={withBase('privacy/')}>プライバシー</a>
+      </div>
+    </div>
+  </section>
+  </div>
+</BaseLayout>

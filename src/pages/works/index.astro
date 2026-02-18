@@ -1,0 +1,71 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import { getSortedWorks } from '../../utils/collections';
+
+const works = await getSortedWorks();
+---
+
+<BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
+  <div class="page-content">
+    <section class="section container">
+      <div class="section-header">
+        <h1 class="section-title">全作品</h1>
+        <span class="muted work-count">{works.length} タイトル</span>
+      </div>
+
+      <div class="filter-bar" role="group" aria-label="作品フィルター">
+        <button class="filter-chip is-active" data-filter="all">すべて</button>
+        <button class="filter-chip" data-filter="r18">R18</button>
+        <button class="filter-chip" data-filter="all-ages">全年齢</button>
+        <button class="filter-chip" data-filter="windows">Windows</button>
+        <button class="filter-chip" data-filter="browser">ブラウザ</button>
+      </div>
+
+      <div class="works-grid" id="works-grid">
+        {works.map((entry) => (
+          <div
+            class="work-filter-item"
+            data-r18={String(entry.data.isR18)}
+            data-windows={String(entry.data.environments.windows)}
+            data-browser={String(entry.data.environments.browserPc)}
+          >
+            <WorkCard
+              slug={entry.slug}
+              title={entry.data.title}
+              cover={entry.data.images.cover}
+              description={entry.data.shortDescription}
+              releaseDate={entry.data.releaseDate}
+              isR18={entry.data.isR18}
+              showEnvironments
+              environments={entry.data.environments}
+            />
+          </div>
+        ))}
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const chips = document.querySelectorAll('.filter-chip');
+    const items = document.querySelectorAll('.work-filter-item');
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chips.forEach((c) => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+
+        const filter = (chip as HTMLElement).dataset.filter;
+        items.forEach((item) => {
+          const el = item as HTMLElement;
+          let show = true;
+          if (filter === 'r18') show = el.dataset.r18 === 'true';
+          else if (filter === 'all-ages') show = el.dataset.r18 === 'false';
+          else if (filter === 'windows') show = el.dataset.windows === 'true';
+          else if (filter === 'browser') show = el.dataset.browser === 'true';
+          el.style.display = show ? '' : 'none';
+        });
+      });
+    });
+  </script>
+</BaseLayout>

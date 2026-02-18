@@ -1,0 +1,44 @@
+---
+import { withBase } from '../utils/withBase';
+import { formatDate } from '../utils/format';
+
+interface Props {
+  slug: string;
+  title: string;
+  cover: string;
+  description: string;
+  releaseDate: Date;
+  isR18: boolean;
+  showEnvironments?: boolean;
+  environments?: { windows?: boolean; browserPc?: boolean };
+}
+
+const {
+  slug,
+  title,
+  cover,
+  description,
+  releaseDate,
+  isR18,
+  showEnvironments = false,
+  environments,
+} = Astro.props;
+---
+
+<a class="work-row" href={withBase(`works/${slug}/`)}>
+  <div class="work-row-cover">
+    <img src={withBase(cover)} alt={`${title} cover`} loading="lazy" width="160" height="160" />
+  </div>
+  <div class="work-row-body">
+    <h3>{title}</h3>
+    <p class="work-row-desc">{description}</p>
+    <div class="work-row-meta">
+      <span class="work-row-date">{formatDate(releaseDate)}</span>
+      <div class="work-row-tags">
+        {isR18 && <span class="badge badge--r18">R18</span>}
+        {showEnvironments && environments?.windows && <span class="badge">Win</span>}
+        {showEnvironments && environments?.browserPc && <span class="badge">Browser</span>}
+      </div>
+    </div>
+  </div>
+</a>

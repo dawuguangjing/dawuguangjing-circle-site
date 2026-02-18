@@ -1,0 +1,6 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#111019"/>
+  <rect x="120" y="160" width="960" height="580" rx="32" fill="rgba(255, 255, 255, 0.08)"/>
+  <text x="160" y="300" fill="#F6F3FB" font-family="Syne, sans-serif" font-size="44">Gallery Placeholder</text>
+  <text x="160" y="360" fill="#C1B8D4" font-family="Manrope, sans-serif" font-size="24">Add in-game shots</text>
+</svg>

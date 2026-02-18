@@ -1,0 +1,25 @@
+---
+import { withBase } from '../utils/withBase';
+import { formatDate } from '../utils/format';
+import { categoryLabels } from '../utils/labels';
+
+interface Props {
+  slug: string;
+  title: string;
+  date: Date;
+  category: string;
+}
+
+const { slug, title, date, category } = Astro.props;
+---
+
+<article class="news-card">
+  <span class="news-card-date">{formatDate(date)}</span>
+  <div class="news-card-body">
+    <h3><a class="news-card-link" href={withBase(`news/${slug}/`)}>{title}</a></h3>
+    <p>
+      <span class="badge badge--category">{categoryLabels[category] ?? category}</span>
+    </p>
+  </div>
+  <slot />
+</article>

@@ -1,0 +1,12 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="900" fill="#1C1824"/>
+  <rect x="60" y="70" width="1080" height="760" rx="48" fill="url(#paint0_linear)"/>
+  <text x="100" y="180" fill="#F6F3FB" font-family="Syne, sans-serif" font-size="64" letter-spacing="2">Cover Placeholder</text>
+  <text x="100" y="260" fill="#C1B8D4" font-family="Manrope, sans-serif" font-size="28">Replace with key art</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="60" y1="70" x2="1140" y2="830" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF7A1A" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#28D7B7" stop-opacity="0.35"/>
+    </linearGradient>
+  </defs>
+</svg>
