@@ -31,5 +31,15 @@ relatedWorkSlugs:
 できれば皆様に人物へ集中していただければという思いでしたが、いかがでしたでしょうか？（効果無かったなら、それはそれでまた教えてください笑）
 ![フォーカスに気をつけたシーン](./img/focus.png)
 
+## ダウグアングジングの好きなゲーム
+
+手触りの良さと没入感が圧倒的な、ダウグアングジングの好きなゲームは、Inscription（インスクリプション）、Balatro（バラトロ）です。
+これらのゲームについてはまた別の機会に語れたらと思っております...！
+（ちなみに成人ゲームでは、サークルALLDICE様の[侵蝕のヒプノシスシリーズ](https://dlaf.jp/maniax/dlaf/=/t/s/link/work/aid/dawuguangjingcien/id/RJ01082260.html)です。）
+
+<a rel="noopener sponsored" href="https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/dawuguangjingcien/id/RJ01082260.html" target="_blank"><img itemprop="image" src="//img.dlsite.jp/modpub/images2/work/doujin/RJ01083000/RJ01082260_img_main.jpg" alt="" border="0" class="target_type" /></a>
+
+
 定期的に記事を残していくので、ぜひフォロー、コメントいただけますと幸いです！
 以上、ダウグアングジングでした。
+
