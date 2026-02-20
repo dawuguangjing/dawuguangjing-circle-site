@@ -32,6 +32,9 @@ jobs:
 
       - name: Build
         run: npm run build
+        env:
+          ASTRO_SITE: https://www.dawuguangjing.com/
+          ASTRO_BASE: /
 
       - name: Copy 404 page for GitHub Pages
         run: cp dist/404/index.html dist/404.html || true
