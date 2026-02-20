@@ -23,7 +23,7 @@ const workIndex = await getWorkIndex();
 const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: data.date });
 ---
 
-<BaseLayout title={`${data.title} | 更新履歴`} description={data.title} jsonLd={articleJsonLd}>
+<BaseLayout title={`${data.title} | 開発ログ`} description={data.title} jsonLd={articleJsonLd}>
   <div class="page-content">
     <section class="section container">
       <article class="article">
@@ -54,7 +54,7 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
         )}
       </article>
       <div class="back-link">
-        <a class="section-link" href={withBase('news/')}>← 更新履歴へ戻る</a>
+        <a class="section-link" href={withBase('news/')}>← 開発ログへ戻る</a>
       </div>
     </section>
   </div>

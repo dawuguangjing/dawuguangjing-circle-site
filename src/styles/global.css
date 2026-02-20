@@ -532,7 +532,8 @@ button {
   color: var(--accent-dark);
 }
 
-.logo:hover .logo-char {
+.logo:hover .logo-char,
+.logo--is-top .logo-char {
   animation: logo-wave 2s ease calc(var(--i) * 0.08s) infinite;
 }
 
@@ -592,6 +593,10 @@ button {
   transform: scale(0.96);
 }
 
+.nav-char {
+  display: inline-block;
+}
+
 .nav-links a.is-active {
   color: var(--cta);
   font-weight: 600;
@@ -601,6 +606,10 @@ button {
   width: 100%;
   left: 0;
   background: var(--cta);
+}
+
+.nav-links a.is-active .nav-char {
+  animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
 }
 
 /* ── Mobile Menu Toggle ── */
@@ -919,6 +928,17 @@ button {
 
 .detail-block li {
   margin-bottom: 4px;
+}
+
+.detail-block a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.detail-block a:hover {
+  color: var(--accent-hover, var(--accent));
+  opacity: 0.8;
 }
 
 /* ── Screenshot Gallery ── */
@@ -1266,6 +1286,59 @@ button {
   margin: 0 0 16px;
 }
 
+.article-body h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ink-bright);
+  margin: 28px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.article-body h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-bright);
+  margin: 20px 0 8px;
+}
+
+.article-body strong {
+  font-weight: 700;
+  color: var(--ink-bright);
+}
+
+.article-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-body a:hover {
+  opacity: 0.8;
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 16px;
+  padding-left: 1.5em;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.article-body li {
+  margin-bottom: 4px;
+}
+
+.article-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--stroke);
+  display: block;
+  margin: 16px auto;
+}
+
 .article-related {
   margin-top: 24px;
   padding-top: 16px;
@@ -1463,6 +1536,10 @@ button {
 
   .nav-links a.is-active {
     background: var(--accent-alpha-05);
+  }
+
+  .nav-links a.is-active .nav-char {
+    animation: none;
   }
 
   .detail-layout {

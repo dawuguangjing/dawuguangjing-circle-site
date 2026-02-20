@@ -7,7 +7,7 @@ export async function GET(context: APIContext) {
   const news = await getSortedNews();
 
   return rss({
-    title: `${CIRCLE_NAME} 更新履歴`,
+    title: `${CIRCLE_NAME} 開発ログ`,
     description: `同人ゲームサークル ${CIRCLE_NAME}の更新情報。`,
     site: context.site!.toString(),
     items: news.map((entry) => ({

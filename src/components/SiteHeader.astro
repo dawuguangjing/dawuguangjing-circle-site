@@ -3,11 +3,13 @@ import { withBase } from '../utils/withBase';
 import { mainNav } from '../utils/navigation';
 
 const currentPath = Astro.url.pathname;
+const basePath = import.meta.env.BASE_URL;
+const isTop = currentPath === basePath || currentPath + '/' === basePath;
 ---
 
 <header class="site-header">
   <div class="container site-header-inner">
-    <a class="logo" href={withBase('')} aria-label="ダウグアングジング公式 トップページへ">
+    <a class:list={['logo', { 'logo--is-top': isTop }]} href={withBase('')} aria-label="ダウグアングジング公式 トップページへ">
       <span class="logo-char" style="--i:0">ダ</span><span class="logo-char logo-accent" style="--i:1">ウ</span><span class="logo-char logo-pink" style="--i:2">グ</span><span class="logo-char logo-pink" style="--i:3">ア</span><span class="logo-char logo-pink" style="--i:4">ン</span><span class="logo-char logo-pink" style="--i:5">グ</span><span class="logo-char" style="--i:6">ジ</span><span class="logo-char" style="--i:7">ン</span><span class="logo-char" style="--i:8">グ</span><span class="logo-char" style="--i:9">公</span><span class="logo-char" style="--i:10">式</span>
     </a>
     <button class="mobile-menu-toggle" aria-label="メニューを開く" aria-expanded="false">
@@ -17,7 +19,11 @@ const currentPath = Astro.url.pathname;
     </button>
     <nav class="nav-links" id="main-nav" aria-label="メインナビゲーション">
       {mainNav.map((item) => (
-        <a href={item.href} {...(currentPath.startsWith(item.href) ? { 'aria-current': 'page', class: 'is-active' } : {})}>{item.label}</a>
+        <a href={item.href} {...(currentPath.startsWith(item.href) ? { 'aria-current': 'page', class: 'is-active' } : {})}>
+          {item.label.split('').map((char, i) => (
+            <span class="nav-char" style={`--i:${i}`}>{char}</span>
+          ))}
+        </a>
       ))}
     </nav>
   </div>
