@@ -1,6 +1,7 @@
 ---
 import { SITE_NAME, SITE_DESCRIPTION } from '../utils/constants';
 import { buildOrgSchema } from '../utils/schema';
+import { withBase } from '../utils/withBase';
 
 interface Props {
   title?: string;
@@ -29,6 +30,10 @@ const ogImage = new URL(normalizedImage, Astro.site).toString();
 const orgSchema = buildOrgSchema(Astro.site?.toString());
 ---
 
+<link rel="icon" type="image/x-icon" href={withBase('images/favicon.ico')} />
+<link rel="icon" type="image/png" sizes="32x32" href={withBase('images/favicon-32x32.png')} />
+<link rel="icon" type="image/png" sizes="16x16" href={withBase('images/favicon-16x16.png')} />
+<link rel="apple-touch-icon" sizes="180x180" href={withBase('images/apple-touch-icon.png')} />
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
