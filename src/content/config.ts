@@ -20,6 +20,7 @@ const works = defineCollection({
       .optional(),
     environments: z.object({
       windows: z.boolean(),
+      mac: z.boolean(),
       browserPc: z.boolean(),
       browserMobileBeta: z.boolean()
     }),

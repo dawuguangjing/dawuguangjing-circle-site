@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { EXTERNAL_LINKS } from '../utils/constants';
 ---
 
 <BaseLayout title="お問い合わせ" description="お問い合わせ先。">
@@ -7,12 +8,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="section container">
     <h1 class="section-title">お問い合わせ</h1>
     <p class="section-lead">
-      取材・商談・お問い合わせは外部フォームをご利用ください。
+      ご質問・ご意見・不具合報告などは、Ci-en のコメント欄よりお願いいたします。
     </p>
-    <div class="card">
-      <p>下記リンクを公式フォームに差し替えてください。</p>
-      <a class="button" href="https://example.com" target="_blank" rel="noopener noreferrer">
-        フォームを開く
+    <div class="card card--static">
+      <p>Ci-en の記事コメント欄にてお気軽にお問い合わせください。</p>
+      <a class="button" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
+        Ci-en を開く &#8599;
       </a>
     </div>
   </section>

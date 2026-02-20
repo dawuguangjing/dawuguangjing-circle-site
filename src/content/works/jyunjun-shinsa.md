@@ -1,8 +1,8 @@
 ---
 title: "従順審査"
 catch: "あなたは男尊女卑常識時代における、従順審査の審査員です。従順審査の名のもと、美女を好き放題しましょう。"
-shortDescription: "従順さを審査されるアドベンチャーゲーム。"
-releaseDate: 2025-02-03
+shortDescription: "従順審査シミュレーションゲーム。"
+releaseDate: 2026-02-03
 isR18: true
 platformLinks:
   fanza: "https://www.dmm.co.jp/dc/doujin/-/detail/=/cid=d_730295/"
@@ -12,6 +12,7 @@ trialLinks:
   dlsite: "https://trial.dlsite.com/doujin/RJ01563000/RJ01562523_trial.zip?_gl=1*gwbexe*_gcl_au*MTc3NzkxNzk0Ni4xNzY3MjUwMDQ5LjE5ODM0ODYxODQuMTc2OTA3NTc0MC4xNzY5MDc1NzY4"
 environments:
   windows: true
+  mac: false
   browserPc: false
   browserMobileBeta: false
 volume:

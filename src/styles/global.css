@@ -138,6 +138,13 @@ button {
   box-shadow: var(--shadow-hover);
 }
 
+.card--static,
+.card--static:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+  border-color: var(--stroke);
+}
+
 .card h2,
 .card h3 {
   font-size: 1rem;
@@ -565,14 +572,14 @@ button {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--cta);
+  background: var(--accent);
   border-radius: 1px;
   transition: width 0.3s var(--easing),
               left 0.3s var(--easing);
 }
 
 .nav-links a:hover {
-  color: var(--cta);
+  color: var(--accent);
   transform: scale(1.08);
 }
 
@@ -586,14 +593,14 @@ button {
 }
 
 .nav-links a.is-active {
-  color: var(--accent);
+  color: var(--cta);
   font-weight: 600;
 }
 
 .nav-links a.is-active::after {
   width: 100%;
   left: 0;
-  background: var(--accent);
+  background: var(--cta);
 }
 
 /* ── Mobile Menu Toggle ── */
@@ -823,6 +830,7 @@ button {
   z-index: 1;
   grid-column: 1 / -1;
   display: flex;
+  justify-content: flex-end;
   gap: 8px;
   flex-wrap: wrap;
 }
@@ -838,17 +846,11 @@ button {
   text-decoration: none;
   color: var(--accent);
   font-size: 0.82rem;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s var(--easing);
 }
 
 .related-work-link:hover {
   background: var(--accent-alpha-08);
   border-color: var(--accent);
-  transform: translateX(3px);
-}
-
-.related-work-link:active {
-  transform: translateX(1px) scale(0.98);
 }
 
 .related-work-label {
@@ -867,13 +869,7 @@ button {
 }
 
 .related-work-arrow {
-  margin-left: auto;
   color: var(--accent);
-  transition: transform 0.2s var(--easing);
-}
-
-.related-work-link:hover .related-work-arrow {
-  transform: translateX(3px);
 }
 
 /* ── Detail Page Layout ── */
