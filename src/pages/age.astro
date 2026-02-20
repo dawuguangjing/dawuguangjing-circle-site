@@ -11,6 +11,23 @@ const ageTtl = AGE_GATE_TTL_MS;
 
 <BaseLayout title="年齢確認" description="年齢確認" noIndex={true} disableAgeGate={true}>
   <div class="age-gate">
+    <div class="tuna-tank" aria-hidden="true">
+      <div class="tuna-wrap tuna-wrap--r" style="top:12%; --dur:14s; --delay:0s;">
+        <img class="tuna" src={withBase('images/apple-touch-icon.png')} alt="" width="40" height="40" />
+      </div>
+      <div class="tuna-wrap tuna-wrap--l" style="top:35%; --dur:20s; --delay:-6s;">
+        <img class="tuna" src={withBase('images/apple-touch-icon.png')} alt="" width="56" height="56" />
+      </div>
+      <div class="tuna-wrap tuna-wrap--r" style="top:60%; --dur:25s; --delay:-11s;">
+        <img class="tuna" src={withBase('images/apple-touch-icon.png')} alt="" width="64" height="64" />
+      </div>
+      <div class="tuna-wrap tuna-wrap--l" style="top:80%; --dur:11s; --delay:-3s;">
+        <img class="tuna" src={withBase('images/apple-touch-icon.png')} alt="" width="30" height="30" />
+      </div>
+      <div class="tuna-wrap tuna-wrap--r" style="top:48%; --dur:18s; --delay:-8s;">
+        <img class="tuna" src={withBase('images/apple-touch-icon.png')} alt="" width="48" height="48" />
+      </div>
+    </div>
     <div class="age-gate-card">
       <h1>年齢確認</h1>
       <p>
@@ -26,6 +43,74 @@ const ageTtl = AGE_GATE_TTL_MS;
       </div>
     </div>
   </div>
+
+  <script>
+    const btn = document.getElementById('age-confirm');
+    const wraps = Array.from(document.querySelectorAll<HTMLElement>('.tuna-wrap'));
+
+    const configs = wraps.map(wrap => ({
+      wrap,
+      tuna: wrap.querySelector('img') as HTMLImageElement,
+      isR: wrap.classList.contains('tuna-wrap--r'),
+      dur: parseFloat(getComputedStyle(wrap).getPropertyValue('--dur')),
+    }));
+
+    function getX(el: HTMLElement): number {
+      const t = getComputedStyle(el).transform;
+      if (!t || t === 'none') return 0;
+      return new DOMMatrix(t).m41;
+    }
+
+    // 現在地から再開するための負のdelay（mouseleave用）
+    function resumeDelay(x: number, animName: string, duration: number): number {
+      const W = window.innerWidth;
+      const total = W + 240;
+      const progress = animName === 'tuna-swim-r'
+        ? (x + 120) / total
+        : (W + 120 - x) / total;
+      return -(Math.max(0, Math.min(1, progress)) * duration);
+    }
+
+    btn?.addEventListener('mouseenter', () => {
+      const W = window.innerWidth;
+      configs.forEach(({ wrap, tuna }) => {
+        const x = getX(wrap);
+        const escapeRight = x > W / 2;
+        const endX = escapeRight ? W + 120 : -120;
+
+        // すでに脱出エッジ到達済み（ループ直後の画面外含む）→ 固定して待機
+        if (escapeRight ? x >= endX : x <= endX) {
+          wrap.style.animation = 'none';
+          wrap.style.transform = `translateX(${endX}px)`;
+          return;
+        }
+
+        // tuna-panic-* は tuna-swim-* と別名なので、確実に新規アニメーション開始。
+        // --tx で現在地を指定するため、負のdelayが不要。
+        const distance = Math.abs(endX - x);
+        const duration = (distance / (W + 240)) * 3; // 3s/画面幅 の速度を維持
+
+        wrap.style.setProperty('--tx', `${x}px`);
+        tuna.style.transform = escapeRight ? 'scaleX(-1)' : 'none';
+        wrap.style.animation =
+          `tuna-panic-${escapeRight ? 'r' : 'l'} ${duration}s linear 0s 1 forwards`;
+      });
+    });
+
+    btn?.addEventListener('mouseleave', () => {
+      configs.forEach(({ wrap, tuna, isR, dur }) => {
+        const W = window.innerWidth;
+        const x = getX(wrap);
+        const clampedX = Math.max(-120, Math.min(W + 120, x));
+        const animName = isR ? 'tuna-swim-r' : 'tuna-swim-l';
+        // tuna-swim-* に戻す（tuna-panic-* と別名 → 必ず新規開始）
+        const delay = resumeDelay(clampedX, animName, dur);
+        tuna.style.transform = '';
+        wrap.style.transform = '';
+        wrap.style.animation = `${animName} ${dur}s linear ${delay}s infinite`;
+      });
+    });
+  </script>
 
   <script is:inline define:vars={{ returnTo, base, ageKey, ageTtl }}>
     const key = ageKey;

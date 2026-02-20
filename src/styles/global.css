@@ -1176,7 +1176,61 @@ button {
   justify-content: center;
   min-height: calc(100vh - 52px);
   padding: 40px 16px;
+  position: relative;
+  overflow: hidden;
 }
+
+/* ── Tuna swimming animation ── */
+.tuna-tank {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tuna-wrap {
+  position: absolute;
+}
+
+.tuna {
+  display: block;
+  opacity: 0.45;
+  border-radius: 50%;
+}
+
+.tuna-wrap--r {
+  animation: tuna-swim-r var(--dur) linear var(--delay) infinite;
+}
+
+.tuna-wrap--l {
+  animation: tuna-swim-l var(--dur) linear var(--delay) infinite;
+}
+
+.tuna-wrap--r .tuna {
+  transform: scaleX(-1);
+}
+
+@keyframes tuna-swim-r {
+  from { transform: translateX(-120px); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+
+@keyframes tuna-swim-l {
+  from { transform: translateX(calc(100vw + 120px)); }
+  to   { transform: translateX(-120px); }
+}
+
+/* パニック用：CSS変数 --tx で現在地から開始（アニメーション名を変えることで確実に新規開始） */
+@keyframes tuna-panic-r {
+  from { transform: translateX(var(--tx)); }
+  to   { transform: translateX(calc(100vw + 120px)); }
+}
+
+@keyframes tuna-panic-l {
+  from { transform: translateX(var(--tx)); }
+  to   { transform: translateX(-120px); }
+}
+
 
 .age-gate-card {
   background: var(--panel);
@@ -1187,6 +1241,8 @@ button {
   max-width: 440px;
   width: 100%;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .age-gate-card h1 {
