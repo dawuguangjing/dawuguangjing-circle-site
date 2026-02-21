@@ -15,8 +15,8 @@ export const EXTERNAL_LINKS = {
   cien: 'https://ci-en.dlsite.com/creator/35269',
 } as const;
 
-/** 年齢確認の sessionStorage キー */
+/** 年齢確認の localStorage キー */
 export const AGE_GATE_STORAGE_KEY = 'circle_age_gate_until';
 
 /** 年齢確認の有効期間（ミリ秒） */
-export const AGE_GATE_TTL_MS = 30 * 60 * 1000; // 30 minutes
+export const AGE_GATE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days

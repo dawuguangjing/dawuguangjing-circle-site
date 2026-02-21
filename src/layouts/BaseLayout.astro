@@ -53,7 +53,7 @@ const ageKey = AGE_GATE_STORAGE_KEY;
       <script is:inline define:vars={{ base, ageKey }}>
         const key = ageKey;
         const now = Date.now();
-        const saved = Number(sessionStorage.getItem(key) || 0);
+        const saved = Number(localStorage.getItem(key) || 0);
         if (saved && saved > now) {
           document.addEventListener('DOMContentLoaded', function() {
             var el = document.getElementById('age-gate-protected');
