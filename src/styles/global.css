@@ -48,6 +48,7 @@ body {
   line-height: 1.6;
   display: flex;
   flex-direction: column;
+  -webkit-tap-highlight-color: transparent;
 }
 
 main {
@@ -101,7 +102,7 @@ button {
 }
 
 .container {
-  width: min(1060px, 94vw);
+  width: min(1060px, calc(100% - 32px));
   margin: 0 auto;
 }
 
@@ -200,6 +201,7 @@ button {
   justify-content: center;
   gap: 8px;
   padding: 10px 24px;
+  min-height: 44px;
   border-radius: var(--radius-md);
   border: none;
   font-weight: 600;
@@ -1576,6 +1578,14 @@ button {
 @media (max-width: 768px) {
   .mobile-menu-toggle {
     display: flex;
+  }
+
+  .article-body {
+    font-size: 1rem;
+  }
+
+  h2, h3 {
+    scroll-margin-top: 64px;
   }
 
   .site-header-inner {
