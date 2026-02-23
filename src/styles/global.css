@@ -1671,8 +1671,14 @@ button {
     z-index: 19;
   }
 
+  @keyframes menu-slide-down {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
   .nav-links.is-open {
     display: flex;
+    animation: menu-slide-down 0.18s ease;
   }
 
   .nav-links a {
@@ -1681,6 +1687,17 @@ button {
     font-size: 1rem;
     border-radius: 0;
     border-left: 3px solid transparent;
+  }
+
+  .nav-links a:hover {
+    transform: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-links a:active {
+    transform: none;
+    background: rgba(0, 0, 0, 0.08);
+    transition-duration: 0.05s;
   }
 
   .nav-links a::after {
