@@ -30,13 +30,43 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 </header>
 
 <script>
-  const toggle = document.querySelector('.mobile-menu-toggle');
+  const toggle = document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null;
   const nav = document.getElementById('main-nav');
+
+  function closeMenu() {
+    if (!toggle || !nav) return;
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', 'メニューを開く');
+    nav.classList.remove('is-open');
+  }
+
+  function openMenu() {
+    if (!toggle || !nav) return;
+    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute('aria-label', 'メニューを閉じる');
+    nav.classList.add('is-open');
+  }
+
   if (toggle && nav) {
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!expanded));
-      nav.classList.toggle('is-open');
+      expanded ? closeMenu() : openMenu();
+    });
+
+    // 外側タップで閉じる
+    document.addEventListener('click', (e) => {
+      if (!nav.classList.contains('is-open')) return;
+      if (!nav.contains(e.target as Node) && !toggle.contains(e.target as Node)) {
+        closeMenu();
+      }
+    });
+
+    // Esc キーで閉じる
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        closeMenu();
+        toggle.focus();
+      }
     });
   }
 </script>
