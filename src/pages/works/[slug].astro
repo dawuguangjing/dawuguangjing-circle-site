@@ -90,7 +90,7 @@ const trialLinks = data.trialLinks
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar">
+        <div class="store-sidebar" id="purchase-section">
           <!-- Age Rating -->
           <div>
             {data.isR18
@@ -212,6 +212,15 @@ const trialLinks = data.trialLinks
     </section>
   </div>
 
+  <!-- Floating Purchase Button -->
+  <button class="fab-purchase is-hidden" id="fab-purchase" aria-label="購入セクションへ移動">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    </svg>
+    <span>購入する</span>
+  </button>
+
   <script>
     const lightbox = document.getElementById('lightbox');
     const lbImg = lightbox?.querySelector('img');
@@ -236,5 +245,29 @@ const trialLinks = data.trialLinks
     lbClose?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
     lightbox?.addEventListener('click', closeLightbox);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+
+  <script>
+    const fab = document.getElementById('fab-purchase');
+    const target = document.getElementById('purchase-section');
+
+    if (fab && target) {
+      // 初期状態を同期的に設定してフラッシュを防ぐ
+      const rect = target.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      fab.classList.toggle('is-hidden', isVisible);
+
+      // 購入セクションの可視状態に応じて FAB を表示/非表示
+      const observer = new IntersectionObserver(
+        ([entry]) => { fab.classList.toggle('is-hidden', entry.isIntersecting); },
+        { threshold: 0.1 }
+      );
+      observer.observe(target);
+
+      // クリックで購入セクションへスムーズスクロール
+      fab.addEventListener('click', () => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
   </script>
 </BaseLayout>
