@@ -94,6 +94,7 @@ a:hover {
 
 img {
   max-width: 100%;
+  height: auto;
   display: block;
 }
 
@@ -771,6 +772,11 @@ button {
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--stroke);
+}
+
+.work-cover img {
+  width: 100%;
+  height: auto;
 }
 
 /* ── Meta rows (detail page) ── */
