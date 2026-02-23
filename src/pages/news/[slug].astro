@@ -23,12 +23,12 @@ const workIndex = await getWorkIndex();
 const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: data.date });
 ---
 
-<BaseLayout title={`${data.title} | 開発ログ`} description={data.title} jsonLd={articleJsonLd}>
+<BaseLayout title={`${data.title} | 開発ログ`} description={data.title} type="article" publishedTime={data.date} jsonLd={articleJsonLd}>
   <div class="page-content">
     <section class="section container">
       <article class="article">
         <div class="article-header">
-          <span class="badge badge--category">{categoryLabels[data.category] ?? data.category}</span>
+          <span class={`badge badge--${data.category}`}>{categoryLabels[data.category] ?? data.category}</span>
           <time class="article-date">{formatDate(data.date)}</time>
         </div>
         <h1 class="article-title">{data.title}</h1>

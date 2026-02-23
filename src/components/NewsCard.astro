@@ -18,7 +18,7 @@ const { slug, title, date, category } = Astro.props;
   <div class="news-card-body">
     <h3><a class="news-card-link" href={withBase(`news/${slug}/`)}>{title}</a></h3>
     <p>
-      <span class="badge badge--category">{categoryLabels[category] ?? category}</span>
+      <span class={`badge badge--${category}`}>{categoryLabels[category] ?? category}</span>
     </p>
   </div>
   <slot />

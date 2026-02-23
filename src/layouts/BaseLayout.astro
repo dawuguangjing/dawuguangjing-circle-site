@@ -15,6 +15,7 @@ interface Props {
   hideFooter?: boolean;
   disableAgeGate?: boolean;
   jsonLd?: Record<string, unknown>;
+  publishedTime?: Date;
 }
 
 const {
@@ -26,7 +27,8 @@ const {
   hideHeader = false,
   hideFooter = false,
   disableAgeGate = false,
-  jsonLd
+  jsonLd,
+  publishedTime
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const ageKey = AGE_GATE_STORAGE_KEY;
@@ -37,7 +39,7 @@ const ageKey = AGE_GATE_STORAGE_KEY;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} />
+    <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} publishedTime={publishedTime} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
     <link rel="alternate" type="application/rss+xml" title="ダウグアングジング 開発ログ" href={`${base}rss.xml`} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
