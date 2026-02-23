@@ -1,4 +1,6 @@
-export const categoryLabels: Record<string, string> = {
+import type { NewsCategory } from '../content/config';
+
+export const categoryLabels: Record<NewsCategory, string> = {
   release: 'リリース',
   update: '更新',
   sale: 'セール',

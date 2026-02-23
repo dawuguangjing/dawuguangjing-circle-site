@@ -41,12 +41,15 @@ const works = defineCollection({
   })
 });
 
+export const NEWS_CATEGORIES = ['release', 'update', 'sale', 'devlog'] as const;
+export type NewsCategory = typeof NEWS_CATEGORIES[number];
+
 const news = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
     date: z.date(),
-    category: z.enum(['release', 'update', 'sale', 'devlog']),
+    category: z.enum(NEWS_CATEGORIES),
     relatedWorkSlugs: z.array(z.string()).optional()
   })
 });

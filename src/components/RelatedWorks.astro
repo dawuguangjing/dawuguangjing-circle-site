@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  slugs: string[];
+  workIndex: Map<string, CollectionEntry<'works'>>;
+  justifyEnd?: boolean;
+}
+
+const { slugs, workIndex, justifyEnd = false } = Astro.props;
+---
+
+{slugs.length > 0 && (
+  <div class="related-works" style={justifyEnd ? 'justify-content: flex-end;' : undefined}>
+    {slugs.map((slug) => {
+      const work = workIndex.get(slug);
+      return work ? (
+        <a class="related-work-link" href={withBase(`works/${slug}/`)}>
+          <span class="related-work-label">関連作品</span>
+          <span class="related-work-title">{work.data.title}</span>
+          <span class="related-work-arrow">→</span>
+        </a>
+      ) : null;
+    })}
+  </div>
+)}

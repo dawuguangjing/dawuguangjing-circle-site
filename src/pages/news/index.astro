@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
-import { withBase } from '../../utils/withBase';
+import RelatedWorks from '../../components/RelatedWorks.astro';
 import { getSortedNews, getWorkIndex } from '../../utils/collections';
 
 const news = await getSortedNews();
@@ -23,19 +23,8 @@ const workIndex = await getWorkIndex();
             date={entry.data.date}
             category={entry.data.category}
           >
-            {entry.data.relatedWorkSlugs && entry.data.relatedWorkSlugs.length > 0 && (
-              <div class="related-works">
-                {entry.data.relatedWorkSlugs.map((slug) => {
-                  const work = workIndex.get(slug);
-                  return work ? (
-                    <a class="related-work-link" href={withBase(`works/${slug}/`)}>
-                      <span class="related-work-label">関連作品</span>
-                      <span class="related-work-title">{work.data.title}</span>
-                      <span class="related-work-arrow">→</span>
-                    </a>
-                  ) : null;
-                })}
-              </div>
+            {entry.data.relatedWorkSlugs && (
+              <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
             )}
           </NewsCard>
         ))}

@@ -19,13 +19,13 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
-type StoreLink = { label: string; href: string; track: string };
+type StoreLink = { label: string; href: string; track: string; store: string };
 const buildLinks = (
   sources: Record<string, string | undefined>,
-  entries: { key: string; label: string; track: string }[]
+  entries: { key: string; label: string; track: string; store: string }[]
 ): StoreLink[] =>
-  entries.flatMap(({ key, label, track }) =>
-    sources[key] ? [{ label, href: sources[key]!, track }] : []
+  entries.flatMap(({ key, label, track, store }) =>
+    sources[key] ? [{ label, href: sources[key]!, track, store }] : []
   );
 
 const productJsonLd = buildProductSchema({
@@ -36,14 +36,14 @@ const productJsonLd = buildProductSchema({
 });
 
 const platformLinks = buildLinks(data.platformLinks, [
-  { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza' },
-  { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite' },
+  { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza', store: 'fanza' },
+  { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
 ]);
 
 const trialLinks = data.trialLinks
   ? buildLinks(data.trialLinks, [
-      { key: 'fanza', label: 'FANZA 体験版', track: 'click_trial_fanza' },
-      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite' },
+      { key: 'fanza', label: 'FANZA 体験版', track: 'click_trial_fanza', store: 'fanza' },
+      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite', store: 'dlsite' },
     ])
   : [];
 ---
@@ -108,6 +108,7 @@ const trialLinks = data.trialLinks
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
+                data-store={link.store}
                 data-track={link.track}
               >
                 <span>{link.label}</span>
@@ -127,6 +128,7 @@ const trialLinks = data.trialLinks
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-store={link.store}
                     data-track={link.track}
                   >
                     <span>{link.label}</span>
