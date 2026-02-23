@@ -3,7 +3,7 @@ import '../styles/global.css';
 import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { AGE_GATE_STORAGE_KEY } from '../utils/constants';
+import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS } from '../utils/constants';
 
 interface Props {
   title: string;
@@ -32,6 +32,7 @@ const {
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const ageKey = AGE_GATE_STORAGE_KEY;
+const ageTtl = AGE_GATE_TTL_MS;
 ---
 
 <!doctype html>
@@ -39,6 +40,15 @@ const ageKey = AGE_GATE_STORAGE_KEY;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    {/* 年齢確認済みなら <html> に age-verified クラスを付与（レンダリング前に同期実行してフラッシュを防ぐ） */}
+    {!disableAgeGate && (
+      <script is:inline define:vars={{ ageKey }}>
+        try {
+          var _saved = Number(localStorage.getItem(ageKey) || 0);
+          if (_saved > Date.now()) document.documentElement.classList.add('age-verified');
+        } catch(e) {}
+      </script>
+    )}
     <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} publishedTime={publishedTime} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
     <link rel="alternate" type="application/rss+xml" title="ダウグアングジング 開発ログ" href={`${base}rss.xml`} />
@@ -51,24 +61,27 @@ const ageKey = AGE_GATE_STORAGE_KEY;
   </head>
   <body>
     <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
+
+    {/* オーバーレイ方式の年齢確認（コンテンツは常に DOM に存在し Googlebot がインデックス可能） */}
     {!disableAgeGate && (
-      <script is:inline define:vars={{ base, ageKey }}>
-        const key = ageKey;
-        const now = Date.now();
-        const saved = Number(localStorage.getItem(key) || 0);
-        if (saved && saved > now) {
-          document.addEventListener('DOMContentLoaded', function() {
-            var el = document.getElementById('age-gate-protected');
-            if (el) el.classList.add('age-verified');
-          });
-        } else {
-          const returnTo = encodeURIComponent(
-            window.location.pathname + window.location.search + window.location.hash
-          );
-          window.location.href = base + 'age/?returnTo=' + returnTo;
-        }
-      </script>
+      <div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title">
+        <div class="age-gate-card">
+          <h1 id="age-overlay-title">年齢確認</h1>
+          <p>
+            本サークルでは成人向け製品を取り扱っております。<br />
+            あなたは18歳以上ですか？
+          </p>
+          <div class="age-gate-actions">
+            <button class="button" id="age-confirm-overlay">はい（18歳以上）</button>
+            <button class="button secondary" id="age-deny-overlay">いいえ</button>
+          </div>
+          <div class="age-gate-denied" id="age-denied-overlay" hidden>
+            18歳未満の方はご利用いただけません。ブラウザを閉じてください。
+          </div>
+        </div>
+      </div>
     )}
+
     {!disableAgeGate && (
       <noscript>
         <div class="noscript-block">
@@ -78,18 +91,33 @@ const ageKey = AGE_GATE_STORAGE_KEY;
         </div>
       </noscript>
     )}
-    {!disableAgeGate ? (
-      <div id="age-gate-protected" class="age-gate-protected">
-        {!hideHeader && <SiteHeader />}
-        <main id="main-content"><slot /></main>
-        {!hideFooter && <SiteFooter />}
-      </div>
-    ) : (
-      <Fragment>
-        {!hideHeader && <SiteHeader />}
-        <main id="main-content"><slot /></main>
-        {!hideFooter && <SiteFooter />}
-      </Fragment>
+
+    {/* コンテンツは常にレンダリングされる（クローラーがインデックス可能） */}
+    {!hideHeader && <SiteHeader />}
+    <main id="main-content"><slot /></main>
+    {!hideFooter && <SiteFooter />}
+
+    {!disableAgeGate && (
+      <script is:inline define:vars={{ ageKey, ageTtl }}>
+        (function() {
+          var btn    = document.getElementById('age-confirm-overlay');
+          var deny   = document.getElementById('age-deny-overlay');
+          var denied = document.getElementById('age-denied-overlay');
+
+          if (btn) {
+            btn.addEventListener('click', function() {
+              try { localStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e) {}
+              document.documentElement.classList.add('age-verified');
+            });
+          }
+          if (deny) {
+            deny.addEventListener('click', function() {
+              try { localStorage.removeItem(ageKey); } catch(e) {}
+              if (denied) denied.removeAttribute('hidden');
+            });
+          }
+        })();
+      </script>
     )}
   </body>
 </html>
