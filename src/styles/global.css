@@ -719,6 +719,7 @@ button {
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
   transition: color 0.15s ease;
+  white-space: nowrap;
 }
 
 .footer-nav a:hover {
@@ -1627,7 +1628,8 @@ button {
   }
 
   .footer-nav-group {
-    gap: 32px;
+    gap: 24px 32px;
+    flex-wrap: wrap;
   }
 
   .footer-bottom {
