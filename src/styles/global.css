@@ -184,11 +184,6 @@ button {
   background: rgba(220, 38, 38, 0.08);
 }
 
-.badge--sale {
-  color: var(--sale);
-  background: rgba(230, 46, 46, 0.08);
-}
-
 .badge--category {
   color: #666666;
   background: rgba(0, 0, 0, 0.06);

@@ -1,4 +1,5 @@
 import { withBase } from './withBase';
+import { EXTERNAL_LINKS } from './constants';
 
 export interface NavItem {
   label: string;
@@ -42,7 +43,7 @@ export const footerNav = [
   {
     heading: '外部リンク',
     items: [
-      { label: 'Ci-en', href: 'https://ci-en.dlsite.com/creator/35269' },
+      { label: 'Ci-en', href: EXTERNAL_LINKS.cien },
     ],
   },
 ];
