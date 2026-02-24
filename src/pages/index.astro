@@ -4,7 +4,7 @@ import WorkCard from '../components/WorkCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import { withBase } from '../utils/withBase';
 import { HOME_NEWS_LIMIT, SITE_NAME } from '../utils/constants';
-import { getSortedWorks, getSortedNews } from '../utils/collections';
+import { getSortedWorks, getSortedNews, extractFirstImageUrl } from '../utils/collections';
 
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
@@ -46,6 +46,7 @@ const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
             title={entry.data.title}
             date={entry.data.date}
             category={entry.data.category}
+            thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
           />
         ))}
       </div>

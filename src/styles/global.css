@@ -928,6 +928,19 @@ button {
   flex-wrap: wrap;
 }
 
+.news-card.has-thumb {
+  grid-template-columns: auto 1fr auto;
+}
+
+.news-card-thumb {
+  width: 80px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  align-self: center;
+  flex-shrink: 0;
+}
+
 .related-work-link {
   display: flex;
   align-items: center;
@@ -1770,6 +1783,14 @@ html.age-verified .age-overlay {
   .news-card {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .news-card.has-thumb {
+    grid-template-columns: 1fr;
+  }
+
+  .news-card-thumb {
+    display: none;
   }
 
   .works-grid {

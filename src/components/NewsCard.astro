@@ -8,12 +8,13 @@ interface Props {
   title: string;
   date: Date;
   category: string;
+  thumbnail?: string;
 }
 
-const { slug, title, date, category } = Astro.props;
+const { slug, title, date, category, thumbnail } = Astro.props;
 ---
 
-<article class="news-card">
+<article class={`news-card${thumbnail ? ' has-thumb' : ''}`}>
   <span class="news-card-date">{formatDate(date)}</span>
   <div class="news-card-body">
     <h3><a class="news-card-link" href={withBase(`news/${slug}/`)}>{title}</a></h3>
@@ -21,5 +22,8 @@ const { slug, title, date, category } = Astro.props;
       <span class={`badge badge--${category}`}>{categoryLabels[category] ?? category}</span>
     </p>
   </div>
+  {thumbnail && (
+    <img class="news-card-thumb" src={thumbnail} alt="" loading="lazy" width="80" height="56" />
+  )}
   <slot />
 </article>

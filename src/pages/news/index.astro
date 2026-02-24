@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import RelatedWorks from '../../components/RelatedWorks.astro';
-import { getSortedNews, getWorkIndex } from '../../utils/collections';
+import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
 
 const news = await getSortedNews();
 const workIndex = await getWorkIndex();
@@ -22,6 +22,7 @@ const workIndex = await getWorkIndex();
             title={entry.data.title}
             date={entry.data.date}
             category={entry.data.category}
+            thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
           >
             {entry.data.relatedWorkSlugs && (
               <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
