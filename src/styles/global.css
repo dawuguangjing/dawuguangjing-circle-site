@@ -672,6 +672,10 @@ button {
   animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
 }
 
+.nav-links a:hover .nav-char {
+  animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
+}
+
 /* ── Mobile Menu Toggle ── */
 .mobile-menu-toggle {
   display: none;
@@ -807,6 +811,20 @@ button {
   color: rgba(255, 255, 255, 0.3);
   margin: 0;
   text-align: right;
+}
+
+/* ── Work Video ── */
+.work-video {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--stroke);
+  background: #000;
+}
+
+.work-video video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ── Cover image ── */
@@ -1695,6 +1713,10 @@ html.age-verified .age-overlay {
   .nav-links a:hover {
     transform: none;
     background: rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-links a:hover .nav-char {
+    animation: none;
   }
 
   .nav-links a:active {

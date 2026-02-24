@@ -70,6 +70,15 @@ const trialLinks = data.trialLinks
             <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" />
           </div>
 
+          <!-- Video -->
+          {data.videoUrl && (
+            <div class="work-video">
+              <video controls preload="metadata" width="1280" height="720">
+                <source src={data.videoUrl} type="video/mp4" />
+              </video>
+            </div>
+          )}
+
           <!-- Screenshots -->
           {data.images.screenshots.length > 0 && (
             <div class="gallery-grid">
