@@ -5,7 +5,7 @@ shortDescription: "従順審査シミュレーションゲーム。"
 releaseDate: 2026-02-03
 isR18: true
 platformLinks:
-  fanza: "https://www.dmm.co.jp/dc/doujin/-/detail/=/cid=d_730295/"
+  fanza: "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_730295%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link"
   dlsite: "https://dlaf.jp/aix/dlaf/=/t/s/link/work/aid/dawuguangjing/id/RJ01562523.html"
 trialLinks:
   fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_730295/d_730295t.zip"
