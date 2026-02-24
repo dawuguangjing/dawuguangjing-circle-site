@@ -2,12 +2,13 @@
 import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
 import { categoryLabels } from '../utils/labels';
+import type { NewsCategory } from '../content/config';
 
 interface Props {
   slug: string;
   title: string;
   date: Date;
-  category: string;
+  category: NewsCategory;
   thumbnail?: string;
 }
 

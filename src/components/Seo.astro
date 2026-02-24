@@ -51,5 +51,5 @@ const orgSchema = buildOrgSchema(Astro.site?.toString());
 <meta name="theme-color" content="#0068B7" />
 {noIndex && <meta name="robots" content="noindex" />}
 <meta name="google-site-verification" content="e9vmFdAPu4LMQR9Ae-5P57K5OIjN_HDHNHicUWbW_Dg" />
-<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
-{jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+<script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+{jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

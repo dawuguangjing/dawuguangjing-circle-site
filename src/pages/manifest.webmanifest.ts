@@ -1,7 +1,6 @@
-import type { APIContext } from 'astro';
 import { SITE_NAME, CIRCLE_NAME } from '../utils/constants';
 
-export function GET(context: APIContext) {
+export function GET() {
   const base = import.meta.env.BASE_URL;
 
   const manifest = {
