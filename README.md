@@ -21,6 +21,7 @@ npm run preview   # ビルド結果をローカルで確認
 ```bash
 npm run lint      # ESLint で TypeScript をチェック
 npm run format    # Prettier でコードを整形
+npm run check:image-paths  # 期限付き/private URLや危険な画像パスを検出
 ```
 
 ---

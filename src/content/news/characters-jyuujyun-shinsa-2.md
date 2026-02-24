@@ -26,11 +26,11 @@ relatedWorkSlugs:
 ## キャラクター原案
 
 
-![金井美穂（仮）](https://media.ci-en.jp/private/attachment/creator/00035269/66055026d9a07c3a9551f4ec15d565d422e200edec3625be413482538535495c/image-800.jpg?px-time=1771918917&px-hash=83dd4ae13414fae46cf76c9cb0e85f6bb30fcbec)
+![金井美穂（仮）](/images/news/characters-jyuujyun-shinsa-2-kanai-miho.jpg)
 
-![中村莉緒（仮）](https://media.ci-en.jp/private/attachment/creator/00035269/39e54d5b0ad3125bd99493586517e4f93fdea4b429c0e6bf4a0cba54822723f5/image-800.jpg?px-time=1771918947&px-hash=9b0999e09e94689b1760c99dff22c06a5c898163)
+![中村莉緒（仮）](/images/news/characters-jyuujyun-shinsa-2-nakamura-rio.jpg)
 
-![滝沢凛（仮）](https://media.ci-en.jp/private/attachment/creator/00035269/bf58c3e673853b132f22cbe2432522b449ce697c6dba9d89df4ea1b43c97f176/image-800.jpg?px-time=1771919028&px-hash=5398b424bcb33c93bf94efd59809b0e3c096572d)
+![滝沢凛（仮）](/images/news/characters-jyuujyun-shinsa-2-takizawa-rin.jpg)
 
 
 皆様と彼女がゲームの中でお会いできますことを心より願っております。

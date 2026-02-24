@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint 'src/**/*.{ts,mjs}'",
-    "format": "prettier --write 'src/**/*.{ts,astro,css,mjs}'"
+    "format": "prettier --write 'src/**/*.{ts,astro,css,mjs}'",
+    "check:image-paths": "node scripts/check-image-paths.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.15",
