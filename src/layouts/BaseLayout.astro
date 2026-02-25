@@ -45,6 +45,7 @@ const ageTtl = AGE_GATE_TTL_MS;
       <script is:inline define:vars={{ ageKey }}>
         try {
           var _saved = Number(localStorage.getItem(ageKey) || 0);
+          if (_saved <= Date.now()) _saved = Number(sessionStorage.getItem(ageKey) || 0);
           if (_saved > Date.now()) document.documentElement.classList.add('age-verified');
         } catch(e) {}
       </script>
@@ -106,13 +107,18 @@ const ageTtl = AGE_GATE_TTL_MS;
 
           if (btn) {
             btn.addEventListener('click', function() {
-              try { localStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e) {}
+              try {
+                localStorage.setItem(ageKey, String(Date.now() + ageTtl));
+              } catch(e) {
+                try { sessionStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e2) {}
+              }
               document.documentElement.classList.add('age-verified');
             });
           }
           if (deny) {
             deny.addEventListener('click', function() {
               try { localStorage.removeItem(ageKey); } catch(e) {}
+              try { sessionStorage.removeItem(ageKey); } catch(e) {}
               if (denied) denied.removeAttribute('hidden');
             });
           }
