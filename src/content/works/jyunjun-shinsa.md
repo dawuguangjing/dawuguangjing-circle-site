@@ -24,13 +24,13 @@ aiUsage:
   level: "partial"
   noteShort: "一部のグラフィック素材にAIを使用しています。"
 images:
-  cover: "images/works/jyuujyun-shinsa-1.jpg"
+  cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1.jpg"
   screenshots:
-    - "images/works/jyuujyun-shinsa-1-slide1.jpg"
-    - "images/works/jyuujyun-shinsa-1-slide2.jpg"
-    - "images/works/jyuujyun-shinsa-1-slide3.jpg"
-    - "images/works/jyuujyun-shinsa-1-slide4.jpg"
-    - "images/works/jyuujyun-shinsa-1-slide5.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1-slide1.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1-slide2.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1-slide3.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1-slide4.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1-slide5.jpg"
                 
 ---
 

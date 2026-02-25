@@ -26,11 +26,11 @@ relatedWorkSlugs:
 ## キャラクター原案
 
 
-![金井美穂（仮）](/images/news/characters-jyuujyun-shinsa-2-kanai-miho.jpg)
+![金井美穂（仮）](https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg)
 
-![中村莉緒（仮）](/images/news/characters-jyuujyun-shinsa-2-nakamura-rio.jpg)
+![中村莉緒（仮）](https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-rio-char.jpg)
 
-![滝沢凛（仮）](/images/news/characters-jyuujyun-shinsa-2-takizawa-rin.jpg)
+![滝沢凛（仮）](https://storage.googleapis.com/dawuguangjing-assets/rin-char.jpg)
 
 
 皆様と彼女がゲームの中でお会いできますことを心より願っております。

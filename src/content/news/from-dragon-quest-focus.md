@@ -30,7 +30,7 @@ relatedWorkSlugs:
 この演出はあやかりたい！と思い、ダウグアングジング1作目の従順審査でも、キャラクターが椅子に座った瞬間、背景はボヤかす様にしてます。
 できれば皆様に人物へ集中していただければという思いでしたが、いかがでしたでしょうか？（効果無かったなら、それはそれでまた教えてください笑）
 
-![フォーカスに気をつけたシーン](./img/focus.png)
+![フォーカスに気をつけたシーン）](https://storage.googleapis.com/dawuguangjing-assets/focus.png)
 
 ## ダウグアングジングの好きなゲーム
 
@@ -38,7 +38,7 @@ relatedWorkSlugs:
 これらのゲームについてはまた別の機会に語れたらと思っております...！
 （ちなみに成人ゲームでは、サークルALLDICE様の[侵蝕のヒプノシスシリーズ](https://dlaf.jp/maniax/dlaf/=/t/s/link/work/aid/dawuguangjingcien/id/RJ01082260.html)です。）
 
-<a rel="noopener sponsored" href="https://dlaf.jp/maniax/dlaf/=/t/i/link/work/aid/dawuguangjingcien/id/RJ01082260.html" target="_blank"><img itemprop="image" src="//img.dlsite.jp/modpub/images2/work/doujin/RJ01083000/RJ01082260_img_main.jpg" alt="" border="0" class="target_type" /></a>
+<a rel="noopener sponsored" href="https://storage.googleapis.com/dawuguangjing-assets/focus.png" target="_blank"><img itemprop="image" src="//img.dlsite.jp/modpub/images2/work/doujin/RJ01083000/RJ01082260_img_main.jpg" alt="" border="0" class="target_type" /></a>
 
 
 定期的に記事を残していくので、ぜひフォロー、コメントいただけますと幸いです！

@@ -14,6 +14,12 @@ export async function getSortedNews() {
   );
 }
 
+/** 記事本文から最初の外部画像 URL を抽出する */
+export function extractFirstImageUrl(body: string): string | undefined {
+  const match = body.match(/!\[.*?\]\((https?:\/\/[^)\s]+)\)/);
+  return match?.[1];
+}
+
 /** slug → work の Map を返す */
 export async function getWorkIndex() {
   const works = await getCollection('works');
