@@ -2120,8 +2120,8 @@ html.age-verified .age-overlay {
 
 /* ── Hero Banner ── */
 .hero-banner {
-  background: #9BD5BD;
-  border-bottom: 3px solid #7CCD40;
+  background: #5995DD;
+  border-bottom: 3px solid #3a75c4;
   padding: 48px 0;
 }
 
@@ -2170,7 +2170,7 @@ html.age-verified .age-overlay {
   font-size: 0.84rem;
 }
 .hero-banner .selling-points li::before {
-  color: #7CCD40;
+  color: #fff;
 }
 
 .hero-banner-cta {
