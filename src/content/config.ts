@@ -50,6 +50,7 @@ const news = defineCollection({
     title: z.string(),
     date: z.date(),
     category: z.enum(NEWS_CATEGORIES),
+    eyecatch: z.string().optional(),
     relatedWorkSlugs: z.array(z.string()).optional()
   })
 });
