@@ -1,0 +1,67 @@
+---
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  slug: string;
+  title: string;
+  catch: string;
+  cover: string;
+  isR18: boolean;
+  platformLinks: { fanza?: string; dlsite?: string };
+  sellingPoints?: string[];
+}
+
+const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, sellingPoints } = Astro.props;
+---
+
+<section class="hero-banner">
+  <div class="hero-banner-inner container">
+    <div class="hero-banner-text">
+      {isR18 && <span class="badge badge--r18">R18</span>}
+      <h2 class="hero-banner-title">{title}</h2>
+      <p class="hero-banner-catch">{catchPhrase}</p>
+
+      {sellingPoints && sellingPoints.length > 0 && (
+        <ul class="hero-banner-points">
+          {sellingPoints.map((point) => (
+            <li>{point}</li>
+          ))}
+        </ul>
+      )}
+
+      <div class="hero-banner-cta">
+        {platformLinks.fanza && (
+          <a
+            class="store-button store-button--cta"
+            href={platformLinks.fanza}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-store="fanza"
+          >
+            <span>FANZA で購入</span>
+            <span class="arrow">→</span>
+          </a>
+        )}
+        {platformLinks.dlsite && (
+          <a
+            class="store-button store-button--cta"
+            href={platformLinks.dlsite}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-store="dlsite"
+          >
+            <span>DLsite で購入</span>
+            <span class="arrow">→</span>
+          </a>
+        )}
+        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>
+          詳細を見る →
+        </a>
+      </div>
+    </div>
+
+    <a class="hero-banner-cover" href={withBase(`works/${slug}/`)} tabindex="-1" aria-hidden="true">
+      <img src={cover} alt={`${title} cover`} width="600" height="400" />
+    </a>
+  </div>
+</section>

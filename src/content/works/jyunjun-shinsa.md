@@ -23,6 +23,10 @@ volume:
 aiUsage:
   level: "partial"
   noteShort: "一部のグラフィック素材にAIを使用しています。"
+sellingPoints:
+  - "審査員として美女をご自由に — シナリオ分岐・4エンドの選択式"
+  - "フルボイス＆70枚超のオリジナルCG収録"
+  - "体験版あり — まず無料で試せます"
 images:
   cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1.jpg"
   screenshots:

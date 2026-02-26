@@ -38,7 +38,8 @@ const works = defineCollection({
       cover: z.string(),
       screenshots: z.array(z.string())
     }),
-    videoUrl: z.string().url().optional()
+    videoUrl: z.string().url().optional(),
+    sellingPoints: z.array(z.string()).optional()
   })
 });
 

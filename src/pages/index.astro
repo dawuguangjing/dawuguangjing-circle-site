@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkCard from '../components/WorkCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
+import HeroBanner from '../components/HeroBanner.astro';
 import { withBase } from '../utils/withBase';
 import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME } from '../utils/constants';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
@@ -10,6 +11,7 @@ import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl }
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
 const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
+const heroWork = allWorks[0];
 ---
 
 <BaseLayout
@@ -17,6 +19,18 @@ const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
   description="作品・告知・外部リンクをまとめた公式ハブ。"
 >
   <div class="page-content">
+    {heroWork && (
+      <HeroBanner
+        slug={heroWork.slug}
+        title={heroWork.data.title}
+        catch={heroWork.data.catch}
+        cover={heroWork.data.images.cover}
+        isR18={heroWork.data.isR18}
+        platformLinks={heroWork.data.platformLinks}
+        sellingPoints={heroWork.data.sellingPoints}
+      />
+    )}
+
     <section class="section container">
       <div class="section-header">
         <h2 class="section-title">作品</h2>

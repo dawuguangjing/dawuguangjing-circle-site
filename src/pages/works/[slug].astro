@@ -94,6 +94,13 @@ const trialLinks = data.trialLinks
           <div class="detail-block">
             <h2>概要</h2>
             <p>{data.shortDescription}</p>
+            {data.sellingPoints && data.sellingPoints.length > 0 && (
+              <ul class="selling-points">
+                {data.sellingPoints.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            )}
             <Content />
           </div>
         </div>
