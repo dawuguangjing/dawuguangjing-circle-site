@@ -15,53 +15,130 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, sellingPoi
 ---
 
 <section class="hero-banner">
+  <!-- 背景: 魚 -->
+  <div class="tuna-tank" aria-hidden="true">
+    <div class="tuna-wrap tuna-wrap--r" style="top:15%; --dur:18s; --delay:0s;">
+      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="36" height="36" />
+    </div>
+    <div class="tuna-wrap tuna-wrap--l" style="top:55%; --dur:24s; --delay:-7s;">
+      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="52" height="52" />
+    </div>
+    <div class="tuna-wrap tuna-wrap--r" style="top:75%; --dur:14s; --delay:-4s;">
+      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="28" height="28" />
+    </div>
+    <div class="tuna-wrap tuna-wrap--l" style="top:35%; --dur:30s; --delay:-12s;">
+      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="60" height="60" />
+    </div>
+    <div class="tuna-wrap tuna-wrap--r" style="top:88%; --dur:20s; --delay:-9s;">
+      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="44" height="44" />
+    </div>
+  </div>
+
   <div class="hero-banner-inner container">
+
+    <!-- 左: テキスト -->
     <div class="hero-banner-text">
-      {isR18 && <span class="badge badge--r18">R18</span>}
+      <div class="hero-banner-eyebrow">
+        <span class="hero-banner-tag">最新作</span>
+        {isR18 && <span class="badge badge--r18">R18</span>}
+      </div>
       <h2 class="hero-banner-title">{title}</h2>
       <p class="hero-banner-catch">{catchPhrase}</p>
 
       {sellingPoints && sellingPoints.length > 0 && (
-        <ul class="hero-banner-points">
-          {sellingPoints.map((point) => (
-            <li>{point}</li>
-          ))}
+        <ul class="selling-points">
+          {sellingPoints.map((point) => <li>{point}</li>)}
         </ul>
       )}
 
       <div class="hero-banner-cta">
         {platformLinks.fanza && (
-          <a
-            class="store-button store-button--cta"
-            href={platformLinks.fanza}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-store="fanza"
-          >
-            <span>FANZA で購入</span>
-            <span class="arrow">→</span>
+          <a class="store-button" href={platformLinks.fanza} target="_blank" rel="noopener noreferrer" data-store="fanza">
+            <span>FANZA で購入</span><span class="arrow">→</span>
           </a>
         )}
         {platformLinks.dlsite && (
-          <a
-            class="store-button store-button--cta"
-            href={platformLinks.dlsite}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-store="dlsite"
-          >
-            <span>DLsite で購入</span>
-            <span class="arrow">→</span>
+          <a class="store-button" href={platformLinks.dlsite} target="_blank" rel="noopener noreferrer" data-store="dlsite">
+            <span>DLsite で購入</span><span class="arrow">→</span>
           </a>
         )}
-        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>
-          詳細を見る →
-        </a>
+        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
       </div>
     </div>
 
-    <a class="hero-banner-cover" href={withBase(`works/${slug}/`)} tabindex="-1" aria-hidden="true">
-      <img src={cover} alt={`${title} cover`} width="600" height="400" />
+    <!-- 右: カバー画像 -->
+    <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
+      <img src={cover} alt={`${title} cover`} width="480" height="320" />
     </a>
+
   </div>
 </section>
+
+<script>
+  const hero = document.querySelector('.hero-banner');
+  const triggers = hero?.querySelectorAll<HTMLElement>('.store-button, .hero-banner-detail-link');
+  const wraps = Array.from(hero?.querySelectorAll<HTMLElement>('.tuna-wrap') ?? []);
+
+  const configs = wraps.map(wrap => ({
+    wrap,
+    tuna: wrap.querySelector('img') as HTMLImageElement,
+    isR: wrap.classList.contains('tuna-wrap--r'),
+    dur: parseFloat(getComputedStyle(wrap).getPropertyValue('--dur')),
+  }));
+
+  function getX(el: HTMLElement): number {
+    const t = getComputedStyle(el).transform;
+    if (!t || t === 'none') return 0;
+    return new DOMMatrix(t).m41;
+  }
+
+  function resumeDelay(x: number, animName: string, duration: number): number {
+    const W = window.innerWidth;
+    const total = W + 240;
+    const progress = animName === 'tuna-swim-r'
+      ? (x + 120) / total
+      : (W + 120 - x) / total;
+    return -(Math.max(0, Math.min(1, progress)) * duration);
+  }
+
+  function onEnter() {
+    const W = window.innerWidth;
+    configs.forEach(({ wrap, tuna }) => {
+      const x = getX(wrap);
+      const escapeRight = x > W / 2;
+      const endX = escapeRight ? W + 120 : -120;
+
+      if (escapeRight ? x >= endX : x <= endX) {
+        wrap.style.animation = 'none';
+        wrap.style.transform = `translateX(${endX}px)`;
+        return;
+      }
+
+      const distance = Math.abs(endX - x);
+      const duration = (distance / (W + 240)) * 3;
+
+      wrap.style.setProperty('--tx', `${x}px`);
+      tuna.style.transform = escapeRight ? 'scaleX(-1)' : 'none';
+      wrap.style.animation =
+        `tuna-panic-${escapeRight ? 'r' : 'l'} ${duration}s linear 0s 1 forwards`;
+    });
+  }
+
+  function onLeave() {
+    configs.forEach(({ wrap, tuna, isR, dur }) => {
+      const W = window.innerWidth;
+      const x = getX(wrap);
+      const clampedX = Math.max(-120, Math.min(W + 120, x));
+      const animName = isR ? 'tuna-swim-r' : 'tuna-swim-l';
+      const delay = resumeDelay(clampedX, animName, dur);
+      tuna.style.transform = '';
+      wrap.style.transform = '';
+      wrap.style.animation = `${animName} ${dur}s linear ${delay}s infinite`;
+    });
+  }
+
+  triggers?.forEach(trigger => {
+    trigger.addEventListener('mouseenter', onEnter);
+    trigger.addEventListener('mouseleave', onLeave);
+  });
+</script>

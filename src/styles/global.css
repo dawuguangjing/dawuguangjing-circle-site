@@ -2120,39 +2120,66 @@ html.age-verified .age-overlay {
 
 /* ── Hero Banner ── */
 .hero-banner {
-  background: #5995DD;
-  border-bottom: 3px solid #3a75c4;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--accent-alpha-08) 0%, #fff 55%);
+  border-top: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
   padding: 48px 0;
 }
 
+/* ヒーロー内の魚: 薄めにして文字の邪魔をしない */
+.hero-banner .tuna {
+  opacity: 0.18;
+}
+
 .hero-banner-inner {
+  position: relative;
+  z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 480px;
-  gap: 40px;
+  grid-template-columns: 1fr 380px;
+  gap: 48px;
   align-items: center;
 }
 
 .hero-banner-text {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
+}
+
+/* eyebrow: 「最新作」タグ + R18バッジ */
+.hero-banner-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hero-banner-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: var(--accent);
+  padding: 3px 10px;
+  border-radius: 2px;
 }
 
 .hero-banner-title {
   font-family: var(--font-display);
-  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 700;
-  color: #fff;
+  color: var(--ink-bright);
   margin: 0;
-  line-height: 1.3;
+  line-height: 1.25;
   letter-spacing: 0.02em;
 }
 
 .hero-banner-catch {
-  font-size: clamp(0.78rem, 1.5vw, 0.88rem);
-  color: #fff;
+  font-size: 0.88rem;
+  color: var(--ink-dim);
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.7;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -2160,17 +2187,16 @@ html.age-verified .age-overlay {
   overflow: hidden;
 }
 
-/* selling points in hero */
 .hero-banner .selling-points {
   margin: 0;
   gap: 6px;
 }
 .hero-banner .selling-points li {
-  color: #fff;
+  color: var(--ink);
   font-size: 0.84rem;
 }
 .hero-banner .selling-points li::before {
-  color: #fff;
+  color: #7CCD40;
 }
 
 .hero-banner-cta {
@@ -2178,35 +2204,44 @@ html.age-verified .age-overlay {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  margin-top: 4px;
-}
-
-.store-button--cta {
-  padding: 13px 20px;
-  font-size: 0.92rem;
-  min-width: 180px;
+  margin-top: 6px;
 }
 
 .hero-banner-detail-link {
   font-size: 0.84rem;
-  color: #fff;
-  text-decoration: none;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
   transition: color 0.2s ease;
 }
 .hero-banner-detail-link:hover {
-  color: #fff;
+  color: var(--accent-dark);
+}
+.hero-detail-arrow {
+  display: inline-block;
+  transition: transform 0.2s var(--easing);
+}
+.hero-banner-detail-link:hover .hero-detail-arrow {
+  animation: arrow-bounce-right 0.5s ease infinite;
 }
 
+/* カバー画像: アクセント色のリング */
 .hero-banner-cover {
   display: block;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 0 0 4px #fff,
+    0 0 0 7px var(--accent),
+    0 8px 24px rgba(0, 0, 0, 0.12);
   transition: transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
 .hero-banner-cover:hover {
   transform: translateY(-4px);
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
+  box-shadow:
+    0 0 0 4px #fff,
+    0 0 0 7px var(--accent-2),
+    0 14px 32px rgba(0, 0, 0, 0.16);
 }
 .hero-banner-cover img {
   width: 100%;
@@ -2214,24 +2249,103 @@ html.age-verified .age-overlay {
   display: block;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 860px) {
   .hero-banner-inner {
     grid-template-columns: 1fr;
   }
   .hero-banner-cover {
-    max-width: 480px;
+    max-width: 360px;
     margin: 0 auto;
-  }
-  .hero-banner {
-    padding: 36px 0;
   }
 }
 @media (max-width: 480px) {
-  .hero-banner {
-    padding: 28px 0;
-  }
-  .store-button--cta {
-    min-width: unset;
-    flex: 1;
+  .hero-banner { padding: 32px 0; }
+}
+
+/* ── Hero Banner Animations ── */
+
+/* 1. 入場: テキスト要素が下からフェードイン（順番にずらす） */
+@keyframes hero-fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* 入場: カバー画像は右からスライドイン */
+@keyframes hero-slide-left {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.hero-banner-eyebrow  { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.05s; }
+.hero-banner-title    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.15s; }
+.hero-banner-catch    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.25s; }
+.hero-banner .selling-points { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.35s; }
+.hero-banner-cta      { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.45s; }
+.hero-banner-cover    { animation: hero-slide-left 0.5s var(--easing) both; animation-delay: 0.1s; }
+
+/* 2. カバー画像: ホバーで中の画像ズーム */
+.hero-banner-cover img {
+  transition: transform 0.4s var(--easing);
+}
+.hero-banner-cover:hover img {
+  transform: scale(1.04);
+}
+
+/* 3. 「最新作」タグ: シマー */
+@keyframes hero-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.hero-banner-tag {
+  background: linear-gradient(90deg,
+    var(--accent) 25%,
+    var(--accent-2) 50%,
+    var(--accent) 75%
+  );
+  background-size: 200% auto;
+  animation: hero-shimmer 3s linear infinite;
+}
+
+/* 4. CTAボタン: パルスグロー（購入を促す） */
+@keyframes cta-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color); }
+  55%       { box-shadow: 0 0 0 8px transparent; }
+}
+.hero-banner .store-button {
+  --pulse-color: rgba(249, 101, 50, 0.45);
+  animation: cta-pulse 2.4s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+.hero-banner .store-button[data-store="fanza"] {
+  --pulse-color: rgba(232, 54, 85, 0.5);
+}
+.hero-banner .store-button[data-store="dlsite"] {
+  --pulse-color: rgba(41, 82, 204, 0.5);
+}
+.hero-banner .store-button:hover {
+  animation: none;
+}
+
+/* 5. ボタン内 矢印: ホバーで右バウンス */
+@keyframes arrow-bounce-right {
+  0%, 100% { transform: translateX(0); }
+  50%       { transform: translateX(5px); }
+}
+.hero-banner .store-button:hover .arrow {
+  display: inline-block;
+  animation: arrow-bounce-right 0.5s ease infinite;
+}
+
+/* アクセシビリティ: モーション低減設定を尊重 */
+@media (prefers-reduced-motion: reduce) {
+  .hero-banner-eyebrow,
+  .hero-banner-title,
+  .hero-banner-catch,
+  .hero-banner .selling-points,
+  .hero-banner-cta,
+  .hero-banner-cover,
+  .hero-banner-tag,
+  .hero-banner .store-button,
+  .hero-detail-arrow {
+    animation: none;
   }
 }
