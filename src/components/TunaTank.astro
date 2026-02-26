@@ -1,0 +1,130 @@
+---
+import { withBase } from '../utils/withBase';
+
+interface Fish {
+  dir: 'r' | 'l';
+  top: string;
+  dur: string;
+  delay: string;
+  size: number;
+  gold?: boolean;
+}
+
+interface Props {
+  fishes: Fish[];
+  /** パニックアニメーションを起こすトリガーのCSSセレクター（親要素基準で検索） */
+  triggerSelector: string;
+  /** 金のマグロの出現確率 (0–1)。gold フィッシュがある場合のみ有効 */
+  goldSpawnRate?: number;
+}
+
+const { fishes, triggerSelector, goldSpawnRate } = Astro.props;
+---
+
+<div
+  class="tuna-tank"
+  aria-hidden="true"
+  data-trigger={triggerSelector}
+  data-gold-rate={goldSpawnRate != null ? String(goldSpawnRate) : undefined}
+>
+  {fishes.map((fish) => (
+    <div
+      class={`tuna-wrap tuna-wrap--${fish.dir}${fish.gold ? ' tuna-wrap--gold' : ''}`}
+      style={`top:${fish.top}; --dur:${fish.dur}; --delay:${fish.delay};`}
+      hidden={fish.gold || undefined}
+    >
+      <img
+        class={`tuna${fish.gold ? ' tuna--gold' : ''}`}
+        src={withBase('images/tuna.png')}
+        alt=""
+        width={fish.size}
+        height={fish.size}
+      />
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.tuna-tank[data-trigger]').forEach(tank => {
+    const triggerSelector = tank.dataset.trigger!;
+    const goldRateStr = tank.dataset.goldRate;
+
+    // 金のマグロ: 確率に応じて表示
+    const goldWrap = tank.querySelector<HTMLElement>('.tuna-wrap--gold');
+    if (goldWrap && goldRateStr != null) {
+      if (Math.random() < parseFloat(goldRateStr)) {
+        goldWrap.removeAttribute('hidden');
+      }
+    }
+
+    // hidden でないマグロを収集（金のマグロ表示判定後に実行）
+    const wraps = Array.from(tank.querySelectorAll<HTMLElement>('.tuna-wrap:not([hidden])'));
+    const configs = wraps.map(wrap => ({
+      wrap,
+      tuna: wrap.querySelector('img') as HTMLImageElement,
+      isR: wrap.classList.contains('tuna-wrap--r'),
+      dur: parseFloat(getComputedStyle(wrap).getPropertyValue('--dur')),
+    }));
+
+    function getX(el: HTMLElement): number {
+      const t = getComputedStyle(el).transform;
+      if (!t || t === 'none') return 0;
+      return new DOMMatrix(t).m41;
+    }
+
+    // 現在地から再開するための負のdelay（mouseleave用）
+    function resumeDelay(x: number, animName: string, duration: number): number {
+      const W = window.innerWidth;
+      const total = W + 240;
+      const progress = animName === 'tuna-swim-r'
+        ? (x + 120) / total
+        : (W + 120 - x) / total;
+      return -(Math.max(0, Math.min(1, progress)) * duration);
+    }
+
+    function onEnter() {
+      const W = window.innerWidth;
+      configs.forEach(({ wrap, tuna }) => {
+        const x = getX(wrap);
+        const escapeRight = x > W / 2;
+        const endX = escapeRight ? W + 120 : -120;
+
+        // すでに脱出エッジ到達済み → 固定して待機
+        if (escapeRight ? x >= endX : x <= endX) {
+          wrap.style.animation = 'none';
+          wrap.style.transform = `translateX(${endX}px)`;
+          return;
+        }
+
+        const distance = Math.abs(endX - x);
+        const duration = (distance / (W + 240)) * 3;
+
+        wrap.style.setProperty('--tx', `${x}px`);
+        tuna.style.transform = escapeRight ? 'scaleX(-1)' : 'none';
+        wrap.style.animation =
+          `tuna-panic-${escapeRight ? 'r' : 'l'} ${duration}s linear 0s 1 forwards`;
+      });
+    }
+
+    function onLeave() {
+      configs.forEach(({ wrap, tuna, isR, dur }) => {
+        const W = window.innerWidth;
+        const x = getX(wrap);
+        const clampedX = Math.max(-120, Math.min(W + 120, x));
+        const animName = isR ? 'tuna-swim-r' : 'tuna-swim-l';
+        // tuna-swim-* に戻す（tuna-panic-* と別名 → 必ず新規開始）
+        const delay = resumeDelay(clampedX, animName, dur);
+        tuna.style.transform = '';
+        wrap.style.transform = '';
+        wrap.style.animation = `${animName} ${dur}s linear ${delay}s infinite`;
+      });
+    }
+
+    // トリガーは親要素を基準に検索（hero内のボタンのみ、ageゲートのボタンのみに限定）
+    const container = tank.parentElement!;
+    container.querySelectorAll<HTMLElement>(triggerSelector).forEach(trigger => {
+      trigger.addEventListener('mouseenter', onEnter);
+      trigger.addEventListener('mouseleave', onLeave);
+    });
+  });
+</script>

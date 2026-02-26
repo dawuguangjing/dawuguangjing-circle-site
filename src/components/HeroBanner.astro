@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/withBase';
+import TunaTank from './TunaTank.astro';
 
 interface Props {
   slug: string;
@@ -17,27 +18,18 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
 
 <section class="hero-banner">
   <!-- 背景: 魚 -->
-  <div class="tuna-tank" aria-hidden="true">
-    <div class="tuna-wrap tuna-wrap--r" style="top:15%; --dur:18s; --delay:0s;">
-      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="36" height="36" />
-    </div>
-    <div class="tuna-wrap tuna-wrap--l" style="top:55%; --dur:24s; --delay:-7s;">
-      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="52" height="52" />
-    </div>
-    <div class="tuna-wrap tuna-wrap--r" style="top:75%; --dur:14s; --delay:-4s;">
-      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="28" height="28" />
-    </div>
-    <div class="tuna-wrap tuna-wrap--l" style="top:35%; --dur:30s; --delay:-12s;">
-      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="60" height="60" />
-    </div>
-    <div class="tuna-wrap tuna-wrap--r" style="top:88%; --dur:20s; --delay:-9s;">
-      <img class="tuna" src={withBase('images/tuna.png')} alt="" width="44" height="44" />
-    </div>
-    <!-- レアキャラ: 金のマグロ（20%の確率で出現） -->
-    <div class="tuna-wrap tuna-wrap--l tuna-wrap--gold" style="top:62%; --dur:26s; --delay:-5s;" hidden>
-      <img class="tuna tuna--gold" src={withBase('images/tuna.png')} alt="" width="54" height="54" />
-    </div>
-  </div>
+  <TunaTank
+    triggerSelector=".store-button, .hero-banner-detail-link"
+    goldSpawnRate={0.5}
+    fishes={[
+      { dir: 'r', top: '15%', dur: '18s', delay: '0s',   size: 36 },
+      { dir: 'l', top: '55%', dur: '24s', delay: '-7s',  size: 52 },
+      { dir: 'r', top: '75%', dur: '14s', delay: '-4s',  size: 28 },
+      { dir: 'l', top: '35%', dur: '30s', delay: '-12s', size: 60 },
+      { dir: 'r', top: '88%', dur: '20s', delay: '-9s',  size: 44 },
+      { dir: 'l', top: '62%', dur: '26s', delay: '-5s',  size: 54, gold: true },
+    ]}
+  />
 
   <div class="hero-banner-inner container">
 
@@ -93,79 +85,3 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
 
   </div>
 </section>
-
-<script>
-  // 金のマグロ: 50% の確率で出現
-  const goldWrap = document.querySelector<HTMLElement>('.tuna-wrap--gold');
-  if (goldWrap && Math.random() < 0.5) {
-    goldWrap.removeAttribute('hidden');
-  }
-
-  const hero = document.querySelector('.hero-banner');
-  const triggers = hero?.querySelectorAll<HTMLElement>('.store-button, .hero-banner-detail-link');
-  // hidden のものは除外してパニック計算に含めない
-  const wraps = Array.from(hero?.querySelectorAll<HTMLElement>('.tuna-wrap:not([hidden])') ?? []);
-
-  const configs = wraps.map(wrap => ({
-    wrap,
-    tuna: wrap.querySelector('img') as HTMLImageElement,
-    isR: wrap.classList.contains('tuna-wrap--r'),
-    dur: parseFloat(getComputedStyle(wrap).getPropertyValue('--dur')),
-  }));
-
-  function getX(el: HTMLElement): number {
-    const t = getComputedStyle(el).transform;
-    if (!t || t === 'none') return 0;
-    return new DOMMatrix(t).m41;
-  }
-
-  function resumeDelay(x: number, animName: string, duration: number): number {
-    const W = window.innerWidth;
-    const total = W + 240;
-    const progress = animName === 'tuna-swim-r'
-      ? (x + 120) / total
-      : (W + 120 - x) / total;
-    return -(Math.max(0, Math.min(1, progress)) * duration);
-  }
-
-  function onEnter() {
-    const W = window.innerWidth;
-    configs.forEach(({ wrap, tuna }) => {
-      const x = getX(wrap);
-      const escapeRight = x > W / 2;
-      const endX = escapeRight ? W + 120 : -120;
-
-      if (escapeRight ? x >= endX : x <= endX) {
-        wrap.style.animation = 'none';
-        wrap.style.transform = `translateX(${endX}px)`;
-        return;
-      }
-
-      const distance = Math.abs(endX - x);
-      const duration = (distance / (W + 240)) * 3;
-
-      wrap.style.setProperty('--tx', `${x}px`);
-      tuna.style.transform = escapeRight ? 'scaleX(-1)' : 'none';
-      wrap.style.animation =
-        `tuna-panic-${escapeRight ? 'r' : 'l'} ${duration}s linear 0s 1 forwards`;
-    });
-  }
-
-  function onLeave() {
-    configs.forEach(({ wrap, tuna, isR, dur }) => {
-      const W = window.innerWidth;
-      const x = getX(wrap);
-      const clampedX = Math.max(-120, Math.min(W + 120, x));
-      const animName = isR ? 'tuna-swim-r' : 'tuna-swim-l';
-      const delay = resumeDelay(clampedX, animName, dur);
-      tuna.style.transform = '';
-      wrap.style.transform = '';
-      wrap.style.animation = `${animName} ${dur}s linear ${delay}s infinite`;
-    });
-  }
-
-  triggers?.forEach(trigger => {
-    trigger.addEventListener('mouseenter', onEnter);
-    trigger.addEventListener('mouseleave', onLeave);
-  });
-</script>
