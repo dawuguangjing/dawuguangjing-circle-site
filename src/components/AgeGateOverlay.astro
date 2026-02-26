@@ -1,0 +1,51 @@
+---
+interface Props {
+  ageKey: string;
+  ageTtl: number;
+}
+
+const { ageKey, ageTtl } = Astro.props;
+---
+
+<div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title">
+  <div class="age-gate-card">
+    <h1 id="age-overlay-title">年齢確認</h1>
+    <p>
+      本サークルでは成人向け製品を取り扱っております。<br />
+      あなたは18歳以上ですか？
+    </p>
+    <div class="age-gate-actions">
+      <button class="button" id="age-confirm-overlay">はい（18歳以上）</button>
+      <button class="button secondary" id="age-deny-overlay">いいえ</button>
+    </div>
+    <div class="age-gate-denied" id="age-denied-overlay" hidden>
+      18歳未満の方はご利用いただけません。ブラウザを閉じてください。
+    </div>
+  </div>
+</div>
+
+<script is:inline define:vars={{ ageKey, ageTtl }}>
+  (function() {
+    var btn    = document.getElementById('age-confirm-overlay');
+    var deny   = document.getElementById('age-deny-overlay');
+    var denied = document.getElementById('age-denied-overlay');
+
+    if (btn) {
+      btn.addEventListener('click', function() {
+        try {
+          localStorage.setItem(ageKey, String(Date.now() + ageTtl));
+        } catch(e) {
+          try { sessionStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e2) {}
+        }
+        document.documentElement.classList.add('age-verified');
+      });
+    }
+    if (deny) {
+      deny.addEventListener('click', function() {
+        try { localStorage.removeItem(ageKey); } catch(e) {}
+        try { sessionStorage.removeItem(ageKey); } catch(e) {}
+        if (denied) denied.removeAttribute('hidden');
+      });
+    }
+  })();
+</script>

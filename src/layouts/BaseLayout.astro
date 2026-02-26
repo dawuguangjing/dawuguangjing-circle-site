@@ -4,6 +4,7 @@ import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import BackToTop from '../components/BackToTop.astro';
+import AgeGateOverlay from '../components/AgeGateOverlay.astro';
 import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS } from '../utils/constants';
 
 interface Props {
@@ -65,24 +66,7 @@ const ageTtl = AGE_GATE_TTL_MS;
     <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
 
     {/* オーバーレイ方式の年齢確認（コンテンツは常に DOM に存在し Googlebot がインデックス可能） */}
-    {!disableAgeGate && (
-      <div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title">
-        <div class="age-gate-card">
-          <h1 id="age-overlay-title">年齢確認</h1>
-          <p>
-            本サークルでは成人向け製品を取り扱っております。<br />
-            あなたは18歳以上ですか？
-          </p>
-          <div class="age-gate-actions">
-            <button class="button" id="age-confirm-overlay">はい（18歳以上）</button>
-            <button class="button secondary" id="age-deny-overlay">いいえ</button>
-          </div>
-          <div class="age-gate-denied" id="age-denied-overlay" hidden>
-            18歳未満の方はご利用いただけません。ブラウザを閉じてください。
-          </div>
-        </div>
-      </div>
-    )}
+    {!disableAgeGate && <AgeGateOverlay ageKey={ageKey} ageTtl={ageTtl} />}
 
     {!disableAgeGate && (
       <noscript>
@@ -112,33 +96,5 @@ const ageTtl = AGE_GATE_TTL_MS;
       );
       document.querySelectorAll('[data-anim]').forEach(el => _animObserver.observe(el));
     </script>
-
-    {!disableAgeGate && (
-      <script is:inline define:vars={{ ageKey, ageTtl }}>
-        (function() {
-          var btn    = document.getElementById('age-confirm-overlay');
-          var deny   = document.getElementById('age-deny-overlay');
-          var denied = document.getElementById('age-denied-overlay');
-
-          if (btn) {
-            btn.addEventListener('click', function() {
-              try {
-                localStorage.setItem(ageKey, String(Date.now() + ageTtl));
-              } catch(e) {
-                try { sessionStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e2) {}
-              }
-              document.documentElement.classList.add('age-verified');
-            });
-          }
-          if (deny) {
-            deny.addEventListener('click', function() {
-              try { localStorage.removeItem(ageKey); } catch(e) {}
-              try { sessionStorage.removeItem(ageKey); } catch(e) {}
-              if (denied) denied.removeAttribute('hidden');
-            });
-          }
-        })();
-      </script>
-    )}
   </body>
 </html>
