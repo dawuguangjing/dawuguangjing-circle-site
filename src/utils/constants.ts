@@ -5,7 +5,7 @@ export const SITE_NAME = 'ダウグアングジング公式';
 export const CIRCLE_NAME = 'ダウグアングジング';
 
 /** サイトの説明文 */
-export const SITE_DESCRIPTION = 'サークルの公式情報と外部リンクをまとめたハブ。';
+export const SITE_DESCRIPTION = 'ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。作品・告知・外部リンクをまとめたハブ。';
 
 /** トップページに表示するニュース件数 */
 export const HOME_NEWS_LIMIT = 4;

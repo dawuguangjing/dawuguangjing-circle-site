@@ -8,6 +8,7 @@ export function buildOrgSchema(siteUrl?: string) {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: CIRCLE_NAME,
+    alternateName: 'だうぐあんぐじんぐ',
     url: siteUrl,
     description: '同人ゲームサークル公式サイト',
   };
