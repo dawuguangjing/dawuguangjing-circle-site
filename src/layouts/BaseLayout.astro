@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
+import BackToTop from '../components/BackToTop.astro';
 import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS } from '../utils/constants';
 
 interface Props {
@@ -97,6 +98,7 @@ const ageTtl = AGE_GATE_TTL_MS;
     {!hideHeader && <SiteHeader />}
     <main id="main-content"><slot /></main>
     {!hideFooter && <SiteFooter />}
+    <BackToTop />
 
     <script>
       const _animObserver = new IntersectionObserver(
