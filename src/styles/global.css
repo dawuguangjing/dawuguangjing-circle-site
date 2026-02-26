@@ -1307,6 +1307,13 @@ button {
   margin-bottom: 16px;
 }
 
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
 .filter-chip {
   padding: 6px 14px;
   border: 1px solid var(--stroke);
