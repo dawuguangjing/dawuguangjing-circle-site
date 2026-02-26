@@ -1,0 +1,47 @@
+:root {
+  color-scheme: light;
+  /* DLsite-inspired palette */
+  --bg: #F5F5F5;
+  --bg-2: #EBEBEB;
+  --panel: #ffffff;
+  --panel-hover: #F8F8F8;
+  --panel-soft: #E8E8E8;
+  --ink: #333333;
+  --ink-dim: #888888;
+  --ink-bright: #111111;
+  --accent: #0068B7;
+  --accent-2: #0080D6;
+  --accent-dark: #004A82;
+  --cta: #F96532;
+  --cta-hover: #E85525;
+  --cta-text: #ffffff;
+  --highlight: #0068B7;
+  --sale: #E62E2E;
+  --stroke: rgba(0, 0, 0, 0.10);
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
+  --shadow-cta-hover: 0 4px 12px rgba(249, 101, 50, 0.25);
+  --shadow-accent-hover: 0 4px 12px rgba(0, 104, 183, 0.12);
+  --accent-alpha-05: rgba(0, 104, 183, 0.05);
+  --accent-alpha-06: rgba(0, 104, 183, 0.06);
+  --accent-alpha-08: rgba(0, 104, 183, 0.08);
+  --accent-alpha-25: rgba(0, 104, 183, 0.25);
+  --accent-alpha-30: rgba(0, 104, 183, 0.30);
+  /* Store brand colors */
+  --color-fanza:        #E83655;
+  --color-fanza-hover:  #EC4060;
+  --color-dlsite:       #2952CC;
+  --color-dlsite-hover: #3560D8;
+  --shadow-fanza-hover:  0 6px 20px rgba(232, 54, 85, 0.35);
+  --shadow-fanza-active: 0 2px 6px  rgba(232, 54, 85, 0.20);
+  --shadow-dlsite-hover:  0 6px 20px rgba(41, 82, 204, 0.35);
+  --shadow-dlsite-active: 0 2px 6px  rgba(41, 82, 204, 0.20);
+  --pulse-fanza:  rgba(232, 54, 85, 0.50);
+  --pulse-dlsite: rgba(41, 82, 204, 0.50);
+  --radius-lg: 6px;
+  --radius-md: 4px;
+  --radius-sm: 3px;
+  --easing: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --font-display: "Inter", "Noto Sans JP", system-ui, sans-serif;
+  --font-body: "Noto Sans JP", "Inter", system-ui, sans-serif;
+}
