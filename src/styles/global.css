@@ -2212,13 +2212,29 @@ html.age-verified .age-overlay {
   margin-top: 6px;
 }
 
-/* 体験版ボタン行（購入ボタン行の下に続く） */
-.hero-banner-trial {
+/* 購入ボタン下のサブ行（体験版テキストリンク + 詳細リンク） */
+.hero-banner-sub {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
   align-items: center;
+  gap: 6px 14px;
 }
+.hero-trial-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+.hero-trial-label { white-space: nowrap; }
+.hero-trial-link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+.hero-trial-link:hover { color: var(--accent-dark); }
+.hero-sub-sep { color: var(--ink-dim); }
 
 .hero-banner-detail-link {
   font-size: 0.84rem;
@@ -2306,7 +2322,7 @@ html.age-verified .age-overlay {
   .hero-banner-title { font-size: 1.05rem; }
 
   .hero-banner-cta,
-  .hero-banner-trial {
+  .hero-banner-sub {
     flex-direction: column;
     gap: 8px;
     margin-top: 2px;
@@ -2331,7 +2347,7 @@ html.age-verified .age-overlay {
 .hero-banner-catch    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.25s; }
 .hero-banner .selling-points { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.35s; }
 .hero-banner-cta      { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.45s; }
-.hero-banner-trial    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.55s; }
+.hero-banner-sub    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.55s; }
 .hero-banner-cover    { animation: hero-slide-left 0.5s var(--easing) both; animation-delay: 0.1s; }
 
 /* 2. カバー画像: ホバーで中の画像ズーム */
@@ -2394,7 +2410,7 @@ html.age-verified .age-overlay {
   .hero-banner-catch,
   .hero-banner .selling-points,
   .hero-banner-cta,
-  .hero-banner-trial,
+  .hero-banner-sub,
   .hero-banner-cover,
   .hero-banner-tag,
   .hero-banner .store-button,

@@ -65,27 +65,21 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
         )}
       </div>
 
-      {(trialLinks?.fanza || trialLinks?.dlsite) && (
-        <div class="hero-banner-trial">
-          {trialLinks.fanza && (
-            <a class="store-button store-button--trial" href={trialLinks.fanza} target="_blank" rel="noopener noreferrer" data-store="fanza">
-              <span>FANZA 無料体験版</span><span class="arrow">↓</span>
-            </a>
-          )}
-          {trialLinks.dlsite && (
-            <a class="store-button store-button--trial" href={trialLinks.dlsite} target="_blank" rel="noopener noreferrer" data-store="dlsite">
-              <span>DLsite 無料体験版</span><span class="arrow">↓</span>
-            </a>
-          )}
-          <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
-        </div>
-      )}
-
-      {!(trialLinks?.fanza || trialLinks?.dlsite) && (
-        <div class="hero-banner-trial">
-          <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
-        </div>
-      )}
+      <div class="hero-banner-sub">
+        {(trialLinks?.fanza || trialLinks?.dlsite) && (
+          <span class="hero-trial-group">
+            <span class="hero-trial-label">無料体験版：</span>
+            {trialLinks.fanza && (
+              <a class="hero-trial-link" href={trialLinks.fanza} target="_blank" rel="noopener noreferrer">FANZA</a>
+            )}
+            {trialLinks.fanza && trialLinks.dlsite && <span class="hero-sub-sep">·</span>}
+            {trialLinks.dlsite && (
+              <a class="hero-trial-link" href={trialLinks.dlsite} target="_blank" rel="noopener noreferrer">DLsite</a>
+            )}
+          </span>
+        )}
+        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
+      </div>
     </div>
 
     <!-- 右: カバー画像 -->
