@@ -96,9 +96,9 @@ const trialLinks = data.trialLinks
           <!-- Screenshots -->
           {data.images.screenshots.length > 0 && (
             <div class="gallery-grid">
-              {data.images.screenshots.map((image) => (
+              {data.images.screenshots.map((image, j) => (
                 <div class="gallery-item">
-                  <img src={withBase(image)} alt={`${data.title} screenshot`} loading="lazy" width="400" height="225" />
+                  <img src={withBase(image)} alt={`${data.title} スクリーンショット ${j + 1}`} loading="lazy" width="400" height="225" />
                 </div>
               ))}
             </div>

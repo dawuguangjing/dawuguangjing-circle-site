@@ -77,11 +77,15 @@ a:hover {
 }
 
 /* ── Focus Styles ── */
+/* マウス/タッチ操作ではアウトラインを非表示、キーボード操作時のみ表示 */
+:focus:not(:focus-visible) { outline: none; }
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
+/* 円形ボタン（back-to-topなど）はアウトラインも丸める */
+.back-to-top:focus-visible { border-radius: 50%; }
 
 /* ── Skip Navigation ── */
 .skip-link {
