@@ -1249,6 +1249,17 @@ button {
 .lightbox-next.is-hidden {
   display: none;
 }
+.lightbox-counter {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+  pointer-events: none;
+  white-space: nowrap;
+}
 @media (max-width: 480px) {
   .lightbox-prev,
   .lightbox-next {
