@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import RelatedWorks from '../../components/RelatedWorks.astro';
 import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
+import { ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
 
 const news = await getSortedNews();
 const workIndex = await getWorkIndex();
@@ -17,7 +18,7 @@ const workIndex = await getWorkIndex();
 
       <div class="grid">
         {news.map((entry, i) => (
-          <div data-anim style={`--anim-delay: ${0.08 + i * 0.07}s`}>
+          <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
             <NewsCard
               slug={entry.slug}
               title={entry.data.title}

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import { getSortedWorks } from '../../utils/collections';
+import { ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
 
 const works = await getSortedWorks();
 ---
@@ -14,7 +15,7 @@ const works = await getSortedWorks();
         <span class="muted work-count">{works.length} タイトル</span>
       </div>
 
-      <div class="filter-bar" data-anim style="--anim-delay: 0.08s" role="group" aria-label="作品フィルター">
+      <div class="filter-bar" data-anim style={`--anim-delay: ${ANIM_BASE_DELAY}s`} role="group" aria-label="作品フィルター">
         <button class="filter-chip is-active" data-filter="all">すべて</button>
         <button class="filter-chip" data-filter="r18">R18</button>
         <button class="filter-chip" data-filter="all-ages">全年齢</button>
@@ -27,7 +28,7 @@ const works = await getSortedWorks();
           <div
             class="work-filter-item"
             data-anim
-            style={`--anim-delay: ${0.12 + i * 0.07}s`}
+            style={`--anim-delay: ${ANIM_BASE_DELAY + 0.04 + i * ANIM_STAGGER}s`}
             data-r18={String(entry.data.isR18)}
             data-windows={String(entry.data.environments.windows)}
             data-browser={String(entry.data.environments.browserPc)}

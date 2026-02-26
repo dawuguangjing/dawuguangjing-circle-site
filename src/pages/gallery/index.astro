@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GalleryCard from '../../components/GalleryCard.astro';
 import { getSortedGallery } from '../../utils/collections';
-import { SITE_NAME } from '../../utils/constants';
+import { SITE_NAME, ANIM_STAGGER } from '../../utils/constants';
 
 const galleries = await getSortedGallery();
 ---
@@ -20,7 +20,7 @@ const galleries = await getSortedGallery();
       {galleries.length > 0 ? (
         <div class="gallery-album-grid">
           {galleries.map((entry, i) => (
-            <div data-anim style={`--anim-delay: ${i * 0.07}s`}>
+            <div data-anim style={`--anim-delay: ${i * ANIM_STAGGER}s`}>
               <GalleryCard
                 slug={entry.slug}
                 title={entry.data.title}

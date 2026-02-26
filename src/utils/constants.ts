@@ -18,6 +18,12 @@ export const EXTERNAL_LINKS = {
   cien: 'https://ci-en.dlsite.com/creator/35269',
 } as const;
 
+/** スクロールアニメーション: 最初の要素の遅延（秒） */
+export const ANIM_BASE_DELAY = 0.08;
+
+/** スクロールアニメーション: 要素ごとのスタガー間隔（秒） */
+export const ANIM_STAGGER = 0.07;
+
 /** 年齢確認の localStorage キー */
 export const AGE_GATE_STORAGE_KEY = 'circle_age_gate_until';
 
