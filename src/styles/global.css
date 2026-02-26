@@ -2017,9 +2017,18 @@ html.age-verified .age-overlay {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  overflow: hidden;
 }
-.gallery-card-date { font-size: 0.72rem; color: var(--ink-dim); }
-.gallery-card-badges { display: flex; align-items: center; gap: 4px; }
+.gallery-card-date {
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  flex-shrink: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.gallery-card-badges { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .gallery-card-count {
   font-size: 0.7rem;
   color: var(--ink-dim);
