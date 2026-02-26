@@ -27,7 +27,7 @@ const galleries = await getSortedGallery();
                 cover={entry.data.cover}
                 isR18={entry.data.isR18}
                 releaseDate={entry.data.releaseDate}
-                imageCount={entry.data.imageCount ?? entry.data.images.length}
+                imageCount={entry.resolvedImageCount}
               />
             </div>
           ))}

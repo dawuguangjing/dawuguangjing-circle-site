@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
-import { getWorkIndex } from '../../utils/collections';
+import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -19,7 +19,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
-const imageCount = data.imageCount ?? data.images.length;
+const imageCount = resolveImageCount(data);
 
 const workIndex = await getWorkIndex();
 const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {

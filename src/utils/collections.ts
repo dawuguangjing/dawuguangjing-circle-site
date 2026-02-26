@@ -20,11 +20,19 @@ export function extractFirstImageUrl(body: string): string | undefined {
   return match?.[1];
 }
 
-/** ギャラリーをリリース日の降順で取得 */
+/** ギャラリーをリリース日の降順で取得。imageCount を解決済みの値として付与する */
 export async function getSortedGallery() {
-  return (await getCollection('gallery')).sort(
-    (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime()
-  );
+  return (await getCollection('gallery'))
+    .sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime())
+    .map((entry) => ({
+      ...entry,
+      resolvedImageCount: resolveImageCount(entry.data),
+    }));
+}
+
+/** ギャラリーエントリーの実効画像枚数を返す */
+export function resolveImageCount(data: { imageCount?: number; images: string[] }): number {
+  return data.imageCount ?? data.images.length;
 }
 
 /** slug → work の Map を返す */
