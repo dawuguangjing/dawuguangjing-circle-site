@@ -81,7 +81,7 @@ const trialLinks = data.trialLinks
         <div class="detail-main">
           <!-- Cover Image -->
           <div class="work-cover" data-anim style="--anim-delay: 0.1s">
-            <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" />
+            <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" fetchpriority="high" loading="eager" />
           </div>
 
           <!-- Video -->

@@ -88,7 +88,7 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
 
     <!-- 右: カバー画像 -->
     <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
-      <img src={cover} alt={`${title} cover`} width="480" height="320" />
+      <img src={cover} alt={`${title} cover`} width="480" height="320" fetchpriority="high" loading="eager" />
     </a>
 
   </div>
