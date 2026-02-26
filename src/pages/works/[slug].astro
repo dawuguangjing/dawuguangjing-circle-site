@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/format';
 import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
+import type { StoreLink } from '../../utils/types';
 
 export async function getStaticPaths() {
   const works = await getCollection('works');
@@ -20,7 +21,6 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
-type StoreLink = { label: string; href: string; track: string; store: string };
 const buildLinks = (
   sources: Record<string, string | undefined>,
   entries: { key: string; label: string; track: string; store: string }[]
