@@ -2159,6 +2159,13 @@ html.age-verified .age-overlay {
   opacity: 0.18;
 }
 
+/* レアキャラ: 金のマグロ */
+.tuna--gold {
+  filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(1.5)
+          drop-shadow(0 0 6px rgba(255, 200, 0, 0.7));
+  opacity: 0.55 !important;
+}
+
 .hero-banner-inner {
   position: relative;
   z-index: 1;
