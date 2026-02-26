@@ -478,7 +478,8 @@ button {
 }
 
 .spec-table td:last-child {
-  color: var(--ink);
+  color: var(--accent);
+  font-weight: 600;
   text-align: right;
 }
 
@@ -2514,9 +2515,12 @@ html.age-verified .age-overlay {
   .hero-banner-eyebrow { justify-content: center; }
   .hero-banner-title { text-align: center; }
 
-  /* スマホでは縦幅節約のためキャッチ・セリングポイントを非表示 */
-  .hero-banner-catch,
-  .hero-banner .selling-points { display: none; }
+  /* スマホでは縦幅節約のためキャッチを非表示、セリングポイントはコンパクトに表示 */
+  .hero-banner-catch { display: none; }
+  .hero-banner .selling-points {
+    font-size: 0.72rem;
+    gap: 2px;
+  }
 
   .hero-banner-title { font-size: 1.05rem; }
 
