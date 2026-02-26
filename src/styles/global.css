@@ -2120,7 +2120,7 @@ html.age-verified .age-overlay {
 
 /* ── Hero Banner ── */
 .hero-banner {
-  background: linear-gradient(135deg, #1a2e0a 0%, #2a4d10 60%, #335f13 100%);
+  background: #9BD5BD;
   border-bottom: 3px solid #7CCD40;
   padding: 48px 0;
 }
@@ -2150,7 +2150,7 @@ html.age-verified .age-overlay {
 
 .hero-banner-catch {
   font-size: clamp(0.78rem, 1.5vw, 0.88rem);
-  color: rgba(255, 255, 255, 0.7);
+  color: #fff;
   margin: 0;
   line-height: 1.6;
   display: -webkit-box;
@@ -2166,7 +2166,7 @@ html.age-verified .age-overlay {
   gap: 6px;
 }
 .hero-banner .selling-points li {
-  color: rgba(255, 255, 255, 0.85);
+  color: #fff;
   font-size: 0.84rem;
 }
 .hero-banner .selling-points li::before {
@@ -2189,7 +2189,7 @@ html.age-verified .age-overlay {
 
 .hero-banner-detail-link {
   font-size: 0.84rem;
-  color: rgba(255, 255, 255, 0.65);
+  color: #fff;
   text-decoration: none;
   transition: color 0.2s ease;
 }
