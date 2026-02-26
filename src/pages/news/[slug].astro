@@ -34,28 +34,34 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
       ]} />
     </div>
     <section class="section container">
-      <nav class="toc" id="toc" hidden aria-label="目次">
-        <p class="toc-heading">目次</p>
-        <ol class="toc-list" id="toc-list"></ol>
-      </nav>
-      <article class="article">
-        <div class="article-header" data-anim>
-          <span class={`badge badge--${data.category}`}>{categoryLabels[data.category] ?? data.category}</span>
-          <time class="article-date">{formatDate(data.date)}</time>
-        </div>
-        <h1 class="article-title" data-anim style="--anim-delay: 0.06s">{data.title}</h1>
-        <div class="article-body" data-anim style="--anim-delay: 0.14s">
-          <Content />
-        </div>
-        {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (
-          <div class="article-related">
-            <h3>関連作品</h3>
-            <RelatedWorks slugs={data.relatedWorkSlugs} workIndex={workIndex} justifyEnd={true} />
+      <div class="article-layout">
+        <div class="article-layout-main">
+          <article class="article">
+            <div class="article-header" data-anim>
+              <span class={`badge badge--${data.category}`}>{categoryLabels[data.category] ?? data.category}</span>
+              <time class="article-date">{formatDate(data.date)}</time>
+            </div>
+            <h1 class="article-title" data-anim style="--anim-delay: 0.06s">{data.title}</h1>
+            <div class="article-body" data-anim style="--anim-delay: 0.14s">
+              <Content />
+            </div>
+            {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (
+              <div class="article-related">
+                <h3>関連作品</h3>
+                <RelatedWorks slugs={data.relatedWorkSlugs} workIndex={workIndex} justifyEnd={true} />
+              </div>
+            )}
+          </article>
+          <div class="back-link">
+            <a class="section-link" href={withBase('news/')}>← 開発ログへ戻る</a>
           </div>
-        )}
-      </article>
-      <div class="back-link">
-        <a class="section-link" href={withBase('news/')}>← 開発ログへ戻る</a>
+        </div>
+        <aside class="article-layout-aside">
+          <nav class="toc" id="toc" hidden aria-label="目次">
+            <p class="toc-heading">目次</p>
+            <ol class="toc-list" id="toc-list"></ol>
+          </nav>
+        </aside>
       </div>
     </section>
   </div>

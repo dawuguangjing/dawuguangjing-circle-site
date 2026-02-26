@@ -16,7 +16,7 @@ const { slug, title, cover, isR18, releaseDate, imageCount, previewImage } = Ast
 ---
 
 <a class="gallery-card" href={withBase(`gallery/${slug}/`)}>
-  <div class="gallery-card-img-wrap">
+  <div class={`gallery-card-img-wrap${previewImage ? ' gallery-card-img-wrap--has-preview' : ''}`}>
     <img
       class="gallery-card-img"
       src={cover}

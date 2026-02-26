@@ -1608,13 +1608,22 @@ html.age-verified .age-overlay {
 }
 
 /* ── Table of Contents ── */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 32px;
+  align-items: start;
+}
+.article-layout-aside {
+  position: sticky;
+  top: 80px;
+}
+
 .toc {
   background: var(--panel);
   border: 1px solid var(--stroke);
   border-radius: var(--radius-md);
   padding: 16px 20px;
-  margin-bottom: 24px;
-  max-width: 720px;
 }
 .toc-heading {
   font-size: 0.78rem;
@@ -1644,7 +1653,7 @@ html.age-verified .age-overlay {
   border-radius: var(--radius-lg);
   padding: 32px;
   box-shadow: var(--shadow);
-  max-width: 720px;
+  min-width: 0;
 }
 
 .article-header {
@@ -1974,6 +1983,14 @@ html.age-verified .age-overlay {
     display: flex;
   }
 
+  .article-layout {
+    grid-template-columns: 1fr;
+  }
+  .article-layout-aside {
+    position: static;
+    order: -1;
+  }
+
   .article-body {
     font-size: 1rem;
   }
@@ -2165,6 +2182,8 @@ html.age-verified .age-overlay {
 }
 .gallery-card:hover .gallery-card-img:not(.gallery-card-img--preview) {
   transform: scale(1.06);
+}
+.gallery-card:hover .gallery-card-img-wrap--has-preview .gallery-card-img:not(.gallery-card-img--preview) {
   opacity: 0;
 }
 .gallery-card:hover .gallery-card-img--preview {
