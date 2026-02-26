@@ -10,14 +10,20 @@ import { buildProductSchema } from '../../utils/schema';
 import type { StoreLink } from '../../utils/types';
 
 export async function getStaticPaths() {
-  const works = await getCollection('works');
-  return works.map((entry) => ({
+  const works = (await getCollection('works')).sort(
+    (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime()
+  );
+  return works.map((entry, i) => ({
     params: { slug: entry.slug },
-    props: { entry }
+    props: {
+      entry,
+      prevWork: works[i + 1] ?? null,
+      nextWork: works[i - 1] ?? null,
+    }
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, prevWork, nextWork } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
@@ -219,9 +225,33 @@ const trialLinks = data.trialLinks
       <div class="notice">
         販売・決済・納品は外部ストアが担当します。
       </div>
-      <div class="back-link">
-        <a class="section-link" href={withBase('works/')}>← 作品一覧へ戻る</a>
-      </div>
+      <nav class="work-pagination" aria-label="作品ナビゲーション">
+        <div class="work-pagination-prev">
+          {prevWork && (
+            <a class="work-pagination-link" href={withBase(`works/${prevWork.slug}/`)}>
+              <span class="work-pagination-arrow">←</span>
+              <span class="work-pagination-meta">
+                <span class="work-pagination-label">前の作品</span>
+                <span class="work-pagination-title">{prevWork.data.title}</span>
+              </span>
+            </a>
+          )}
+        </div>
+        <div class="work-pagination-center">
+          <a class="section-link" href={withBase('works/')}>作品一覧</a>
+        </div>
+        <div class="work-pagination-next">
+          {nextWork && (
+            <a class="work-pagination-link work-pagination-link--next" href={withBase(`works/${nextWork.slug}/`)}>
+              <span class="work-pagination-meta">
+                <span class="work-pagination-label">次の作品</span>
+                <span class="work-pagination-title">{nextWork.data.title}</span>
+              </span>
+              <span class="work-pagination-arrow">→</span>
+            </a>
+          )}
+        </div>
+      </nav>
     </section>
   </div>
 

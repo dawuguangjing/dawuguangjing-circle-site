@@ -32,7 +32,8 @@
       "Bash(gh api:*)",
       "Bash(1 <<'EOF'\n{\"build_type\":\"workflow\",\"source\":{\"branch\":\"main\",\"path\":\"/\"}}\nEOF)",
       "Bash(gh run list:*)",
-      "Bash(gh run watch:*)"
+      "Bash(gh run watch:*)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }
