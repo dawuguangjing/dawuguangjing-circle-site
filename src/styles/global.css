@@ -1577,6 +1577,36 @@ html.age-verified .age-overlay {
   display: none;
 }
 
+/* ── Table of Contents ── */
+.toc {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+.toc-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 0 0 10px;
+}
+.toc-list {
+  margin: 0;
+  padding: 0 0 0 16px;
+  list-style: decimal;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.toc-item { font-size: 0.85rem; }
+.toc-item--sub { padding-left: 12px; list-style-type: circle; font-size: 0.8rem; }
+.toc-item a { color: var(--ink); text-decoration: none; }
+.toc-item a:hover { color: var(--accent); }
+
 /* ── Article Page ── */
 .article {
   background: var(--panel);

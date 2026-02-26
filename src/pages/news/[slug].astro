@@ -34,6 +34,10 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
       ]} />
     </div>
     <section class="section container">
+      <nav class="toc" id="toc" hidden aria-label="目次">
+        <p class="toc-heading">目次</p>
+        <ol class="toc-list" id="toc-list"></ol>
+      </nav>
       <article class="article">
         <div class="article-header" data-anim>
           <span class={`badge badge--${data.category}`}>{categoryLabels[data.category] ?? data.category}</span>
@@ -56,3 +60,25 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
     </section>
   </div>
 </BaseLayout>
+
+<script>
+  const toc = document.getElementById('toc');
+  const tocList = document.getElementById('toc-list');
+  const headings = Array.from(
+    document.querySelectorAll<HTMLHeadingElement>('.article-body h2, .article-body h3')
+  );
+
+  if (toc && tocList && headings.length >= 2) {
+    headings.forEach((h, i) => {
+      if (!h.id) h.id = `heading-${i}`;
+      const li = document.createElement('li');
+      li.className = h.tagName === 'H3' ? 'toc-item toc-item--sub' : 'toc-item';
+      const a = document.createElement('a');
+      a.href = `#${h.id}`;
+      a.textContent = h.textContent ?? '';
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+    toc.removeAttribute('hidden');
+  }
+</script>
