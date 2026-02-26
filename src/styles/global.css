@@ -2275,7 +2275,7 @@ html.age-verified .age-overlay {
   .hero-banner-inner {
     grid-template-columns: 130px 1fr;
     gap: 12px;
-    align-items: start;
+    align-items: center;
   }
 
   /* カバー画像をDOM順(右)から左へ */
