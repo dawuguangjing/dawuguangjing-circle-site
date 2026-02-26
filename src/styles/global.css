@@ -2123,6 +2123,11 @@ html.age-verified .age-overlay {
     padding: 10px 20px;
     font-size: 0.88rem;
   }
+
+  /* スマホではカードが画面幅いっぱいになりマグロが隠れるため、前面に出す */
+  .age-gate .tuna-tank {
+    z-index: 2;
+  }
 }
 
 /* ── Gallery Album Grid ── */
