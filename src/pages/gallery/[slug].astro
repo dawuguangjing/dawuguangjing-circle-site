@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
 import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -104,32 +105,10 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
           {data.platformLinks && (data.platformLinks.fanza || data.platformLinks.dlsite) && (
             <>
               <h3>購入する</h3>
-              <div class="store-button-group">
-                {data.platformLinks.fanza && (
-                  <a
-                    class="store-button"
-                    href={data.platformLinks.fanza}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-store="fanza"
-                  >
-                    <span>FANZA で購入</span>
-                    <span class="arrow">→</span>
-                  </a>
-                )}
-                {data.platformLinks.dlsite && (
-                  <a
-                    class="store-button"
-                    href={data.platformLinks.dlsite}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-store="dlsite"
-                  >
-                    <span>DLsite で購入</span>
-                    <span class="arrow">→</span>
-                  </a>
-                )}
-              </div>
+              <StoreButtonGroup links={[
+                ...(data.platformLinks.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks.fanza,  store: 'fanza'  }] : []),
+                ...(data.platformLinks.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks.dlsite, store: 'dlsite' }] : []),
+              ]} />
             </>
           )}
 

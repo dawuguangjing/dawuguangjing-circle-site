@@ -1,0 +1,31 @@
+---
+interface Link {
+  label: string;
+  href: string;
+  store: string;
+  track?: string;
+}
+
+interface Props {
+  links: Link[];
+  trial?: boolean;
+}
+
+const { links, trial = false } = Astro.props;
+---
+
+<div class="store-button-group">
+  {links.map((link) => (
+    <a
+      class={`store-button${trial ? ' store-button--trial' : ''}`}
+      href={link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-store={link.store}
+      data-track={link.track}
+    >
+      <span>{link.label}</span>
+      <span class="arrow">→</span>
+    </a>
+  ))}
+</div>

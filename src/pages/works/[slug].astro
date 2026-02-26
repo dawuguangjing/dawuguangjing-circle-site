@@ -9,6 +9,7 @@ import { SITE_NAME } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 import type { StoreLink } from '../../utils/types';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 
 export async function getStaticPaths() {
   const works = (await getCollection('works')).sort(
@@ -131,41 +132,13 @@ const trialLinks = data.trialLinks
 
           <!-- Purchase Buttons -->
           <h3>購入する</h3>
-          <div class="store-button-group">
-            {platformLinks.map((link) => (
-              <a
-                class="store-button"
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                data-store={link.store}
-                data-track={link.track}
-              >
-                <span>{link.label}</span>
-                <span class="arrow">→</span>
-              </a>
-            ))}
-          </div>
+          <StoreButtonGroup links={platformLinks} />
 
           <!-- Trial Buttons -->
           {trialLinks.length > 0 && (
             <>
               <h3>体験版</h3>
-              <div class="store-button-group">
-                {trialLinks.map((link) => (
-                  <a
-                    class="store-button store-button--trial"
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    data-store={link.store}
-                    data-track={link.track}
-                  >
-                    <span>{link.label}</span>
-                    <span class="arrow">→</span>
-                  </a>
-                ))}
-              </div>
+              <StoreButtonGroup links={trialLinks} trial />
             </>
           )}
 
