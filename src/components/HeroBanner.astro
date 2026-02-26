@@ -95,9 +95,9 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
 </section>
 
 <script>
-  // 金のマグロ: 20% の確率で出現
+  // 金のマグロ: 50% の確率で出現
   const goldWrap = document.querySelector<HTMLElement>('.tuna-wrap--gold');
-  if (goldWrap && Math.random() < 0.2) {
+  if (goldWrap && Math.random() < 0.5) {
     goldWrap.removeAttribute('hidden');
   }
 
