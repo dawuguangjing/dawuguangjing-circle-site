@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/format';
 import { categoryLabels } from '../../utils/labels';
 import { getWorkIndex } from '../../utils/collections';
 import { buildArticleSchema } from '../../utils/schema';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const news = await getCollection('news');
@@ -26,6 +27,12 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
 
 <BaseLayout title={`${data.title} | 開発ログ`} description={data.title} type="article" publishedTime={data.date} jsonLd={articleJsonLd}>
   <div class="page-content">
+    <div class="container">
+      <Breadcrumb crumbs={[
+        { label: '開発ログ', href: withBase('news/') },
+        { label: data.title },
+      ]} />
+    </div>
     <section class="section container">
       <article class="article">
         <div class="article-header" data-anim>

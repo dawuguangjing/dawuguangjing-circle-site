@@ -6,6 +6,7 @@ import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
 import { getWorkIndex, resolveImageCount } from '../../utils/collections';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -34,6 +35,12 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
   image={data.cover}
 >
   <div class="page-content">
+    <div class="container">
+      <Breadcrumb crumbs={[
+        { label: 'ギャラリー', href: withBase('gallery/') },
+        { label: data.title },
+      ]} />
+    </div>
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title detail-title">{data.title}</h1>

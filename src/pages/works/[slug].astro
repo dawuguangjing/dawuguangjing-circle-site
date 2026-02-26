@@ -8,6 +8,7 @@ import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 import type { StoreLink } from '../../utils/types';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 
 export async function getStaticPaths() {
   const works = (await getCollection('works')).sort(
@@ -62,6 +63,12 @@ const trialLinks = data.trialLinks
   jsonLd={productJsonLd}
 >
   <div class="page-content">
+    <div class="container">
+      <Breadcrumb crumbs={[
+        { label: 'ストア', href: withBase('works/') },
+        { label: data.title },
+      ]} />
+    </div>
     <!-- Hero Banner -->
     <section class="section container">
       <div class="detail-title-wrapper" data-anim>

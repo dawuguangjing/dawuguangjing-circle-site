@@ -1,0 +1,28 @@
+---
+import { withBase } from '../utils/withBase';
+
+interface Crumb {
+  label: string;
+  href?: string;
+}
+interface Props {
+  crumbs: Crumb[];
+}
+const { crumbs } = Astro.props;
+---
+
+<nav class="breadcrumb" aria-label="パンくずリスト">
+  <ol class="breadcrumb-list">
+    <li class="breadcrumb-item">
+      <a href={withBase('')}>ホーム</a>
+    </li>
+    {crumbs.map((crumb, i) => (
+      <li class="breadcrumb-item" aria-current={i === crumbs.length - 1 ? 'page' : undefined}>
+        {crumb.href
+          ? <a href={crumb.href}>{crumb.label}</a>
+          : <span>{crumb.label}</span>
+        }
+      </li>
+    ))}
+  </ol>
+</nav>
