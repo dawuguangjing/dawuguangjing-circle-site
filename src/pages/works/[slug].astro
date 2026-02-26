@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
@@ -212,17 +213,7 @@ const trialLinks = data.trialLinks
       </div>
     </section>
 
-    <!-- Lightbox -->
-    <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
-      <button class="lightbox-close" aria-label="閉じる">&times;</button>
-      <button class="lightbox-prev" aria-label="前の画像">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <img src="" alt="" />
-      <button class="lightbox-next" aria-label="次の画像">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
+    <Lightbox imageSelector=".work-cover img, .gallery-item img" />
 
     <section class="container section--compact">
       <div class="notice">
@@ -242,56 +233,6 @@ const trialLinks = data.trialLinks
     </svg>
     <span>購入する</span>
   </button>
-
-  <script>
-    const lightbox = document.getElementById('lightbox');
-    const lbImg = lightbox?.querySelector('img');
-    const lbClose = lightbox?.querySelector('.lightbox-close');
-    const lbPrev = lightbox?.querySelector('.lightbox-prev');
-    const lbNext = lightbox?.querySelector('.lightbox-next');
-
-    // カバー画像 → スクリーンショットの順で全画像を配列化
-    const items = Array.from(document.querySelectorAll<HTMLImageElement>(
-      '.work-cover img, .gallery-item img'
-    ));
-    let current = 0;
-
-    function showImage(index: number) {
-      if (!lightbox || !lbImg) return;
-      current = (index + items.length) % items.length;
-      lbImg.src = items[current].src;
-      lbImg.alt = items[current].alt;
-      (lbPrev as HTMLButtonElement | null)?.classList.toggle('is-hidden', items.length <= 1);
-      (lbNext as HTMLButtonElement | null)?.classList.toggle('is-hidden', items.length <= 1);
-    }
-
-    function openLightbox(index: number) {
-      if (!lightbox) return;
-      showImage(index);
-      lightbox.classList.add('is-active');
-      lightbox.setAttribute('aria-hidden', 'false');
-    }
-
-    function closeLightbox() {
-      lightbox?.classList.remove('is-active');
-      lightbox?.setAttribute('aria-hidden', 'true');
-    }
-
-    items.forEach((img, i) => {
-      img.addEventListener('click', () => openLightbox(i));
-    });
-
-    lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); showImage(current - 1); });
-    lbNext?.addEventListener('click', (e) => { e.stopPropagation(); showImage(current + 1); });
-    lbClose?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
-    lightbox?.addEventListener('click', closeLightbox);
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox?.classList.contains('is-active')) return;
-      if (e.key === 'Escape') closeLightbox();
-      if (e.key === 'ArrowLeft') showImage(current - 1);
-      if (e.key === 'ArrowRight') showImage(current + 1);
-    });
-  </script>
 
   <script>
     const fab = document.getElementById('fab-purchase');
