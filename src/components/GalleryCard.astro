@@ -9,9 +9,10 @@ interface Props {
   isR18: boolean;
   releaseDate: Date;
   imageCount?: number;
+  previewImage?: string;
 }
 
-const { slug, title, cover, isR18, releaseDate, imageCount } = Astro.props;
+const { slug, title, cover, isR18, releaseDate, imageCount, previewImage } = Astro.props;
 ---
 
 <a class="gallery-card" href={withBase(`gallery/${slug}/`)}>
@@ -24,6 +25,17 @@ const { slug, title, cover, isR18, releaseDate, imageCount } = Astro.props;
       width="400"
       height="300"
     />
+    {previewImage && (
+      <img
+        class="gallery-card-img gallery-card-img--preview"
+        src={previewImage}
+        alt=""
+        loading="lazy"
+        width="400"
+        height="300"
+        aria-hidden="true"
+      />
+    )}
     <div class="gallery-card-overlay" aria-hidden="true">
       <span class="card-view-label">詳細を見る</span>
     </div>
