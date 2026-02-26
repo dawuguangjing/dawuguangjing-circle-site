@@ -1,5 +1,11 @@
 import { defineCollection, z } from 'astro:content';
 
+/** FANZA / DLsite のリンクペア（works・gallery 共用） */
+const storeLinks = z.object({
+  fanza:  z.string().url().optional(),
+  dlsite: z.string().url().optional(),
+});
+
 const works = defineCollection({
   type: 'content',
   schema: z.object({
@@ -8,16 +14,8 @@ const works = defineCollection({
     shortDescription: z.string(),
     releaseDate: z.date(),
     isR18: z.boolean(),
-    platformLinks: z.object({
-      fanza: z.string().url().optional(),
-      dlsite: z.string().url().optional()
-    }),
-    trialLinks: z
-      .object({
-        fanza: z.string().url().optional(),
-        dlsite: z.string().url().optional()
-      })
-      .optional(),
+    platformLinks: storeLinks,
+    trialLinks: storeLinks.optional(),
     environments: z.object({
       windows: z.boolean(),
       mac: z.boolean(),
@@ -67,10 +65,7 @@ const gallery = defineCollection({
     images: z.array(z.string()),
     imageCount: z.number().int().nonnegative().optional(),
     relatedWorkSlugs: z.array(z.string()).optional(),
-    platformLinks: z.object({
-      fanza: z.string().url().optional(),
-      dlsite: z.string().url().optional(),
-    }).optional(),
+    platformLinks: storeLinks.optional(),
   })
 });
 
