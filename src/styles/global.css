@@ -2212,6 +2212,14 @@ html.age-verified .age-overlay {
   margin-top: 6px;
 }
 
+/* 体験版ボタン行（購入ボタン行の下に続く） */
+.hero-banner-trial {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
 .hero-banner-detail-link {
   font-size: 0.84rem;
   color: var(--accent);
@@ -2297,7 +2305,8 @@ html.age-verified .age-overlay {
 
   .hero-banner-title { font-size: 1.05rem; }
 
-  .hero-banner-cta {
+  .hero-banner-cta,
+  .hero-banner-trial {
     flex-direction: column;
     gap: 8px;
     margin-top: 2px;
@@ -2322,6 +2331,7 @@ html.age-verified .age-overlay {
 .hero-banner-catch    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.25s; }
 .hero-banner .selling-points { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.35s; }
 .hero-banner-cta      { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.45s; }
+.hero-banner-trial    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.55s; }
 .hero-banner-cover    { animation: hero-slide-left 0.5s var(--easing) both; animation-delay: 0.1s; }
 
 /* 2. カバー画像: ホバーで中の画像ズーム */
@@ -2384,6 +2394,7 @@ html.age-verified .age-overlay {
   .hero-banner-catch,
   .hero-banner .selling-points,
   .hero-banner-cta,
+  .hero-banner-trial,
   .hero-banner-cover,
   .hero-banner-tag,
   .hero-banner .store-button,
