@@ -11,6 +11,7 @@ export interface NavItem {
 /** ヘッダー・フッター共通のナビゲーション定義 */
 export const mainNav: NavItem[] = [
   { label: 'ストア',       path: 'works/',   href: withBase('works/') },
+  { label: 'ギャラリー',   path: 'gallery/', href: withBase('gallery/') },
   { label: '開発ログ',     path: 'news/',    href: withBase('news/') },
   { label: 'サークル情報', path: 'about/',   href: withBase('about/') },
   { label: 'FAQ',          path: 'faq/',     href: withBase('faq/') },

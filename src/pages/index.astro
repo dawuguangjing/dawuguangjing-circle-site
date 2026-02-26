@@ -2,12 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WorkCard from '../components/WorkCard.astro';
 import NewsCard from '../components/NewsCard.astro';
+import GalleryCard from '../components/GalleryCard.astro';
 import { withBase } from '../utils/withBase';
-import { HOME_NEWS_LIMIT, SITE_NAME } from '../utils/constants';
-import { getSortedWorks, getSortedNews, extractFirstImageUrl } from '../utils/collections';
+import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME } from '../utils/constants';
+import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
 
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
+const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
 ---
 
 <BaseLayout
@@ -33,6 +35,27 @@ const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
         ))}
       </div>
     </section>
+
+    {galleries.length > 0 && (
+      <section class="section container">
+        <div class="section-header">
+          <h2 class="section-title">ギャラリー</h2>
+          <a class="section-link" href={withBase('gallery/')}>すべて見る →</a>
+        </div>
+        <div class="gallery-album-grid">
+          {galleries.map((entry) => (
+            <GalleryCard
+              slug={entry.slug}
+              title={entry.data.title}
+              cover={entry.data.cover}
+              isR18={entry.data.isR18}
+              releaseDate={entry.data.releaseDate}
+              imageCount={entry.data.imageCount ?? entry.data.images.length}
+            />
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="section container">
       <div class="section-header">

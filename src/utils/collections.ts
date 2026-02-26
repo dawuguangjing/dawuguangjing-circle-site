@@ -20,6 +20,13 @@ export function extractFirstImageUrl(body: string): string | undefined {
   return match?.[1];
 }
 
+/** ギャラリーをリリース日の降順で取得 */
+export async function getSortedGallery() {
+  return (await getCollection('gallery')).sort(
+    (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime()
+  );
+}
+
 /** slug → work の Map を返す */
 export async function getWorkIndex() {
   const works = await getCollection('works');

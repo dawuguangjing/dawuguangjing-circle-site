@@ -1,0 +1,41 @@
+---
+import { withBase } from '../utils/withBase';
+import { formatDate } from '../utils/format';
+
+interface Props {
+  slug: string;
+  title: string;
+  cover: string;
+  isR18: boolean;
+  releaseDate: Date;
+  imageCount?: number;
+}
+
+const { slug, title, cover, isR18, releaseDate, imageCount } = Astro.props;
+---
+
+<a class="gallery-card" href={withBase(`gallery/${slug}/`)}>
+  <div class="gallery-card-img-wrap">
+    <img
+      class="gallery-card-img"
+      src={cover}
+      alt={`${title} cover`}
+      loading="lazy"
+      width="400"
+      height="300"
+    />
+    <div class="gallery-card-overlay" aria-hidden="true">
+      <span class="gallery-card-view-label">詳細を見る</span>
+    </div>
+  </div>
+  <div class="gallery-card-footer">
+    <h3 class="gallery-card-title">{title}</h3>
+    <div class="gallery-card-meta">
+      <span class="gallery-card-date">{formatDate(releaseDate)}</span>
+      <div class="gallery-card-badges">
+        {isR18 && <span class="badge badge--r18">R18</span>}
+        {imageCount != null && <span class="gallery-card-count">{imageCount}枚</span>}
+      </div>
+    </div>
+  </div>
+</a>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import GalleryCard from '../../components/GalleryCard.astro';
+import { getSortedGallery } from '../../utils/collections';
+import { SITE_NAME } from '../../utils/constants';
+
+const galleries = await getSortedGallery();
+---
+
+<BaseLayout
+  title={`ギャラリー | ${SITE_NAME}`}
+  description="サークルが制作したCG集・イラスト集の一覧です。"
+>
+  <div class="page-content">
+    <section class="section container">
+      <div class="section-header">
+        <h1 class="section-title">ギャラリー</h1>
+        <span class="section-count muted">{galleries.length}件</span>
+      </div>
+      {galleries.length > 0 ? (
+        <div class="gallery-album-grid">
+          {galleries.map((entry) => (
+            <GalleryCard
+              slug={entry.slug}
+              title={entry.data.title}
+              cover={entry.data.cover}
+              isR18={entry.data.isR18}
+              releaseDate={entry.data.releaseDate}
+              imageCount={entry.data.imageCount ?? entry.data.images.length}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="muted">現在公開中のギャラリーはありません。</p>
+      )}
+    </section>
+  </div>
+</BaseLayout>

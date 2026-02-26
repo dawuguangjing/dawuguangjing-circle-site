@@ -28,6 +28,9 @@ const {
 <a class="work-row" href={withBase(`works/${slug}/`)}>
   <div class="work-row-cover">
     <img src={withBase(cover)} alt={`${title} cover`} loading="lazy" width="160" height="160" />
+    <div class="work-row-overlay" aria-hidden="true">
+      <span class="gallery-card-view-label">詳細を見る</span>
+    </div>
   </div>
   <div class="work-row-body">
     <h3>{title}</h3>

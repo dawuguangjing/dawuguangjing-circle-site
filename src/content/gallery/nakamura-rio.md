@@ -1,0 +1,11 @@
+---
+title: "中村 莉緒（従順審査2）"
+description: "「従順審査2」のヒロイン、中村 莉緒"
+releaseDate: 2026-02-26
+isR18: true
+cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-rio-char.jpg"
+images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-rio-char.jpg"
+relatedWorkSlugs:
+  - "jyunjun-shinsa"
+---

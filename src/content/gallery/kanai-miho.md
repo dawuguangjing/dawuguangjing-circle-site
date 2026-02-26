@@ -1,0 +1,11 @@
+---
+title: "金井 美穂（従順審査2）"
+description: "「従順審査2」のヒロイン、金井 美穂"
+releaseDate: 2026-02-26
+isR18: true
+cover: "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
+images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
+relatedWorkSlugs:
+  - "jyunjun-shinsa"
+---
