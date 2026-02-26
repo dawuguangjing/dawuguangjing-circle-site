@@ -9,6 +9,7 @@ relatedWorkSlugs:
 みなさま、はじめまして。
 ダウグアングジングと申します。
 この度、従順審査という成人向けゲームをリリースいたしました。
+![従順審査](https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-1.jpg)
 至らない点も多い中、楽しんでくださっている方々の存在が励みになっております。
 
 今回の初めてゲームをリリースしてみてわかったことがたくさんありました。
