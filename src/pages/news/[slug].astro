@@ -28,12 +28,12 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
   <div class="page-content">
     <section class="section container">
       <article class="article">
-        <div class="article-header">
+        <div class="article-header" data-anim>
           <span class={`badge badge--${data.category}`}>{categoryLabels[data.category] ?? data.category}</span>
           <time class="article-date">{formatDate(data.date)}</time>
         </div>
-        <h1 class="article-title">{data.title}</h1>
-        <div class="article-body">
+        <h1 class="article-title" data-anim style="--anim-delay: 0.06s">{data.title}</h1>
+        <div class="article-body" data-anim style="--anim-delay: 0.14s">
           <Content />
         </div>
         {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (

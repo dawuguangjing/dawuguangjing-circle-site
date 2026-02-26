@@ -13,21 +13,23 @@ const galleries = await getSortedGallery();
 >
   <div class="page-content">
     <section class="section container">
-      <div class="section-header">
+      <div class="section-header" data-anim>
         <h1 class="section-title">ギャラリー</h1>
         <span class="section-count muted">{galleries.length}件</span>
       </div>
       {galleries.length > 0 ? (
         <div class="gallery-album-grid">
-          {galleries.map((entry) => (
-            <GalleryCard
-              slug={entry.slug}
-              title={entry.data.title}
-              cover={entry.data.cover}
-              isR18={entry.data.isR18}
-              releaseDate={entry.data.releaseDate}
-              imageCount={entry.data.imageCount ?? entry.data.images.length}
-            />
+          {galleries.map((entry, i) => (
+            <div data-anim style={`--anim-delay: ${i * 0.07}s`}>
+              <GalleryCard
+                slug={entry.slug}
+                title={entry.data.title}
+                cover={entry.data.cover}
+                isR18={entry.data.isR18}
+                releaseDate={entry.data.releaseDate}
+                imageCount={entry.data.imageCount ?? entry.data.images.length}
+              />
+            </div>
           ))}
         </div>
       ) : (

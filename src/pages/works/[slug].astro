@@ -57,7 +57,7 @@ const trialLinks = data.trialLinks
   <div class="page-content">
     <!-- Hero Banner -->
     <section class="section container">
-      <div class="detail-title-wrapper">
+      <div class="detail-title-wrapper" data-anim>
         <h1 class="section-title detail-title">{data.title}</h1>
         <p class="muted detail-catch">{data.catch}</p>
       </div>
@@ -66,7 +66,7 @@ const trialLinks = data.trialLinks
         <!-- Main Column -->
         <div class="detail-main">
           <!-- Cover Image -->
-          <div class="work-cover">
+          <div class="work-cover" data-anim style="--anim-delay: 0.1s">
             <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" />
           </div>
 
@@ -91,7 +91,7 @@ const trialLinks = data.trialLinks
           )}
 
           <!-- Description Block -->
-          <div class="detail-block">
+          <div class="detail-block" data-anim style="--anim-delay: 0.15s">
             <h2>概要</h2>
             <p>{data.shortDescription}</p>
             {data.sellingPoints && data.sellingPoints.length > 0 && (
@@ -106,7 +106,7 @@ const trialLinks = data.trialLinks
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar" id="purchase-section">
+        <div class="store-sidebar" id="purchase-section" data-anim="slide-right" style="--anim-delay: 0.2s">
           <!-- Age Rating -->
           <div>
             {data.isR18

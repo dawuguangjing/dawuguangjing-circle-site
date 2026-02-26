@@ -11,23 +11,25 @@ const workIndex = await getWorkIndex();
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
   <div class="page-content">
     <section class="section container">
-      <div class="section-header">
+      <div class="section-header" data-anim>
         <h1 class="section-title">開発ログ</h1>
       </div>
 
       <div class="grid">
-        {news.map((entry) => (
-          <NewsCard
-            slug={entry.slug}
-            title={entry.data.title}
-            date={entry.data.date}
-            category={entry.data.category}
-            thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
-          >
-            {entry.data.relatedWorkSlugs && (
-              <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
-            )}
-          </NewsCard>
+        {news.map((entry, i) => (
+          <div data-anim style={`--anim-delay: ${0.08 + i * 0.07}s`}>
+            <NewsCard
+              slug={entry.slug}
+              title={entry.data.title}
+              date={entry.data.date}
+              category={entry.data.category}
+              thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
+            >
+              {entry.data.relatedWorkSlugs && (
+                <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
+              )}
+            </NewsCard>
+          </div>
         ))}
       </div>
     </section>

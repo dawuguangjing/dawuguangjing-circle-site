@@ -34,7 +34,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
 >
   <div class="page-content">
     <section class="section container">
-      <div class="section-header">
+      <div class="section-header" data-anim>
         <h1 class="section-title detail-title">{data.title}</h1>
         <span class="muted" style="font-size:0.8rem;white-space:nowrap;">{formatDate(data.releaseDate)}</span>
       </div>
@@ -44,14 +44,14 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
         <div class="detail-main">
           <!-- Description -->
           {entry.body?.trim() && (
-            <div class="detail-block">
+            <div class="detail-block" data-anim>
               <Content />
             </div>
           )}
 
           <!-- Image Grid -->
           {data.images.length > 0 && (
-            <div class="gallery-detail-grid">
+            <div class="gallery-detail-grid" data-anim style="--anim-delay: 0.1s">
               {data.images.map((img, i) => (
                 <div class="gallery-detail-item">
                   <img
@@ -68,7 +68,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar">
+        <div class="store-sidebar" data-anim="slide-right" style="--anim-delay: 0.15s">
           <!-- Age Rating -->
           <div>
             {data.isR18

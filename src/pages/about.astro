@@ -7,12 +7,12 @@ import { EXTERNAL_LINKS } from '../utils/constants';
 <BaseLayout title="サークル情報" description="サークル概要と方針。">
   <div class="page-content">
   <section class="section container">
-    <h1 class="section-title">サークル情報</h1>
-    <p class="section-lead">
+    <h1 class="section-title" data-anim>サークル情報</h1>
+    <p class="section-lead" data-anim style="--anim-delay: 0.07s">
       訪問者・ストア・関係者向けの簡潔なプロフィールです。
     </p>
     <div class="grid grid-2">
-      <div class="card">
+      <div class="card" data-anim style="--anim-delay: 0.12s">
         <h2 class="section-title">サークル概要</h2>
         <p>
           短編のストーリー作品を中心に制作しています。公式リンクと告知はこのハブに集約しています。
@@ -23,7 +23,7 @@ import { EXTERNAL_LINKS } from '../utils/constants';
           <li class="badge">インディー</li>
         </ul>
       </div>
-      <div class="card">
+      <div class="card" data-anim style="--anim-delay: 0.19s">
         <h2 class="section-title">ポリシー</h2>
         <p>
           決済・納品・アカウント対応は外部ストアが担当します。当サイトは決済情報を保持しません。
@@ -34,11 +34,11 @@ import { EXTERNAL_LINKS } from '../utils/constants';
   </section>
 
   <section class="section container">
-    <div class="section-header">
+    <div class="section-header" data-anim>
       <h2 class="section-title">外部リンク</h2>
     </div>
     <div class="grid grid-2">
-      <a class="external-link-card" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
+      <a class="external-link-card" data-anim style="--anim-delay: 0.08s" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
         <div class="external-link-icon">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>

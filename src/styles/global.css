@@ -1911,6 +1911,14 @@ html.age-verified .age-overlay {
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
 }
+/* data-anim wrapper divs inside the grid act as flex containers so cards fill the cell */
+.gallery-album-grid > [data-anim] {
+  display: flex;
+  flex-direction: column;
+}
+.gallery-album-grid > [data-anim] > .gallery-card {
+  flex: 1;
+}
 
 /* ── Gallery Card ── */
 .gallery-card {
@@ -2036,9 +2044,6 @@ html.age-verified .age-overlay {
 @media (max-width: 768px) {
   .gallery-album-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .gallery-detail-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 480px) {
-  .gallery-album-grid { grid-template-columns: 1fr; }
 }
 
 /* ── Related Work Card (gallery sidebar) ── */
@@ -2258,8 +2263,45 @@ html.age-verified .age-overlay {
     margin: 0 auto;
   }
 }
+
+/* ── Hero Banner: モバイル最適化 ── */
 @media (max-width: 480px) {
-  .hero-banner { padding: 32px 0; }
+  .hero-banner { padding: 20px 0; }
+
+  /* 魚は装飾のみ—モバイルでは非表示にして縦幅を節約 */
+  .tuna-tank { display: none; }
+
+  /* カバー(左130px) + テキスト(右) の横並びコンパクトレイアウト */
+  .hero-banner-inner {
+    grid-template-columns: 130px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  /* カバー画像をDOM順(右)から左へ */
+  .hero-banner-cover {
+    order: -1;
+    max-width: none;
+    margin: 0;
+    box-shadow:
+      0 0 0 3px #fff,
+      0 0 0 5px var(--accent),
+      0 4px 12px rgba(0, 0, 0, 0.12);
+  }
+
+  .hero-banner-text { gap: 8px; }
+
+  /* スマホでは縦幅節約のためキャッチ・セリングポイントを非表示 */
+  .hero-banner-catch,
+  .hero-banner .selling-points { display: none; }
+
+  .hero-banner-title { font-size: 1.05rem; }
+
+  .hero-banner-cta {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 2px;
+  }
 }
 
 /* ── Hero Banner Animations ── */
@@ -2348,4 +2390,33 @@ html.age-verified .age-overlay {
   .hero-detail-arrow {
     animation: none;
   }
+}
+
+/* works-grid 内のラッパー div がカードを満たすように */
+.works-grid > [data-anim] {
+  display: flex;
+  flex-direction: column;
+}
+.works-grid > [data-anim] > * {
+  flex: 1;
+}
+
+/* ── Scroll-triggered entrance animations ── */
+[data-anim] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity  0.5s var(--easing),
+    transform 0.5s var(--easing);
+  transition-delay: var(--anim-delay, 0s);
+}
+[data-anim="slide-right"] {
+  transform: translateX(28px);
+}
+[data-anim].is-visible {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-anim] { opacity: 1; transform: none; transition: none; }
 }

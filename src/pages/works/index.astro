@@ -9,12 +9,12 @@ const works = await getSortedWorks();
 <BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
   <div class="page-content">
     <section class="section container">
-      <div class="section-header">
+      <div class="section-header" data-anim>
         <h1 class="section-title">全作品</h1>
         <span class="muted work-count">{works.length} タイトル</span>
       </div>
 
-      <div class="filter-bar" role="group" aria-label="作品フィルター">
+      <div class="filter-bar" data-anim style="--anim-delay: 0.08s" role="group" aria-label="作品フィルター">
         <button class="filter-chip is-active" data-filter="all">すべて</button>
         <button class="filter-chip" data-filter="r18">R18</button>
         <button class="filter-chip" data-filter="all-ages">全年齢</button>
@@ -23,9 +23,11 @@ const works = await getSortedWorks();
       </div>
 
       <div class="works-grid" id="works-grid">
-        {works.map((entry) => (
+        {works.map((entry, i) => (
           <div
             class="work-filter-item"
+            data-anim
+            style={`--anim-delay: ${0.12 + i * 0.07}s`}
             data-r18={String(entry.data.isR18)}
             data-windows={String(entry.data.environments.windows)}
             data-browser={String(entry.data.environments.browserPc)}

@@ -98,6 +98,19 @@ const ageTtl = AGE_GATE_TTL_MS;
     <main id="main-content"><slot /></main>
     {!hideFooter && <SiteFooter />}
 
+    <script>
+      const _animObserver = new IntersectionObserver(
+        (entries) => entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            _animObserver.unobserve(e.target);
+          }
+        }),
+        { threshold: 0.12 }
+      );
+      document.querySelectorAll('[data-anim]').forEach(el => _animObserver.observe(el));
+    </script>
+
     {!disableAgeGate && (
       <script is:inline define:vars={{ ageKey, ageTtl }}>
         (function() {
