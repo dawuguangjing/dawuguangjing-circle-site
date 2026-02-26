@@ -5,7 +5,7 @@ import NewsCard from '../components/NewsCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import HeroBanner from '../components/HeroBanner.astro';
 import { withBase } from '../utils/withBase';
-import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME } from '../utils/constants';
+import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../utils/constants';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
 
 const allWorks = await getSortedWorks();
@@ -33,40 +33,44 @@ const heroWork = allWorks[0];
     )}
 
     <section class="section container">
-      <div class="section-header">
+      <div class="section-header" data-anim>
         <h2 class="section-title">作品</h2>
         <a class="section-link" href={withBase('works/')}>すべて見る →</a>
       </div>
       <div class="works-grid">
-        {allWorks.map((entry) => (
-          <WorkCard
-            slug={entry.slug}
-            title={entry.data.title}
-            cover={entry.data.images.cover}
-            description={entry.data.shortDescription}
-            releaseDate={entry.data.releaseDate}
-            isR18={entry.data.isR18}
-          />
+        {allWorks.map((entry, i) => (
+          <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+            <WorkCard
+              slug={entry.slug}
+              title={entry.data.title}
+              cover={entry.data.images.cover}
+              description={entry.data.shortDescription}
+              releaseDate={entry.data.releaseDate}
+              isR18={entry.data.isR18}
+            />
+          </div>
         ))}
       </div>
     </section>
 
     {galleries.length > 0 && (
       <section class="section container">
-        <div class="section-header">
+        <div class="section-header" data-anim>
           <h2 class="section-title">ギャラリー</h2>
           <a class="section-link" href={withBase('gallery/')}>すべて見る →</a>
         </div>
         <div class="gallery-album-grid">
-          {galleries.map((entry) => (
-            <GalleryCard
-              slug={entry.slug}
-              title={entry.data.title}
-              cover={entry.data.cover}
-              isR18={entry.data.isR18}
-              releaseDate={entry.data.releaseDate}
-              imageCount={entry.resolvedImageCount}
-            />
+          {galleries.map((entry, i) => (
+            <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+              <GalleryCard
+                slug={entry.slug}
+                title={entry.data.title}
+                cover={entry.data.cover}
+                isR18={entry.data.isR18}
+                releaseDate={entry.data.releaseDate}
+                imageCount={entry.resolvedImageCount}
+              />
+            </div>
           ))}
         </div>
       </section>
