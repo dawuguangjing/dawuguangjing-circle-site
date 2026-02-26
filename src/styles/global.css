@@ -2186,7 +2186,7 @@ html.age-verified .age-overlay {
   font-weight: 700;
   letter-spacing: 0.06em;
   color: #fff;
-  background: var(--accent);
+  background: var(--sale);
   padding: 3px 10px;
   border-radius: 2px;
 }
@@ -2386,9 +2386,9 @@ html.age-verified .age-overlay {
 }
 .hero-banner-tag {
   background: linear-gradient(90deg,
-    var(--accent) 25%,
-    var(--accent-2) 50%,
-    var(--accent) 75%
+    var(--sale) 25%,
+    #f05555 50%,
+    var(--sale) 75%
   );
   background-size: 200% auto;
   animation: hero-shimmer 3s linear infinite;
