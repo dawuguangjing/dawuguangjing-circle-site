@@ -16,6 +16,7 @@ export const HOME_GALLERY_LIMIT = 4;
 /** 外部リンク */
 export const EXTERNAL_LINKS = {
   cien: 'https://ci-en.dlsite.com/creator/35269',
+  x:    'https://x.com/dawuguangjing',
 } as const;
 
 /** スクロールアニメーション: 最初の要素の遅延（秒） */

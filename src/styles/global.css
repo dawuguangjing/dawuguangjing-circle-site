@@ -822,8 +822,34 @@ button {
 .footer-desc {
   font-size: 0.82rem;
   color: rgba(255, 255, 255, 0.5);
-  margin: 0;
+  margin: 0 0 12px;
 }
+
+.footer-follow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.footer-follow-btn:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+.footer-follow-btn--cien:hover { border-color: var(--accent); color: var(--accent); }
 
 .footer-nav-group {
   display: flex;

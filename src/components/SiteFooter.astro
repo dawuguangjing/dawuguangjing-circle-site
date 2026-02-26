@@ -1,7 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import { footerNav } from '../utils/navigation';
-import { CIRCLE_NAME } from '../utils/constants';
+import { CIRCLE_NAME, EXTERNAL_LINKS } from '../utils/constants';
 
 const year = new Date().getFullYear();
 ---
@@ -12,6 +12,16 @@ const year = new Date().getFullYear();
       <div class="footer-brand">
         <a class="footer-logo" href={withBase('')}>{CIRCLE_NAME}</a>
         <p class="footer-desc">同人ゲームサークル公式サイト</p>
+        <div class="footer-follow">
+          <a class="footer-follow-btn" href={EXTERNAL_LINKS.x} target="_blank" rel="noopener noreferrer" aria-label="X (Twitter) でフォロー">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63Zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            <span>X でフォロー</span>
+          </a>
+          <a class="footer-follow-btn footer-follow-btn--cien" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer" aria-label="Ci-en でフォロー">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            <span>Ci-en でフォロー</span>
+          </a>
+        </div>
       </div>
       <div class="footer-nav-group">
         {footerNav.map((group) => (
