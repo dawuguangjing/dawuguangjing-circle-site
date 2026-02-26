@@ -2280,18 +2280,12 @@ html.age-verified .age-overlay {
   display: block;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px var(--accent),
-    0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
   transition: transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
 .hero-banner-cover:hover {
   transform: translateY(-4px);
-  box-shadow:
-    0 0 0 4px #fff,
-    0 0 0 7px var(--accent-2),
-    0 14px 32px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
 }
 .hero-banner-cover img {
   width: 100%;
@@ -2313,9 +2307,6 @@ html.age-verified .age-overlay {
 @media (max-width: 480px) {
   .hero-banner { padding: 20px 0; }
 
-  /* 魚は装飾のみ—モバイルでは非表示にして縦幅を節約 */
-  .tuna-tank { display: none; }
-
   /* カバー(左130px) + テキスト(右) の横並びコンパクトレイアウト */
   .hero-banner-inner {
     grid-template-columns: 130px 1fr;
@@ -2328,13 +2319,14 @@ html.age-verified .age-overlay {
     order: -1;
     max-width: none;
     margin: 0;
-    box-shadow:
-      0 0 0 3px #fff,
-      0 0 0 5px var(--accent),
-      0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
   }
 
   .hero-banner-text { gap: 8px; }
+
+  /* eyebrow（最新作・R18）とタイトルを中央揃え */
+  .hero-banner-eyebrow { justify-content: center; }
+  .hero-banner-title { text-align: center; }
 
   /* スマホでは縦幅節約のためキャッチ・セリングポイントを非表示 */
   .hero-banner-catch,
