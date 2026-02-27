@@ -13,18 +13,24 @@ interface Props {
 }
 
 const { slug, title, date, category, thumbnail } = Astro.props;
+const href = withBase(`news/${slug}/`);
 ---
 
-<article class={`news-card${thumbnail ? ' has-thumb' : ''}`}>
-  <span class="news-card-date">{formatDate(date)}</span>
-  <div class="news-card-body">
-    <h3><a class="news-card-link" href={withBase(`news/${slug}/`)}>{title}</a></h3>
-    <p>
-      <span class={`badge badge--${category}`}>{categoryLabels[category] ?? category}</span>
-    </p>
+<article class="news-card">
+  <div class="news-card-cover">
+    {thumbnail
+      ? <img src={thumbnail} alt="" loading="lazy" width="480" height="270" />
+      : <div class="news-card-cover-empty"></div>
+    }
   </div>
-  {thumbnail && (
-    <img class="news-card-thumb" src={thumbnail} alt="" loading="lazy" width="80" height="56" />
-  )}
-  <slot />
+  <div class="news-card-body">
+    <div class="news-card-meta">
+      <span class={`badge badge--${category}`}>{categoryLabels[category] ?? category}</span>
+      <time class="news-card-date" datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>
+    </div>
+    <h3 class="news-card-title">
+      <a class="news-card-link" href={href}>{title}</a>
+    </h3>
+    <slot />
+  </div>
 </article>

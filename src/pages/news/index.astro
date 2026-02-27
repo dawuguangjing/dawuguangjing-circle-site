@@ -25,7 +25,7 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         ))}
       </div>
 
-      <div class="grid" id="news-grid">
+      <div class="news-grid" id="news-grid">
         {news.map((entry, i) => (
           <div data-anim data-category={entry.data.category} style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
             <NewsCard
