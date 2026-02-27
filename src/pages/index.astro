@@ -82,7 +82,7 @@ const heroWork = allWorks[0];
         <h2 class="section-title">開発ログ</h2>
         <a class="section-link" href={withBase('news/')}>すべて見る →</a>
       </div>
-      <div class="grid">
+      <div class="news-grid">
         {news.map((entry, i) => (
           <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
             <NewsCard
