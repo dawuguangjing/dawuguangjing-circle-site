@@ -51,7 +51,7 @@ const works = await getSortedWorks();
 
   <script>
     const chips = document.querySelectorAll('.filter-chip');
-    const items = document.querySelectorAll('.work-filter-item');
+    const items = document.querySelectorAll<HTMLElement>('.work-filter-item');
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
@@ -59,14 +59,25 @@ const works = await getSortedWorks();
         chip.classList.add('is-active');
 
         const filter = (chip as HTMLElement).dataset.filter;
-        items.forEach((item) => {
-          const el = item as HTMLElement;
+        let visibleIndex = 0;
+
+        items.forEach((el) => {
           let show = true;
           if (filter === 'r18') show = el.dataset.r18 === 'true';
           else if (filter === 'all-ages') show = el.dataset.r18 === 'false';
           else if (filter === 'windows') show = el.dataset.windows === 'true';
           else if (filter === 'browser') show = el.dataset.browser === 'true';
-          el.style.display = show ? '' : 'none';
+
+          if (show) {
+            el.style.display = '';
+            el.classList.remove('is-visible');
+            el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
+            void el.offsetWidth; // force reflow to restart transition
+            el.classList.add('is-visible');
+            visibleIndex++;
+          } else {
+            el.style.display = 'none';
+          }
         });
       });
     });
