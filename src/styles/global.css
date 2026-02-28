@@ -578,12 +578,12 @@ button {
 /* ── Scroll Progress Bar ── */
 .scroll-progress {
   position: fixed;
-  top: 0;
+  top: 52px; /* ヘッダー下に配置 */
   left: 0;
   height: 3px;
   width: 0%;
   background: var(--accent);
-  z-index: 300;
+  z-index: 15; /* ヘッダー(z-index:20)より下 → ヘッダーがマグロのはみ出し部分を隠す */
   transition: width 0.08s linear;
   pointer-events: none;
   overflow: visible;
@@ -592,7 +592,7 @@ button {
 .scroll-progress-tuna {
   position: absolute;
   right: -11px;
-  top: 0;
+  top: -10px; /* バー中央に揃える: 3px÷2 − 22px÷2 ≈ −10px */
   width: 22px;
   height: 22px;
   object-fit: contain;
