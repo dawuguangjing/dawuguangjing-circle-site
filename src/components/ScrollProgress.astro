@@ -6,20 +6,32 @@ import { withBase } from '../utils/withBase';
 </div>
 
 <script>
-  // Scroll handler uses getElementById each time so it survives page swaps
+  let prevScrollY = 0;
+
   function onScroll() {
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
     const scrolled = window.scrollY;
     const total = document.documentElement.scrollHeight - window.innerHeight;
     bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+
+    // 下スクロール → 右向き(scaleX(-1))、上スクロール → 左向き(scaleX(1))
+    const tuna = bar.querySelector<HTMLElement>('.scroll-progress-tuna');
+    if (tuna) {
+      tuna.style.transform = scrolled >= prevScrollY ? 'scaleX(-1)' : 'scaleX(1)';
+    }
+    prevScrollY = scrolled;
   }
 
-  // Register listener once; reset bar to 0 on each page load
   window.addEventListener('scroll', onScroll, { passive: true });
+
   document.addEventListener('astro:page-load', () => {
+    prevScrollY = 0;
     const bar = document.getElementById('scroll-progress');
-    if (bar) bar.style.width = '0%';
+    if (!bar) return;
+    bar.style.width = '0%';
+    const tuna = bar.querySelector<HTMLElement>('.scroll-progress-tuna');
+    if (tuna) tuna.style.transform = 'scaleX(-1)'; // 初期は右向き
     onScroll();
   });
 </script>
