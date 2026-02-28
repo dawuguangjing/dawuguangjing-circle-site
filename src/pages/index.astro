@@ -94,6 +94,15 @@ const heroWork = allWorks[0];
             />
           </div>
         ))}
+        <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + news.length * ANIM_STAGGER}s`}>
+          <a class="news-card-more" href={withBase('news/')}>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h10"/>
+            </svg>
+            <span class="news-card-more-label">過去の記事をすべて見る</span>
+            <span class="news-card-more-arrow">→</span>
+          </a>
+        </div>
       </div>
     </section>
   </div>

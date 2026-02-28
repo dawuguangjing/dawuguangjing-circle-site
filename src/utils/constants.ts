@@ -8,7 +8,7 @@ export const CIRCLE_NAME = 'ダウグアングジング';
 export const SITE_DESCRIPTION = 'ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。作品・告知・外部リンクをまとめたハブ。';
 
 /** トップページに表示するニュース件数 */
-export const HOME_NEWS_LIMIT = 4;
+export const HOME_NEWS_LIMIT = 5;
 
 /** トップページに表示するギャラリー件数 */
 export const HOME_GALLERY_LIMIT = 4;
