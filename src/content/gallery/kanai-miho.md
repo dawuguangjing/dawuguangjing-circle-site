@@ -8,5 +8,5 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
 relatedWorkSlugs:
-  - "jyunjun-shinsa"
+  - "jyunjun-shinsa-2"
 ---

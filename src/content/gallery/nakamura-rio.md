@@ -8,5 +8,5 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-rio-char.jpg"
 relatedWorkSlugs:
-  - "jyunjun-shinsa"
+  - "jyunjun-shinsa-2"
 ---

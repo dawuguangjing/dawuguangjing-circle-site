@@ -8,5 +8,5 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-char.jpg"
 relatedWorkSlugs:
-  - "jyunjun-shinsa"
+  - "jyunjun-shinsa-2"
 ---

@@ -598,7 +598,6 @@ button {
   object-fit: contain;
   pointer-events: none;
   transform: scaleX(-1); /* JS で上書き: 下スクロール=右向き / 上スクロール=左向き */
-  background: #fff;
 }
 
 /* ── Announcement Bar ── */
