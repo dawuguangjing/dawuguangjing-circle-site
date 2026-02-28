@@ -9,8 +9,7 @@ import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_S
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
 
 const allWorks = await getSortedWorks();
-const allNews = await getSortedNews();
-const news = allNews.slice(0, HOME_NEWS_LIMIT);
+const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
 const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
 const heroWork = allWorks[0];
 ---
@@ -97,20 +96,11 @@ const heroWork = allWorks[0];
         ))}
         <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + news.length * ANIM_STAGGER}s`}>
           <a class="news-card-more" href={withBase('news/')}>
-            <span class="news-card-more-deco" aria-hidden="true"></span>
-            <div class="news-card-more-inner">
-              <p class="news-card-more-eyebrow">DEVLOG ARCHIVE</p>
-              <p class="news-card-more-count">
-                {allNews.length}<span class="news-card-more-unit">件</span>
-              </p>
-              <p class="news-card-more-sub">の記事を公開中</p>
-              <span class="news-card-more-btn">
-                アーカイブをすべて見る
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </span>
-            </div>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h10"/>
+            </svg>
+            <span class="news-card-more-label">過去の記事をすべて見る</span>
+            <span class="news-card-more-arrow">→</span>
           </a>
         </div>
       </div>
