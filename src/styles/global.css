@@ -1080,13 +1080,6 @@ button {
   margin-top: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.25s ease, transform 0.25s var(--easing);
-}
-.news-card-more:hover .news-card-more-cta {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .related-work-link {
