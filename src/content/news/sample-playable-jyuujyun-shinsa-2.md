@@ -3,14 +3,14 @@ title: "従順審査２体験版、プレイアブルキャラクター決定！
 date: 2026-02-28
 category: "devlog"
 relatedWorkSlugs:
-  - "jyunjun-shinsa"
+  - "jyunjun-shinsa-2"
 ---
 
 皆様初めまして。ダウグアングジングと申します。
 現在、従順審査２の体験版を開発中です！
 **今回の体験版を担ってもらうのは、** **<span style="font-size: 150%"><span style="color: #d50000">中村 莉緒</span></span>** **ちゃんに決定いたしました！**
 
-![従順審査2 中村莉緒](https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg)
+![従順審査2 中村莉緒](https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg)
 
 開発前は、「特に特徴無いキャラになってないか...？」と心配でしたが、今ではそんな心配は一切なく、とても可愛らしい振る舞いをしてくれています。
 

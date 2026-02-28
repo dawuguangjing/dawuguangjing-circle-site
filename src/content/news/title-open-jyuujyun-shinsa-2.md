@@ -3,7 +3,7 @@ title: "次回作の作品名決定！「従順審査２」！！"
 date: 2026-02-26
 category: "devlog"
 relatedWorkSlugs:
-  - "jyunjun-shinsa"
+  - "jyunjun-shinsa-2"
 ---
 
 皆様はじめまして。
