@@ -47,11 +47,18 @@ const ageTtl = AGE_GATE_TTL_MS;
     {/* 年齢確認済みなら <html> に age-verified クラスを付与（レンダリング前に同期実行してフラッシュを防ぐ） */}
     {!disableAgeGate && (
       <script is:inline define:vars={{ ageKey }}>
-        try {
-          var _saved = Number(localStorage.getItem(ageKey) || 0);
-          if (_saved <= Date.now()) _saved = Number(sessionStorage.getItem(ageKey) || 0);
-          if (_saved > Date.now()) document.documentElement.classList.add('age-verified');
-        } catch(e) {}
+        function _checkAge() {
+          try {
+            var _saved = Number(localStorage.getItem(ageKey) || 0);
+            if (_saved <= Date.now()) _saved = Number(sessionStorage.getItem(ageKey) || 0);
+            if (_saved > Date.now()) document.documentElement.classList.add('age-verified');
+          } catch(e) {}
+        }
+        // 初回レンダリング前に同期実行（フラッシュ防止）
+        _checkAge();
+        // View Transitions でページが差し替わるたびに再チェック
+        // （Astroは遷移時に <html> の class をリセットするため）
+        document.addEventListener('astro:after-swap', _checkAge);
       </script>
     )}
     <ViewTransitions />
