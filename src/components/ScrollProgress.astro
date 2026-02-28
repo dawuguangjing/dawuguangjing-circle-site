@@ -1,6 +1,9 @@
 ---
+import { withBase } from '../utils/withBase';
 ---
-<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true">
+  <img class="scroll-progress-tuna" src={withBase('images/tuna.png')} alt="" width="22" height="22" />
+</div>
 
 <script>
   // Scroll handler uses getElementById each time so it survives page swaps

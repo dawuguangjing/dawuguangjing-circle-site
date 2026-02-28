@@ -586,6 +586,24 @@ button {
   z-index: 300;
   transition: width 0.08s linear;
   pointer-events: none;
+  overflow: visible;
+}
+
+.scroll-progress-tuna {
+  position: absolute;
+  right: -11px;
+  top: 0;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+  animation: tuna-swim-progress 1.4s ease-in-out infinite;
+}
+
+@keyframes tuna-swim-progress {
+  0%   { transform: scaleX(-1) rotate(-7deg) translateY(1px); }
+  50%  { transform: scaleX(-1) rotate(4deg)  translateY(-4px); }
+  100% { transform: scaleX(-1) rotate(-7deg) translateY(1px); }
 }
 
 /* ── Announcement Bar ── */
