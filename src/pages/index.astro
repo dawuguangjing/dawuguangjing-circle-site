@@ -11,7 +11,8 @@ import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl }
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
 const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
-const heroWork = allWorks[0];
+const now = new Date();
+const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
 ---
 
 <BaseLayout
