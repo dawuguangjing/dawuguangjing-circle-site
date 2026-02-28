@@ -36,7 +36,7 @@ relatedWorkSlugs:
 
 手触りの良さと没入感が圧倒的な、ダウグアングジングの好きなゲームは、Inscription（インスクリプション）、Balatro（バラトロ）です。
 これらのゲームについてはまた別の機会に語れたらと思っております...！
-（ちなみに成人ゲームでは、サークルALLDICE様の[侵蝕のヒプノシスシリーズ](https://dlaf.jp/maniax/dlaf/=/t/s/link/work/aid/dawuguangjingcien/id/RJ01082260.html)です。）
+（ちなみに成人ゲームでは、サークルALLDICE様の[侵蝕のヒプノシスシリーズ](https://dlaf.jp/maniax/dlaf/=/t/s/link/work/aid/dawuguangjing/id/RJ01082260.html)です。）
 
 <a rel="noopener sponsored" href="https://storage.googleapis.com/dawuguangjing-assets/focus.png" target="_blank"><img itemprop="image" src="//img.dlsite.jp/modpub/images2/work/doujin/RJ01083000/RJ01082260_img_main.jpg" alt="" border="0" class="target_type" /></a>
 
