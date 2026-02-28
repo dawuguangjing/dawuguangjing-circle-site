@@ -2250,7 +2250,8 @@ html.age-verified .age-overlay {
   }
 
   /* スマホではカードが画面幅いっぱいになりマグロが隠れるため、前面に出す */
-  .age-gate .tuna-tank {
+  .age-gate .tuna-tank,
+  .age-overlay .tuna-tank {
     z-index: 2;
   }
 }

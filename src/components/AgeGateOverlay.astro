@@ -1,4 +1,6 @@
 ---
+import TunaTank from './TunaTank.astro';
+
 interface Props {
   ageKey: string;
   ageTtl: number;
@@ -8,6 +10,16 @@ const { ageKey, ageTtl } = Astro.props;
 ---
 
 <div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title">
+  <TunaTank
+    triggerSelector="#age-confirm-overlay"
+    fishes={[
+      { dir: 'r', top: '12%', dur: '14s', delay: '0s',   size: 40 },
+      { dir: 'l', top: '35%', dur: '20s', delay: '-6s',  size: 56 },
+      { dir: 'r', top: '60%', dur: '25s', delay: '-11s', size: 64 },
+      { dir: 'l', top: '80%', dur: '11s', delay: '-3s',  size: 30 },
+      { dir: 'r', top: '48%', dur: '18s', delay: '-8s',  size: 48 },
+    ]}
+  />
   <div class="age-gate-card">
     <h1 id="age-overlay-title">年齢確認</h1>
     <p>
