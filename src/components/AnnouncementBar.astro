@@ -8,7 +8,7 @@ interface Props {
 const { message, href, storageKey } = Astro.props;
 ---
 
-<div class="announcement-bar" id="announcement-bar">
+<div class="announcement-bar" id="announcement-bar" data-storage-key={storageKey}>
   <div class="container announcement-bar-inner">
     {href
       ? <a class="announcement-bar-text" href={href} target="_blank" rel="noopener noreferrer">{message}</a>
@@ -22,18 +22,25 @@ const { message, href, storageKey } = Astro.props;
   </div>
 </div>
 
-<script is:inline define:vars={{ storageKey }}>
-  (function () {
-    var bar = document.getElementById('announcement-bar');
-    if (!bar) return;
-    if (localStorage.getItem(storageKey)) { bar.remove(); return; }
-    bar.querySelector('.announcement-bar-close').addEventListener('click', function () {
-      localStorage.setItem(storageKey, '1');
-      bar.style.maxHeight = '0';
-      bar.style.paddingTop = '0';
-      bar.style.paddingBottom = '0';
-      bar.style.overflow = 'hidden';
-      bar.addEventListener('transitionend', function () { bar.remove(); }, { once: true });
+<script>
+  function initAnnouncementBar() {
+    const bar = document.getElementById('announcement-bar') as HTMLElement | null;
+    if (!bar || (bar as any)._barInited) return;
+    (bar as any)._barInited = true;
+
+    const key = bar.dataset.storageKey!;
+
+    try {
+      if (localStorage.getItem(key)) { bar.remove(); return; }
+    } catch (e) {}
+
+    bar.querySelector('.announcement-bar-close')?.addEventListener('click', () => {
+      try { localStorage.setItem(key, '1'); } catch (e) {}
+      bar.classList.add('is-hiding');
+      // transitionend の代わりに setTimeout で確実に除去
+      setTimeout(() => bar.remove(), 350);
     });
-  })();
+  }
+
+  document.addEventListener('astro:page-load', initAnnouncementBar);
 </script>
