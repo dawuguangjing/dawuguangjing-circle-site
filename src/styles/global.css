@@ -1043,11 +1043,11 @@ button {
   height: 100%;
   min-height: 180px;
   padding: 36px 24px;
-  background: var(--panel);
-  border: 2px dashed rgba(0, 0, 0, 0.13);
+  background: var(--accent-alpha-05);
+  border: 2px dashed var(--accent-alpha-25);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
-  color: var(--ink-dim);
+  color: var(--accent);
   text-decoration: none;
   text-align: center;
   transition: border-color 0.25s ease, border-style 0.25s ease,
@@ -1057,33 +1057,21 @@ button {
 .news-card-more:hover {
   border-color: var(--accent);
   border-style: solid;
-  background: var(--accent-alpha-05);
+  background: var(--accent-alpha-08);
   box-shadow: var(--shadow-accent-hover);
   transform: translateY(-3px);
 }
 .news-card-more-icon {
-  color: var(--ink-dim);
-  opacity: 0.45;
-  transition: opacity 0.25s ease, transform 0.3s var(--easing), color 0.25s ease;
+  opacity: 0.7;
+  transition: opacity 0.25s ease, transform 0.3s var(--easing);
 }
 .news-card-more:hover .news-card-more-icon {
-  color: var(--accent);
   opacity: 1;
   transform: scale(1.1);
 }
 .news-card-more-label {
   font-size: 0.95rem;
   font-weight: 700;
-  color: var(--ink-bright);
-  transition: color 0.25s ease;
-}
-.news-card-more:hover .news-card-more-label {
-  color: var(--accent);
-}
-.news-card-more-sub {
-  font-size: 0.74rem;
-  color: var(--ink-dim);
-  letter-spacing: 0.06em;
 }
 .news-card-more-cta {
   display: inline-flex;
@@ -1092,7 +1080,6 @@ button {
   margin-top: 4px;
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--accent);
   opacity: 0;
   transform: translateY(4px);
   transition: opacity 0.25s ease, transform 0.25s var(--easing);
