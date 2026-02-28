@@ -583,7 +583,7 @@ button {
   height: 3px;
   width: 0%;
   background: var(--accent);
-  z-index: 15; /* ヘッダー(z-index:20)より下 → ヘッダーがマグロのはみ出し部分を隠す */
+  z-index: 25; /* ヘッダー(z-index:20)より上 */
   transition: width 0.08s linear;
   pointer-events: none;
   overflow: visible;
@@ -597,13 +597,7 @@ button {
   height: 22px;
   object-fit: contain;
   pointer-events: none;
-  animation: tuna-swim-progress 1.4s ease-in-out infinite;
-}
-
-@keyframes tuna-swim-progress {
-  0%   { transform: scaleX(-1) rotate(-7deg) translateY(1px); }
-  50%  { transform: scaleX(-1) rotate(4deg)  translateY(-4px); }
-  100% { transform: scaleX(-1) rotate(-7deg) translateY(1px); }
+  transform: scaleX(-1) rotate(-10deg); /* 右向き・やや前傾き */
 }
 
 /* ── Announcement Bar ── */
