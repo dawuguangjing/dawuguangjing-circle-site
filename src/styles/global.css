@@ -597,7 +597,8 @@ button {
   height: 22px;
   object-fit: contain;
   pointer-events: none;
-  transform: scaleX(-1) rotate(-10deg); /* 右向き・やや前傾き */
+  transform: scaleX(-1);
+  background: #fff;
 }
 
 /* ── Announcement Bar ── */
