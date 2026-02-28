@@ -23,4 +23,56 @@ images:
   screenshots: []
 ---
 
-近日公開予定。続報をお待ちください。
+## 制作進捗
+
+<ul class="timeline">
+  <li class="timeline-item is-done">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">シナリオ執筆</p>
+      <p class="timeline-status">完了</p>
+    </div>
+  </li>
+  <li class="timeline-item is-done">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">キャラクターデザイン</p>
+      <p class="timeline-status">完了</p>
+    </div>
+  </li>
+  <li class="timeline-item is-active">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">CG 制作</p>
+      <p class="timeline-status">進行中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">プログラミング・実装</p>
+      <p class="timeline-status">準備中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">サウンド・BGM</p>
+      <p class="timeline-status">準備中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">テスト・デバッグ</p>
+      <p class="timeline-status">未着手</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">リリース</p>
+      <p class="timeline-status">未定</p>
+    </div>
+  </li>
+</ul>

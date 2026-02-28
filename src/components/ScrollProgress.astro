@@ -1,0 +1,22 @@
+---
+---
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+
+<script>
+  // Scroll handler uses getElementById each time so it survives page swaps
+  function onScroll() {
+    const bar = document.getElementById('scroll-progress');
+    if (!bar) return;
+    const scrolled = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+  }
+
+  // Register listener once; reset bar to 0 on each page load
+  window.addEventListener('scroll', onScroll, { passive: true });
+  document.addEventListener('astro:page-load', () => {
+    const bar = document.getElementById('scroll-progress');
+    if (bar) bar.style.width = '0%';
+    onScroll();
+  });
+</script>

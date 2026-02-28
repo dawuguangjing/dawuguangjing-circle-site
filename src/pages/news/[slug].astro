@@ -8,6 +8,7 @@ import { categoryLabels } from '../../utils/labels';
 import { getWorkIndex } from '../../utils/collections';
 import { buildArticleSchema } from '../../utils/schema';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import ScrollProgress from '../../components/ScrollProgress.astro';
 
 export async function getStaticPaths() {
   const news = await getCollection('news');
@@ -26,6 +27,7 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
 ---
 
 <BaseLayout title={`${data.title} | 開発ログ`} description={data.title} image={data.eyecatch} type="article" publishedTime={data.date} jsonLd={articleJsonLd}>
+  <ScrollProgress />
   <div class="page-content">
     <div class="container">
       <Breadcrumb crumbs={[

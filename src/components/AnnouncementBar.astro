@@ -1,0 +1,39 @@
+---
+interface Props {
+  message: string;
+  href?: string;
+  storageKey: string;
+}
+
+const { message, href, storageKey } = Astro.props;
+---
+
+<div class="announcement-bar" id="announcement-bar">
+  <div class="container announcement-bar-inner">
+    {href
+      ? <a class="announcement-bar-text" href={href} target="_blank" rel="noopener noreferrer">{message}</a>
+      : <span class="announcement-bar-text">{message}</span>
+    }
+    <button class="announcement-bar-close" aria-label="閉じる">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script is:inline define:vars={{ storageKey }}>
+  (function () {
+    var bar = document.getElementById('announcement-bar');
+    if (!bar) return;
+    if (localStorage.getItem(storageKey)) { bar.remove(); return; }
+    bar.querySelector('.announcement-bar-close').addEventListener('click', function () {
+      localStorage.setItem(storageKey, '1');
+      bar.style.maxHeight = '0';
+      bar.style.paddingTop = '0';
+      bar.style.paddingBottom = '0';
+      bar.style.overflow = 'hidden';
+      bar.addEventListener('transitionend', function () { bar.remove(); }, { once: true });
+    });
+  })();
+</script>

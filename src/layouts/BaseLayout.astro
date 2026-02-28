@@ -1,11 +1,13 @@
 ---
 import '../styles/global.css';
+import { ViewTransitions } from 'astro:transitions';
 import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import BackToTop from '../components/BackToTop.astro';
 import AgeGateOverlay from '../components/AgeGateOverlay.astro';
-import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS } from '../utils/constants';
+import AnnouncementBar from '../components/AnnouncementBar.astro';
+import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT } from '../utils/constants';
 
 interface Props {
   title: string;
@@ -52,6 +54,7 @@ const ageTtl = AGE_GATE_TTL_MS;
         } catch(e) {}
       </script>
     )}
+    <ViewTransitions />
     <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} publishedTime={publishedTime} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
     <link rel="alternate" type="application/rss+xml" title="ダウグアングジング 開発ログ" href={`${base}rss.xml`} />
@@ -79,22 +82,32 @@ const ageTtl = AGE_GATE_TTL_MS;
     )}
 
     {/* コンテンツは常にレンダリングされる（クローラーがインデックス可能） */}
+    {!hideHeader && ANNOUNCEMENT && (
+      <AnnouncementBar
+        message={ANNOUNCEMENT.message}
+        href={ANNOUNCEMENT.href}
+        storageKey={`announce_${ANNOUNCEMENT.id}`}
+      />
+    )}
     {!hideHeader && <SiteHeader />}
     <main id="main-content"><slot /></main>
     {!hideFooter && <SiteFooter />}
     <BackToTop />
 
     <script>
-      const _animObserver = new IntersectionObserver(
-        (entries) => entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-visible');
-            _animObserver.unobserve(e.target);
-          }
-        }),
-        { threshold: 0.12 }
-      );
-      document.querySelectorAll('[data-anim]').forEach(el => _animObserver.observe(el));
+      function initAnimations() {
+        const observer = new IntersectionObserver(
+          (entries) => entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-visible');
+              observer.unobserve(e.target);
+            }
+          }),
+          { threshold: 0.12 }
+        );
+        document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
+      }
+      document.addEventListener('astro:page-load', initAnimations);
     </script>
   </body>
 </html>

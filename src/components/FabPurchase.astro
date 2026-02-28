@@ -15,23 +15,26 @@ const { targetId } = Astro.props;
 </button>
 
 <script>
-  const fab = document.getElementById('fab-purchase') as HTMLButtonElement | null;
-  const targetId = fab?.dataset.target;
-  const target = targetId ? document.getElementById(targetId) : null;
+  function initFab() {
+    const fab = document.getElementById('fab-purchase') as HTMLButtonElement | null;
+    const targetId = fab?.dataset.target;
+    const target = targetId ? document.getElementById(targetId) : null;
 
-  if (fab && target) {
-    const rect = target.getBoundingClientRect();
-    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
-    fab.classList.toggle('is-hidden', isVisible);
+    if (fab && target) {
+      const rect = target.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+      fab.classList.toggle('is-hidden', isVisible);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => { fab.classList.toggle('is-hidden', entry.isIntersecting); },
-      { threshold: 0.1 }
-    );
-    observer.observe(target);
+      const observer = new IntersectionObserver(
+        ([entry]) => { fab.classList.toggle('is-hidden', entry.isIntersecting); },
+        { threshold: 0.1 }
+      );
+      observer.observe(target);
 
-    fab.addEventListener('click', () => {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+      fab.addEventListener('click', () => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    }
   }
+  document.addEventListener('astro:page-load', initFab);
 </script>

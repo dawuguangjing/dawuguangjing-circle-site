@@ -45,6 +45,7 @@ const { fishes, triggerSelector, goldSpawnRate } = Astro.props;
 </div>
 
 <script>
+  function initTunaTanks() {
   document.querySelectorAll<HTMLElement>('.tuna-tank[data-trigger]').forEach(tank => {
     const triggerSelector = tank.dataset.trigger!;
     const goldRateStr = tank.dataset.goldRate;
@@ -127,4 +128,6 @@ const { fishes, triggerSelector, goldSpawnRate } = Astro.props;
       trigger.addEventListener('mouseleave', onLeave);
     });
   });
+  }
+  document.addEventListener('astro:page-load', initTunaTanks);
 </script>
