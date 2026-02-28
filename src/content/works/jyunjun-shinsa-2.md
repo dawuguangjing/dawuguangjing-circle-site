@@ -11,10 +11,10 @@ environments:
   browserPc: false
   browserMobileBeta: false
 volume:
-  playTimeMin: 0
+  playTimeMin: 100
   cgCount: 0
   hSceneCount: 0
-  branching: "none"
+  branching: "multi"
 aiUsage:
   level: "partial"
   noteShort: "一部のグラフィック素材にAIを使用しています。"
