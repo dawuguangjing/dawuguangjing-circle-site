@@ -22,6 +22,8 @@ const { Content } = await entry.render();
 const data = entry.data;
 
 const imageCount = resolveImageCount(data);
+const videoCount = data.videos?.length ?? 0;
+const hasMedia = data.images.length > 0 || videoCount > 0;
 
 const workIndex = await getWorkIndex();
 const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
@@ -58,11 +60,16 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
             </div>
           )}
 
-          <!-- Image Grid -->
-          {data.images.length > 0 && (
+          <!-- Media Grid (images + videos) -->
+          {hasMedia && (
             <div class="gallery-detail-grid" data-anim style="--anim-delay: 0.1s">
               {data.images.map((img, i) => (
-                <div class="gallery-detail-item">
+                <div
+                  class="gallery-detail-item"
+                  data-lightbox-src={img}
+                  data-lightbox-type="image"
+                  data-lightbox-alt={`${data.title} ${i + 1}`}
+                >
                   <img
                     src={img}
                     alt={`${data.title} ${i + 1}`}
@@ -70,6 +77,27 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
                     width="400"
                     height="300"
                   />
+                </div>
+              ))}
+              {(data.videos ?? []).map((videoUrl) => (
+                <div
+                  class="gallery-detail-item gallery-detail-item--video"
+                  data-lightbox-src={videoUrl}
+                  data-lightbox-type="video"
+                >
+                  <video
+                    src={videoUrl}
+                    muted
+                    loop
+                    playsinline
+                    preload="metadata"
+                    class="gallery-detail-video"
+                  ></video>
+                  <div class="gallery-detail-play-icon" aria-hidden="true">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M8 5v14l11-7z"/>
+                    </svg>
+                  </div>
                 </div>
               ))}
             </div>
@@ -98,6 +126,12 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
                 <td>収録枚数</td>
                 <td>{imageCount}枚</td>
               </tr>
+              {videoCount > 0 && (
+                <tr>
+                  <td>動画本数</td>
+                  <td>{videoCount}本</td>
+                </tr>
+              )}
             </tbody>
           </table>
 
@@ -140,7 +174,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
       </div>
     </section>
 
-    <Lightbox imageSelector=".gallery-detail-item img" />
+    <Lightbox itemSelector=".gallery-detail-item" />
 
     <section class="container section--compact">
       <div class="back-link">
@@ -148,5 +182,15 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
       </div>
     </section>
   </div>
+
+  <!-- ホバーで動画プレビューを再生 -->
+  <script>
+    document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
+      const video = item.querySelector('video');
+      if (!video) return;
+      item.addEventListener('mouseenter', () => video.play().catch(() => {}));
+      item.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+    });
+  </script>
 
 </BaseLayout>

@@ -66,6 +66,7 @@ const gallery = defineCollection({
     isR18: z.boolean(),
     cover: z.string(),
     images: z.array(z.string()),
+    videos: z.array(z.string()).optional(),
     imageCount: z.number().int().nonnegative().optional(),
     relatedWorkSlugs: z.array(z.string()).optional(),
     platformLinks: storeLinks.optional(),

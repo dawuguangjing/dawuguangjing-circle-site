@@ -1,40 +1,66 @@
 ---
 interface Props {
-  /** ライトボックスで表示する画像の CSS セレクター */
-  imageSelector: string;
+  /**
+   * ライトボックスで表示するメディアアイテムの CSS セレクター。
+   * 各要素は data-lightbox-src / data-lightbox-type (image|video) / data-lightbox-alt 属性を持つこと。
+   */
+  itemSelector: string;
 }
 
-const { imageSelector } = Astro.props;
+const { itemSelector } = Astro.props;
 ---
 
 <div class="lightbox-overlay" id="lightbox" aria-hidden="true">
   <button class="lightbox-close" aria-label="閉じる">&times;</button>
-  <button class="lightbox-prev" aria-label="前の画像">
+  <button class="lightbox-prev" aria-label="前のメディア">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
   </button>
-  <img src="" alt="" />
-  <button class="lightbox-next" aria-label="次の画像">
+  <div class="lightbox-media">
+    <img class="lightbox-img" src="" alt="" />
+    <video class="lightbox-video" src="" controls playsinline></video>
+  </div>
+  <button class="lightbox-next" aria-label="次のメディア">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
   <div class="lightbox-counter" aria-live="polite"></div>
 </div>
 
-<script is:inline define:vars={{ imageSelector }}>
+<script is:inline define:vars={{ itemSelector }}>
   const lightbox = document.getElementById('lightbox');
-  const lbImg = lightbox?.querySelector('img');
-  const lbClose = lightbox?.querySelector('.lightbox-close');
-  const lbPrev = lightbox?.querySelector('.lightbox-prev');
-  const lbNext = lightbox?.querySelector('.lightbox-next');
+  const lbImg   = lightbox?.querySelector('.lightbox-img');
+  const lbVideo = lightbox?.querySelector('.lightbox-video');
+  const lbClose  = lightbox?.querySelector('.lightbox-close');
+  const lbPrev   = lightbox?.querySelector('.lightbox-prev');
+  const lbNext   = lightbox?.querySelector('.lightbox-next');
   const lbCounter = lightbox?.querySelector('.lightbox-counter');
 
-  const items = Array.from(document.querySelectorAll(imageSelector));
+  const itemEls = Array.from(document.querySelectorAll(itemSelector));
+  const items = itemEls.map((el) => ({
+    src:  el.dataset.lightboxSrc  || '',
+    type: el.dataset.lightboxType || 'image',
+    alt:  el.dataset.lightboxAlt  || '',
+  }));
   let current = 0;
 
-  function showImage(index) {
-    if (!lightbox || !lbImg) return;
+  function showMedia(index) {
+    if (!lightbox || !lbImg || !lbVideo) return;
     current = (index + items.length) % items.length;
-    lbImg.src = items[current].src;
-    lbImg.alt = items[current].alt;
+    const { src, type, alt } = items[current];
+
+    if (type === 'video') {
+      lbImg.style.display = 'none';
+      lbVideo.style.display = 'block';
+      lbVideo.src = src;
+      lbVideo.play().catch(() => {});
+    } else {
+      lbVideo.pause();
+      lbVideo.src = '';
+      lbVideo.style.display = 'none';
+      lbImg.style.display = '';
+      lbImg.src = src;
+      lbImg.alt = alt;
+    }
+
     lbPrev?.classList.toggle('is-hidden', items.length <= 1);
     lbNext?.classList.toggle('is-hidden', items.length <= 1);
     if (lbCounter) lbCounter.textContent = items.length > 1 ? `${current + 1} / ${items.length}` : '';
@@ -42,28 +68,34 @@ const { imageSelector } = Astro.props;
 
   function openLightbox(index) {
     if (!lightbox) return;
-    showImage(index);
+    showMedia(index);
     lightbox.classList.add('is-active');
     lightbox.setAttribute('aria-hidden', 'false');
   }
 
   function closeLightbox() {
-    lightbox?.classList.remove('is-active');
-    lightbox?.setAttribute('aria-hidden', 'true');
+    if (!lightbox || !lbVideo) return;
+    lbVideo.pause();
+    lbVideo.src = '';
+    lightbox.classList.remove('is-active');
+    lightbox.setAttribute('aria-hidden', 'true');
   }
 
-  items.forEach((img, i) => {
-    img.addEventListener('click', () => openLightbox(i));
+  itemEls.forEach((el, i) => {
+    el.addEventListener('click', () => openLightbox(i));
   });
 
-  lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); showImage(current - 1); });
-  lbNext?.addEventListener('click', (e) => { e.stopPropagation(); showImage(current + 1); });
+  // メディア本体クリックは overlay に伝播させない（動画コントロール操作で閉じないよう）
+  lightbox?.querySelector('.lightbox-media')?.addEventListener('click', (e) => e.stopPropagation());
+
+  lbPrev?.addEventListener('click', (e) => { e.stopPropagation(); showMedia(current - 1); });
+  lbNext?.addEventListener('click', (e) => { e.stopPropagation(); showMedia(current + 1); });
   lbClose?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
   lightbox?.addEventListener('click', closeLightbox);
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('is-active')) return;
     if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') showImage(current - 1);
-    if (e.key === 'ArrowRight') showImage(current + 1);
+    if (e.key === 'ArrowLeft') showMedia(current - 1);
+    if (e.key === 'ArrowRight') showMedia(current + 1);
   });
 </script>

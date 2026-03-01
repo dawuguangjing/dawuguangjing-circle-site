@@ -1,0 +1,15 @@
+---
+title: "動画サンプル（テスト用）"
+description: "動画表示機能の動作確認用サンプルギャラリーです。"
+releaseDate: 2026-03-01
+isR18: false
+cover: "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
+images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
+videos:
+  - "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+  - "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+---
+
+動画プレイヤーの動作確認用エントリーです。ホバーでプレビュー再生、クリックでライトボックス表示をご確認ください。
