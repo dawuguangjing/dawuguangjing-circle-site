@@ -653,7 +653,7 @@ a.announcement-bar-text:hover {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: #ffffff;
+  background: var(--panel);
   border-bottom: 1px solid var(--stroke);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
@@ -661,7 +661,6 @@ a.announcement-bar-text:hover {
 .site-header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 0;
   height: 52px;
 }
@@ -712,6 +711,7 @@ a.announcement-bar-text:hover {
   letter-spacing: 0.02em;
   height: 100%;
   align-items: stretch;
+  margin-left: auto;
 }
 
 .nav-links a {
@@ -776,6 +776,15 @@ a.announcement-bar-text:hover {
 .nav-links a:hover .nav-char {
   animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
 }
+
+/* ── Header Right Group ── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
+}
+
 
 /* ── Mobile Menu Toggle ── */
 .mobile-menu-toggle {
@@ -2165,7 +2174,7 @@ html.age-verified .age-overlay {
     left: 0;
     right: 0;
     flex-direction: column;
-    background: #ffffff;
+    background: var(--panel);
     border-top: 1px solid var(--stroke);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     padding: 8px 0 20px;
@@ -2811,6 +2820,37 @@ html.age-verified .age-overlay {
   .hero-detail-arrow {
     animation: none;
   }
+}
+
+/* ── Dark mode: ヒーローバナー ── */
+[data-theme="dark"] .hero-banner {
+  background: var(--panel);
+}
+
+/* ── Dark mode: 世界観セクション（スコープ付きCSSより高詳細度で確実に上書き） ── */
+html[data-theme="dark"] .world-section {
+  background: var(--bg);
+  color: var(--ink);
+}
+html[data-theme="dark"] .world-card {
+  background: var(--panel);
+  border-color: var(--stroke);
+}
+html[data-theme="dark"] .world-card-title { color: var(--ink-bright); }
+html[data-theme="dark"] .world-card-body  { color: var(--ink-dim); }
+html[data-theme="dark"] .world-title      { color: var(--ink-bright); }
+html[data-theme="dark"] .world-subtitle   { color: var(--ink-dim); }
+html[data-theme="dark"] .world-label      { color: var(--accent-2); }
+
+/* ── Dark mode: トグルボタン ホバー色 ── */
+html[data-theme="dark"] .dark-mode-toggle:hover {
+  background: rgba(251, 192, 45, 0.14);
+}
+
+
+/* ── Dark mode: nav リンク通常時を白色に ── */
+html[data-theme="dark"] .nav-links a:not(.is-active) {
+  color: var(--ink-bright);
 }
 
 /* works-grid 内のラッパー div がカードを満たすように */

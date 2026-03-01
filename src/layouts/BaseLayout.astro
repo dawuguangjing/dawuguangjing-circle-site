@@ -5,6 +5,7 @@ import Seo from '../components/Seo.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import BackToTop from '../components/BackToTop.astro';
+import PageTransition from '../components/PageTransition.astro';
 import AgeGateOverlay from '../components/AgeGateOverlay.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
 import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT } from '../utils/constants';
@@ -45,6 +46,30 @@ const ageTtl = AGE_GATE_TTL_MS;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* 年齢確認済みなら <html> に age-verified クラスを付与（レンダリング前に同期実行してフラッシュを防ぐ） */}
+    {/* ダークモード初期化（レンダリング前に同期実行してフラッシュを防ぐ） */}
+    <script is:inline>
+      (function() {
+        try {
+          var saved = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          }
+        } catch(e) {}
+      })();
+      // View Transitions 後にも再適用
+      document.addEventListener('astro:after-swap', function() {
+        try {
+          var saved = localStorage.getItem('theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.removeAttribute('data-theme');
+          }
+        } catch(e) {}
+      });
+    </script>
     {!disableAgeGate && (
       <script is:inline define:vars={{ ageKey }}>
         function _checkAge() {
@@ -100,6 +125,7 @@ const ageTtl = AGE_GATE_TTL_MS;
     <main id="main-content"><slot /></main>
     {!hideFooter && <SiteFooter />}
     <BackToTop />
+    <PageTransition />
 
     <script>
       function initAnimations() {

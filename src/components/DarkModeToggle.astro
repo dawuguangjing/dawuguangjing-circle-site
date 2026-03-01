@@ -1,0 +1,155 @@
+---
+---
+<button
+  id="dark-mode-toggle"
+  class="dark-mode-toggle"
+  aria-label="ダークモードを切り替える"
+  title="ダークモード切り替え"
+>
+  {/* Sun icon: オレンジ塗りつぶし（ライトモード表示） */}
+  <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+    <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="2"    x2="12" y2="5"/>
+      <line x1="12" y1="19"   x2="12" y2="22"/>
+      <line x1="4.22" y1="4.22"   x2="6.34" y2="6.34"/>
+      <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+      <line x1="2"  y1="12"   x2="5"  y2="12"/>
+      <line x1="19" y1="12"   x2="22" y2="12"/>
+      <line x1="4.22" y1="19.78"  x2="6.34" y2="17.66"/>
+      <line x1="17.66" y1="6.34"  x2="19.78" y2="4.22"/>
+    </g>
+  </svg>
+  {/* Moon icon: 黄色塗りつぶし（ダークモード表示） */}
+  <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="currentColor"/>
+  </svg>
+</button>
+
+<style>
+.dark-mode-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+
+.dark-mode-toggle:hover {
+  background: rgba(249, 115, 22, 0.12);
+}
+
+/* JS が opacity を制御するため、初期値は 0 に設定してちらつきを防ぐ */
+.icon-sun, .icon-moon {
+  position: absolute;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.icon-sun  { color: #F97316; }
+.icon-moon { color: #FBC02D; }
+</style>
+
+<script>
+  const STORAGE_KEY = 'theme';
+  const SLIDE_PX = 24;
+  const ANIM_OPTS: KeyframeAnimationOptions = {
+    duration: 260,
+    easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    fill: 'forwards',
+  };
+
+  function getPreferred(): 'dark' | 'light' {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'dark' || saved === 'light') return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+
+  function applyTheme(theme: 'dark' | 'light') {
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }
+
+  /** アニメーションなしで即時表示切り替え（初期化・ページ遷移後用） */
+  function setInstant(showEl: HTMLElement, hideEl: HTMLElement) {
+    showEl.getAnimations().forEach(a => a.cancel());
+    hideEl.getAnimations().forEach(a => a.cancel());
+    showEl.style.opacity = '1';
+    showEl.style.transform = 'translateX(0)';
+    hideEl.style.opacity = '0';
+    hideEl.style.transform = 'translateX(0)';
+  }
+
+  /**
+   * WAAPI でスライドアニメーション。
+   * element.animate() はキーフレーム 0% を即時適用するため、
+   * CSS クラスの付け外しによるちらつきが起きない。
+   * cancel() 後にインラインスタイルを同期的に上書きするため
+   * レンダリングフレームが挟まらず安全。
+   */
+  function animateSwitch(outEl: HTMLElement, inEl: HTMLElement) {
+    // 進行中のアニメーションをキャンセル（要素はインラインスタイルに戻る）
+    outEl.getAnimations().forEach(a => a.cancel());
+    inEl.getAnimations().forEach(a => a.cancel());
+
+    // cancel() と同じ同期タスク内でインラインスタイルを確定させる
+    // → ブラウザがレンダリングするより先に正しい状態を設定
+    outEl.style.opacity = '1';
+    outEl.style.transform = 'translateX(0)';
+    inEl.style.opacity = '0';
+    inEl.style.transform = `translateX(${SLIDE_PX}px)`;
+
+    outEl.animate(
+      [
+        { transform: 'translateX(0)',             opacity: 1 },
+        { transform: `translateX(-${SLIDE_PX}px)`, opacity: 0 },
+      ],
+      ANIM_OPTS
+    );
+    inEl.animate(
+      [
+        { transform: `translateX(${SLIDE_PX}px)`, opacity: 0 },
+        { transform: 'translateX(0)',              opacity: 1 },
+      ],
+      ANIM_OPTS
+    );
+  }
+
+  function init() {
+    const btn = document.getElementById('dark-mode-toggle');
+    if (!btn) return;
+    const sunEl = btn.querySelector<HTMLElement>('.icon-sun');
+    const moonEl = btn.querySelector<HTMLElement>('.icon-moon');
+    if (!sunEl || !moonEl) return;
+
+    const theme = getPreferred();
+    if (theme === 'dark') {
+      setInstant(moonEl, sunEl);
+    } else {
+      setInstant(sunEl, moonEl);
+    }
+
+    btn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const next = current === 'dark' ? 'light' : 'dark';
+      localStorage.setItem(STORAGE_KEY, next);
+      applyTheme(next);
+      const [outEl, inEl] = next === 'dark' ? [sunEl, moonEl] : [moonEl, sunEl];
+      animateSwitch(outEl, inEl);
+    });
+  }
+
+  // View Transitions 後もイベントを再バインド
+  document.addEventListener('astro:page-load', init);
+</script>
