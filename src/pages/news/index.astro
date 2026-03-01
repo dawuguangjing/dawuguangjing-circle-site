@@ -73,4 +73,11 @@ const categories = Object.entries(categoryLabels) as [string, string][];
       });
     });
   });
+
+  // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
+  const urlCat = new URL(window.location.href).searchParams.get('category');
+  if (urlCat) {
+    const target = Array.from(chips).find((c) => c.dataset.category === urlCat);
+    target?.click();
+  }
 </script>

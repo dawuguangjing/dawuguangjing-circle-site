@@ -46,6 +46,8 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
   function openMenu() {
     if (!toggle || !nav) return;
+    // メニューを開く際はヘッダーを強制表示（hide-on-scroll で隠れている場合）
+    document.querySelector<HTMLElement>('.site-header')?.classList.remove('is-hidden');
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'メニューを閉じる');
     nav.classList.add('is-open');
@@ -100,5 +102,25 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     document.addEventListener('astro:before-preparation', closeMenu);
     // back/forward ナビゲーション後もメニューが残らないように
     document.addEventListener('astro:after-swap', closeMenu);
+
   }
+
+  // ── 下スクロールで隠す・上スクロールで表示 ──
+  function initHideOnScroll() {
+    const header = document.querySelector<HTMLElement>('.site-header');
+    if (!header) return;
+    let lastY = window.scrollY;
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y < 80) {
+        header.classList.remove('is-hidden');
+      } else if (y > lastY + 4) {
+        header.classList.add('is-hidden');
+      } else if (y < lastY - 4) {
+        header.classList.remove('is-hidden');
+      }
+      lastY = y;
+    }, { passive: true });
+  }
+  document.addEventListener('astro:page-load', initHideOnScroll);
 </script>

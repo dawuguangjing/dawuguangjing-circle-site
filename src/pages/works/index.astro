@@ -26,6 +26,13 @@ const works = await getSortedWorks();
         <button class="filter-chip" data-filter="android" aria-pressed="false">Android</button>
       </div>
 
+      <div class="sort-bar">
+        <span class="sort-label">並び順:</span>
+        <button class="sort-btn is-active" data-sort="newest">新しい順</button>
+        <button class="sort-btn" data-sort="oldest">古い順</button>
+        <button class="sort-btn" data-sort="title">タイトル順</button>
+      </div>
+
       <div class="works-grid" id="works-grid">
         {works.map((entry, i) => (
           <div
@@ -38,6 +45,8 @@ const works = await getSortedWorks();
             data-browser={String(entry.data.environments.browserPc)}
             data-ios={String(entry.data.environments.ios)}
             data-android={String(entry.data.environments.android)}
+            data-release-date={String(entry.data.releaseDate.getTime())}
+            data-title={entry.data.title}
           >
             <WorkCard
               slug={entry.slug}
@@ -95,7 +104,7 @@ const works = await getSortedWorks();
       });
     }
 
-    chips.forEach((chip) => {
+    chips.forEach((chip, i) => {
       chip.addEventListener('click', () => {
         if (chip.dataset.filter === 'all') {
           // "すべて" → 他チップをリセットして "すべて" だけオン
@@ -117,6 +126,44 @@ const works = await getSortedWorks();
           }
         }
         applyFilters();
+      });
+
+      // 矢印キーでチップ間を移動
+      chip.addEventListener('keydown', (e) => {
+        let target: HTMLElement | null = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          target = chips[(i + 1) % chips.length];
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          target = chips[(i - 1 + chips.length) % chips.length];
+        }
+        target?.focus();
+      });
+    });
+
+    // ── ソート ──
+    const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));
+    const grid = document.getElementById('works-grid')!;
+
+    sortBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        sortBtns.forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const sort = btn.dataset.sort;
+        const sorted = [...items].sort((a, b) => {
+          if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
+          const da = Number(a.dataset.releaseDate);
+          const db = Number(b.dataset.releaseDate);
+          return sort === 'oldest' ? da - db : db - da;
+        });
+        sorted.forEach((el, idx) => {
+          el.style.setProperty('--anim-delay', `${idx * 0.05}s`);
+          el.classList.remove('is-visible');
+          grid.appendChild(el);
+          void el.offsetWidth;
+          if (el.style.display !== 'none') el.classList.add('is-visible');
+        });
       });
     });
   </script>

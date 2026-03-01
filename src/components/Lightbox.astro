@@ -23,16 +23,18 @@ const { itemSelector } = Astro.props;
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
   </button>
   <div class="lightbox-counter" aria-live="polite"></div>
+  <div class="lightbox-thumbs" role="list" aria-label="サムネイル一覧"></div>
 </div>
 
 <script is:inline define:vars={{ itemSelector }}>
-  const lightbox = document.getElementById('lightbox');
-  const lbImg   = lightbox?.querySelector('.lightbox-img');
-  const lbVideo = lightbox?.querySelector('.lightbox-video');
-  const lbClose  = lightbox?.querySelector('.lightbox-close');
-  const lbPrev   = lightbox?.querySelector('.lightbox-prev');
-  const lbNext   = lightbox?.querySelector('.lightbox-next');
+  const lightbox  = document.getElementById('lightbox');
+  const lbImg     = lightbox?.querySelector('.lightbox-img');
+  const lbVideo   = lightbox?.querySelector('.lightbox-video');
+  const lbClose   = lightbox?.querySelector('.lightbox-close');
+  const lbPrev    = lightbox?.querySelector('.lightbox-prev');
+  const lbNext    = lightbox?.querySelector('.lightbox-next');
   const lbCounter = lightbox?.querySelector('.lightbox-counter');
+  const lbThumbs  = lightbox?.querySelector('.lightbox-thumbs');
 
   const itemEls = Array.from(document.querySelectorAll(itemSelector));
   const items = itemEls.map((el) => ({
@@ -47,6 +49,10 @@ const { itemSelector } = Astro.props;
     if (!lightbox || !lbImg || !lbVideo) return;
     current = (index + items.length) % items.length;
     const { src, type, alt } = items[current];
+
+    // ピンチズームリセット
+    lbImg.style.transform = '';
+    _pinchScale = 1;
 
     if (type === 'video') {
       lbImg.style.display = 'none';
@@ -69,6 +75,14 @@ const { itemSelector } = Astro.props;
     lbPrev?.classList.toggle('is-hidden', items.length <= 1);
     lbNext?.classList.toggle('is-hidden', items.length <= 1);
     if (lbCounter) lbCounter.textContent = items.length > 1 ? `${current + 1} / ${items.length}` : '';
+
+    // サムネイルのアクティブ状態を更新
+    lbThumbs?.querySelectorAll('.lightbox-thumb').forEach((t, i) => {
+      t.classList.toggle('is-active', i === current);
+    });
+    // アクティブサムネイルを中央にスクロール
+    const activeThumb = lbThumbs?.querySelector('.lightbox-thumb.is-active');
+    activeThumb?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
   }
 
   function openLightbox(index) {
@@ -127,6 +141,64 @@ const { itemSelector } = Astro.props;
       }
     }
   });
+
+  // ── サムネイルストリップ生成 ──
+  if (lbThumbs && items.length > 1) {
+    items.forEach((item, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'lightbox-thumb';
+      btn.setAttribute('role', 'listitem');
+      btn.setAttribute('aria-label', `${i + 1} 枚目を表示`);
+      if (item.type === 'image') {
+        const img = document.createElement('img');
+        img.src = item.src;
+        img.alt = '';
+        img.setAttribute('aria-hidden', 'true');
+        btn.appendChild(img);
+      } else {
+        btn.textContent = '▶';
+      }
+      btn.addEventListener('click', (e) => { e.stopPropagation(); showMedia(i); });
+      lbThumbs.appendChild(btn);
+    });
+  }
+
+  // ── ピンチズーム対応（モバイル） ──
+  let _pinchScale = 1;
+  let _pinchStartDist = 0;
+  const lbMediaEl = lightbox?.querySelector('.lightbox-media');
+
+  lbMediaEl?.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+      _pinchStartDist = Math.hypot(
+        e.touches[1].clientX - e.touches[0].clientX,
+        e.touches[1].clientY - e.touches[0].clientY
+      );
+    }
+  }, { passive: true });
+
+  lbMediaEl?.addEventListener('touchmove', function(e) {
+    if (e.touches.length !== 2 || !lbImg || lbImg.style.display === 'none') return;
+    e.preventDefault();
+    const dist = Math.hypot(
+      e.touches[1].clientX - e.touches[0].clientX,
+      e.touches[1].clientY - e.touches[0].clientY
+    );
+    const scale = Math.min(4, Math.max(1, (_pinchScale * dist) / _pinchStartDist));
+    lbImg.style.transform = `scale(${scale})`;
+  }, { passive: false });
+
+  lbMediaEl?.addEventListener('touchend', function(e) {
+    if (e.touches.length < 2) {
+      const m = lbImg?.style.transform.match(/scale\(([\d.]+)\)/);
+      _pinchScale = m ? parseFloat(m[1]) : 1;
+      if (_pinchScale < 1.1) {
+        _pinchScale = 1;
+        if (lbImg) lbImg.style.transform = '';
+      }
+    }
+  }, { passive: true });
 
   // ── タッチスワイプ対応（モバイル） ──
   let _touchStartX = 0;

@@ -6,10 +6,17 @@ import { SITE_NAME } from '../../utils/constants';
 
 export async function getStaticPaths() {
   const characters = await getCollection('characters');
-  return characters.map((char) => ({ params: { slug: char.slug }, props: { char } }));
+  return characters.map((char, i) => ({
+    params: { slug: char.slug },
+    props: {
+      char,
+      prevChar: characters[i - 1] ?? null,
+      nextChar: characters[i + 1] ?? null,
+    }
+  }));
 }
 
-const { char } = Astro.props;
+const { char, prevChar, nextChar } = Astro.props;
 const { Content } = await char.render();
 
 // 関連作品を取得
@@ -81,6 +88,18 @@ const work = char.data.workSlug
           <Content />
         </div>
       </div>
+
+      {(prevChar || nextChar) && (
+        <nav class="char-pagination" data-anim aria-label="前後のキャラクターへ">
+          {prevChar
+            ? <a class="char-pagination-link" href={withBase(`characters/${prevChar.slug}/`)}>← {prevChar.data.name}</a>
+            : <span></span>
+          }
+          {nextChar && (
+            <a class="char-pagination-link" href={withBase(`characters/${nextChar.slug}/`)}>{nextChar.data.name} →</a>
+          )}
+        </nav>
+      )}
 
       <div class="char-nav" data-anim>
         <a class="char-nav-back" href={withBase('characters/')}>

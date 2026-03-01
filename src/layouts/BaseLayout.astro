@@ -50,6 +50,9 @@ const themeKey = THEME_STORAGE_KEY;
     {/* ダークモード初期化（レンダリング前に同期実行してフラッシュを防ぐ） */}
     <script is:inline define:vars={{ themeKey }}>
       (function() {
+        // スクロール位置の復元を有効化（back/forward で一覧ページの位置を保持）
+        if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
+
         try {
           var saved = localStorage.getItem(themeKey);
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -142,6 +145,37 @@ const themeKey = THEME_STORAGE_KEY;
         document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
       }
       document.addEventListener('astro:page-load', initAnimations);
+
+      function showToast(message: string) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('is-visible'));
+        setTimeout(() => {
+          toast.classList.remove('is-visible');
+          setTimeout(() => toast.remove(), 300);
+        }, 2500);
+      }
+
+      function initShareCopy() {
+        document.querySelectorAll<HTMLElement>('[data-copy-url]').forEach((btn) => {
+          if ((btn as any)._copyInited) return;
+          (btn as any)._copyInited = true;
+          btn.addEventListener('click', async () => {
+            const url = btn.dataset.copyUrl!;
+            try {
+              await navigator.clipboard.writeText(url);
+              btn.classList.add('share-btn--copied');
+              showToast('URLをコピーしました');
+              setTimeout(() => btn.classList.remove('share-btn--copied'), 2000);
+            } catch {
+              showToast('コピーに失敗しました');
+            }
+          });
+        });
+      }
+      document.addEventListener('astro:page-load', initShareCopy);
 
       function initImgSkeleton() {
         document.querySelectorAll<HTMLElement>('.img-skeleton').forEach((wrap) => {
