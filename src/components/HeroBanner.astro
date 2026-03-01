@@ -1,6 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import TunaTank from './TunaTank.astro';
+import StoreButtonGroup from './StoreButtonGroup.astro';
 
 interface Props {
   slug: string;
@@ -49,16 +50,10 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
       )}
 
       <div class="hero-banner-cta">
-        {platformLinks.fanza && (
-          <a class="store-button" href={platformLinks.fanza} target="_blank" rel="noopener noreferrer" data-store="fanza">
-            <span>FANZA で購入</span><span class="arrow">→</span>
-          </a>
-        )}
-        {platformLinks.dlsite && (
-          <a class="store-button" href={platformLinks.dlsite} target="_blank" rel="noopener noreferrer" data-store="dlsite">
-            <span>DLsite で購入</span><span class="arrow">→</span>
-          </a>
-        )}
+        <StoreButtonGroup links={[
+          ...(platformLinks.fanza  ? [{ label: 'FANZA で購入',  href: platformLinks.fanza,  store: 'fanza'  }] : []),
+          ...(platformLinks.dlsite ? [{ label: 'DLsite で購入', href: platformLinks.dlsite, store: 'dlsite' }] : []),
+        ]} />
       </div>
 
       <div class="hero-banner-sub">

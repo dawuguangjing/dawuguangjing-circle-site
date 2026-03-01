@@ -1,4 +1,5 @@
 ---
+import { THEME_STORAGE_KEY } from '../utils/constants';
 ---
 <button
   id="dark-mode-toggle"
@@ -59,7 +60,8 @@
 </style>
 
 <script>
-  const STORAGE_KEY = 'theme';
+  import { THEME_STORAGE_KEY } from '../utils/constants';
+  const STORAGE_KEY = THEME_STORAGE_KEY;
   const SLIDE_PX = 24;
   const ANIM_OPTS: KeyframeAnimationOptions = {
     duration: 260,

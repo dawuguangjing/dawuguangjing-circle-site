@@ -8,7 +8,7 @@ import BackToTop from '../components/BackToTop.astro';
 import PageTransition from '../components/PageTransition.astro';
 import AgeGateOverlay from '../components/AgeGateOverlay.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
-import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT } from '../utils/constants';
+import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT, THEME_STORAGE_KEY } from '../utils/constants';
 
 interface Props {
   title: string;
@@ -38,6 +38,7 @@ const {
 const base = import.meta.env.BASE_URL;
 const ageKey = AGE_GATE_STORAGE_KEY;
 const ageTtl = AGE_GATE_TTL_MS;
+const themeKey = THEME_STORAGE_KEY;
 ---
 
 <!doctype html>
@@ -47,10 +48,10 @@ const ageTtl = AGE_GATE_TTL_MS;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     {/* 年齢確認済みなら <html> に age-verified クラスを付与（レンダリング前に同期実行してフラッシュを防ぐ） */}
     {/* ダークモード初期化（レンダリング前に同期実行してフラッシュを防ぐ） */}
-    <script is:inline>
+    <script is:inline define:vars={{ themeKey }}>
       (function() {
         try {
-          var saved = localStorage.getItem('theme');
+          var saved = localStorage.getItem(themeKey);
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           if (saved === 'dark' || (!saved && prefersDark)) {
             document.documentElement.setAttribute('data-theme', 'dark');
@@ -60,7 +61,7 @@ const ageTtl = AGE_GATE_TTL_MS;
       // View Transitions 後にも再適用
       document.addEventListener('astro:after-swap', function() {
         try {
-          var saved = localStorage.getItem('theme');
+          var saved = localStorage.getItem(themeKey);
           var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
           if (saved === 'dark' || (!saved && prefersDark)) {
             document.documentElement.setAttribute('data-theme', 'dark');

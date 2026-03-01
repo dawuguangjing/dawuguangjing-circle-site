@@ -32,6 +32,9 @@ export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null
   href: 'https://ci-en.dlsite.com/creator/35269',
 };
 
+/** ダークモードの localStorage キー */
+export const THEME_STORAGE_KEY = 'theme';
+
 /** 年齢確認の localStorage キー */
 export const AGE_GATE_STORAGE_KEY = 'circle_age_gate_until';
 
