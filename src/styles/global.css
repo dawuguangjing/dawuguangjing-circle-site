@@ -1819,6 +1819,13 @@ a.announcement-bar-text:hover {
   letter-spacing: 0.04em;
 }
 
+/* ── Badge: 体験版あり ── */
+.badge--trial {
+  background: #16a34a;
+  color: #fff;
+  font-weight: 600;
+}
+
 /* ── Gallery Count Badge ── */
 .gallery-header-meta {
   display: flex;

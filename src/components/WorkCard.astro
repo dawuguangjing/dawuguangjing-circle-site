@@ -9,6 +9,7 @@ interface Props {
   description: string;
   releaseDate: Date;
   isR18: boolean;
+  hasTrial?: boolean;
   showEnvironments?: boolean;
   environments?: { windows?: boolean; mac?: boolean; browserPc?: boolean; ios?: boolean; android?: boolean };
 }
@@ -20,6 +21,7 @@ const {
   description,
   releaseDate,
   isR18,
+  hasTrial = false,
   showEnvironments = false,
   environments,
 } = Astro.props;
@@ -42,6 +44,7 @@ const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
       <span class="work-row-date">{formatDate(releaseDate)}</span>
       <div class="work-row-tags">
         {isNew && <span class="badge badge--new">NEW</span>}
+        {hasTrial && <span class="badge badge--trial">体験版あり</span>}
         {isR18 && <span class="badge badge--r18">R18</span>}
         {showEnvironments && environments?.windows && <span class="badge">Win</span>}
         {showEnvironments && environments?.mac && <span class="badge">Mac</span>}

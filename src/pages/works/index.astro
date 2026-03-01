@@ -12,7 +12,7 @@ const works = await getSortedWorks();
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title">全作品</h1>
-        <span class="muted work-count">{works.length} タイトル</span>
+        <span class="muted" id="work-count">{works.length} タイトル</span>
       </div>
 
       <div class="filter-bar" role="group" aria-label="作品フィルター（複数選択可・AND条件）">
@@ -55,6 +55,7 @@ const works = await getSortedWorks();
               description={entry.data.shortDescription}
               releaseDate={entry.data.releaseDate}
               isR18={entry.data.isR18}
+              hasTrial={!!(entry.data.trialLinks?.fanza || entry.data.trialLinks?.dlsite)}
               showEnvironments
               environments={entry.data.environments}
             />
@@ -112,6 +113,14 @@ const works = await getSortedWorks();
 
       // 空状態表示
       emptyEl?.classList.toggle('is-visible', visibleCount === 0);
+
+      // 件数表示更新
+      const countEl = document.getElementById('work-count');
+      if (countEl) {
+        countEl.textContent = active.length === 0
+          ? `${items.length} タイトル`
+          : `${visibleCount} 件表示中`;
+      }
 
       // URL にフィルター状態を保存（ブックマーク・シェア対応）
       const url = new URL(window.location.href);
