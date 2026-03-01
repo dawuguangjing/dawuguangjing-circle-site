@@ -20,7 +20,9 @@ const works = defineCollection({
       windows: z.boolean(),
       mac: z.boolean(),
       browserPc: z.boolean(),
-      browserMobileBeta: z.boolean()
+      browserMobileBeta: z.boolean(),
+      ios: z.boolean().default(false),
+      android: z.boolean().default(false),
     }),
     volume: z.object({
       playTimeMin: z.number().int().nonnegative(),
@@ -70,4 +72,18 @@ const gallery = defineCollection({
   })
 });
 
-export const collections = { works, news, gallery };
+const characters = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    nameReading: z.string(),
+    workSlug: z.string(),
+    cover: z.string(),
+    color: z.string().default('#0068B7'),
+    age: z.number().int().nonnegative().optional(),
+    height: z.number().int().nonnegative().optional(),
+    personality: z.string(),
+  })
+});
+
+export const collections = { works, news, gallery, characters };

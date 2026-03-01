@@ -18,7 +18,7 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         <h1 class="section-title">開発ログ</h1>
       </div>
 
-      <div class="filter-chips" id="news-filter" data-anim style="--anim-delay: 0.06s">
+      <div class="filter-chips" id="news-filter">
         <button class="filter-chip is-active" data-category="all">すべて</button>
         {categories.map(([key, label]) => (
           <button class="filter-chip" data-category={key}>{label}</button>

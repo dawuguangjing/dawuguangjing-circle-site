@@ -10,7 +10,7 @@ interface Props {
   releaseDate: Date;
   isR18: boolean;
   showEnvironments?: boolean;
-  environments?: { windows?: boolean; browserPc?: boolean };
+  environments?: { windows?: boolean; mac?: boolean; browserPc?: boolean; ios?: boolean; android?: boolean };
 }
 
 const {
@@ -40,7 +40,10 @@ const {
       <div class="work-row-tags">
         {isR18 && <span class="badge badge--r18">R18</span>}
         {showEnvironments && environments?.windows && <span class="badge">Win</span>}
+        {showEnvironments && environments?.mac && <span class="badge">Mac</span>}
         {showEnvironments && environments?.browserPc && <span class="badge">Browser</span>}
+        {showEnvironments && environments?.ios && <span class="badge">iOS</span>}
+        {showEnvironments && environments?.android && <span class="badge">Android</span>}
       </div>
     </div>
   </div>

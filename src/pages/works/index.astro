@@ -15,12 +15,15 @@ const works = await getSortedWorks();
         <span class="muted work-count">{works.length} タイトル</span>
       </div>
 
-      <div class="filter-bar" data-anim style={`--anim-delay: ${ANIM_BASE_DELAY}s`} role="group" aria-label="作品フィルター">
+      <div class="filter-bar" role="group" aria-label="作品フィルター">
         <button class="filter-chip is-active" data-filter="all">すべて</button>
         <button class="filter-chip" data-filter="r18">R18</button>
         <button class="filter-chip" data-filter="all-ages">全年齢</button>
         <button class="filter-chip" data-filter="windows">Windows</button>
+        <button class="filter-chip" data-filter="mac">Mac</button>
         <button class="filter-chip" data-filter="browser">ブラウザ</button>
+        <button class="filter-chip" data-filter="ios">iOS</button>
+        <button class="filter-chip" data-filter="android">Android</button>
       </div>
 
       <div class="works-grid" id="works-grid">
@@ -31,7 +34,10 @@ const works = await getSortedWorks();
             style={`--anim-delay: ${ANIM_BASE_DELAY + 0.04 + i * ANIM_STAGGER}s`}
             data-r18={String(entry.data.isR18)}
             data-windows={String(entry.data.environments.windows)}
+            data-mac={String(entry.data.environments.mac)}
             data-browser={String(entry.data.environments.browserPc)}
+            data-ios={String(entry.data.environments.ios)}
+            data-android={String(entry.data.environments.android)}
           >
             <WorkCard
               slug={entry.slug}
@@ -66,7 +72,10 @@ const works = await getSortedWorks();
           if (filter === 'r18') show = el.dataset.r18 === 'true';
           else if (filter === 'all-ages') show = el.dataset.r18 === 'false';
           else if (filter === 'windows') show = el.dataset.windows === 'true';
+          else if (filter === 'mac') show = el.dataset.mac === 'true';
           else if (filter === 'browser') show = el.dataset.browser === 'true';
+          else if (filter === 'ios') show = el.dataset.ios === 'true';
+          else if (filter === 'android') show = el.dataset.android === 'true';
 
           if (show) {
             el.style.display = '';

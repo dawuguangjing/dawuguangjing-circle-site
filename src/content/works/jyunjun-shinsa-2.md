@@ -10,6 +10,8 @@ environments:
   mac: false
   browserPc: false
   browserMobileBeta: false
+  ios: false
+  android: false
 volume:
   playTimeMin: 100
   cgCount: 0

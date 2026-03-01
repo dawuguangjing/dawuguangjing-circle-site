@@ -15,6 +15,8 @@ environments:
   mac: false
   browserPc: false
   browserMobileBeta: false
+  ios: false
+  android: false
 volume:
   playTimeMin: 90
   cgCount: 70
