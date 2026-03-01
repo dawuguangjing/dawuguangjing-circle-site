@@ -179,6 +179,11 @@ button {
   background: rgba(124, 58, 237, 0.10);
 }
 
+.badge--futekigo {
+  color: #C026D3;
+  background: rgba(192, 38, 211, 0.10);
+}
+
 /* ── Buttons ── */
 .button {
   display: inline-flex;
@@ -2826,6 +2831,11 @@ html.age-verified .age-overlay {
 [data-theme="dark"] .hero-banner {
   background: var(--panel);
 }
+[data-theme="dark"] .hero-banner-catch,
+[data-theme="dark"] .hero-banner-sub,
+[data-theme="dark"] .hero-banner .selling-points li {
+  color: var(--ink-bright);
+}
 
 /* ── Dark mode: 世界観セクション（スコープ付きCSSより高詳細度で確実に上書き） ── */
 html[data-theme="dark"] .world-section {
@@ -2837,10 +2847,23 @@ html[data-theme="dark"] .world-card {
   border-color: var(--stroke);
 }
 html[data-theme="dark"] .world-card-title { color: var(--ink-bright); }
-html[data-theme="dark"] .world-card-body  { color: var(--ink-dim); }
+html[data-theme="dark"] .world-card-body  { color: var(--ink-bright); }
 html[data-theme="dark"] .world-title      { color: var(--ink-bright); }
-html[data-theme="dark"] .world-subtitle   { color: var(--ink-dim); }
-html[data-theme="dark"] .world-label      { color: var(--accent-2); }
+html[data-theme="dark"] .world-subtitle   { color: var(--ink-bright); }
+html[data-theme="dark"] .world-label      { color: rgba(167, 139, 250, 0.95); }
+
+/* ── Dark mode: ストア（作品一覧）テキスト ── */
+[data-theme="dark"] .work-row-desc { color: var(--ink-bright); }
+[data-theme="dark"] .work-row-date { color: var(--ink); }
+[data-theme="dark"] .muted         { color: var(--ink); }
+
+/* ── Dark mode: 作品詳細ページ テキスト ── */
+[data-theme="dark"] .detail-block p,
+[data-theme="dark"] .detail-block li { color: var(--ink-bright); }
+[data-theme="dark"] .detail-catch    { color: var(--ink-bright); }
+[data-theme="dark"] .spec-table td:first-child { color: var(--ink); }
+[data-theme="dark"] .sidebar-small,
+[data-theme="dark"] .sidebar-xsmall { color: var(--ink); }
 
 /* ── Dark mode: トグルボタン ホバー色 ── */
 html[data-theme="dark"] .dark-mode-toggle:hover {

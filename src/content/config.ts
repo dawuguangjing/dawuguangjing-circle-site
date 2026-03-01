@@ -43,7 +43,7 @@ const works = defineCollection({
   })
 });
 
-export const NEWS_CATEGORIES = ['release', 'update', 'sale', 'devlog'] as const;
+export const NEWS_CATEGORIES = ['release', 'update', 'sale', 'devlog', 'futekigo'] as const;
 export type NewsCategory = typeof NEWS_CATEGORIES[number];
 
 const news = defineCollection({

@@ -5,6 +5,7 @@ export const categoryLabels: Record<NewsCategory, string> = {
   update: '更新',
   sale: 'セール',
   devlog: '開発ログ',
+  futekigo: '不適合記録',
 };
 
 export const branchingLabels: Record<string, string> = {
