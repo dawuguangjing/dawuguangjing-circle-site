@@ -12,6 +12,7 @@ export interface NavItem {
 export const mainNav: NavItem[] = [
   { label: 'ストア',       path: 'works/',   href: withBase('works/') },
   { label: 'ギャラリー',   path: 'gallery/', href: withBase('gallery/') },
+  { label: 'キャラクター', path: 'characters/', href: withBase('characters/') },
   { label: '開発ログ',     path: 'news/',    href: withBase('news/') },
   { label: 'サークル情報', path: 'about/',   href: withBase('about/') },
   { label: 'FAQ',          path: 'faq/',     href: withBase('faq/') },
@@ -23,8 +24,9 @@ export const footerNav = [
   {
     heading: '作品',
     items: [
-      { label: '作品一覧', href: withBase('works/') },
-      { label: '開発ログ', href: withBase('news/') },
+      { label: '作品一覧',    href: withBase('works/') },
+      { label: 'キャラクター', href: withBase('characters/') },
+      { label: '開発ログ',    href: withBase('news/') },
     ],
   },
   {

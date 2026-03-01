@@ -4,6 +4,7 @@ import WorkCard from '../components/WorkCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import HeroBanner from '../components/HeroBanner.astro';
+import WorldSection from '../components/WorldSection.astro';
 import { withBase } from '../utils/withBase';
 import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../utils/constants';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
@@ -32,6 +33,8 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
         sellingPoints={heroWork.data.sellingPoints}
       />
     )}
+
+    {heroWork && <WorldSection workSlug={heroWork.slug} />}
 
     <section class="section container">
       <div class="section-header" data-anim>

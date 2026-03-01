@@ -1,0 +1,179 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { withBase } from '../../utils/withBase';
+import { SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
+
+const characters = await getCollection('characters');
+---
+
+<BaseLayout
+  title={`キャラクター | ${SITE_NAME}`}
+  description="ダウグアングジング作品に登場するキャラクターのプロフィール一覧です。"
+>
+  <div class="page-content">
+    <div class="container section">
+      <div class="section-header" data-anim>
+        <h1 class="section-title">キャラクター</h1>
+      </div>
+
+      <div class="char-list-grid">
+        {characters.map((char, i) => (
+          <a
+            class="char-list-card"
+            href={withBase(`characters/${char.slug}/`)}
+            data-anim
+            style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s; --char-color: ${char.data.color}`}
+          >
+            <div class="char-list-img-wrap">
+              <img
+                class="char-list-img"
+                src={char.data.cover}
+                alt={char.data.name}
+                width="300"
+                height="400"
+                loading="lazy"
+              />
+              <div class="char-list-overlay">
+                <span class="char-list-view">プロフィールを見る</span>
+              </div>
+            </div>
+            <div class="char-list-body">
+              <p class="char-list-reading">{char.data.nameReading}</p>
+              <h2 class="char-list-name">{char.data.name}</h2>
+              <p class="char-list-personality">{char.data.personality}</p>
+            </div>
+            <div class="char-list-accent" aria-hidden="true"></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+.char-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.char-list-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow);
+  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+}
+
+.char-list-card:hover {
+  border-color: var(--char-color, var(--accent));
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+}
+
+.char-list-img-wrap {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.char-list-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s var(--easing);
+}
+
+.char-list-card:hover .char-list-img {
+  transform: scale(1.05);
+}
+
+.char-list-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.char-list-card:hover .char-list-overlay {
+  opacity: 1;
+}
+
+.char-list-view {
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.char-list-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.char-list-reading {
+  font-size: 0.72rem;
+  color: var(--ink-dim);
+  margin: 0;
+  letter-spacing: 0.05em;
+}
+
+.char-list-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--char-color, var(--accent));
+  letter-spacing: 0.03em;
+}
+
+.char-list-personality {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin: 4px 0 0;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 下部のカラーアクセントバー */
+.char-list-accent {
+  height: 3px;
+  background: var(--char-color, var(--accent));
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.char-list-card:hover .char-list-accent {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .char-list-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+}
+</style>

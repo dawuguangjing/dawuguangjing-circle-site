@@ -1,0 +1,299 @@
+---
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  workSlug?: string;
+}
+const { workSlug = 'jyunjun-shinsa' } = Astro.props;
+---
+
+<section class="world-section" aria-label="世界観紹介">
+  {/* 背景デコレーション */}
+  <div class="world-bg-grid" aria-hidden="true"></div>
+
+  <div class="container world-inner">
+    <div class="world-header" data-anim>
+      <span class="world-label">WORLD</span>
+      <h2 class="world-title">世界観</h2>
+      <p class="world-subtitle">
+        戦勝国の謀略が静かに社会へ溶け込んだ時代――
+        <br />就職に「従順さ」が問われる、もうひとつの日本。
+      </p>
+    </div>
+
+    <div class="world-cards">
+      <div class="world-card" data-anim style="--anim-delay: 0.1s">
+        <div class="world-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3 class="world-card-title">時代設定</h3>
+        <p class="world-card-body">
+          現代日本。外国の謀略によって男尊女卑の慣行が社会へ静かに浸透しつつある時代。反対の声は既に、耳あたりのいい言葉で鈍らせられた。
+        </p>
+      </div>
+
+      <div class="world-card" data-anim style="--anim-delay: 0.2s">
+        <div class="world-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+        </div>
+        <h3 class="world-card-title">従順審査とは</h3>
+        <p class="world-card-body">
+          新卒女性だけに課せられる証明書、「従順審査合格票」。能力ではなく反論しない態度・沈黙の作り方を測る審査。提出は「任意」——だが出さなければ選考に進めない。
+        </p>
+      </div>
+
+      <div class="world-card" data-anim style="--anim-delay: 0.3s">
+        <div class="world-card-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h3 class="world-card-title">あなたの役割</h3>
+        <p class="world-card-body">
+          あなたはこの時代における、従順審査の審査員。審査の名のもと、訪れる美女たちを好き放題に——シナリオ分岐・マルチエンドのシミュレーションゲーム。
+        </p>
+      </div>
+    </div>
+
+    <div class="world-cta" data-anim style="--anim-delay: 0.4s">
+      <a class="world-cta-link" href={withBase(`works/${workSlug}/`)}>
+        作品詳細を読む
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ── Light mode (default) ── */
+.world-section {
+  position: relative;
+  background: linear-gradient(150deg, #eef4fb 0%, #f4f0fc 100%);
+  color: #1a2744;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .world-section {
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* ── 背景グリッド ── */
+.world-bg-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 104, 183, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 104, 183, 0.06) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+}
+
+
+/* ── Inner ── */
+.world-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* ── Header ── */
+.world-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.world-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(0, 104, 183, 0.9);
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .world-label {
+  color: var(--accent-2);
+}
+
+.world-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700;
+  margin: 0;
+  color: #1a2744;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+[data-theme="dark"] .world-title {
+  color: var(--ink-bright);
+}
+
+.world-subtitle {
+  font-size: 0.9rem;
+  color: rgba(26, 39, 68, 0.6);
+  margin: 0;
+  line-height: 1.8;
+  max-width: 500px;
+}
+
+[data-theme="dark"] .world-subtitle {
+  color: var(--ink-dim);
+}
+
+/* ── Cards ── */
+.world-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.world-card {
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 104, 183, 0.15);
+  border-radius: 8px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--easing);
+}
+
+[data-theme="dark"] .world-card {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+}
+
+.world-card:hover {
+  background: rgba(0, 104, 183, 0.08);
+  border-color: rgba(0, 104, 183, 0.3);
+  transform: translateY(-4px);
+}
+
+[data-theme="dark"] .world-card:hover {
+  background: rgba(0, 104, 183, 0.12);
+  border-color: rgba(0, 150, 255, 0.3);
+}
+
+.world-card-icon {
+  color: rgba(124, 58, 237, 0.9);
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(124, 58, 237, 0.1);
+  border-radius: 8px;
+}
+
+[data-theme="dark"] .world-card-icon {
+  color: var(--accent-2);
+  background: var(--accent-alpha-08);
+}
+
+.world-card-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a2744;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+[data-theme="dark"] .world-card-title {
+  color: var(--ink-bright);
+}
+
+.world-card-body {
+  font-size: 0.82rem;
+  color: rgba(26, 39, 68, 0.65);
+  margin: 0;
+  line-height: 1.75;
+}
+
+[data-theme="dark"] .world-card-body {
+  color: var(--ink-dim);
+}
+
+/* ── CTA ── */
+.world-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.world-cta-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border: 1px solid rgba(0, 104, 183, 0.4);
+  border-radius: 4px;
+  color: rgba(0, 104, 183, 0.9);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+  text-decoration: none;
+}
+
+[data-theme="dark"] .world-cta-link {
+  border: 1px solid var(--accent-alpha-30);
+  color: var(--accent-2);
+}
+
+.world-cta-link:hover {
+  background: rgba(0, 104, 183, 0.1);
+  border-color: rgba(0, 104, 183, 0.6);
+  color: #0068b7;
+}
+
+[data-theme="dark"] .world-cta-link:hover {
+  background: var(--accent-alpha-08);
+  border-color: var(--accent-2);
+  color: var(--ink-bright);
+}
+
+.world-cta-link svg {
+  transition: transform 0.25s var(--easing);
+}
+
+.world-cta-link:hover svg {
+  transform: translateX(4px);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .world-cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .world-section {
+    padding: 48px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .world-subtitle br {
+    display: none;
+  }
+}
+</style>

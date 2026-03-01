@@ -1,0 +1,276 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, getEntry } from 'astro:content';
+import { withBase } from '../../utils/withBase';
+import { SITE_NAME } from '../../utils/constants';
+
+export async function getStaticPaths() {
+  const characters = await getCollection('characters');
+  return characters.map((char) => ({ params: { slug: char.slug }, props: { char } }));
+}
+
+const { char } = Astro.props;
+const { Content } = await char.render();
+
+// 関連作品を取得
+const work = char.data.workSlug
+  ? await getEntry('works', char.data.workSlug).catch(() => null)
+  : null;
+---
+
+<BaseLayout
+  title={`${char.data.name} | キャラクター | ${SITE_NAME}`}
+  description={char.data.personality}
+  image={char.data.cover}
+>
+  <style define:vars={{ charColor: char.data.color }}>
+    .char-accent { color: var(--charColor); }
+    .char-accent-bg { background: var(--charColor); }
+    .char-accent-border { border-color: var(--charColor); }
+    .char-detail-block h2 { border-bottom-color: var(--charColor); }
+  </style>
+
+  <div class="page-content">
+    <div class="char-hero" style={`--char-color: ${char.data.color}`}>
+      <div class="char-hero-bg" aria-hidden="true"></div>
+      <div class="container char-hero-inner">
+        <div class="char-hero-img-wrap" data-anim="slide-right">
+          <img
+            class="char-hero-img"
+            src={char.data.cover}
+            alt={char.data.name}
+            width="400"
+            height="533"
+          />
+        </div>
+        <div class="char-hero-text" data-anim>
+          <p class="char-hero-reading">{char.data.nameReading}</p>
+          <h1 class="char-hero-name char-accent">{char.data.name}</h1>
+          <p class="char-hero-personality">{char.data.personality}</p>
+
+          <div class="char-stats">
+            {char.data.age != null && (
+              <div class="char-stat">
+                <span class="char-stat-label">年齢</span>
+                <span class="char-stat-value char-accent">{char.data.age}歳</span>
+              </div>
+            )}
+            {char.data.height != null && (
+              <div class="char-stat">
+                <span class="char-stat-label">身長</span>
+                <span class="char-stat-value char-accent">{char.data.height}cm</span>
+              </div>
+            )}
+            {work && (
+              <div class="char-stat">
+                <span class="char-stat-label">登場作品</span>
+                <a class="char-stat-value char-stat-link char-accent" href={withBase(`works/${work.slug}/`)}>
+                  {work.data.title}
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container section">
+      <div class="char-detail-block" data-anim>
+        <h2>プロフィール</h2>
+        <div class="char-body">
+          <Content />
+        </div>
+      </div>
+
+      <div class="char-nav" data-anim>
+        <a class="char-nav-back" href={withBase('characters/')}>
+          ← キャラクター一覧へ
+        </a>
+        {work && (
+          <a class="button" href={withBase(`works/${work.slug}/`)}>
+            {work.data.title} の詳細を見る →
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+/* ── Hero ── */
+.char-hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--char-color) 8%, transparent) 0%, var(--panel) 60%);
+  border-top: 3px solid var(--char-color);
+  border-bottom: 1px solid var(--stroke);
+  padding: 48px 0;
+}
+
+.char-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 80% 50%, color-mix(in srgb, var(--char-color) 6%, transparent), transparent 60%);
+  pointer-events: none;
+}
+
+.char-hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.char-hero-img-wrap {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+}
+
+.char-hero-img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.char-hero-text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.char-hero-reading {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  margin: 0;
+  letter-spacing: 0.1em;
+}
+
+.char-hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+}
+
+.char-hero-personality {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  margin: 0;
+  line-height: 1.8;
+  max-width: 480px;
+}
+
+/* ── Stats ── */
+.char-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px 0;
+  border-top: 1px solid var(--stroke);
+}
+
+.char-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-size: 0.88rem;
+}
+
+.char-stat-label {
+  color: var(--ink-dim);
+  min-width: 72px;
+  flex-shrink: 0;
+}
+
+.char-stat-value {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.char-stat-link {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.char-stat-link:hover {
+  opacity: 0.75;
+}
+
+/* ── Detail Block ── */
+.char-detail-block {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  margin-bottom: 20px;
+}
+
+.char-detail-block h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink-bright);
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+}
+
+.char-body {
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.85;
+}
+
+.char-body p {
+  margin: 0 0 12px;
+}
+
+.char-body p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Nav ── */
+.char-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.char-nav-back {
+  font-size: 0.85rem;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease;
+}
+
+.char-nav-back:hover {
+  color: var(--accent-dark);
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .char-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .char-hero-img-wrap {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .char-hero {
+    padding: 32px 0;
+  }
+}
+</style>

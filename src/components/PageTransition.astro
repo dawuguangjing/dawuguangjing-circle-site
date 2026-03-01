@@ -1,0 +1,46 @@
+---
+import { withBase } from '../utils/withBase';
+---
+<div id="page-transition-tuna" aria-hidden="true">
+  <img src={withBase('images/tuna.png')} alt="" width="44" height="44" />
+</div>
+
+<style>
+#page-transition-tuna {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  transform: translate(-60px, -50%) scaleX(-1);
+}
+
+#page-transition-tuna.is-swimming {
+  animation: tuna-cross 0.55s cubic-bezier(0.3, 0, 0.7, 1) forwards;
+}
+
+@keyframes tuna-cross {
+  0% {
+    transform: translate(-60px, -50%) scaleX(-1);
+  }
+  100% {
+    transform: translate(calc(100vw + 60px), -50%) scaleX(-1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #page-transition-tuna.is-swimming {
+    animation: none;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener('astro:before-preparation', () => {
+    const tuna = document.getElementById('page-transition-tuna');
+    if (!tuna) return;
+    tuna.classList.remove('is-swimming');
+    void (tuna as HTMLElement).offsetWidth; // force reflow to restart animation
+    tuna.classList.add('is-swimming');
+  });
+</script>
