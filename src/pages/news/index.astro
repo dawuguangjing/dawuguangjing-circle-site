@@ -18,7 +18,7 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         <h1 class="section-title">開発ログ</h1>
       </div>
 
-      <div class="filter-chips" id="news-filter">
+      <div class="filter-chips" id="news-filter" role="group" aria-label="記事フィルター">
         <button class="filter-chip is-active" data-category="all">すべて</button>
         {categories.map(([key, label]) => (
           <button class="filter-chip" data-category={key}>{label}</button>
@@ -34,6 +34,8 @@ const categories = Object.entries(categoryLabels) as [string, string][];
               date={entry.data.date}
               category={entry.data.category}
               thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
             >
               {entry.data.relatedWorkSlugs && (
                 <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />

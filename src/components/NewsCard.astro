@@ -10,16 +10,18 @@ interface Props {
   date: Date;
   category: NewsCategory;
   thumbnail?: string;
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { slug, title, date, category, thumbnail } = Astro.props;
+const { slug, title, date, category, thumbnail, loading = 'lazy', fetchpriority } = Astro.props;
 const href = withBase(`news/${slug}/`);
 ---
 
 <article class="news-card">
   <div class="news-card-cover">
     {thumbnail
-      ? <img src={thumbnail} alt="" loading="lazy" width="480" height="270" />
+      ? <img src={thumbnail} alt="" loading={loading} fetchpriority={fetchpriority} width="480" height="270" />
       : <div class="news-card-cover-empty"></div>
     }
   </div>

@@ -32,7 +32,8 @@ const characters = await getCollection('characters');
                 alt={char.data.name}
                 width="300"
                 height="400"
-                loading="lazy"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
               />
               <div class="char-list-overlay">
                 <span class="char-list-view">プロフィールを見る</span>
@@ -42,6 +43,8 @@ const characters = await getCollection('characters');
               <p class="char-list-reading">{char.data.nameReading}</p>
               <h2 class="char-list-name">{char.data.name}</h2>
               <p class="char-list-personality">{char.data.personality}</p>
+              <!-- タッチデバイスでも CTA を認識できるよう常時表示 -->
+              <span class="char-list-cta" aria-hidden="true">プロフィールを見る →</span>
             </div>
             <div class="char-list-accent" aria-hidden="true"></div>
           </a>
@@ -156,6 +159,16 @@ const characters = await getCollection('characters');
   line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+/* タッチデバイス向け常時表示 CTA */
+.char-list-cta {
+  font-size: 0.75rem;
+  color: var(--char-color, var(--accent));
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin-top: auto;
+  padding-top: 10px;
 }
 
 /* 下部のカラーアクセントバー */

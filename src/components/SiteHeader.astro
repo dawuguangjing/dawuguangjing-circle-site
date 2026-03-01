@@ -65,11 +65,34 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
       }
     });
 
-    // Esc キーで閉じる
+    // Esc キーで閉じる + Tab フォーカストラップ（モバイルメニュー開放中）
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+      if (!nav.classList.contains('is-open')) return;
+
+      if (e.key === 'Escape') {
         closeMenu();
         toggle.focus();
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const focusable = [
+          toggle,
+          ...Array.from(nav.querySelectorAll<HTMLElement>('a[href]')),
+        ];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     });
 

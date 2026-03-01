@@ -41,6 +41,7 @@ const { itemSelector } = Astro.props;
     alt:  el.dataset.lightboxAlt  || '',
   }));
   let current = 0;
+  let triggerEl = null; // 閉じたときにフォーカスを戻す元の要素
 
   function showMedia(index) {
     if (!lightbox || !lbImg || !lbVideo) return;
@@ -68,9 +69,11 @@ const { itemSelector } = Astro.props;
 
   function openLightbox(index) {
     if (!lightbox) return;
+    triggerEl = document.activeElement; // フォーカス元を記憶
     showMedia(index);
     lightbox.classList.add('is-active');
     lightbox.setAttribute('aria-hidden', 'false');
+    lbClose?.focus(); // 閉じるボタンにフォーカスを移動
   }
 
   function closeLightbox() {
@@ -79,6 +82,8 @@ const { itemSelector } = Astro.props;
     lbVideo.src = '';
     lightbox.classList.remove('is-active');
     lightbox.setAttribute('aria-hidden', 'true');
+    // フォーカスをトリガー要素に戻す
+    if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
   }
 
   itemEls.forEach((el, i) => {

@@ -28,6 +28,8 @@ const galleries = await getSortedGallery();
                 isR18={entry.data.isR18}
                 releaseDate={entry.data.releaseDate}
                 imageCount={entry.resolvedImageCount}
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : undefined}
               />
             </div>
           ))}

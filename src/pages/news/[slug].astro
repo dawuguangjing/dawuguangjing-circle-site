@@ -44,6 +44,8 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
               <time class="article-date">{formatDate(data.date)}</time>
             </div>
             <h1 class="article-title" data-anim style="--anim-delay: 0.06s">{data.title}</h1>
+            <!-- モバイル向け TOC へのジャンプリンク（デスクトップでは aside に表示されるため非表示） -->
+            <a class="toc-jump-link" id="toc-jump" href="#toc" hidden>↓ この記事の目次を見る</a>
             <div class="article-body" data-anim style="--anim-delay: 0.14s">
               <Content />
             </div>
@@ -88,5 +90,7 @@ const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: 
       tocList.appendChild(li);
     });
     toc.removeAttribute('hidden');
+    // モバイル向けジャンプリンクも表示
+    document.getElementById('toc-jump')?.removeAttribute('hidden');
   }
 </script>

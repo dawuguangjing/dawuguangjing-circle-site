@@ -10,9 +10,12 @@ interface Props {
   releaseDate: Date;
   imageCount?: number;
   previewImage?: string;
+  /** 先頭カード（LCP候補）は 'eager' + 'high' を渡す */
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { slug, title, cover, isR18, releaseDate, imageCount, previewImage } = Astro.props;
+const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loading = 'lazy', fetchpriority } = Astro.props;
 ---
 
 <a class="gallery-card" href={withBase(`gallery/${slug}/`)}>
@@ -21,7 +24,8 @@ const { slug, title, cover, isR18, releaseDate, imageCount, previewImage } = Ast
       class="gallery-card-img"
       src={cover}
       alt={`${title} cover`}
-      loading="lazy"
+      loading={loading}
+      fetchpriority={fetchpriority}
       width="400"
       height="300"
     />

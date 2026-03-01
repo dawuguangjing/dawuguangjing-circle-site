@@ -62,6 +62,18 @@ const trialLinks = data.trialLinks
         { label: 'ストア', href: withBase('works/') },
         { label: data.title },
       ]} />
+      <!-- 上部コンパクトナビ（ページ末尾まで戻らずに前後作品へ移動できる） -->
+      {(prevWork || nextWork) && (
+        <nav class="work-top-nav" aria-label="前後の作品へ">
+          {prevWork
+            ? <a class="work-top-nav-link" href={withBase(`works/${prevWork.slug}/`)}>← {prevWork.data.title}</a>
+            : <span></span>
+          }
+          {nextWork && (
+            <a class="work-top-nav-link work-top-nav-link--next" href={withBase(`works/${nextWork.slug}/`)}>{nextWork.data.title} →</a>
+          )}
+        </nav>
+      )}
     </div>
     <!-- Hero Banner -->
     <section class="section container">
@@ -74,7 +86,14 @@ const trialLinks = data.trialLinks
         <!-- Main Column -->
         <div class="detail-main">
           <!-- Cover Image -->
-          <div class="work-cover" data-anim style="--anim-delay: 0.1s">
+          <div
+            class="work-cover"
+            data-anim
+            style="--anim-delay: 0.1s"
+            data-lightbox-src={withBase(data.images.cover)}
+            data-lightbox-type="image"
+            data-lightbox-alt={`${data.title} cover`}
+          >
             <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" fetchpriority="high" loading="eager" />
           </div>
 
@@ -91,7 +110,12 @@ const trialLinks = data.trialLinks
           {data.images.screenshots.length > 0 && (
             <div class="gallery-grid">
               {data.images.screenshots.map((image, j) => (
-                <div class="gallery-item">
+                <div
+                  class="gallery-item"
+                  data-lightbox-src={withBase(image)}
+                  data-lightbox-type="image"
+                  data-lightbox-alt={`${data.title} スクリーンショット ${j + 1}`}
+                >
                   <img src={withBase(image)} alt={`${data.title} スクリーンショット ${j + 1}`} loading="lazy" width="400" height="225" />
                 </div>
               ))}
@@ -192,7 +216,7 @@ const trialLinks = data.trialLinks
       </div>
     </section>
 
-    <Lightbox imageSelector=".work-cover img, .gallery-item img" />
+    <Lightbox itemSelector=".work-cover, .gallery-item" />
 
     <section class="container section--compact">
       <div class="notice">

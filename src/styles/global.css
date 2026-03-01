@@ -605,6 +605,11 @@ button {
   transform: scaleX(-1); /* JS で上書き: 下スクロール=右向き / 上スクロール=左向き */
 }
 
+/* モーション低減設定のユーザーにはツナアニメを非表示 */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress-tuna { display: none; }
+}
+
 /* ── Announcement Bar ── */
 .announcement-bar {
   background: var(--accent-dark);
@@ -1422,6 +1427,13 @@ a.announcement-bar-text:hover {
   background: rgba(255, 255, 255, 0.3);
 }
 
+/* ライトボックスボタンは暗背景のため白いフォーカスリング */
+.lightbox-close:focus-visible,
+.lightbox-prev:focus-visible,
+.lightbox-next:focus-visible {
+  outline-color: #fff;
+}
+
 .lightbox-prev,
 .lightbox-next {
   position: absolute;
@@ -1543,6 +1555,11 @@ a.announcement-bar-text:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
+}
+
+/* フィルターチップは pill 形状に合わせて丸いフォーカスリング */
+.filter-chip:focus-visible {
+  border-radius: 20px;
 }
 
 .work-filter-item {
@@ -1823,6 +1840,20 @@ html.age-verified .age-overlay {
 .toc-item a { color: var(--ink); text-decoration: none; }
 .toc-item a:hover { color: var(--accent); }
 
+/* モバイル向け TOC ジャンプリンク（デスクトップでは aside に表示されるため非表示） */
+.toc-jump-link {
+  display: inline-block;
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: none;
+  margin-bottom: 16px;
+  padding: 4px 0;
+}
+.toc-jump-link:hover { text-decoration: underline; }
+@media (min-width: 769px) {
+  .toc-jump-link { display: none; }
+}
+
 /* ── Article Page ── */
 .article {
   background: var(--panel);
@@ -2045,6 +2076,34 @@ html.age-verified .age-overlay {
   .work-pagination-center { display: none; }
   .work-pagination-next { grid-column: 2; }
   .work-pagination-link { max-width: none; }
+}
+
+/* ── Work Top Nav（ページ上部の前後ナビ） ── */
+.work-top-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 0 12px;
+  border-bottom: 1px solid var(--stroke);
+  margin-bottom: 4px;
+}
+
+.work-top-nav-link {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 46%;
+  transition: color 0.2s ease;
+}
+
+.work-top-nav-link:hover { color: var(--accent); }
+
+.work-top-nav-link--next {
+  margin-left: auto;
+  text-align: right;
 }
 
 /* ── Misc Helpers ── */
@@ -2466,6 +2525,7 @@ html.age-verified .age-overlay {
 /* ---- 動画グリッドアイテム ---- */
 .gallery-detail-item--video {
   position: relative;
+  background: #0d0d16; /* メタデータ読み込み前のプレースホルダー */
 }
 
 .gallery-detail-video {
