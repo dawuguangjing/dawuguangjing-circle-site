@@ -2,10 +2,10 @@
 name: "金井 美穂"
 nameReading: "かない みほ"
 workSlug: "jyunjun-shinsa-2"
-cover: "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
+cover: "https://storage.googleapis.com/dawuguangjing-assets/miho-eye-catch.jpg"
 color: "#D4A017"
 age: 21
-height: 158
+height: 166
 personality: "明るくポジティブで人懐っこい。誰とでもすぐに仲良くなれる社交的な性格。しかしその裏には、就職への強い焦りと不安を抱えている。"
 order: 1
 ---
