@@ -51,15 +51,19 @@ const { itemSelector } = Astro.props;
     if (type === 'video') {
       lbImg.style.display = 'none';
       lbVideo.style.display = 'block';
+      lbVideo.style.opacity = '0';
       lbVideo.src = src;
       lbVideo.play().catch(() => {});
+      lbVideo.addEventListener('canplay', () => { lbVideo.style.opacity = '1'; }, { once: true });
     } else {
       lbVideo.pause();
       lbVideo.src = '';
       lbVideo.style.display = 'none';
       lbImg.style.display = '';
+      lbImg.style.opacity = '0';
       lbImg.src = src;
       lbImg.alt = alt;
+      lbImg.addEventListener('load', () => { lbImg.style.opacity = '1'; }, { once: true });
     }
 
     lbPrev?.classList.toggle('is-hidden', items.length <= 1);
@@ -88,6 +92,13 @@ const { itemSelector } = Astro.props;
 
   itemEls.forEach((el, i) => {
     el.addEventListener('click', () => openLightbox(i));
+    // キーボード操作：Enter / Space でライトボックスを開く
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openLightbox(i);
+      }
+    });
   });
 
   // メディア本体クリックは overlay に伝播させない（動画コントロール操作で閉じないよう）
@@ -102,5 +113,18 @@ const { itemSelector } = Astro.props;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') showMedia(current - 1);
     if (e.key === 'ArrowRight') showMedia(current + 1);
+    // Tab フォーカストラップ
+    if (e.key === 'Tab') {
+      const focusable = [lbClose, lbPrev, lbNext].filter(
+        (el) => el && !el.classList.contains('is-hidden')
+      );
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
+      }
+    }
   });
 </script>

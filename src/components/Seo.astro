@@ -23,12 +23,16 @@ const {
   publishedTime
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).toString()
+  : Astro.url.href;
 const normalizedImage =
   typeof image === 'string' && image.startsWith('/')
     ? image.slice(1)
     : image;
-const ogImage = new URL(normalizedImage, Astro.site).toString();
+const ogImage = Astro.site
+  ? new URL(normalizedImage, Astro.site).toString()
+  : normalizedImage;
 const orgSchema = buildOrgSchema(Astro.site?.toString());
 ---
 

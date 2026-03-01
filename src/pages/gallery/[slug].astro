@@ -79,11 +79,14 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
                   />
                 </div>
               ))}
-              {(data.videos ?? []).map((videoUrl) => (
+              {(data.videos ?? []).map((videoUrl, vi) => (
                 <div
                   class="gallery-detail-item gallery-detail-item--video"
                   data-lightbox-src={videoUrl}
                   data-lightbox-type="video"
+                  tabindex="0"
+                  role="button"
+                  aria-label={`${data.title} 動画 ${vi + 1} を開く`}
                 >
                   <video
                     src={videoUrl}

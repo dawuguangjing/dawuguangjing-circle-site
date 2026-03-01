@@ -98,5 +98,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
     // View Transitions でページが切り替わったらメニューを閉じる
     document.addEventListener('astro:before-preparation', closeMenu);
+    // back/forward ナビゲーション後もメニューが残らないように
+    document.addEventListener('astro:after-swap', closeMenu);
   }
 </script>

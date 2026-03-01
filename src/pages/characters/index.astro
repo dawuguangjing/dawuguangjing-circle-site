@@ -4,7 +4,9 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
 
-const characters = await getCollection('characters');
+const characters = (await getCollection('characters')).sort(
+  (a, b) => a.data.order - b.data.order
+);
 ---
 
 <BaseLayout
