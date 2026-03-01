@@ -50,7 +50,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
             <h1 class="article-title" data-anim style="--anim-delay: 0.06s">{data.title}</h1>
             <!-- モバイル向け TOC へのジャンプリンク（デスクトップでは aside に表示されるため非表示） -->
             <a class="toc-jump-link" id="toc-jump" href="#toc" hidden>↓ この記事の目次を見る</a>
-            <div class="article-body" data-anim style="--anim-delay: 0.14s">
+            <div class="article-body">
               <Content />
             </div>
             {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (

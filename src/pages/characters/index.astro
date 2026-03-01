@@ -7,6 +7,14 @@ import { SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants'
 const characters = (await getCollection('characters')).sort(
   (a, b) => a.data.order - b.data.order
 );
+
+// 登場作品フィルター用: キャラに紐づく作品のスラッグ→タイトルマップを構築
+const works = await getCollection('works');
+const workMap = new Map(works.map((w) => [w.slug, w.data.title]));
+const uniqueWorkSlugs = [...new Set(
+  characters.map((c) => (c.data as any).workSlug).filter(Boolean)
+)] as string[];
+const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(slug) ?? slug }));
 ---
 
 <BaseLayout
@@ -19,12 +27,22 @@ const characters = (await getCollection('characters')).sort(
         <h1 class="section-title">キャラクター</h1>
       </div>
 
-      <div class="char-list-grid">
+      {filterWorks.length > 1 && (
+        <div class="filter-bar" id="char-filter" role="group" aria-label="登場作品でフィルター">
+          <button class="filter-chip is-active" data-work="all" aria-pressed="true">すべて</button>
+          {filterWorks.map((w) => (
+            <button class="filter-chip" data-work={w.slug} aria-pressed="false">{w.title}</button>
+          ))}
+        </div>
+      )}
+
+      <div class="char-list-grid" id="char-list-grid">
         {characters.map((char, i) => (
           <a
             class="char-list-card"
             href={withBase(`characters/${char.slug}/`)}
             data-anim
+            data-work={(char.data as any).workSlug ?? ''}
             style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s; --char-color: ${char.data.color}`}
           >
             <div class="char-list-img-wrap">
@@ -192,3 +210,31 @@ const characters = (await getCollection('characters')).sort(
   }
 }
 </style>
+
+<script>
+  const charChips = Array.from(document.querySelectorAll<HTMLButtonElement>('#char-filter .filter-chip'));
+  const charCards = Array.from(document.querySelectorAll<HTMLElement>('#char-list-grid .char-list-card'));
+
+  charChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      charChips.forEach((c) => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
+      chip.classList.add('is-active');
+      chip.setAttribute('aria-pressed', 'true');
+      const work = chip.dataset.work!;
+      let idx = 0;
+      charCards.forEach((card) => {
+        const show = work === 'all' || card.dataset.work === work;
+        if (show) {
+          card.style.display = '';
+          card.classList.remove('is-visible');
+          card.style.setProperty('--anim-delay', `${idx * 0.05}s`);
+          void card.offsetWidth;
+          card.classList.add('is-visible');
+          idx++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

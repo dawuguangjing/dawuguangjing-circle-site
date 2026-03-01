@@ -23,6 +23,9 @@ const {
   showEnvironments = false,
   environments,
 } = Astro.props;
+
+const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
+const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
 <a class="work-row" href={withBase(`works/${slug}/`)}>
@@ -38,6 +41,7 @@ const {
     <div class="work-row-meta">
       <span class="work-row-date">{formatDate(releaseDate)}</span>
       <div class="work-row-tags">
+        {isNew && <span class="badge badge--new">NEW</span>}
         {isR18 && <span class="badge badge--r18">R18</span>}
         {showEnvironments && environments?.windows && <span class="badge">Win</span>}
         {showEnvironments && environments?.mac && <span class="badge">Mac</span>}

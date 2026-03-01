@@ -61,6 +61,11 @@ const works = await getSortedWorks();
           </div>
         ))}
       </div>
+
+      <div class="works-empty-state" id="works-empty" aria-live="polite">
+        <p>該当する作品がありません</p>
+        <button class="button" id="works-filter-reset">フィルターをリセット</button>
+      </div>
     </section>
   </div>
 
@@ -85,23 +90,37 @@ const works = await getSortedWorks();
                   .map(c => c.dataset.filter!);
     }
 
+    const emptyEl = document.getElementById('works-empty');
+
     function applyFilters() {
       const active = getActiveFilters();
-      let visibleIndex = 0;
+      let visibleCount = 0;
       items.forEach((el) => {
         // アクティブなフィルターがなければ全件表示、あれば全条件 AND
         const show = active.length === 0 || active.every(f => filterTest[f]?.(el));
         if (show) {
           el.style.display = '';
           el.classList.remove('is-visible');
-          el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
+          el.style.setProperty('--anim-delay', `${visibleCount * 0.06}s`);
           void el.offsetWidth; // force reflow to restart transition
           el.classList.add('is-visible');
-          visibleIndex++;
+          visibleCount++;
         } else {
           el.style.display = 'none';
         }
       });
+
+      // 空状態表示
+      emptyEl?.classList.toggle('is-visible', visibleCount === 0);
+
+      // URL にフィルター状態を保存（ブックマーク・シェア対応）
+      const url = new URL(window.location.href);
+      if (active.length === 0) {
+        url.searchParams.delete('filters');
+      } else {
+        url.searchParams.set('filters', active.join(','));
+      }
+      history.replaceState(null, '', url.toString());
     }
 
     chips.forEach((chip, i) => {
@@ -141,6 +160,26 @@ const works = await getSortedWorks();
         target?.focus();
       });
     });
+
+    // フィルターリセットボタン
+    document.getElementById('works-filter-reset')?.addEventListener('click', () => {
+      allChip.click();
+    });
+
+    // 初期化: URL パラメーターからフィルターを復元
+    const urlFilters = new URL(window.location.href).searchParams.get('filters');
+    if (urlFilters) {
+      allChip.classList.remove('is-active');
+      allChip.setAttribute('aria-pressed', 'false');
+      urlFilters.split(',').forEach((f) => {
+        const chip = chips.find((c) => c.dataset.filter === f);
+        if (chip) {
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-pressed', 'true');
+        }
+      });
+      applyFilters();
+    }
 
     // ── ソート ──
     const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));

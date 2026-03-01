@@ -127,6 +127,20 @@ const { itemSelector } = Astro.props;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') showMedia(current - 1);
     if (e.key === 'ArrowRight') showMedia(current + 1);
+    // f / F: フルスクリーン切り替え
+    if (e.key === 'f' || e.key === 'F') {
+      e.preventDefault();
+      if (!document.fullscreenElement) {
+        lightbox?.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+    // 0: ピンチズームをリセット
+    if (e.key === '0') {
+      if (lbImg) lbImg.style.transform = '';
+      _pinchScale = 1;
+    }
     // Tab フォーカストラップ
     if (e.key === 'Tab') {
       const focusable = [lbClose, lbPrev, lbNext].filter(
