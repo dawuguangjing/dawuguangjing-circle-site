@@ -2876,6 +2876,20 @@ html[data-theme="dark"] .nav-links a:not(.is-active) {
   color: var(--ink-bright);
 }
 
+/* ── Dark mode: ロゴ文字色を明るめに ── */
+html[data-theme="dark"] .logo {
+  color: #58A6FF;
+}
+html[data-theme="dark"] .logo:hover {
+  color: #79BBFF;
+}
+html[data-theme="dark"] .logo-accent {
+  color: #A3E635;
+}
+html[data-theme="dark"] .logo-pink {
+  color: #F472B6;
+}
+
 /* works-grid 内のラッパー div がカードを満たすように */
 .works-grid > [data-anim] {
   display: flex;
