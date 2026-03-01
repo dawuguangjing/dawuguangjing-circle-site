@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import Lightbox from '../../components/Lightbox.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
@@ -41,7 +42,17 @@ const work = char.data.workSlug
     <div class="char-hero" style={`--char-color: ${char.data.color}`}>
       <div class="char-hero-bg" aria-hidden="true"></div>
       <div class="container char-hero-inner">
-        <div class="char-hero-img-wrap" data-anim="slide-right">
+        <div
+          class="char-hero-img-wrap"
+          data-anim="slide-right"
+          data-lightbox-src={char.data.cover}
+          data-lightbox-type="image"
+          data-lightbox-alt={char.data.name}
+          role="button"
+          tabindex="0"
+          aria-label={`${char.data.name}の画像を拡大する`}
+          title="クリックで拡大"
+        >
           <img
             class="char-hero-img"
             src={char.data.cover}
@@ -49,6 +60,7 @@ const work = char.data.workSlug
             width="400"
             height="533"
           />
+          <div class="char-cover-zoom-hint" aria-hidden="true">🔍</div>
         </div>
         <div class="char-hero-text" data-anim>
           <p class="char-hero-reading">{char.data.nameReading}</p>
@@ -113,6 +125,8 @@ const work = char.data.workSlug
       </div>
     </div>
   </div>
+
+  <Lightbox itemSelector=".char-hero-img-wrap" />
 </BaseLayout>
 
 <style>
@@ -144,15 +158,36 @@ const work = char.data.workSlug
 }
 
 .char-hero-img-wrap {
+  position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  cursor: zoom-in;
 }
 
 .char-hero-img {
   width: 100%;
   height: auto;
   display: block;
+  transition: transform 0.35s var(--easing);
+}
+
+.char-hero-img-wrap:hover .char-hero-img {
+  transform: scale(1.03);
+}
+
+.char-cover-zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+}
+
+.char-hero-img-wrap:hover .char-cover-zoom-hint {
+  opacity: 1;
 }
 
 .char-hero-text {
