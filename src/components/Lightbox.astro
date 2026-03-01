@@ -127,4 +127,20 @@ const { itemSelector } = Astro.props;
       }
     }
   });
+
+  // ── タッチスワイプ対応（モバイル） ──
+  let _touchStartX = 0;
+  let _touchFromMedia = false;
+  lightbox?.addEventListener('touchstart', function(e) {
+    _touchStartX = e.touches[0].clientX;
+    _touchFromMedia = !!e.target.closest('.lightbox-media');
+  }, { passive: true });
+  lightbox?.addEventListener('touchend', function(e) {
+    if (!lightbox.classList.contains('is-active') || _touchFromMedia) return;
+    const delta = e.changedTouches[0].clientX - _touchStartX;
+    if (Math.abs(delta) > 50) {
+      if (delta < 0) showMedia(current + 1);
+      else showMedia(current - 1);
+    }
+  }, { passive: true });
 </script>

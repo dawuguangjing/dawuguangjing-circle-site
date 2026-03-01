@@ -15,15 +15,15 @@ const works = await getSortedWorks();
         <span class="muted work-count">{works.length} タイトル</span>
       </div>
 
-      <div class="filter-bar" role="group" aria-label="作品フィルター">
-        <button class="filter-chip is-active" data-filter="all">すべて</button>
-        <button class="filter-chip" data-filter="r18">R18</button>
-        <button class="filter-chip" data-filter="all-ages">全年齢</button>
-        <button class="filter-chip" data-filter="windows">Windows</button>
-        <button class="filter-chip" data-filter="mac">Mac</button>
-        <button class="filter-chip" data-filter="browser">ブラウザ</button>
-        <button class="filter-chip" data-filter="ios">iOS</button>
-        <button class="filter-chip" data-filter="android">Android</button>
+      <div class="filter-bar" role="group" aria-label="作品フィルター（複数選択可・AND条件）">
+        <button class="filter-chip is-active" data-filter="all" aria-pressed="true">すべて</button>
+        <button class="filter-chip" data-filter="r18" aria-pressed="false">R18</button>
+        <button class="filter-chip" data-filter="all-ages" aria-pressed="false">全年齢</button>
+        <button class="filter-chip" data-filter="windows" aria-pressed="false">Windows</button>
+        <button class="filter-chip" data-filter="mac" aria-pressed="false">Mac</button>
+        <button class="filter-chip" data-filter="browser" aria-pressed="false">ブラウザ</button>
+        <button class="filter-chip" data-filter="ios" aria-pressed="false">iOS</button>
+        <button class="filter-chip" data-filter="android" aria-pressed="false">Android</button>
       </div>
 
       <div class="works-grid" id="works-grid">
@@ -56,38 +56,67 @@ const works = await getSortedWorks();
   </div>
 
   <script>
-    const chips = document.querySelectorAll('.filter-chip');
-    const items = document.querySelectorAll<HTMLElement>('.work-filter-item');
+    const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
+    const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
+    const allChip = chips.find(c => c.dataset.filter === 'all')!;
+
+    // フィルターキー → 表示条件
+    const filterTest: Record<string, (el: HTMLElement) => boolean> = {
+      'r18':      el => el.dataset.r18      === 'true',
+      'all-ages': el => el.dataset.r18      === 'false',
+      'windows':  el => el.dataset.windows  === 'true',
+      'mac':      el => el.dataset.mac      === 'true',
+      'browser':  el => el.dataset.browser  === 'true',
+      'ios':      el => el.dataset.ios      === 'true',
+      'android':  el => el.dataset.android  === 'true',
+    };
+
+    function getActiveFilters() {
+      return chips.filter(c => c.classList.contains('is-active') && c.dataset.filter !== 'all')
+                  .map(c => c.dataset.filter!);
+    }
+
+    function applyFilters() {
+      const active = getActiveFilters();
+      let visibleIndex = 0;
+      items.forEach((el) => {
+        // アクティブなフィルターがなければ全件表示、あれば全条件 AND
+        const show = active.length === 0 || active.every(f => filterTest[f]?.(el));
+        if (show) {
+          el.style.display = '';
+          el.classList.remove('is-visible');
+          el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
+          void el.offsetWidth; // force reflow to restart transition
+          el.classList.add('is-visible');
+          visibleIndex++;
+        } else {
+          el.style.display = 'none';
+        }
+      });
+    }
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        chips.forEach((c) => c.classList.remove('is-active'));
-        chip.classList.add('is-active');
-
-        const filter = (chip as HTMLElement).dataset.filter;
-        let visibleIndex = 0;
-
-        items.forEach((el) => {
-          let show = true;
-          if (filter === 'r18') show = el.dataset.r18 === 'true';
-          else if (filter === 'all-ages') show = el.dataset.r18 === 'false';
-          else if (filter === 'windows') show = el.dataset.windows === 'true';
-          else if (filter === 'mac') show = el.dataset.mac === 'true';
-          else if (filter === 'browser') show = el.dataset.browser === 'true';
-          else if (filter === 'ios') show = el.dataset.ios === 'true';
-          else if (filter === 'android') show = el.dataset.android === 'true';
-
-          if (show) {
-            el.style.display = '';
-            el.classList.remove('is-visible');
-            el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
-            void el.offsetWidth; // force reflow to restart transition
-            el.classList.add('is-visible');
-            visibleIndex++;
-          } else {
-            el.style.display = 'none';
+        if (chip.dataset.filter === 'all') {
+          // "すべて" → 他チップをリセットして "すべて" だけオン
+          chips.forEach(c => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
+          chip.classList.add('is-active');
+          chip.setAttribute('aria-pressed', 'true');
+        } else {
+          // "すべて" をオフ
+          allChip.classList.remove('is-active');
+          allChip.setAttribute('aria-pressed', 'false');
+          // このチップをトグル
+          const next = !chip.classList.contains('is-active');
+          chip.classList.toggle('is-active', next);
+          chip.setAttribute('aria-pressed', String(next));
+          // 何も選択されていなければ "すべて" に戻す
+          if (getActiveFilters().length === 0) {
+            allChip.classList.add('is-active');
+            allChip.setAttribute('aria-pressed', 'true');
           }
-        });
+        }
+        applyFilters();
       });
     });
   </script>

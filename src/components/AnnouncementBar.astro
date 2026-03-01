@@ -11,7 +11,9 @@ const { message, href, storageKey } = Astro.props;
 <div class="announcement-bar" id="announcement-bar" data-storage-key={storageKey}>
   <div class="container announcement-bar-inner">
     {href
-      ? <a class="announcement-bar-text" href={href} target="_blank" rel="noopener noreferrer">{message}</a>
+      ? <a class="announcement-bar-text" href={href} target="_blank" rel="noopener noreferrer" title="別タブで開きます">
+          {message}<svg class="announcement-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </a>
       : <span class="announcement-bar-text">{message}</span>
     }
     <button class="announcement-bar-close" aria-label="閉じる">
@@ -21,6 +23,16 @@ const { message, href, storageKey } = Astro.props;
     </button>
   </div>
 </div>
+
+<style>
+.announcement-ext-icon {
+  display: inline;
+  vertical-align: -1px;
+  margin-left: 4px;
+  opacity: 0.75;
+  flex-shrink: 0;
+}
+</style>
 
 <script>
   function initAnnouncementBar() {

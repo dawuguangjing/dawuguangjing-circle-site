@@ -142,6 +142,21 @@ const themeKey = THEME_STORAGE_KEY;
         document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
       }
       document.addEventListener('astro:page-load', initAnimations);
+
+      function initImgSkeleton() {
+        document.querySelectorAll<HTMLElement>('.img-skeleton').forEach((wrap) => {
+          const img = wrap.querySelector<HTMLImageElement>('img:not([aria-hidden])');
+          if (!img) return;
+          const resolve = () => wrap.classList.add('is-loaded');
+          if (img.complete) {
+            resolve();
+          } else {
+            img.addEventListener('load',  resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          }
+        });
+      }
+      document.addEventListener('astro:page-load', initImgSkeleton);
     </script>
   </body>
 </html>

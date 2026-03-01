@@ -241,6 +241,8 @@ button {
   gap: 14px;
   box-shadow: var(--shadow);
   scroll-margin-top: 100px;
+  position: sticky;
+  top: 1.5rem;
 }
 
 /* ── Floating Purchase Button ── */
@@ -344,6 +346,39 @@ button {
 /* FAB が表示されている画面幅では back-to-top を上に逃がして重なりを防ぐ */
 @media (max-width: 480px) {
   .back-to-top { bottom: 80px; }
+}
+
+/* ── Image Skeleton / Fade-in ── */
+@keyframes skeleton-shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position:  400px 0; }
+}
+
+/* ローディング中はシマーアニメーションを表示 */
+.img-skeleton:not(.is-loaded) {
+  background: linear-gradient(90deg, var(--stroke) 25%, var(--bg) 50%, var(--stroke) 75%);
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+/* ローディング中は主画像を非表示（aria-hidden な装飾画像は除外） */
+.img-skeleton:not(.is-loaded) > img:not([aria-hidden]) {
+  opacity: 0;
+}
+
+/* ロード完了後にフェードイン */
+.img-skeleton > img:not([aria-hidden]) {
+  transition: opacity 0.4s ease;
+}
+
+.img-skeleton.is-loaded > img:not([aria-hidden]) {
+  opacity: 1;
+}
+
+/* reduced-motion: アニメーションを無効化 */
+@media (prefers-reduced-motion: reduce) {
+  .img-skeleton:not(.is-loaded) { animation: none; }
+  .img-skeleton > img:not([aria-hidden]) { transition: none; }
 }
 
 .store-sidebar h3 {
