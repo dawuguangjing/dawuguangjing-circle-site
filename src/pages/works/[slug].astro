@@ -30,6 +30,11 @@ const { entry, prevWork, nextWork } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
+const allCharacters = await getCollection('characters');
+const workCharacters = allCharacters
+  .filter((c) => c.data.workSlug === entry.slug)
+  .sort((a, b) => a.data.order - b.data.order);
+
 const productJsonLd = buildProductSchema({
   title: data.title,
   description: data.shortDescription,
@@ -202,6 +207,21 @@ const trialLinks = data.trialLinks
               モバイル β
             </span>
           </div>
+
+          <!-- Characters -->
+          {workCharacters.length > 0 && (
+            <div class="sidebar-chars">
+              <h3>登場キャラクター</h3>
+              <div class="sidebar-char-list">
+                {workCharacters.map((c) => (
+                  <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.data.name}>
+                    <img class="sidebar-char-img" src={withBase(c.data.cover)} alt={c.data.name} width="60" height="60" loading="lazy" />
+                    <span class="sidebar-char-name">{c.data.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
 
           <!-- AI Usage -->
           <div class="sidebar-divider">

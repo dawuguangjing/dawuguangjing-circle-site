@@ -11,14 +11,19 @@ import Breadcrumb from '../../components/Breadcrumb.astro';
 import ScrollProgress from '../../components/ScrollProgress.astro';
 
 export async function getStaticPaths() {
-  const news = await getCollection('news');
-  return news.map((entry) => ({
+  const allNews = await getCollection('news');
+  const news = allNews.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return news.map((entry, i) => ({
     params: { slug: entry.slug },
-    props: { entry }
+    props: {
+      entry,
+      prevEntry: news[i + 1] ?? null, // 古い記事（前の記事）
+      nextEntry: news[i - 1] ?? null, // 新しい記事（次の記事）
+    }
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, prevEntry, nextEntry } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
@@ -79,8 +84,35 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
             </button>
           </div>
           <div class="back-link">
-            <a class="section-link" href={withBase('news/')}>← 開発ログへ戻る</a>
+            <a class="section-link" href={withBase(`news/?category=${data.category}`)}>← 開発ログへ戻る</a>
           </div>
+
+          {(prevEntry || nextEntry) && (
+            <nav class="article-pagination" aria-label="前後の記事へ">
+              <div class="article-pagination-prev">
+                {prevEntry && (
+                  <a class="article-pagination-link" href={withBase(`news/${prevEntry.slug}/`)}>
+                    <span class="article-pagination-arrow">←</span>
+                    <span class="article-pagination-meta">
+                      <span class="article-pagination-label">前の記事</span>
+                      <span class="article-pagination-title">{prevEntry.data.title}</span>
+                    </span>
+                  </a>
+                )}
+              </div>
+              <div class="article-pagination-next">
+                {nextEntry && (
+                  <a class="article-pagination-link article-pagination-link--next" href={withBase(`news/${nextEntry.slug}/`)}>
+                    <span class="article-pagination-meta">
+                      <span class="article-pagination-label">次の記事</span>
+                      <span class="article-pagination-title">{nextEntry.data.title}</span>
+                    </span>
+                    <span class="article-pagination-arrow">→</span>
+                  </a>
+                )}
+              </div>
+            </nav>
+          )}
         </div>
         <aside class="article-layout-aside">
           <nav class="toc" id="toc" hidden aria-label="目次">
@@ -114,5 +146,22 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
     toc.removeAttribute('hidden');
     // モバイル向けジャンプリンクも表示
     document.getElementById('toc-jump')?.removeAttribute('hidden');
+
+    // ── TOCスクロールスパイ ──
+    const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#toc-list a'));
+    const spy = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach((a) => {
+              a.classList.toggle('is-active', a.getAttribute('href') === `#${id}`);
+            });
+          }
+        });
+      },
+      { rootMargin: '0px 0px -60% 0px', threshold: 0 }
+    );
+    headings.forEach((h) => spy.observe(h));
   }
 </script>

@@ -10,11 +10,12 @@ interface Props {
   date: Date;
   category: NewsCategory;
   thumbnail?: string;
+  excerpt?: string;
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { slug, title, date, category, thumbnail, loading = 'lazy', fetchpriority } = Astro.props;
+const { slug, title, date, category, thumbnail, excerpt, loading = 'lazy', fetchpriority } = Astro.props;
 const href = withBase(`news/${slug}/`);
 ---
 
@@ -33,6 +34,7 @@ const href = withBase(`news/${slug}/`);
     <h3 class="news-card-title">
       <a class="news-card-link" href={href}>{title}</a>
     </h3>
+    {excerpt && <p class="news-card-excerpt">{excerpt}</p>}
     <slot />
   </div>
 </article>

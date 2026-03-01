@@ -9,6 +9,19 @@ interface Props {
   crumbs: Crumb[];
 }
 const { crumbs } = Astro.props;
+
+const allCrumbs = [{ label: 'ホーム', href: withBase('') }, ...crumbs];
+const origin = Astro.url.origin;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: allCrumbs.map((crumb, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: crumb.label,
+    ...(crumb.href ? { item: origin + crumb.href } : {}),
+  })),
+};
 ---
 
 <nav class="breadcrumb" aria-label="パンくずリスト">
@@ -26,3 +39,5 @@ const { crumbs } = Astro.props;
     ))}
   </ol>
 </nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

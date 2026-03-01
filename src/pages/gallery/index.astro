@@ -17,10 +17,20 @@ const galleries = await getSortedGallery();
         <h1 class="section-title">ギャラリー</h1>
         <span class="section-count muted">{galleries.length}件</span>
       </div>
+      <div class="gallery-sort" role="group" aria-label="並び替え">
+        <button class="filter-chip is-active" data-sort="newest">新着順</button>
+        <button class="filter-chip" data-sort="oldest">古い順</button>
+        <button class="filter-chip" data-sort="title">タイトル順</button>
+      </div>
       {galleries.length > 0 ? (
-        <div class="gallery-album-grid">
+        <div class="gallery-album-grid" id="gallery-grid">
           {galleries.map((entry, i) => (
-            <div data-anim style={`--anim-delay: ${i * ANIM_STAGGER}s`}>
+            <div
+              data-anim
+              style={`--anim-delay: ${i * ANIM_STAGGER}s`}
+              data-release={entry.data.releaseDate.getTime().toString()}
+              data-title={entry.data.title}
+            >
               <GalleryCard
                 slug={entry.slug}
                 title={entry.data.title}
@@ -40,3 +50,24 @@ const galleries = await getSortedGallery();
     </section>
   </div>
 </BaseLayout>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>('.gallery-sort [data-sort]');
+  const grid = document.getElementById('gallery-grid');
+
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      chips.forEach((c) => c.classList.toggle('is-active', c === chip));
+      if (!grid) return;
+      const items = Array.from(grid.children) as HTMLElement[];
+      const sort = chip.dataset.sort!;
+      const sorted = [...items].sort((a, b) => {
+        if (sort === 'newest') return Number(b.dataset.release) - Number(a.dataset.release);
+        if (sort === 'oldest') return Number(a.dataset.release) - Number(b.dataset.release);
+        if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
+        return 0;
+      });
+      sorted.forEach((el) => grid.appendChild(el));
+    });
+  });
+</script>

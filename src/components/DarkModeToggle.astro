@@ -76,11 +76,15 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
   }
 
   function applyTheme(theme: 'dark' | 'light') {
+    document.documentElement.classList.add('theme-transitioning');
     if (theme === 'dark') {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
     }
+    setTimeout(() => {
+      document.documentElement.classList.remove('theme-transitioning');
+    }, 320);
   }
 
   /** アニメーションなしで即時表示切り替え（初期化・ページ遷移後用） */
