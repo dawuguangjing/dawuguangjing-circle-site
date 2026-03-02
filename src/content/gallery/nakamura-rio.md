@@ -5,6 +5,7 @@ releaseDate: 2026-02-26
 isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
 images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-cafe.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-rio-char.jpg"
 relatedWorkSlugs:
