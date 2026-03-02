@@ -85,6 +85,7 @@ const characters = defineCollection({
     height: z.number().int().nonnegative().optional(),
     personality: z.string(),
     order: z.number().int().default(0),
+    gallerySlugs: z.array(z.string()).optional(),
   })
 });
 

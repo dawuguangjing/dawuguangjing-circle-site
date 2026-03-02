@@ -40,3 +40,9 @@ export async function getWorkIndex() {
   const works = await getCollection('works');
   return new Map(works.map((w) => [w.slug, w]));
 }
+
+/** slug → gallery の Map を返す */
+export async function getGalleryIndex() {
+  const galleries = await getCollection('gallery');
+  return new Map(galleries.map((g) => [g.slug, g]));
+}

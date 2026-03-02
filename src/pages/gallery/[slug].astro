@@ -32,6 +32,12 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
   const w = workIndex.get(slug);
   return w ? [w] : [];
 });
+
+// 登場キャラクターを取得（gallerySlugs に自分のスラッグが含まれるキャラ）
+const allCharacters = await getCollection('characters');
+const relatedCharacters = allCharacters
+  .filter((c) => (c.data.gallerySlugs ?? []).includes(entry.slug))
+  .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout
@@ -156,6 +162,21 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
                 ...(data.platformLinks.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks.dlsite, store: 'dlsite' }] : []),
               ]} />
             </>
+          )}
+
+          <!-- Related Characters -->
+          {relatedCharacters.length > 0 && (
+            <div class="sidebar-divider sidebar-chars">
+              <h3>登場キャラクター</h3>
+              <div class="sidebar-char-list">
+                {relatedCharacters.map((c) => (
+                  <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.data.name}>
+                    <img class="sidebar-char-img" src={c.data.cover} alt={c.data.name} width="60" height="60" loading="lazy" />
+                    <span class="sidebar-char-name">{c.data.name}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
           )}
 
           <!-- Related Works -->
