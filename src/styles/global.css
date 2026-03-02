@@ -3272,14 +3272,12 @@ html.age-verified .age-overlay {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  align-items: center;
 }
 
 /* eyebrow: 「最新作」タグ + R18バッジ */
 .hero-banner-eyebrow {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
 }
 .hero-banner-tag {
@@ -3301,7 +3299,6 @@ html.age-verified .age-overlay {
   margin: 0;
   line-height: 1.25;
   letter-spacing: 0.02em;
-  text-align: center;
 }
 
 .hero-banner-catch {
@@ -3309,7 +3306,6 @@ html.age-verified .age-overlay {
   color: var(--ink-dim);
   margin: 0;
   line-height: 1.7;
-  text-align: center;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   line-clamp: 3;
@@ -3320,7 +3316,6 @@ html.age-verified .age-overlay {
 .hero-banner .selling-points {
   margin: 0;
   gap: 6px;
-  align-items: center;
 }
 .hero-banner .selling-points li {
   color: var(--ink);
@@ -3335,7 +3330,6 @@ html.age-verified .age-overlay {
   flex-wrap: wrap;
   gap: 10px;
   align-items: center;
-  justify-content: center;
   margin-top: 6px;
 }
 
@@ -3344,7 +3338,6 @@ html.age-verified .age-overlay {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   gap: 6px 14px;
 }
 .hero-trial-group {
