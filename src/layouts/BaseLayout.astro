@@ -142,7 +142,17 @@ const themeKey = THEME_STORAGE_KEY;
         );
         document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
       }
-      document.addEventListener('astro:page-load', initAnimations);
+      // VT ナビゲーション時: after-swap で VT と並走させ "完了後に始まる 2 段階フェード" を防ぐ
+      // 初回ロード時: after-swap は発火しないため page-load にフォールバック
+      let _animInitiatedBySwap = false;
+      document.addEventListener('astro:after-swap', () => {
+        _animInitiatedBySwap = true;
+        initAnimations();
+      });
+      document.addEventListener('astro:page-load', () => {
+        if (!_animInitiatedBySwap) initAnimations();
+        _animInitiatedBySwap = false;
+      });
 
       function showToast(message: string) {
         const toast = document.createElement('div');
