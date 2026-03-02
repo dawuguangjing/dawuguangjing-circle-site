@@ -2798,10 +2798,10 @@ html.age-verified .age-overlay {
     font-size: 0.88rem;
   }
 
-  /* スマホではカードが画面幅いっぱいになりマグロが隠れるため、前面に出す */
+  /* 年齢確認カードより背面に配置 */
   .age-gate .tuna-tank,
   .age-overlay .tuna-tank {
-    z-index: 2;
+    z-index: 0;
   }
 }
 
