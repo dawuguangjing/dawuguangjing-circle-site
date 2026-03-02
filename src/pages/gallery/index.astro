@@ -11,7 +11,7 @@ const galleries = await getSortedGallery();
   title={`ギャラリー | ${SITE_NAME}`}
   description="サークルが制作したCG集・イラスト集の一覧です。"
 >
-  <div class="page-content">
+  <div class="page-content" data-list-context="gallery">
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title">ギャラリー</h1>
@@ -21,6 +21,10 @@ const galleries = await getSortedGallery();
         <button class="filter-chip is-active" data-sort="newest">新着順</button>
         <button class="filter-chip" data-sort="oldest">古い順</button>
         <button class="filter-chip" data-sort="title">タイトル順</button>
+      </div>
+      <div class="list-state-summary" id="gallery-state-summary" aria-live="polite">
+        <p class="list-state-summary-text" id="gallery-state-text">現在条件: すべて</p>
+        <button class="list-state-summary-clear" id="gallery-state-clear" type="button" hidden>並び順をリセット</button>
       </div>
       {galleries.length > 0 ? (
         <div class="gallery-album-grid" id="gallery-grid">
@@ -55,6 +59,22 @@ const galleries = await getSortedGallery();
   const chips = document.querySelectorAll<HTMLButtonElement>('.gallery-sort [data-sort]');
   const grid = document.getElementById('gallery-grid');
   const validSorts = new Set(['newest', 'oldest', 'title']);
+  const stateText = document.getElementById('gallery-state-text');
+  const stateClear = document.getElementById('gallery-state-clear') as HTMLButtonElement | null;
+  const sortLabelMap = new Map(
+    Array.from(chips).map((chip) => [chip.dataset.sort ?? '', (chip.textContent ?? '').trim()])
+  );
+
+  function updateSortSummary(sort: string) {
+    if (!stateText || !stateClear) return;
+    if (sort === 'newest') {
+      stateText.textContent = '現在条件: すべて';
+      stateClear.hidden = true;
+      return;
+    }
+    stateText.textContent = `現在条件: 並び順 ${sortLabelMap.get(sort) ?? sort}`;
+    stateClear.hidden = false;
+  }
 
   function applySort(sort: string, updateUrl = true) {
     const resolvedSort = validSorts.has(sort) ? sort : 'newest';
@@ -68,6 +88,7 @@ const galleries = await getSortedGallery();
       return 0;
     });
     sorted.forEach((el) => grid.appendChild(el));
+    updateSortSummary(resolvedSort);
 
     if (updateUrl) {
       const url = new URL(window.location.href);
@@ -85,8 +106,12 @@ const galleries = await getSortedGallery();
       applySort(chip.dataset.sort ?? 'newest');
     });
   });
+  stateClear?.addEventListener('click', () => {
+    applySort('newest');
+  });
 
   // 初期化: URL パラメーターから状態を復元
   const urlSort = new URL(window.location.href).searchParams.get('sort');
   if (urlSort) applySort(urlSort);
+  else updateSortSummary('newest');
 </script>

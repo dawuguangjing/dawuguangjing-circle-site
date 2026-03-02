@@ -84,7 +84,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
             </button>
           </div>
           <div class="back-link">
-            <a class="section-link" href={withBase(`news/?category=${data.category}`)}>← 開発ログへ戻る</a>
+            <a class="section-link" href={withBase(`news/?category=${data.category}`)} data-back-context data-back-context-key="news">← 開発ログへ戻る</a>
           </div>
 
           {(prevEntry || nextEntry) && (

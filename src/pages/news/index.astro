@@ -23,7 +23,7 @@ function extractExcerpt(body: string, maxLen = 100): string {
 ---
 
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
-  <div class="page-content">
+  <div class="page-content" data-list-context="news">
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title">開発ログ</h1>
@@ -34,6 +34,10 @@ function extractExcerpt(body: string, maxLen = 100): string {
         {categories.map(([key, label]) => (
           <button class="filter-chip" data-category={key}>{label}</button>
         ))}
+      </div>
+      <div class="list-state-summary" id="news-state-summary" aria-live="polite">
+        <p class="list-state-summary-text" id="news-state-text">現在条件: すべて</p>
+        <button class="list-state-summary-clear" id="news-state-clear" type="button" hidden>条件を解除</button>
       </div>
 
       <div class="news-grid" id="news-grid">
@@ -64,6 +68,22 @@ function extractExcerpt(body: string, maxLen = 100): string {
   const chips = document.querySelectorAll<HTMLButtonElement>('#news-filter .filter-chip');
   const items = document.querySelectorAll<HTMLElement>('#news-grid [data-category]');
   const validCategories = new Set(['all', ...Array.from(chips).map((c) => c.dataset.category ?? '').filter(Boolean)]);
+  const stateText = document.getElementById('news-state-text');
+  const stateClear = document.getElementById('news-state-clear') as HTMLButtonElement | null;
+  const categoryLabelMap = new Map(
+    Array.from(chips).map((chip) => [chip.dataset.category ?? '', (chip.textContent ?? '').trim()])
+  );
+
+  function updateCategorySummary(category: string) {
+    if (!stateText || !stateClear) return;
+    if (category === 'all') {
+      stateText.textContent = '現在条件: すべて';
+      stateClear.hidden = true;
+      return;
+    }
+    stateText.textContent = `現在条件: ${categoryLabelMap.get(category) ?? category}`;
+    stateClear.hidden = false;
+  }
 
   function applyCategory(cat: string, updateUrl = true) {
     const resolvedCat = validCategories.has(cat) ? cat : 'all';
@@ -85,6 +105,7 @@ function extractExcerpt(body: string, maxLen = 100): string {
         el.style.display = 'none';
       }
     });
+    updateCategorySummary(resolvedCat);
 
     if (updateUrl) {
       const url = new URL(window.location.href);
@@ -103,8 +124,12 @@ function extractExcerpt(body: string, maxLen = 100): string {
       applyCategory(cat);
     });
   });
+  stateClear?.addEventListener('click', () => {
+    applyCategory('all');
+  });
 
   // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
   const urlCat = new URL(window.location.href).searchParams.get('category');
   if (urlCat) applyCategory(urlCat);
+  else updateCategorySummary('all');
 </script>

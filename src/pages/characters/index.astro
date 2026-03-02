@@ -21,7 +21,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   title={`キャラクター | ${SITE_NAME}`}
   description="ダウグアングジング作品に登場するキャラクターのプロフィール一覧です。"
 >
-  <div class="page-content">
+  <div class="page-content" data-list-context="characters">
     <div class="container section">
       <div class="section-header" data-anim>
         <h1 class="section-title">キャラクター</h1>
@@ -40,6 +40,10 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         <button class="filter-chip is-active" data-char-sort="order">登場順</button>
         <button class="filter-chip" data-char-sort="name">名前順</button>
       </div>
+      <div class="list-state-summary" id="characters-state-summary" aria-live="polite">
+        <p class="list-state-summary-text" id="characters-state-text">現在条件: すべて</p>
+        <button class="list-state-summary-clear" id="characters-state-clear" type="button" hidden>条件を解除</button>
+      </div>
 
       <div class="char-list-grid" id="char-list-grid">
         {characters.map((char, i) => (
@@ -57,6 +61,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
                 class="char-list-img"
                 src={char.data.cover}
                 alt={char.data.name}
+                sizes="(max-width: 480px) calc(50vw - 18px), (max-width: 1100px) calc(33vw - 28px), 260px"
                 width="300"
                 height="400"
                 loading={i === 0 ? 'eager' : 'lazy'}
@@ -225,6 +230,14 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   const charGrid = document.getElementById('char-list-grid');
   const validSorts = new Set(['order', 'name']);
   const validWorks = new Set(['all', ...charChips.map((c) => c.dataset.work ?? '').filter(Boolean)]);
+  const stateText = document.getElementById('characters-state-text');
+  const stateClear = document.getElementById('characters-state-clear') as HTMLButtonElement | null;
+  const workLabelMap = new Map(
+    charChips.map((chip) => [chip.dataset.work ?? '', (chip.textContent ?? '').trim()])
+  );
+  const sortLabelMap = new Map(
+    sortBtns.map((btn) => [btn.dataset.charSort ?? '', (btn.textContent ?? '').trim()])
+  );
 
   function getActiveWork() {
     const active = charChips.find((c) => c.classList.contains('is-active'))?.dataset.work;
@@ -251,6 +264,24 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
     history.replaceState(null, '', url.toString());
   }
 
+  function updateStateSummary(work = getActiveWork(), sort = getActiveSort()) {
+    if (!stateText || !stateClear) return;
+    const parts: string[] = [];
+    if (work !== 'all') {
+      parts.push(`作品: ${workLabelMap.get(work) ?? work}`);
+    }
+    if (sort !== 'order') {
+      parts.push(`並び順: ${sortLabelMap.get(sort) ?? sort}`);
+    }
+    if (parts.length === 0) {
+      stateText.textContent = '現在条件: すべて';
+      stateClear.hidden = true;
+    } else {
+      stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
+      stateClear.hidden = false;
+    }
+  }
+
   function applyWorkFilter(work: string, updateUrl = true) {
     const resolvedWork = validWorks.has(work) ? work : 'all';
     charChips.forEach((c) => {
@@ -274,7 +305,9 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       }
     });
 
-    if (updateUrl) syncStateToUrl(resolvedWork, getActiveSort());
+    const sort = getActiveSort();
+    updateStateSummary(resolvedWork, sort);
+    if (updateUrl) syncStateToUrl(resolvedWork, sort);
   }
 
   function applyCharSort(sort: string, updateUrl = true) {
@@ -294,7 +327,9 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       if (el.style.display !== 'none') el.classList.add('is-visible');
     });
 
-    if (updateUrl) syncStateToUrl(getActiveWork(), resolvedSort);
+    const work = getActiveWork();
+    updateStateSummary(work, resolvedSort);
+    if (updateUrl) syncStateToUrl(work, resolvedSort);
   }
 
   charChips.forEach((chip) => {
@@ -308,10 +343,23 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       applyCharSort(btn.dataset.charSort ?? 'order');
     });
   });
+  stateClear?.addEventListener('click', () => {
+    const defaultSortBtn = sortBtns.find((btn) => btn.dataset.charSort === 'order');
+    if (defaultSortBtn && !defaultSortBtn.classList.contains('is-active')) {
+      defaultSortBtn.click();
+    }
+    const allWorkChip = charChips.find((chip) => chip.dataset.work === 'all');
+    if (allWorkChip && !allWorkChip.classList.contains('is-active')) {
+      allWorkChip.click();
+    } else {
+      updateStateSummary();
+    }
+  });
 
   // 初期化: URL パラメーターから状態を復元
   const params = new URL(window.location.href).searchParams;
   applyCharSort(params.get('sort') ?? 'order', false);
   applyWorkFilter(params.get('work') ?? 'all', false);
   syncStateToUrl();
+  updateStateSummary();
 </script>

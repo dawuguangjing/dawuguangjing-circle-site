@@ -1947,6 +1947,60 @@ a.announcement-bar-text:hover {
   margin-bottom: 20px;
 }
 
+/* ── List State Summary (filter/sort) ── */
+.list-state-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -4px 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--panel) 80%, var(--bg));
+}
+
+.list-state-summary-text {
+  margin: 0;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-state-summary-clear {
+  flex-shrink: 0;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.list-state-summary-clear:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-alpha-05);
+}
+
+@media (max-width: 640px) {
+  .list-state-summary {
+    padding: 8px 10px;
+    margin-top: -6px;
+  }
+  .list-state-summary-text {
+    font-size: 0.74rem;
+  }
+}
+
 .filter-chip {
   padding: 6px 14px;
   border: 1px solid var(--stroke);

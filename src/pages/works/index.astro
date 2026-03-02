@@ -8,7 +8,7 @@ const works = await getSortedWorks();
 ---
 
 <BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
-  <div class="page-content">
+  <div class="page-content" data-list-context="works">
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title">全作品</h1>
@@ -45,6 +45,10 @@ const works = await getSortedWorks();
         <button class="sort-btn is-active" data-sort="newest">新しい順</button>
         <button class="sort-btn" data-sort="oldest">古い順</button>
         <button class="sort-btn" data-sort="title">タイトル順</button>
+      </div>
+      <div class="list-state-summary" id="works-state-summary" aria-live="polite">
+        <p class="list-state-summary-text" id="works-state-text">現在条件: すべて</p>
+        <button class="list-state-summary-clear" id="works-state-clear" type="button" hidden>条件を解除</button>
       </div>
 
       <div class="works-grid" id="works-grid">
@@ -130,8 +134,20 @@ const works = await getSortedWorks();
     const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
     const allChip = chips.find(c => c.dataset.filter === 'all')!;
     const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));
+    const stateText = document.getElementById('works-state-text');
+    const stateClear = document.getElementById('works-state-clear') as HTMLButtonElement | null;
     const grid = document.getElementById('works-grid')!;
     const VALID_SORTS = new Set(['newest', 'oldest', 'title']);
+    const filterLabelMap = new Map(
+      chips
+        .filter((c) => (c.dataset.filter ?? '') !== '' && c.dataset.filter !== 'all')
+        .map((c) => [c.dataset.filter!, (c.textContent ?? '').trim() || c.dataset.filter!])
+    );
+    const sortLabelMap = new Map(
+      sortBtns
+        .filter((b) => VALID_SORTS.has(b.dataset.sort ?? ''))
+        .map((b) => [b.dataset.sort!, (b.textContent ?? '').trim() || b.dataset.sort!])
+    );
 
     // フィルターキー → 表示条件
     const filterTest: Record<string, (el: HTMLElement) => boolean> = {
@@ -170,6 +186,25 @@ const works = await getSortedWorks();
       history.replaceState(null, '', url.toString());
     }
 
+    function updateStateSummary(activeFilters = getActiveFilters(), sort = getActiveSort()) {
+      if (!stateText || !stateClear) return;
+      const parts: string[] = [];
+      if (activeFilters.length > 0) {
+        const labels = activeFilters.map((f) => filterLabelMap.get(f) ?? f);
+        parts.push(`絞り込み: ${labels.join(' / ')}`);
+      }
+      if (sort !== 'newest') {
+        parts.push(`並び順: ${sortLabelMap.get(sort) ?? sort}`);
+      }
+      if (parts.length === 0) {
+        stateText.textContent = '現在条件: すべて';
+        stateClear.hidden = true;
+      } else {
+        stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
+        stateClear.hidden = false;
+      }
+    }
+
     const emptyEl = document.getElementById('works-empty');
 
     function applyFilters() {
@@ -200,6 +235,7 @@ const works = await getSortedWorks();
           ? `${items.length} タイトル`
           : `${visibleCount} 件表示中`;
       }
+      updateStateSummary(active, getActiveSort());
 
       // URL に状態を保存（ブックマーク・シェア対応）
       syncStateToUrl(active);
@@ -259,6 +295,17 @@ const works = await getSortedWorks();
     document.getElementById('works-filter-reset')?.addEventListener('click', () => {
       allChip.click();
     });
+    stateClear?.addEventListener('click', () => {
+      const newestBtn = sortBtns.find((b) => b.dataset.sort === 'newest');
+      if (newestBtn && !newestBtn.classList.contains('is-active')) {
+        newestBtn.click();
+      }
+      if (getActiveFilters().length > 0 || !allChip.classList.contains('is-active')) {
+        allChip.click();
+      } else {
+        updateStateSummary();
+      }
+    });
 
     // 初期化: URL パラメーターから状態を復元
     const url = new URL(window.location.href);
@@ -300,6 +347,7 @@ const works = await getSortedWorks();
           if (el.style.display !== 'none') el.classList.add('is-visible');
         });
         syncStateToUrl();
+        updateStateSummary();
       });
     });
 
@@ -309,5 +357,6 @@ const works = await getSortedWorks();
       if (targetSortBtn) targetSortBtn.click();
       else syncStateToUrl();
     }
+    updateStateSummary();
   </script>
 </BaseLayout>

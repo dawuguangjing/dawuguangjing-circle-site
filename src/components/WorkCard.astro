@@ -41,6 +41,7 @@ const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
       alt={`${title} cover`}
       loading={loading}
       fetchpriority={fetchpriority}
+      sizes="(max-width: 640px) 96px, 160px"
       width="160"
       height="160"
     />

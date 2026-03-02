@@ -8,6 +8,7 @@ import { SITE_NAME } from '../../utils/constants';
 import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
+import FabPurchase from '../../components/FabPurchase.astro';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -24,6 +25,7 @@ const data = entry.data;
 const imageCount = resolveImageCount(data);
 const videoCount = data.videos?.length ?? 0;
 const hasMedia = data.images.length > 0 || videoCount > 0;
+const hasStoreLinks = !!(data.platformLinks?.fanza || data.platformLinks?.dlsite);
 
 const workIndex = await getWorkIndex();
 const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
@@ -115,7 +117,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar" data-anim="slide-right" style="--anim-delay: 0.15s">
+        <div class="store-sidebar" id="purchase-section" data-anim="slide-right" style="--anim-delay: 0.15s">
           <!-- Age Rating -->
           <div>
             {data.isR18
@@ -146,7 +148,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
           </table>
 
           <!-- Purchase Links -->
-          {data.platformLinks && (data.platformLinks.fanza || data.platformLinks.dlsite) && (
+          {hasStoreLinks && (
             <>
               <h3>購入する</h3>
               <StoreButtonGroup links={[
@@ -188,7 +190,7 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
 
     <section class="container section--compact">
       <div class="back-link">
-        <a class="section-link" href={withBase('gallery/')}>← ギャラリー一覧へ戻る</a>
+        <a class="section-link" href={withBase('gallery/')} data-back-context data-back-context-key="gallery">← ギャラリー一覧へ戻る</a>
       </div>
     </section>
   </div>
@@ -202,5 +204,6 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
       item.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
     });
   </script>
+  {hasStoreLinks && <FabPurchase targetId="purchase-section" />}
 
 </BaseLayout>

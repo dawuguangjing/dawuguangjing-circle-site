@@ -26,6 +26,7 @@ const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loadin
       alt={`${title} cover`}
       loading={loading}
       fetchpriority={fetchpriority}
+      sizes="(max-width: 768px) calc(50vw - 24px), 220px"
       width="400"
       height="300"
     />
@@ -35,6 +36,7 @@ const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loadin
         src={previewImage}
         alt=""
         loading="lazy"
+        sizes="(max-width: 768px) calc(50vw - 24px), 220px"
         width="400"
         height="300"
         aria-hidden="true"
