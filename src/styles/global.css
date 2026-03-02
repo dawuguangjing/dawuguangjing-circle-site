@@ -258,7 +258,7 @@ button {
   list-style: none;
   margin: 0;
   padding: 0;
-  font-size: 0.78rem;
+  font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--ink-dim);
 }
 .breadcrumb-item + .breadcrumb-item::before {
@@ -1625,6 +1625,7 @@ a.announcement-bar-text:hover {
 }
 .sort-btn {
   padding: 4px 12px;
+  min-height: 44px;
   border: 1px solid var(--stroke);
   border-radius: 16px;
   background: none;
@@ -1656,6 +1657,7 @@ a.announcement-bar-text:hover {
   align-items: center;
   gap: 5px;
   padding: 5px 12px;
+  min-height: 44px;
   border: 1px solid var(--stroke);
   border-radius: var(--radius-md);
   background: var(--panel);
@@ -1673,7 +1675,7 @@ a.announcement-bar-text:hover {
 /* ── Toast Notification ── */
 .toast {
   position: fixed;
-  bottom: 80px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%) translateY(12px);
   background: var(--ink-bright);
@@ -1772,7 +1774,10 @@ a.announcement-bar-text:hover {
     transform: translateY(100%);
     transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
     margin-bottom: 0;
-    /* スクロール無効化 */
+    /* ソフトキーボード表示時もシートが画面外に出ないよう高さ制限 */
+    max-height: calc(80vh - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    /* 横スクロール無効化 */
     overflow-x: visible;
     -webkit-mask-image: none;
     mask-image: none;
@@ -1819,7 +1824,8 @@ a.announcement-bar-text:hover {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 14px;
+    padding: 6px 16px;
+    min-height: 44px;
     background: var(--panel);
     border: 1px solid var(--stroke);
     border-radius: 20px;
@@ -1849,6 +1855,20 @@ a.announcement-bar-text:hover {
     font-size: 0.7rem;
     font-weight: 700;
     line-height: 1;
+  }
+
+  /* ソートバーを横スクロール可能にし、ボタンにスナップを適用 */
+  .sort-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .sort-bar::-webkit-scrollbar { display: none; }
+  .sort-btn {
+    flex-shrink: 0;
+    scroll-snap-align: start;
   }
 
   /* スクリム（半透明オーバーレイ） */
@@ -1987,6 +2007,7 @@ a.announcement-bar-text:hover {
 .work-row-cover {
   position: relative;
   overflow: hidden;
+  aspect-ratio: 1 / 1;
 }
 
 .work-row-overlay {
@@ -2716,6 +2737,11 @@ html.age-verified .age-overlay {
     grid-template-columns: 1fr;
   }
 
+  /* モバイルではサイドバーを通常フローに戻す（sticky が読み中に邪魔になるため） */
+  .store-sidebar {
+    position: static;
+  }
+
   .gallery-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -3267,9 +3293,15 @@ html.age-verified .age-overlay {
 
 /* ── Hero Banner: 極小デバイス（380px 以下）── */
 @media (max-width: 380px) {
+  /* 横並びをやめて縦スタックにし、各要素を全幅で表示 */
   .hero-banner-inner {
-    grid-template-columns: 100px 1fr;
-    gap: 8px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  /* カバー画像をコンパクトな正方形に（DOM上は2番目だが order:-1 で先頭に表示） */
+  .hero-banner-cover {
+    max-width: 140px;
+    margin: 0 auto;
   }
 }
 
