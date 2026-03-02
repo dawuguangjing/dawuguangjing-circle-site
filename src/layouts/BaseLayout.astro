@@ -147,6 +147,8 @@ const themeKey = THEME_STORAGE_KEY;
       let _animInitiatedBySwap = false;
       document.addEventListener('astro:after-swap', () => {
         _animInitiatedBySwap = true;
+        // フィルターシート等で overflow:hidden のままページ遷移した場合に戻す
+        document.body.style.overflow = '';
         initAnimations();
       });
       document.addEventListener('astro:page-load', () => {

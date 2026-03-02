@@ -106,9 +106,14 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
   }
 
   // ── 下スクロールで隠す・上スクロールで表示 ──
+  // AbortController でページ遷移ごとに旧リスナーを解除（蓄積防止）
+  let _scrollAbort: AbortController | null = null;
+
   function initHideOnScroll() {
     const header = document.querySelector<HTMLElement>('.site-header');
     if (!header) return;
+    _scrollAbort?.abort();
+    _scrollAbort = new AbortController();
     let lastY = window.scrollY;
     window.addEventListener('scroll', () => {
       const y = window.scrollY;
@@ -120,7 +125,18 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
         header.classList.remove('is-hidden');
       }
       lastY = y;
-    }, { passive: true });
+    }, { passive: true, signal: _scrollAbort.signal });
   }
   document.addEventListener('astro:page-load', initHideOnScroll);
+
+  // VT 前にヘッダーを強制表示（is-hidden のまま snapshot が撮られると
+  // 新ページで header がポップインして見えるため、transition なしで瞬時に戻す）
+  document.addEventListener('astro:before-preparation', () => {
+    const header = document.querySelector<HTMLElement>('.site-header');
+    if (!header || !header.classList.contains('is-hidden')) return;
+    header.style.transition = 'none';
+    header.classList.remove('is-hidden');
+    void header.offsetHeight; // reflow を強制
+    requestAnimationFrame(() => { header.style.transition = ''; });
+  });
 </script>
