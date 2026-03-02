@@ -204,8 +204,7 @@ const themeKey = THEME_STORAGE_KEY;
         const saved = sessionStorage.getItem(key);
         if (saved !== null) {
           sessionStorage.removeItem(key);
-          // 動的コンテンツのレイアウト確定後に復元するため2フレーム待つ
-          requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, Number(saved))));
+          window.scrollTo(0, Number(saved));
         }
       });
     </script>
