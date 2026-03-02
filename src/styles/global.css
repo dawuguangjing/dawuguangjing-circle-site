@@ -3546,6 +3546,14 @@ html[data-theme="dark"] .world-label      { color: rgba(167, 139, 250, 0.95); }
 [data-theme="dark"] .sidebar-small,
 [data-theme="dark"] .sidebar-xsmall { color: var(--ink); }
 
+/* ── Dark mode: キャラクター詳細ページ テキスト ── */
+html[data-theme="dark"] .char-hero-reading,
+html[data-theme="dark"] .char-hero-personality,
+html[data-theme="dark"] .char-stat-label,
+html[data-theme="dark"] .char-body {
+  color: var(--ink-bright);
+}
+
 /* ── Dark mode: トグルボタン ホバー色 ── */
 html[data-theme="dark"] .dark-mode-toggle:hover {
   background: rgba(251, 192, 45, 0.14);
