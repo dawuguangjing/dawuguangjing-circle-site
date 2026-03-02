@@ -6,6 +6,7 @@ isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-izakaya.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
 relatedWorkSlugs:
