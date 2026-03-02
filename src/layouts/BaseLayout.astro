@@ -200,23 +200,6 @@ const themeKey = THEME_STORAGE_KEY;
       }
       document.addEventListener('astro:page-load', initImgSkeleton);
 
-      // ── スクロール位置の保存・復元（一覧↔詳細の行き来で位置を保持） ──
-      // ブラウザの「戻る/進む」(traverse) は Astro のネイティブ処理に任せ、
-      // リンククリック (push) 時のみ sessionStorage で管理する。
-      document.addEventListener('astro:before-preparation', (e) => {
-        if ((e as any).navigationType === 'traverse') return;
-        sessionStorage.setItem('scroll:' + location.pathname, String(Math.round(window.scrollY)));
-      });
-      // DOM スワップ直後（astro:page-load より先）に復元 → アニメーション開始前に確定してカクつきを防ぐ
-      document.addEventListener('astro:after-swap', (e) => {
-        if ((e as any).navigationType === 'traverse') return;
-        const key = 'scroll:' + location.pathname;
-        const saved = sessionStorage.getItem(key);
-        if (saved !== null) {
-          sessionStorage.removeItem(key);
-          window.scrollTo(0, Number(saved));
-        }
-      });
     </script>
   </body>
 </html>
