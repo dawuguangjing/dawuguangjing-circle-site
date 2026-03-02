@@ -276,7 +276,7 @@ button {
 /* ── Back to Top ── */
 .back-to-top {
   position: fixed;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   left: 24px;
   z-index: 40;
   width: 44px;
@@ -294,6 +294,7 @@ button {
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.25s ease, border-color 0.2s;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .back-to-top.is-visible {
   opacity: 1;
@@ -307,7 +308,7 @@ button {
 
 .fab-purchase {
   position: fixed;
-  bottom: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   right: 24px;
   z-index: 40;
   display: flex;
@@ -326,6 +327,7 @@ button {
   transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .fab-purchase:hover {
@@ -347,7 +349,7 @@ button {
 
 /* FAB が表示されている画面幅では back-to-top を上に逃がして重なりを防ぐ */
 @media (max-width: 480px) {
-  .back-to-top { bottom: 80px; }
+  .back-to-top { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ── Image Skeleton / Fade-in ── */
@@ -1520,6 +1522,7 @@ a.announcement-bar-text:hover {
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   z-index: 1;
   flex-shrink: 0;
+  touch-action: manipulation;
 }
 .lightbox-prev { left: 20px; }
 .lightbox-next { right: 20px; }
@@ -1560,6 +1563,8 @@ a.announcement-bar-text:hover {
   background: linear-gradient(transparent, rgba(0,0,0,0.65));
   overflow-x: auto;
   scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
 }
 .lightbox-thumbs:empty { display: none; }
 .lightbox-thumbs::-webkit-scrollbar { display: none; }
@@ -1580,6 +1585,8 @@ a.announcement-bar-text:hover {
   align-items: center;
   justify-content: center;
   transition: border-color 0.2s ease, transform 0.2s ease;
+  touch-action: manipulation;
+  scroll-snap-align: center;
 }
 .lightbox-thumb:hover { border-color: rgba(255,255,255,0.75); transform: scale(1.08); }
 .lightbox-thumb.is-active { border-color: #fff; transform: scale(1.12); }
@@ -1748,18 +1755,124 @@ a.announcement-bar-text:hover {
 }
 
 @media (max-width: 640px) {
+  /* フィルターバーをボトムシートとして固定配置 */
   .filter-bar {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    padding-bottom: 4px;
-    /* 右端のチップが「続きあり」とわかるようフェード */
-    -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
-    mask-image: linear-gradient(to right, black 85%, transparent 100%);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 300;
+    flex-wrap: wrap;
+    flex-direction: row;
+    background: var(--panel);
+    border-top: 1px solid var(--stroke);
+    border-radius: 16px 16px 0 0;
+    padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.14);
+    transform: translateY(100%);
+    transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin-bottom: 0;
+    /* スクロール無効化 */
+    overflow-x: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: auto;
   }
-  .filter-bar::-webkit-scrollbar { display: none; }
+  .filter-bar.is-open {
+    transform: translateY(0);
+  }
   .filter-bar .filter-chip { flex-shrink: 0; }
+
+  /* モバイル時のみ表示するシートのヘッダー */
+  .filter-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--stroke);
+  }
+  .filter-sheet-header-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .filter-sheet-close {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--stroke);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: inherit;
+    touch-action: manipulation;
+  }
+
+  /* トリガーボタン */
+  .filter-sheet-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: var(--panel);
+    border: 1px solid var(--stroke);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 16px;
+    touch-action: manipulation;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .filter-sheet-trigger.has-active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .filter-sheet-trigger-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 9px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* スクリム（半透明オーバーレイ） */
+  .filter-sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 299;
+    background: rgba(0, 0, 0, 0.4);
+    animation: filter-overlay-in 0.25s ease forwards;
+  }
+  .filter-sheet-overlay.is-visible { display: block; }
+}
+@keyframes filter-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* デスクトップではトリガー・ヘッダー・オーバーレイを非表示 */
+@media (min-width: 641px) {
+  .filter-sheet-trigger,
+  .filter-sheet-overlay,
+  .filter-sheet-close,
+  .filter-sheet-header { display: none !important; }
 }
 
 .filter-chips {
@@ -1780,6 +1893,7 @@ a.announcement-bar-text:hover {
   font-family: inherit;
   cursor: pointer;
   transition: all 0.2s ease;
+  touch-action: manipulation;
 }
 
 .filter-chip:hover {
@@ -3140,7 +3254,8 @@ html.age-verified .age-overlay {
     gap: 2px;
   }
 
-  .hero-banner-title { font-size: 1.05rem; }
+  /* 380px→0.9rem / 480px→1.05rem の線形補間 */
+  .hero-banner-title { font-size: clamp(0.9rem, calc(5.28px + 2.4vw), 1.05rem); }
 
   .hero-banner-cta,
   .hero-banner-sub {
@@ -3156,7 +3271,6 @@ html.age-verified .age-overlay {
     grid-template-columns: 100px 1fr;
     gap: 8px;
   }
-  .hero-banner-title { font-size: 0.9rem; }
 }
 
 /* ── Hero Banner Animations ── */

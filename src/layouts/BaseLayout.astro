@@ -44,7 +44,7 @@ const themeKey = THEME_STORAGE_KEY;
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     {/* 年齢確認済みなら <html> に age-verified クラスを付与（レンダリング前に同期実行してフラッシュを防ぐ） */}
     {/* ダークモード初期化（レンダリング前に同期実行してフラッシュを防ぐ） */}
     <script is:inline define:vars={{ themeKey }}>
@@ -204,7 +204,8 @@ const themeKey = THEME_STORAGE_KEY;
         const saved = sessionStorage.getItem(key);
         if (saved !== null) {
           sessionStorage.removeItem(key);
-          window.scrollTo(0, Number(saved));
+          // 動的コンテンツのレイアウト確定後に復元するため2フレーム待つ
+          requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, Number(saved))));
         }
       });
     </script>

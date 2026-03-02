@@ -46,12 +46,24 @@ const { message, href, storageKey } = Astro.props;
       if (localStorage.getItem(key)) { bar.remove(); return; }
     } catch (e) {}
 
-    bar.querySelector('.announcement-bar-close')?.addEventListener('click', () => {
+    function dismiss() {
       try { localStorage.setItem(key, '1'); } catch (e) {}
       bar.classList.add('is-hiding');
       // transitionend の代わりに setTimeout で確実に除去
       setTimeout(() => bar.remove(), 350);
-    });
+    }
+
+    bar.querySelector('.announcement-bar-close')?.addEventListener('click', dismiss);
+
+    // スワイプ上方向で閉じる
+    let _swipeTouchStartY = 0;
+    bar.addEventListener('touchstart', (e) => {
+      _swipeTouchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    bar.addEventListener('touchend', (e) => {
+      const dy = _swipeTouchStartY - e.changedTouches[0].clientY;
+      if (dy > 40) dismiss();
+    }, { passive: true });
   }
 
   document.addEventListener('astro:page-load', initAnnouncementBar);

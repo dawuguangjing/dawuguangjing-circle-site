@@ -15,7 +15,21 @@ const works = await getSortedWorks();
         <span class="muted" id="work-count">{works.length} タイトル</span>
       </div>
 
-      <div class="filter-bar" role="group" aria-label="作品フィルター（複数選択可・AND条件）">
+      <!-- モバイル: フィルターシート開閉トリガー -->
+      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="filter-bar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        絞り込み
+        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
+      </button>
+      <!-- オーバーレイ -->
+      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
+
+      <div class="filter-bar" id="filter-bar" role="group" aria-label="作品フィルター（複数選択可・AND条件）">
+        <!-- モバイル: シートヘッダー -->
+        <div class="filter-sheet-header">
+          <span class="filter-sheet-header-title">絞り込み</span>
+          <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
+        </div>
         <button class="filter-chip is-active" data-filter="all" aria-pressed="true">すべて</button>
         <button class="filter-chip" data-filter="r18" aria-pressed="false">R18</button>
         <button class="filter-chip" data-filter="all-ages" aria-pressed="false">全年齢</button>
@@ -71,6 +85,31 @@ const works = await getSortedWorks();
   </div>
 
   <script>
+    // ── フィルターボトムシート（モバイル） ──
+    const sheetTrigger = document.getElementById('filter-sheet-trigger');
+    const sheetOverlay = document.getElementById('filter-sheet-overlay');
+    const sheetClose   = document.getElementById('filter-sheet-close');
+    const filterBar    = document.getElementById('filter-bar');
+    const activeBadge  = document.getElementById('filter-active-badge');
+
+    function openSheet() {
+      filterBar?.classList.add('is-open');
+      sheetOverlay?.classList.add('is-visible');
+      sheetOverlay?.removeAttribute('aria-hidden');
+      sheetTrigger?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSheet() {
+      filterBar?.classList.remove('is-open');
+      sheetOverlay?.classList.remove('is-visible');
+      sheetOverlay?.setAttribute('aria-hidden', 'true');
+      sheetTrigger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+    sheetTrigger?.addEventListener('click', openSheet);
+    sheetOverlay?.addEventListener('click', closeSheet);
+    sheetClose?.addEventListener('click', closeSheet);
+
     const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
     const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
     const allChip = chips.find(c => c.dataset.filter === 'all')!;
@@ -130,6 +169,18 @@ const works = await getSortedWorks();
         url.searchParams.set('filters', active.join(','));
       }
       history.replaceState(null, '', url.toString());
+
+      // トリガーボタンのバッジ更新
+      if (activeBadge) {
+        if (active.length > 0) {
+          activeBadge.textContent = String(active.length);
+          activeBadge.removeAttribute('hidden');
+          sheetTrigger?.classList.add('has-active');
+        } else {
+          activeBadge.setAttribute('hidden', '');
+          sheetTrigger?.classList.remove('has-active');
+        }
+      }
     }
 
     chips.forEach((chip, i) => {

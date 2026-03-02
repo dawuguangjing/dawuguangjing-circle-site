@@ -168,6 +168,7 @@ const { itemSelector } = Astro.props;
         const img = document.createElement('img');
         img.src = item.src;
         img.alt = '';
+        img.loading = 'lazy';
         img.setAttribute('aria-hidden', 'true');
         btn.appendChild(img);
       } else {
