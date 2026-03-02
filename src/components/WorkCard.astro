@@ -34,7 +34,7 @@ const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
 const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
-<a class="work-row" href={withBase(`works/${slug}/`)}>
+<a class="work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>
   <div class="work-row-cover img-skeleton">
     <img
       src={withBase(cover)}

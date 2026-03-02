@@ -63,33 +63,48 @@ function extractExcerpt(body: string, maxLen = 100): string {
 <script>
   const chips = document.querySelectorAll<HTMLButtonElement>('#news-filter .filter-chip');
   const items = document.querySelectorAll<HTMLElement>('#news-grid [data-category]');
+  const validCategories = new Set(['all', ...Array.from(chips).map((c) => c.dataset.category ?? '').filter(Boolean)]);
+
+  function applyCategory(cat: string, updateUrl = true) {
+    const resolvedCat = validCategories.has(cat) ? cat : 'all';
+    chips.forEach((chip) => {
+      chip.classList.toggle('is-active', chip.dataset.category === resolvedCat);
+    });
+
+    let visibleIndex = 0;
+    items.forEach((el) => {
+      const show = resolvedCat === 'all' || el.dataset.category === resolvedCat;
+      if (show) {
+        el.style.display = '';
+        el.classList.remove('is-visible');
+        el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
+        void el.offsetWidth; // force reflow to restart transition
+        el.classList.add('is-visible');
+        visibleIndex++;
+      } else {
+        el.style.display = 'none';
+      }
+    });
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (resolvedCat === 'all') {
+        url.searchParams.delete('category');
+      } else {
+        url.searchParams.set('category', resolvedCat);
+      }
+      history.replaceState(null, '', url.toString());
+    }
+  }
 
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
-      const cat = chip.dataset.category!;
-      chips.forEach((c) => c.classList.toggle('is-active', c === chip));
-
-      let visibleIndex = 0;
-      items.forEach((el) => {
-        const show = cat === 'all' || el.dataset.category === cat;
-        if (show) {
-          el.style.display = '';
-          el.classList.remove('is-visible');
-          el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
-          void el.offsetWidth; // force reflow to restart transition
-          el.classList.add('is-visible');
-          visibleIndex++;
-        } else {
-          el.style.display = 'none';
-        }
-      });
+      const cat = chip.dataset.category ?? 'all';
+      applyCategory(cat);
     });
   });
 
   // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
   const urlCat = new URL(window.location.href).searchParams.get('category');
-  if (urlCat) {
-    const target = Array.from(chips).find((c) => c.dataset.category === urlCat);
-    target?.click();
-  }
+  if (urlCat) applyCategory(urlCat);
 </script>

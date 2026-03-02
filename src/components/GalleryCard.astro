@@ -18,7 +18,7 @@ interface Props {
 const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loading = 'lazy', fetchpriority } = Astro.props;
 ---
 
-<a class="gallery-card" href={withBase(`gallery/${slug}/`)}>
+<a class="gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
   <div class={`gallery-card-img-wrap img-skeleton${previewImage ? ' gallery-card-img-wrap--has-preview' : ''}`}>
     <img
       class="gallery-card-img"

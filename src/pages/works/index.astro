@@ -115,6 +115,9 @@ const works = await getSortedWorks();
     const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
     const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
     const allChip = chips.find(c => c.dataset.filter === 'all')!;
+    const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));
+    const grid = document.getElementById('works-grid')!;
+    const VALID_SORTS = new Set(['newest', 'oldest', 'title']);
 
     // フィルターキー → 表示条件
     const filterTest: Record<string, (el: HTMLElement) => boolean> = {
@@ -130,6 +133,27 @@ const works = await getSortedWorks();
     function getActiveFilters() {
       return chips.filter(c => c.classList.contains('is-active') && c.dataset.filter !== 'all')
                   .map(c => c.dataset.filter!);
+    }
+
+    function getActiveSort() {
+      const active = sortBtns.find((b) => b.classList.contains('is-active'))?.dataset.sort;
+      return VALID_SORTS.has(active ?? '') ? active! : 'newest';
+    }
+
+    function syncStateToUrl(activeFilters = getActiveFilters()) {
+      const url = new URL(window.location.href);
+      if (activeFilters.length === 0) {
+        url.searchParams.delete('filters');
+      } else {
+        url.searchParams.set('filters', activeFilters.join(','));
+      }
+      const sort = getActiveSort();
+      if (sort === 'newest') {
+        url.searchParams.delete('sort');
+      } else {
+        url.searchParams.set('sort', sort);
+      }
+      history.replaceState(null, '', url.toString());
     }
 
     const emptyEl = document.getElementById('works-empty');
@@ -163,14 +187,8 @@ const works = await getSortedWorks();
           : `${visibleCount} 件表示中`;
       }
 
-      // URL にフィルター状態を保存（ブックマーク・シェア対応）
-      const url = new URL(window.location.href);
-      if (active.length === 0) {
-        url.searchParams.delete('filters');
-      } else {
-        url.searchParams.set('filters', active.join(','));
-      }
-      history.replaceState(null, '', url.toString());
+      // URL に状態を保存（ブックマーク・シェア対応）
+      syncStateToUrl(active);
 
       // トリガーボタンのバッジ更新
       if (activeBadge) {
@@ -228,25 +246,27 @@ const works = await getSortedWorks();
       allChip.click();
     });
 
-    // 初期化: URL パラメーターからフィルターを復元
-    const urlFilters = new URL(window.location.href).searchParams.get('filters');
+    // 初期化: URL パラメーターから状態を復元
+    const url = new URL(window.location.href);
+    const urlFilters = url.searchParams.get('filters');
     if (urlFilters) {
       allChip.classList.remove('is-active');
       allChip.setAttribute('aria-pressed', 'false');
+      let activeCount = 0;
       urlFilters.split(',').forEach((f) => {
         const chip = chips.find((c) => c.dataset.filter === f);
         if (chip) {
           chip.classList.add('is-active');
           chip.setAttribute('aria-pressed', 'true');
+          activeCount++;
         }
       });
+      if (activeCount === 0) {
+        allChip.classList.add('is-active');
+        allChip.setAttribute('aria-pressed', 'true');
+      }
       applyFilters();
     }
-
-    // ── ソート ──
-    const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));
-    const grid = document.getElementById('works-grid')!;
-
     sortBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         sortBtns.forEach(b => b.classList.remove('is-active'));
@@ -265,7 +285,15 @@ const works = await getSortedWorks();
           void el.offsetWidth;
           if (el.style.display !== 'none') el.classList.add('is-visible');
         });
+        syncStateToUrl();
       });
     });
+
+    const urlSort = url.searchParams.get('sort');
+    if (urlSort) {
+      const targetSortBtn = sortBtns.find((b) => b.dataset.sort === urlSort);
+      if (targetSortBtn) targetSortBtn.click();
+      else syncStateToUrl();
+    }
   </script>
 </BaseLayout>

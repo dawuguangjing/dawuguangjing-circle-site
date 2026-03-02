@@ -54,20 +54,39 @@ const galleries = await getSortedGallery();
 <script>
   const chips = document.querySelectorAll<HTMLButtonElement>('.gallery-sort [data-sort]');
   const grid = document.getElementById('gallery-grid');
+  const validSorts = new Set(['newest', 'oldest', 'title']);
+
+  function applySort(sort: string, updateUrl = true) {
+    const resolvedSort = validSorts.has(sort) ? sort : 'newest';
+    chips.forEach((c) => c.classList.toggle('is-active', c.dataset.sort === resolvedSort));
+    if (!grid) return;
+    const items = Array.from(grid.children) as HTMLElement[];
+    const sorted = [...items].sort((a, b) => {
+      if (resolvedSort === 'newest') return Number(b.dataset.release) - Number(a.dataset.release);
+      if (resolvedSort === 'oldest') return Number(a.dataset.release) - Number(b.dataset.release);
+      if (resolvedSort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
+      return 0;
+    });
+    sorted.forEach((el) => grid.appendChild(el));
+
+    if (updateUrl) {
+      const url = new URL(window.location.href);
+      if (resolvedSort === 'newest') {
+        url.searchParams.delete('sort');
+      } else {
+        url.searchParams.set('sort', resolvedSort);
+      }
+      history.replaceState(null, '', url.toString());
+    }
+  }
 
   chips.forEach((chip) => {
     chip.addEventListener('click', () => {
-      chips.forEach((c) => c.classList.toggle('is-active', c === chip));
-      if (!grid) return;
-      const items = Array.from(grid.children) as HTMLElement[];
-      const sort = chip.dataset.sort!;
-      const sorted = [...items].sort((a, b) => {
-        if (sort === 'newest') return Number(b.dataset.release) - Number(a.dataset.release);
-        if (sort === 'oldest') return Number(a.dataset.release) - Number(b.dataset.release);
-        if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
-        return 0;
-      });
-      sorted.forEach((el) => grid.appendChild(el));
+      applySort(chip.dataset.sort ?? 'newest');
     });
   });
+
+  // 初期化: URL パラメーターから状態を復元
+  const urlSort = new URL(window.location.href).searchParams.get('sort');
+  if (urlSort) applySort(urlSort);
 </script>

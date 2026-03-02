@@ -1941,6 +1941,32 @@ a.announcement-bar-text:hover {
   border-radius: 20px;
 }
 
+/* ── Tap Feedback (mobile/touch) ── */
+@media (hover: none) and (pointer: coarse) {
+  .button:active,
+  .sort-btn:active,
+  .filter-chip:active,
+  .filter-sheet-trigger:active,
+  .filter-sheet-close:active,
+  .mobile-menu-toggle:active,
+  .dark-mode-toggle:active,
+  .announcement-bar-close:active,
+  .back-to-top:active,
+  .store-button:active {
+    filter: brightness(0.96);
+  }
+
+  .work-row:active,
+  .gallery-card:active,
+  .news-card:active,
+  .news-card-more:active,
+  .home-char-card:active,
+  .char-list-card:active {
+    transform: scale(0.985);
+    filter: brightness(0.97);
+  }
+}
+
 .work-filter-item {
   display: contents;
 }

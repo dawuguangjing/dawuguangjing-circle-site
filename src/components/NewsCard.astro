@@ -32,7 +32,7 @@ const href = withBase(`news/${slug}/`);
       <time class="news-card-date" datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>
     </div>
     <h3 class="news-card-title">
-      <a class="news-card-link" href={href}>{title}</a>
+      <a class="news-card-link" href={href} data-astro-prefetch>{title}</a>
     </h3>
     {excerpt && <p class="news-card-excerpt">{excerpt}</p>}
     <slot />

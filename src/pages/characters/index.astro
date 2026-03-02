@@ -221,51 +221,97 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 <script>
   const charChips = Array.from(document.querySelectorAll<HTMLButtonElement>('#char-filter .filter-chip'));
   const charCards = Array.from(document.querySelectorAll<HTMLElement>('#char-list-grid .char-list-card'));
+  const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-char-sort]'));
+  const charGrid = document.getElementById('char-list-grid');
+  const validSorts = new Set(['order', 'name']);
+  const validWorks = new Set(['all', ...charChips.map((c) => c.dataset.work ?? '').filter(Boolean)]);
+
+  function getActiveWork() {
+    const active = charChips.find((c) => c.classList.contains('is-active'))?.dataset.work;
+    return validWorks.has(active ?? '') ? active! : 'all';
+  }
+
+  function getActiveSort() {
+    const active = sortBtns.find((b) => b.classList.contains('is-active'))?.dataset.charSort;
+    return validSorts.has(active ?? '') ? active! : 'order';
+  }
+
+  function syncStateToUrl(work = getActiveWork(), sort = getActiveSort()) {
+    const url = new URL(window.location.href);
+    if (work === 'all') {
+      url.searchParams.delete('work');
+    } else {
+      url.searchParams.set('work', work);
+    }
+    if (sort === 'order') {
+      url.searchParams.delete('sort');
+    } else {
+      url.searchParams.set('sort', sort);
+    }
+    history.replaceState(null, '', url.toString());
+  }
+
+  function applyWorkFilter(work: string, updateUrl = true) {
+    const resolvedWork = validWorks.has(work) ? work : 'all';
+    charChips.forEach((c) => {
+      const isActive = (c.dataset.work ?? '') === resolvedWork;
+      c.classList.toggle('is-active', isActive);
+      c.setAttribute('aria-pressed', String(isActive));
+    });
+
+    let idx = 0;
+    charCards.forEach((card) => {
+      const show = resolvedWork === 'all' || card.dataset.work === resolvedWork;
+      if (show) {
+        card.style.display = '';
+        card.classList.remove('is-visible');
+        card.style.setProperty('--anim-delay', `${idx * 0.05}s`);
+        void card.offsetWidth;
+        card.classList.add('is-visible');
+        idx++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (updateUrl) syncStateToUrl(resolvedWork, getActiveSort());
+  }
+
+  function applyCharSort(sort: string, updateUrl = true) {
+    const resolvedSort = validSorts.has(sort) ? sort : 'order';
+    sortBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.charSort === resolvedSort));
+    if (!charGrid) return;
+
+    const sorted = [...charCards].sort((a, b) => {
+      if (resolvedSort === 'name') return (a.dataset.name ?? '').localeCompare(b.dataset.name ?? '', 'ja');
+      return Number(a.dataset.order) - Number(b.dataset.order);
+    });
+    sorted.forEach((el, i) => {
+      el.style.setProperty('--anim-delay', `${i * 0.05}s`);
+      el.classList.remove('is-visible');
+      charGrid.appendChild(el);
+      void el.offsetWidth;
+      if (el.style.display !== 'none') el.classList.add('is-visible');
+    });
+
+    if (updateUrl) syncStateToUrl(getActiveWork(), resolvedSort);
+  }
 
   charChips.forEach((chip) => {
     chip.addEventListener('click', () => {
-      charChips.forEach((c) => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
-      chip.classList.add('is-active');
-      chip.setAttribute('aria-pressed', 'true');
-      const work = chip.dataset.work!;
-      let idx = 0;
-      charCards.forEach((card) => {
-        const show = work === 'all' || card.dataset.work === work;
-        if (show) {
-          card.style.display = '';
-          card.classList.remove('is-visible');
-          card.style.setProperty('--anim-delay', `${idx * 0.05}s`);
-          void card.offsetWidth;
-          card.classList.add('is-visible');
-          idx++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
+      applyWorkFilter(chip.dataset.work ?? 'all');
     });
   });
-
-  // ── ソート ──
-  const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-char-sort]'));
-  const charGrid = document.getElementById('char-list-grid');
 
   sortBtns.forEach((btn) => {
     btn.addEventListener('click', () => {
-      sortBtns.forEach((b) => b.classList.remove('is-active'));
-      btn.classList.add('is-active');
-      if (!charGrid) return;
-      const sort = btn.dataset.charSort!;
-      const sorted = [...charCards].sort((a, b) => {
-        if (sort === 'name') return (a.dataset.name ?? '').localeCompare(b.dataset.name ?? '', 'ja');
-        return Number(a.dataset.order) - Number(b.dataset.order);
-      });
-      sorted.forEach((el, i) => {
-        el.style.setProperty('--anim-delay', `${i * 0.05}s`);
-        el.classList.remove('is-visible');
-        charGrid.appendChild(el);
-        void el.offsetWidth;
-        if (el.style.display !== 'none') el.classList.add('is-visible');
-      });
+      applyCharSort(btn.dataset.charSort ?? 'order');
     });
   });
+
+  // 初期化: URL パラメーターから状態を復元
+  const params = new URL(window.location.href).searchParams;
+  applyCharSort(params.get('sort') ?? 'order', false);
+  applyWorkFilter(params.get('work') ?? 'all', false);
+  syncStateToUrl();
 </script>
