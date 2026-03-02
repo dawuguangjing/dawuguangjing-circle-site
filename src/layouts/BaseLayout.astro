@@ -102,6 +102,9 @@ const themeKey = THEME_STORAGE_KEY;
   </head>
   <body>
     <a class="skip-link" href="#main-content">メインコンテンツへスキップ</a>
+    <div class="route-progress" id="route-progress" aria-hidden="true">
+      <span class="route-progress-bar"></span>
+    </div>
 
     {/* オーバーレイ方式の年齢確認（コンテンツは常に DOM に存在し Googlebot がインデックス可能） */}
     {!disableAgeGate && <AgeGateOverlay ageKey={ageKey} ageTtl={ageTtl} />}
@@ -130,6 +133,93 @@ const themeKey = THEME_STORAGE_KEY;
     <BackToTop />
 
     <script>
+      type UiWindow = Window & {
+        lockBodyScroll?: (key: string) => void;
+        unlockBodyScroll?: (key: string) => void;
+        resetBodyScrollLocks?: () => void;
+      };
+
+      const uiWindow = window as UiWindow;
+
+      function ensureScrollLockController() {
+        if (uiWindow.lockBodyScroll && uiWindow.unlockBodyScroll && uiWindow.resetBodyScrollLocks) return;
+        const locks = new Set<string>();
+        const syncBodyScroll = () => {
+          document.body.style.overflow = locks.size > 0 ? 'hidden' : '';
+        };
+        uiWindow.lockBodyScroll = (key: string) => {
+          locks.add(key);
+          syncBodyScroll();
+        };
+        uiWindow.unlockBodyScroll = (key: string) => {
+          locks.delete(key);
+          syncBodyScroll();
+        };
+        uiWindow.resetBodyScrollLocks = () => {
+          locks.clear();
+          syncBodyScroll();
+        };
+      }
+
+      ensureScrollLockController();
+
+      function closeTransientUi() {
+        document.dispatchEvent(new CustomEvent('ui:close-overlays'));
+      }
+
+      const routeProgressEl = document.getElementById('route-progress');
+      const routeProgressBar = routeProgressEl?.querySelector<HTMLElement>('.route-progress-bar');
+      let routeProgress = 0;
+      let routeProgressTimer: number | null = null;
+      let routeHideTimer: number | null = null;
+      let routeNavInFlight = false;
+
+      function setRouteProgress(value: number) {
+        routeProgress = Math.max(0, Math.min(1, value));
+        routeProgressBar?.style.setProperty('--route-progress', routeProgress.toFixed(4));
+      }
+
+      function startRouteProgress() {
+        if (!routeProgressEl || !routeProgressBar) return;
+        routeNavInFlight = true;
+        if (routeHideTimer) {
+          clearTimeout(routeHideTimer);
+          routeHideTimer = null;
+        }
+        if (routeProgressTimer) {
+          clearInterval(routeProgressTimer);
+          routeProgressTimer = null;
+        }
+        routeProgressEl.classList.add('is-active');
+        setRouteProgress(0.08);
+        routeProgressTimer = window.setInterval(() => {
+          setRouteProgress(Math.min(0.78, routeProgress + (0.82 - routeProgress) * 0.18));
+          if (routeProgress >= 0.775 && routeProgressTimer) {
+            clearInterval(routeProgressTimer);
+            routeProgressTimer = null;
+          }
+        }, 70);
+      }
+
+      function bumpRouteProgress(value: number) {
+        if (!routeNavInFlight) return;
+        setRouteProgress(Math.max(routeProgress, value));
+      }
+
+      function finishRouteProgress() {
+        if (!routeNavInFlight) return;
+        routeNavInFlight = false;
+        if (routeProgressTimer) {
+          clearInterval(routeProgressTimer);
+          routeProgressTimer = null;
+        }
+        setRouteProgress(1);
+        routeHideTimer = window.setTimeout(() => {
+          routeProgressEl?.classList.remove('is-active');
+          setRouteProgress(0);
+        }, 180);
+      }
+
       function initAnimations(instant = false) {
         if (instant) {
           document.querySelectorAll<HTMLElement>('[data-anim]').forEach((el) => {
@@ -152,11 +242,17 @@ const themeKey = THEME_STORAGE_KEY;
       // "完了後に別アニメーションが始まる 2 段階更新" を抑える
       // 初回ロード時: after-swap は発火しないため page-load にフォールバック
       let _initedBySwap = false;
+      document.addEventListener('astro:before-preparation', () => {
+        closeTransientUi();
+        uiWindow.resetBodyScrollLocks?.();
+        startRouteProgress();
+      });
       document.addEventListener('astro:after-swap', () => {
         _initedBySwap = true;
         document.documentElement.classList.add('is-client-nav');
-        // フィルターシート等で overflow:hidden のままページ遷移した場合に戻す
-        document.body.style.overflow = '';
+        closeTransientUi();
+        uiWindow.resetBodyScrollLocks?.();
+        bumpRouteProgress(0.92);
         initAnimations(true);
         initImgSkeleton();
       });
@@ -171,6 +267,7 @@ const themeKey = THEME_STORAGE_KEY;
           });
         }
         _initedBySwap = false;
+        finishRouteProgress();
       });
 
       function showToast(message: string) {

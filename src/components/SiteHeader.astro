@@ -41,12 +41,31 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     };
   }
 
+  function lockMenuScroll() {
+    const uiWindow = window as Window & { lockBodyScroll?: (key: string) => void };
+    if (uiWindow.lockBodyScroll) {
+      uiWindow.lockBodyScroll('mobile-menu');
+      return;
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function unlockMenuScroll() {
+    const uiWindow = window as Window & { unlockBodyScroll?: (key: string) => void };
+    if (uiWindow.unlockBodyScroll) {
+      uiWindow.unlockBodyScroll('mobile-menu');
+      return;
+    }
+    document.body.style.overflow = '';
+  }
+
   function closeMenu() {
     const { toggle, nav } = getMenuElements();
     if (!toggle || !nav) return;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
     nav.classList.remove('is-open');
+    unlockMenuScroll();
   }
 
   function openMenu() {
@@ -57,6 +76,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'メニューを閉じる');
     nav.classList.add('is-open');
+    lockMenuScroll();
   }
 
   // モバイルメニューのイベントは page-load ごとに再初期化（VTでDOMが差し替わるため）
@@ -72,6 +92,10 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       expanded ? closeMenu() : openMenu();
     }, { signal });
+
+    nav.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
+      link.addEventListener('click', () => closeMenu(), { signal });
+    });
 
     // 外側タップで閉じる
     document.addEventListener('click', (e) => {
@@ -117,6 +141,8 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     }, { signal });
   }
   document.addEventListener('astro:page-load', initMobileMenu);
+  document.addEventListener('astro:after-swap', initMobileMenu);
+  document.addEventListener('ui:close-overlays', closeMenu);
 
   // View Transitions でページが切り替わったらメニューを閉じる
   document.addEventListener('astro:before-preparation', closeMenu);

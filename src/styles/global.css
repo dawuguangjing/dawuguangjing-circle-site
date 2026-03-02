@@ -629,6 +629,42 @@ button {
   transition-duration: 0.1s;
 }
 
+/* ── Route Transition Progress Bar ── */
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.route-progress.is-active {
+  opacity: 1;
+}
+
+.route-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  --route-progress: 0;
+  transform-origin: left center;
+  transform: scaleX(var(--route-progress));
+  background: linear-gradient(90deg, var(--accent), var(--cta));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: transform 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-progress,
+  .route-progress-bar {
+    transition: none;
+  }
+}
+
 /* ── Scroll Progress Bar ── */
 .scroll-progress {
   position: fixed;

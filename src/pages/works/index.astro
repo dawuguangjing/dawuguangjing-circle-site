@@ -93,24 +93,38 @@ const works = await getSortedWorks();
     const sheetClose   = document.getElementById('filter-sheet-close');
     const filterBar    = document.getElementById('filter-bar');
     const activeBadge  = document.getElementById('filter-active-badge');
+    const uiWindow = window as Window & {
+      lockBodyScroll?: (key: string) => void;
+      unlockBodyScroll?: (key: string) => void;
+    };
 
     function openSheet() {
       filterBar?.classList.add('is-open');
       sheetOverlay?.classList.add('is-visible');
       sheetOverlay?.removeAttribute('aria-hidden');
       sheetTrigger?.setAttribute('aria-expanded', 'true');
-      document.body.style.overflow = 'hidden';
+      if (uiWindow.lockBodyScroll) uiWindow.lockBodyScroll('works-filter-sheet');
+      else document.body.style.overflow = 'hidden';
     }
     function closeSheet() {
       filterBar?.classList.remove('is-open');
       sheetOverlay?.classList.remove('is-visible');
       sheetOverlay?.setAttribute('aria-hidden', 'true');
       sheetTrigger?.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+      if (uiWindow.unlockBodyScroll) uiWindow.unlockBodyScroll('works-filter-sheet');
+      else document.body.style.overflow = '';
     }
-    sheetTrigger?.addEventListener('click', openSheet);
+    sheetTrigger?.addEventListener('click', () => {
+      if (filterBar?.classList.contains('is-open')) closeSheet();
+      else openSheet();
+    });
     sheetOverlay?.addEventListener('click', closeSheet);
     sheetClose?.addEventListener('click', closeSheet);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeSheet();
+    });
+    document.addEventListener('ui:close-overlays', closeSheet);
+    document.addEventListener('astro:before-preparation', closeSheet);
 
     const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
     const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));

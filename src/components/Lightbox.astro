@@ -35,6 +35,10 @@ const { itemSelector } = Astro.props;
   const lbNext    = lightbox?.querySelector('.lightbox-next');
   const lbCounter = lightbox?.querySelector('.lightbox-counter');
   const lbThumbs  = lightbox?.querySelector('.lightbox-thumbs');
+  const uiWindow  = window as Window & {
+    lockBodyScroll?: (key: string) => void;
+    unlockBodyScroll?: (key: string) => void;
+  };
 
   const itemEls = Array.from(document.querySelectorAll(itemSelector));
   const items = itemEls.map((el) => ({
@@ -91,6 +95,8 @@ const { itemSelector } = Astro.props;
     showMedia(index);
     lightbox.classList.add('is-active');
     lightbox.setAttribute('aria-hidden', 'false');
+    if (uiWindow.lockBodyScroll) uiWindow.lockBodyScroll('lightbox');
+    else document.body.style.overflow = 'hidden';
     lbClose?.focus(); // 閉じるボタンにフォーカスを移動
   }
 
@@ -100,6 +106,8 @@ const { itemSelector } = Astro.props;
     lbVideo.src = '';
     lightbox.classList.remove('is-active');
     lightbox.setAttribute('aria-hidden', 'true');
+    if (uiWindow.unlockBodyScroll) uiWindow.unlockBodyScroll('lightbox');
+    else document.body.style.overflow = '';
     // フォーカスをトリガー要素に戻す
     if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
   }
@@ -122,6 +130,8 @@ const { itemSelector } = Astro.props;
   lbNext?.addEventListener('click', (e) => { e.stopPropagation(); showMedia(current + 1); });
   lbClose?.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
   lightbox?.addEventListener('click', closeLightbox);
+  document.addEventListener('ui:close-overlays', closeLightbox);
+  document.addEventListener('astro:before-preparation', closeLightbox);
   document.addEventListener('keydown', (e) => {
     if (!lightbox?.classList.contains('is-active')) return;
     if (e.key === 'Escape') closeLightbox();
