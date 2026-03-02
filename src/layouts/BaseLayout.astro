@@ -130,7 +130,13 @@ const themeKey = THEME_STORAGE_KEY;
     <BackToTop />
 
     <script>
-      function initAnimations() {
+      function initAnimations(instant = false) {
+        if (instant) {
+          document.querySelectorAll<HTMLElement>('[data-anim]').forEach((el) => {
+            el.classList.add('is-visible');
+          });
+          return;
+        }
         const observer = new IntersectionObserver(
           (entries) => entries.forEach(e => {
             if (e.isIntersecting) {
@@ -148,15 +154,21 @@ const themeKey = THEME_STORAGE_KEY;
       let _initedBySwap = false;
       document.addEventListener('astro:after-swap', () => {
         _initedBySwap = true;
+        document.documentElement.classList.add('is-client-nav');
         // フィルターシート等で overflow:hidden のままページ遷移した場合に戻す
         document.body.style.overflow = '';
-        initAnimations();
+        initAnimations(true);
         initImgSkeleton();
       });
       document.addEventListener('astro:page-load', () => {
         if (!_initedBySwap) {
+          document.documentElement.classList.remove('is-client-nav');
           initAnimations();
           initImgSkeleton();
+        } else {
+          requestAnimationFrame(() => {
+            document.documentElement.classList.remove('is-client-nav');
+          });
         }
         _initedBySwap = false;
       });

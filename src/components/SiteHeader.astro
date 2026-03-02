@@ -34,10 +34,15 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 </header>
 
 <script>
-  const toggle = document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null;
-  const nav = document.getElementById('main-nav');
+  function getMenuElements() {
+    return {
+      toggle: document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null,
+      nav: document.getElementById('main-nav'),
+    };
+  }
 
   function closeMenu() {
+    const { toggle, nav } = getMenuElements();
     if (!toggle || !nav) return;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
@@ -45,6 +50,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
   }
 
   function openMenu() {
+    const { toggle, nav } = getMenuElements();
     if (!toggle || !nav) return;
     // メニューを開く際はヘッダーを強制表示（hide-on-scroll で隠れている場合）
     document.querySelector<HTMLElement>('.site-header')?.classList.remove('is-hidden');
@@ -53,22 +59,34 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     nav.classList.add('is-open');
   }
 
-  if (toggle && nav) {
+  // モバイルメニューのイベントは page-load ごとに再初期化（VTでDOMが差し替わるため）
+  let _menuAbort: AbortController | null = null;
+  function initMobileMenu() {
+    _menuAbort?.abort();
+    _menuAbort = new AbortController();
+    const signal = _menuAbort.signal;
+    const { toggle, nav } = getMenuElements();
+    if (!toggle || !nav) return;
+
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       expanded ? closeMenu() : openMenu();
-    });
+    }, { signal });
 
     // 外側タップで閉じる
     document.addEventListener('click', (e) => {
+      const { toggle, nav } = getMenuElements();
+      if (!toggle || !nav) return;
       if (!nav.classList.contains('is-open')) return;
       if (!nav.contains(e.target as Node) && !toggle.contains(e.target as Node)) {
         closeMenu();
       }
-    });
+    }, { signal });
 
     // Esc キーで閉じる + Tab フォーカストラップ（モバイルメニュー開放中）
     document.addEventListener('keydown', (e) => {
+      const { toggle, nav } = getMenuElements();
+      if (!toggle || !nav) return;
       if (!nav.classList.contains('is-open')) return;
 
       if (e.key === 'Escape') {
@@ -96,14 +114,14 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
           }
         }
       }
-    });
-
-    // View Transitions でページが切り替わったらメニューを閉じる
-    document.addEventListener('astro:before-preparation', closeMenu);
-    // back/forward ナビゲーション後もメニューが残らないように
-    document.addEventListener('astro:after-swap', closeMenu);
-
+    }, { signal });
   }
+  document.addEventListener('astro:page-load', initMobileMenu);
+
+  // View Transitions でページが切り替わったらメニューを閉じる
+  document.addEventListener('astro:before-preparation', closeMenu);
+  // back/forward ナビゲーション後もメニューが残らないように
+  document.addEventListener('astro:after-swap', closeMenu);
 
   // ── 下スクロールで隠す・上スクロールで表示 ──
   // AbortController でページ遷移ごとに旧リスナーを解除（蓄積防止）

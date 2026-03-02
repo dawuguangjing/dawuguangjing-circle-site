@@ -3364,6 +3364,17 @@ html.age-verified .age-overlay {
 .hero-banner-sub    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.55s; }
 .hero-banner-cover    { animation: hero-slide-left 0.5s var(--easing) both; animation-delay: 0.1s; }
 
+/* ページ遷移直後はヒーロー入場アニメを無効化し、二段階更新感を抑える */
+html.is-client-nav .hero-banner-eyebrow,
+html.is-client-nav .hero-banner-title,
+html.is-client-nav .hero-banner-catch,
+html.is-client-nav .hero-banner .selling-points,
+html.is-client-nav .hero-banner-cta,
+html.is-client-nav .hero-banner-sub,
+html.is-client-nav .hero-banner-cover {
+  animation: none !important;
+}
+
 /* 2. カバー画像: ホバーで中の画像ズーム */
 .hero-banner-cover img {
   transition: transform 0.4s var(--easing);
@@ -3522,6 +3533,12 @@ html[data-theme="dark"] .logo-pink {
 [data-anim].is-visible {
   opacity: 1;
   transform: none;
+}
+/* ページ遷移直後は data-anim を即時表示し、遷移後の二重フェードを防ぐ */
+html.is-client-nav [data-anim] {
+  opacity: 1;
+  transform: none;
+  transition: none !important;
 }
 @media (prefers-reduced-motion: reduce) {
   [data-anim] { opacity: 1; transform: none; transition: none; }
