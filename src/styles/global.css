@@ -2075,19 +2075,34 @@ a.announcement-bar-text:hover {
 
 .work-row-meta {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 6px 10px;
+  flex-wrap: wrap;
   margin-top: 4px;
 }
 
 .work-row-date {
   font-size: 0.72rem;
   color: var(--ink-dim);
+  white-space: nowrap;
+  flex: 0 0 auto;
+  line-height: 1.35;
 }
 
 .work-row-tags {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 4px;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+/* バッジが多い場合でも日付を圧迫しないよう、タグ側をコンパクトに */
+.work-row-tags .badge {
+  padding: 2px 7px;
+  font-size: 0.66rem;
 }
 
 /* ── Age Gate Page ── */
@@ -2786,6 +2801,15 @@ html.age-verified .age-overlay {
 
   .work-row {
     grid-template-columns: 120px 1fr;
+  }
+
+  .work-row-meta {
+    gap: 6px 8px;
+  }
+
+  .work-row-tags {
+    flex-basis: 100%;
+    justify-content: flex-start;
   }
 
   .age-gate-card {
