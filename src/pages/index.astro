@@ -52,6 +52,8 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
               description={entry.data.shortDescription}
               releaseDate={entry.data.releaseDate}
               isR18={entry.data.isR18}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
             />
           </div>
         ))}
@@ -177,12 +179,6 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
   transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
 
-.home-char-card:hover {
-  border-color: var(--char-color, var(--accent));
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
 .home-char-img-wrap {
   position: relative;
   aspect-ratio: 3 / 4;
@@ -202,10 +198,6 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
   transition: opacity 0.3s ease;
 }
 
-.home-char-card:hover .home-char-overlay {
-  opacity: 1;
-}
-
 .home-char-view {
   color: #fff;
   font-size: 0.72rem;
@@ -223,10 +215,6 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
   object-fit: cover;
   display: block;
   transition: transform 0.4s var(--easing);
-}
-
-.home-char-card:hover .home-char-img-wrap img {
-  transform: scale(1.05);
 }
 
 .home-char-body {
@@ -258,7 +246,23 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
   transition: opacity 0.25s ease;
 }
 
-.home-char-card:hover .home-char-accent {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .home-char-card:hover {
+    border-color: var(--char-color, var(--accent));
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .home-char-card:hover .home-char-overlay {
+    opacity: 1;
+  }
+
+  .home-char-card:hover .home-char-img-wrap img {
+    transform: scale(1.05);
+  }
+
+  .home-char-card:hover .home-char-accent {
+    opacity: 1;
+  }
 }
 </style>

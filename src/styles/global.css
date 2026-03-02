@@ -385,6 +385,11 @@ button {
   .img-skeleton > img:not([aria-hidden]) { transition: none; }
 }
 
+/* スマホでは data-anim のフェードと重なる二段階表示を避ける */
+@media (max-width: 640px) {
+  [data-anim] .img-skeleton > img:not([aria-hidden]) { transition: none; }
+}
+
 .store-sidebar h3 {
   font-size: 0.9rem;
   margin: 0;
@@ -1035,8 +1040,10 @@ a.announcement-bar-text:hover {
   cursor: pointer;
   transition: opacity 0.2s ease;
 }
-.work-cover img:hover {
-  opacity: 0.88;
+@media (hover: hover) and (pointer: fine) {
+  .work-cover img:hover {
+    opacity: 0.88;
+  }
 }
 
 /* ── Meta rows (detail page) ── */
@@ -1095,12 +1102,6 @@ a.announcement-bar-text:hover {
   transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
 
-.news-card:hover {
-  border-color: var(--accent-alpha-30);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-}
-
 .news-card-cover {
   aspect-ratio: 16 / 9;
   overflow: hidden;
@@ -1116,8 +1117,16 @@ a.announcement-bar-text:hover {
   transition: transform 0.4s var(--easing);
 }
 
-.news-card:hover .news-card-cover img {
-  transform: scale(1.05);
+@media (hover: hover) and (pointer: fine) {
+  .news-card:hover {
+    border-color: var(--accent-alpha-30);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .news-card:hover .news-card-cover img {
+    transform: scale(1.05);
+  }
 }
 
 .news-card-cover-empty {
@@ -1998,12 +2007,6 @@ a.announcement-bar-text:hover {
   box-shadow: var(--shadow);
 }
 
-.work-row:hover {
-  border-color: var(--accent-alpha-30);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-
 .work-row-cover {
   position: relative;
   overflow: hidden;
@@ -2021,19 +2024,26 @@ a.announcement-bar-text:hover {
   transition: opacity 0.3s ease;
 }
 
-.work-row:hover .work-row-overlay {
-  opacity: 1;
-}
-
 .work-row-cover img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.2s ease;
 }
+@media (hover: hover) and (pointer: fine) {
+  .work-row:hover {
+    border-color: var(--accent-alpha-30);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
 
-.work-row:hover .work-row-cover img {
-  transform: scale(1.03);
+  .work-row:hover .work-row-overlay {
+    opacity: 1;
+  }
+
+  .work-row:hover .work-row-cover img {
+    transform: scale(1.03);
+  }
 }
 
 .work-row-body {
@@ -2825,12 +2835,6 @@ html.age-verified .age-overlay {
   color: inherit;
   text-decoration: none;
 }
-.gallery-card:hover {
-  border-color: var(--accent-alpha-25);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-}
-
 .gallery-card-img-wrap {
   position: relative;
   width: 100%;
@@ -2850,17 +2854,6 @@ html.age-verified .age-overlay {
 .gallery-card-img--preview {
   opacity: 0;
 }
-.gallery-card:hover .gallery-card-img:not(.gallery-card-img--preview) {
-  transform: scale(1.06);
-}
-.gallery-card:hover .gallery-card-img-wrap--has-preview .gallery-card-img:not(.gallery-card-img--preview) {
-  opacity: 0;
-}
-.gallery-card:hover .gallery-card-img--preview {
-  opacity: 1;
-  transform: scale(1.06);
-}
-
 .gallery-card-overlay {
   position: absolute;
   inset: 0;
@@ -2871,8 +2864,27 @@ html.age-verified .age-overlay {
   opacity: 0;
   transition: opacity 0.3s ease;
 }
-.gallery-card:hover .gallery-card-overlay {
-  opacity: 1;
+@media (hover: hover) and (pointer: fine) {
+  .gallery-card:hover {
+    border-color: var(--accent-alpha-25);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .gallery-card:hover .gallery-card-img:not(.gallery-card-img--preview) {
+    transform: scale(1.06);
+  }
+  .gallery-card:hover .gallery-card-img-wrap--has-preview .gallery-card-img:not(.gallery-card-img--preview) {
+    opacity: 0;
+  }
+  .gallery-card:hover .gallery-card-img--preview {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+
+  .gallery-card:hover .gallery-card-overlay {
+    opacity: 1;
+  }
 }
 .card-view-label {
   color: #fff;
@@ -3228,14 +3240,16 @@ html.age-verified .age-overlay {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
   transition: transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
-.hero-banner-cover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
-}
 .hero-banner-cover img {
   width: 100%;
   height: auto;
   display: block;
+}
+@media (hover: hover) and (pointer: fine) {
+  .hero-banner-cover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  }
 }
 
 @media (max-width: 860px) {
@@ -3330,8 +3344,10 @@ html.age-verified .age-overlay {
 .hero-banner-cover img {
   transition: transform 0.4s var(--easing);
 }
-.hero-banner-cover:hover img {
-  transform: scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .hero-banner-cover:hover img {
+    transform: scale(1.04);
+  }
 }
 
 /* 3. 「最新作」タグ: シマー */

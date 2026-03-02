@@ -12,6 +12,8 @@ interface Props {
   hasTrial?: boolean;
   showEnvironments?: boolean;
   environments?: { windows?: boolean; mac?: boolean; browserPc?: boolean; ios?: boolean; android?: boolean };
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 const {
@@ -24,6 +26,8 @@ const {
   hasTrial = false,
   showEnvironments = false,
   environments,
+  loading = 'lazy',
+  fetchpriority,
 } = Astro.props;
 
 const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
@@ -32,7 +36,14 @@ const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
 
 <a class="work-row" href={withBase(`works/${slug}/`)}>
   <div class="work-row-cover img-skeleton">
-    <img src={withBase(cover)} alt={`${title} cover`} loading="lazy" width="160" height="160" />
+    <img
+      src={withBase(cover)}
+      alt={`${title} cover`}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      width="160"
+      height="160"
+    />
     <div class="work-row-overlay" aria-hidden="true">
       <span class="card-view-label">詳細を見る</span>
     </div>

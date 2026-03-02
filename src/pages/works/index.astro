@@ -72,6 +72,8 @@ const works = await getSortedWorks();
               hasTrial={!!(entry.data.trialLinks?.fanza || entry.data.trialLinks?.dlsite)}
               showEnvironments
               environments={entry.data.environments}
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : undefined}
             />
           </div>
         ))}
