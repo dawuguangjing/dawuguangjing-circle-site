@@ -3591,6 +3591,25 @@ html[data-theme="dark"] .world-title      { color: var(--ink-bright); }
 html[data-theme="dark"] .world-subtitle   { color: var(--ink-bright); }
 html[data-theme="dark"] .world-label      { color: rgba(167, 139, 250, 0.95); }
 
+/* ── Dark mode: サークル情報ページのカード本文 ── */
+html[data-theme="dark"] .about-page .section-lead,
+html[data-theme="dark"] .about-page .card p,
+html[data-theme="dark"] .about-page .external-link-desc {
+  color: var(--ink-bright);
+}
+
+/* ── Dark mode: FAQページの説明文とカード本文 ── */
+html[data-theme="dark"] .faq-page .section-lead,
+html[data-theme="dark"] .faq-page .card p {
+  color: var(--ink-bright);
+}
+
+/* ── Dark mode: お問い合わせページの説明文とカード本文 ── */
+html[data-theme="dark"] .contact-page .section-lead,
+html[data-theme="dark"] .contact-page .card p {
+  color: var(--ink-bright);
+}
+
 /* ── Dark mode: ストア（作品一覧）テキスト ── */
 [data-theme="dark"] .work-row-desc { color: var(--ink-bright); }
 [data-theme="dark"] .work-row-date { color: var(--ink); }
@@ -3609,6 +3628,13 @@ html[data-theme="dark"] .char-hero-reading,
 html[data-theme="dark"] .char-hero-personality,
 html[data-theme="dark"] .char-stat-label,
 html[data-theme="dark"] .char-body {
+  color: var(--ink-bright);
+}
+
+/* ── Dark mode: キャラクター一覧（一覧ページ/トップ）テキスト ── */
+html[data-theme="dark"] .char-list-reading,
+html[data-theme="dark"] .char-list-personality,
+html[data-theme="dark"] .home-char-reading {
   color: var(--ink-bright);
 }
 
