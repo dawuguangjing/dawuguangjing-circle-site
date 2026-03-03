@@ -7,6 +7,7 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introdu
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-figure.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-santa.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/rin-shopping.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introduction.jpg"
 relatedWorkSlugs:
