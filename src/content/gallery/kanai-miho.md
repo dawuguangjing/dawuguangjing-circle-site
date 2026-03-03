@@ -9,7 +9,6 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-karaoke.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-summer.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/miho-char.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---

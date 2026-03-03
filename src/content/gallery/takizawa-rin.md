@@ -9,7 +9,6 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-santa.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introduction.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/rin-char.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---
