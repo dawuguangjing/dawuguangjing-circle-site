@@ -9,6 +9,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-shopping.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-eye-catch.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---
