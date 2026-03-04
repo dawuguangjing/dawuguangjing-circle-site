@@ -7,7 +7,8 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduct
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-izakaya.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-karaoke.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/miho-nikuman.jpg"  
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-nikuman.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-cafe.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-summer.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-eye-catch.jpg"
