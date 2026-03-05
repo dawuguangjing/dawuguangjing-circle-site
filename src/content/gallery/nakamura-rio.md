@@ -7,6 +7,10 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introdu
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-cafe.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-shopping.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-dress.jpg"  
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-pc-1.jpg"  
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-pc-2.jpg"  
+  - "https://storage.googleapis.com/dawuguangjing-assets/rio-pc-3.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-sauna.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
