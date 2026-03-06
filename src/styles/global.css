@@ -4,6 +4,11 @@
   box-sizing: border-box;
 }
 
+/* viewport レベルで横スクロールを抑制（body に設定すると sticky 要素がクリップされるため html に設定） */
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -14,7 +19,6 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-tap-highlight-color: transparent;
-  overflow-x: hidden;
 }
 
 main {
