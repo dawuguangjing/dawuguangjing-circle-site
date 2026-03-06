@@ -14,6 +14,7 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
 }
 
 main {
@@ -61,7 +62,8 @@ a:hover {
   color: #fff;
 }
 
-img {
+img,
+video {
   max-width: 100%;
   height: auto;
   display: block;
@@ -1396,6 +1398,7 @@ a.announcement-bar-text:hover {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  min-width: 0;
 }
 
 .detail-block {
@@ -1454,6 +1457,7 @@ a.announcement-bar-text:hover {
 .gallery-item {
   border-radius: var(--radius-md);
   overflow: hidden;
+  min-width: 0;
   cursor: pointer;
   transition: transform 0.3s var(--easing), box-shadow 0.3s ease;
 }
@@ -2556,6 +2560,12 @@ html.age-verified .age-overlay {
 .sidebar-divider {
   padding-top: 8px;
   border-top: 1px solid var(--stroke);
+}
+
+.sidebar-coming-soon {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .sidebar-small {
