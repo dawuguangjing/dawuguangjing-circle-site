@@ -9,9 +9,11 @@ interface Link {
 interface Props {
   links: Link[];
   trial?: boolean;
+  location?: string;
 }
 
-const { links, trial = false } = Astro.props;
+const { links, trial = false, location } = Astro.props;
+const gaEvent = trial ? 'trial_click' : 'purchase_click';
 ---
 
 <div class="store-button-group">
@@ -23,6 +25,8 @@ const { links, trial = false } = Astro.props;
       rel="noopener noreferrer"
       data-store={link.store}
       data-track={link.track}
+      data-ga-event={gaEvent}
+      data-ga-location={location}
     >
       <span>{link.label}</span>
       <span class="arrow">→</span>

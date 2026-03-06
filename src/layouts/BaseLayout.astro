@@ -90,6 +90,14 @@ const themeKey = THEME_STORAGE_KEY;
       </script>
     )}
     <ViewTransitions />
+    <!-- Google tag (gtag.js) -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-JGLGSCB94V"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-JGLGSCB94V');
+    </script>
     <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} publishedTime={publishedTime} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
     <link rel="alternate" type="application/rss+xml" title="ダウグアングジング 開発ログ" href={`${base}rss.xml`} />
@@ -264,6 +272,14 @@ const themeKey = THEME_STORAGE_KEY;
         bumpRouteProgress(0.92);
         initAnimations(true);
         initImgSkeleton();
+        // GA4 仮想ページビュー（View Transitions ナビゲーション時）
+        const gtagFn = (window as any).gtag;
+        if (typeof gtagFn === 'function') {
+          gtagFn('config', 'G-JGLGSCB94V', {
+            page_location: window.location.href,
+            page_title: document.title,
+          });
+        }
       });
       document.addEventListener('astro:page-load', () => {
         if (!_initedBySwap) {
@@ -381,6 +397,19 @@ const themeKey = THEME_STORAGE_KEY;
           }
         });
       }
+
+      // GA4 CTA クリックトラッキング（イベント委譲）
+      document.addEventListener('click', (e) => {
+        const btn = (e.target as Element).closest<HTMLElement>('[data-ga-event]');
+        if (!btn) return;
+        const gtagFn = (window as any).gtag;
+        if (typeof gtagFn !== 'function') return;
+        gtagFn('event', btn.dataset.gaEvent, {
+          store: btn.dataset.store ?? '',
+          click_location: btn.dataset.gaLocation ?? '',
+          link_url: (btn as HTMLAnchorElement).href ?? '',
+        });
+      }, { capture: true });
     </script>
   </body>
 </html>

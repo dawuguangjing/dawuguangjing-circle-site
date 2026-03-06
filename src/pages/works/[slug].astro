@@ -157,7 +157,7 @@ const trialLinks = data.trialLinks
           {trialLinks.length > 0 && (
             <>
               <h3>体験版を試す</h3>
-              <StoreButtonGroup links={trialLinks} trial />
+              <StoreButtonGroup links={trialLinks} trial location="work_sidebar" />
             </>
           )}
 
@@ -174,7 +174,7 @@ const trialLinks = data.trialLinks
 
           <!-- Purchase Buttons -->
           <h3>購入する</h3>
-          <StoreButtonGroup links={platformLinks} />
+          <StoreButtonGroup links={platformLinks} location="work_sidebar" />
 
           <!-- Spec Table -->
           <h3>仕様</h3>
