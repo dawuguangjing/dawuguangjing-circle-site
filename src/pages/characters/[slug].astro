@@ -383,6 +383,8 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   grid-template-columns: 1fr;
   aspect-ratio: 4 / 3;
   overflow: hidden;
+  background: #fff;
+  gap: 2px;
 }
 .char-gallery-preview-card--split .char-gallery-preview-media {
   grid-template-columns: 3fr 1fr;
@@ -409,7 +411,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: var(--bg);
+  background: #fff;
   overflow: hidden;
 }
 .char-gallery-preview-thumb {

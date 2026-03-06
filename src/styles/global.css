@@ -2979,9 +2979,10 @@ html.age-verified .age-overlay {
   display: grid;
   grid-template-columns: 1fr;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 2 / 1;
   overflow: hidden;
-  background: var(--bg);
+  background: #fff;
+  gap: 2px;
 }
 .gallery-card-media--split {
   grid-template-columns: 3fr 1fr;
@@ -3018,7 +3019,7 @@ html.age-verified .age-overlay {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: var(--bg);
+  background: #fff;
   overflow: hidden;
 }
 .gallery-card-media-thumb {
