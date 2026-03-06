@@ -7,7 +7,8 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introdu
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-figure.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-santa.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/rin-shopping.jpg"  
+  - "https://storage.googleapis.com/dawuguangjing-assets/rin-shopping.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/rin-running.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-guiter-1.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-guiter-2.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-room.jpg"
