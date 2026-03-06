@@ -114,19 +114,6 @@ const themeKey = THEME_STORAGE_KEY;
       <span class="route-progress-bar"></span>
     </div>
 
-    {/* オーバーレイ方式の年齢確認（コンテンツは常に DOM に存在し Googlebot がインデックス可能） */}
-    {!disableAgeGate && <AgeGateOverlay ageKey={ageKey} ageTtl={ageTtl} />}
-
-    {!disableAgeGate && (
-      <noscript>
-        <div class="noscript-block">
-          <h1>年齢確認が必要です</h1>
-          <p>当サイトは成人向け製品を取り扱っており、年齢確認にJavaScriptが必要です。</p>
-          <p>ブラウザのJavaScriptを有効にしてからアクセスしてください。</p>
-        </div>
-      </noscript>
-    )}
-
     {/* コンテンツは常にレンダリングされる（クローラーがインデックス可能） */}
     {!hideHeader && ANNOUNCEMENT && (
       <AnnouncementBar
@@ -139,6 +126,20 @@ const themeKey = THEME_STORAGE_KEY;
     <main id="main-content"><slot /></main>
     {!hideFooter && <SiteFooter />}
     <BackToTop />
+
+    {/* 年齢確認オーバーレイは DOM 末尾に配置（fixed overlay のため視覚的位置は不変）
+        → Googlebot が本文コンテンツを先に読むためスニペットに年齢確認文が出にくくなる */}
+    {!disableAgeGate && <AgeGateOverlay ageKey={ageKey} ageTtl={ageTtl} />}
+
+    {!disableAgeGate && (
+      <noscript>
+        <div class="noscript-block" data-nosnippet>
+          <h1>年齢確認が必要です</h1>
+          <p>当サイトは成人向け製品を取り扱っており、年齢確認にJavaScriptが必要です。</p>
+          <p>ブラウザのJavaScriptを有効にしてからアクセスしてください。</p>
+        </div>
+      </noscript>
+    )}
 
     <script>
       type UiWindow = Window & {

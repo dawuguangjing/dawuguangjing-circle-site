@@ -8,14 +8,45 @@ import { EXTERNAL_LINKS } from '../utils/constants';
   <section class="section container">
     <h1 class="section-title" data-anim>お問い合わせ</h1>
     <p class="section-lead" data-anim style="--anim-delay: 0.07s">
-      ご質問・ご意見・不具合報告などは、Ci-en のコメント欄よりお願いいたします。
+      ご質問・ご意見・不具合報告などはフォームよりお願いいたします。Ci-en のコメント欄も受け付けています。
     </p>
-    <div class="card card--static" data-anim style="--anim-delay: 0.14s">
-      <p>Ci-en の記事コメント欄にてお気軽にお問い合わせください。</p>
-      <a class="button" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
+
+    <div class="form-wrapper" data-anim style="--anim-delay: 0.14s">
+      <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform?embedded=true"
+        width="100%"
+        height="800"
+        frameborder="0"
+        marginheight="0"
+        marginwidth="0"
+        title="お問い合わせフォーム"
+        loading="lazy"
+      >読み込んでいます…</iframe>
+    </div>
+
+    <div class="card card--static" data-anim style="--anim-delay: 0.21s">
+      <p>Ci-en の記事コメント欄からもお気軽にお問い合わせいただけます。</p>
+      <a class="button secondary" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
         Ci-en を開く &#8599;
       </a>
     </div>
   </section>
   </div>
 </BaseLayout>
+
+<style>
+  .form-wrapper {
+    border-radius: var(--radius-lg, 12px);
+    overflow: hidden;
+    background: var(--color-surface, #1a1a2e);
+    border: 1px solid var(--color-border, rgba(255,255,255,0.08));
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-wrapper iframe {
+    display: block;
+    min-height: 800px;
+    border: none;
+  }
+</style>
