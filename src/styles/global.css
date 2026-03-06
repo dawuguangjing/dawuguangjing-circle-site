@@ -3037,6 +3037,23 @@ html.age-verified .age-overlay {
   border-radius: var(--radius-md);
 }
 
+.gallery-card-thumb-strip {
+  display: grid;
+  grid-template-columns: repeat(var(--thumb-cols, 3), 1fr);
+  gap: 2px;
+}
+.gallery-card-thumb-strip img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  transition: transform 0.3s var(--easing);
+}
+.gallery-card:hover .gallery-card-thumb-strip img {
+  transform: scale(1.04);
+}
+
 .gallery-card-footer {
   padding: 12px 14px;
   display: flex;

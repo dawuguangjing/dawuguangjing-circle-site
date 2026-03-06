@@ -10,12 +10,14 @@ interface Props {
   releaseDate: Date;
   imageCount?: number;
   previewImage?: string;
+  previewImages?: string[];
   /** 先頭カード（LCP候補）は 'eager' + 'high' を渡す */
   loading?: 'lazy' | 'eager';
   fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loading = 'lazy', fetchpriority } = Astro.props;
+const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;
+const thumbs = previewImages?.slice(0, 3) ?? [];
 ---
 
 <a class="gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
@@ -46,6 +48,13 @@ const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, loadin
       <span class="card-view-label">詳細を見る</span>
     </div>
   </div>
+  {thumbs.length > 0 && (
+    <div class="gallery-card-thumb-strip" style={`--thumb-cols: ${thumbs.length}`}>
+      {thumbs.map((img) => (
+        <img src={img} alt="" loading="lazy" aria-hidden="true" />
+      ))}
+    </div>
+  )}
   <div class="gallery-card-footer">
     <h3 class="gallery-card-title">{title}</h3>
     <div class="gallery-card-meta">

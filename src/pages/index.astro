@@ -113,6 +113,7 @@ const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
                 isR18={entry.data.isR18}
                 releaseDate={entry.data.releaseDate}
                 imageCount={entry.resolvedImageCount}
+                previewImages={entry.data.images}
               />
             </div>
           ))}
