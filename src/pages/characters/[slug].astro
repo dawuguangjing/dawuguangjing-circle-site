@@ -113,24 +113,24 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
         <div class="char-detail-block" data-anim>
           <h2>関連ギャラリー</h2>
           <div class="char-gallery-list">
-            {relatedGalleries.map((gallery) => (
-              <a class="related-work-card" href={withBase(`gallery/${gallery.slug}/`)}>
-                <img
-                  src={gallery.data.cover}
-                  alt={`${gallery.data.title} cover`}
-                  width="240"
-                  height="160"
-                  loading="lazy"
-                />
-                <div class="related-work-card-body">
-                  <p class="related-work-card-title">{gallery.data.title}</p>
-                  {gallery.data.description && (
-                    <p class="related-work-card-desc">{gallery.data.description}</p>
-                  )}
-                  <span class="section-link related-work-card-link">ギャラリーを見る →</span>
-                </div>
-              </a>
-            ))}
+            {relatedGalleries.map((gallery) => {
+              const previewImages = gallery.data.images.slice(0, 3);
+              const totalCount = gallery.data.imageCount ?? gallery.data.images.length;
+              return (
+                <a class="char-gallery-preview-card" href={withBase(`gallery/${gallery.slug}/`)}>
+                  <div class="char-gallery-preview-strip" style={`--preview-cols: ${previewImages.length}`}>
+                    {previewImages.map((img) => (
+                      <img src={img} alt="" loading="lazy" aria-hidden="true" />
+                    ))}
+                  </div>
+                  <div class="char-gallery-preview-footer">
+                    <span class="char-gallery-preview-title">{gallery.data.title}</span>
+                    <span class="gallery-card-count">{totalCount}枚</span>
+                  </div>
+                  <span class="char-gallery-preview-link">ギャラリーを見る →</span>
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
@@ -348,21 +348,66 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 /* ── Related Gallery ── */
 .char-gallery-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 12px;
 }
-.char-gallery-list .related-work-card img {
-  aspect-ratio: 4 / 3;
+
+.char-gallery-preview-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--panel);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--easing);
 }
-.char-gallery-list .related-work-card-body {
-  padding: 8px 10px 10px;
+.char-gallery-preview-card:hover {
+  border-color: var(--accent-alpha-25);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-3px);
 }
-.char-gallery-list .related-work-card-title {
-  font-size: 0.8rem;
+
+.char-gallery-preview-strip {
+  display: grid;
+  grid-template-columns: repeat(var(--preview-cols, 3), 1fr);
+  gap: 2px;
 }
-.char-gallery-list .related-work-card-desc {
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+.char-gallery-preview-strip img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  transition: transform 0.3s var(--easing);
+}
+.char-gallery-preview-card:hover .char-gallery-preview-strip img {
+  transform: scale(1.04);
+}
+
+.char-gallery-preview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px 4px;
+}
+.char-gallery-preview-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-bright);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.char-gallery-preview-link {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--accent);
+  padding: 4px 10px 8px;
 }
 
 /* ── Responsive ── */
