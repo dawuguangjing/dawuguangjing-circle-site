@@ -10,7 +10,7 @@ export interface NavItem {
 
 /** ヘッダー・フッター共通のナビゲーション定義 */
 export const mainNav: NavItem[] = [
-  { label: 'ストア',       path: 'works/',   href: withBase('works/') },
+  { label: '作品',         path: 'works/',   href: withBase('works/') },
   { label: 'ギャラリー',   path: 'gallery/', href: withBase('gallery/') },
   { label: 'キャラクター', path: 'characters/', href: withBase('characters/') },
   { label: '開発ログ',     path: 'news/',    href: withBase('news/') },

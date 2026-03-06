@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { aiLevelLabels, branchingLabels } from '../../utils/labels';
-import { SITE_NAME } from '../../utils/constants';
+import { SITE_NAME, EXTERNAL_LINKS } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 import { buildLinks } from '../../utils/types';
 import Breadcrumb from '../../components/Breadcrumb.astro';
@@ -43,6 +43,8 @@ const productJsonLd = buildProductSchema({
   datePublished: data.releaseDate,
 });
 
+const isComingSoon = data.releaseDate.getFullYear() >= 2099;
+
 const platformLinks = buildLinks(data.platformLinks, [
   { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza', store: 'fanza' },
   { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
@@ -65,7 +67,7 @@ const trialLinks = data.trialLinks
   <div class="page-content">
     <div class="container">
       <Breadcrumb crumbs={[
-        { label: 'ストア', href: withBase('works/') },
+        { label: '作品', href: withBase('works/') },
         { label: data.title },
       ]} />
       <!-- 上部コンパクトナビ（ページ末尾まで戻らずに前後作品へ移動できる） -->
@@ -168,13 +170,29 @@ const trialLinks = data.trialLinks
               <EarlyAccessDownload
                 password={data.earlyAccess.password}
                 downloadUrl={data.earlyAccess.downloadUrl}
+                cienUrl={EXTERNAL_LINKS.cien}
               />
             </>
           )}
 
           <!-- Purchase Buttons -->
-          <h3>購入する</h3>
-          <StoreButtonGroup links={platformLinks} location="work_sidebar" />
+          {platformLinks.length > 0 ? (
+            <>
+              <h3>購入する</h3>
+              <StoreButtonGroup links={platformLinks} location="work_sidebar" />
+            </>
+          ) : (
+            <div class="sidebar-coming-soon">
+              <p class="sidebar-small">販売情報は後日公開予定</p>
+              <a class="button secondary button--block" href={EXTERNAL_LINKS.cien}
+                 target="_blank" rel="noopener noreferrer">
+                Ci-en で進捗を見る →
+              </a>
+              <a class="button secondary button--block" href={withBase('news/')}>
+                開発ログを見る →
+              </a>
+            </div>
+          )}
 
           <!-- Spec Table -->
           <h3>仕様</h3>
@@ -182,7 +200,7 @@ const trialLinks = data.trialLinks
             <tbody>
               <tr>
                 <td>リリース日</td>
-                <td>{formatDate(data.releaseDate)}</td>
+                <td>{isComingSoon ? '未定' : formatDate(data.releaseDate)}</td>
               </tr>
               <tr>
                 <td>プレイ時間</td>
@@ -190,11 +208,11 @@ const trialLinks = data.trialLinks
               </tr>
               <tr>
                 <td>CG枚数</td>
-                <td>{data.volume.cgCount} 枚</td>
+                <td>{data.volume.cgCount === 0 ? '後日公開' : `${data.volume.cgCount} 枚`}</td>
               </tr>
               <tr>
                 <td>Hシーン</td>
-                <td>{data.volume.hSceneCount} シーン</td>
+                <td>{data.volume.hSceneCount === 0 ? '後日公開' : `${data.volume.hSceneCount} シーン`}</td>
               </tr>
               <tr>
                 <td>分岐</td>
@@ -303,5 +321,5 @@ const trialLinks = data.trialLinks
     </section>
   </div>
 
-  <FabPurchase targetId="purchase-section" />
+  {platformLinks.length > 0 && <FabPurchase targetId="purchase-section" />}
 </BaseLayout>

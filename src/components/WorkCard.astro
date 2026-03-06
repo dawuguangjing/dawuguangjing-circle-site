@@ -31,7 +31,8 @@ const {
 } = Astro.props;
 
 const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
-const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
+const isComingSoon = releaseDate.getFullYear() >= 2099;
+const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
 <a class="work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>
@@ -53,7 +54,7 @@ const isNew = Date.now() - releaseDate.getTime() < MS_30_DAYS;
     <h3>{title}</h3>
     <p class="work-row-desc">{description}</p>
     <div class="work-row-meta">
-      <span class="work-row-date">{formatDate(releaseDate)}</span>
+      <span class="work-row-date">{isComingSoon ? '発売日未定' : formatDate(releaseDate)}</span>
       <div class="work-row-tags">
         {isNew && <span class="badge badge--new">NEW</span>}
         {hasTrial && <span class="badge badge--trial">体験版あり</span>}

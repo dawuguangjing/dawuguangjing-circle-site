@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
+import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
 import { getGalleryIndex } from '../../utils/collections';
+import { buildLinks } from '../../utils/types';
 
 export async function getStaticPaths() {
   const characters = await getCollection('characters');
@@ -25,6 +27,20 @@ const { Content } = await char.render();
 const work = char.data.workSlug
   ? await getEntry('works', char.data.workSlug).catch(() => null)
   : null;
+
+const workPlatformLinks = work
+  ? buildLinks(work.data.platformLinks, [
+      { key: 'fanza',  label: 'FANZA で購入',  track: 'click_fanza',  store: 'fanza'  },
+      { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
+    ])
+  : [];
+
+const workTrialLinks = work?.data.trialLinks
+  ? buildLinks(work.data.trialLinks, [
+      { key: 'fanza',  label: 'FANZA 体験版',  track: 'click_trial_fanza',  store: 'fanza'  },
+      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite', store: 'dlsite' },
+    ])
+  : [];
 
 // 関連ギャラリーを取得
 const galleryIndex = await getGalleryIndex();
@@ -154,6 +170,24 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
             <a class="char-pagination-link" href={withBase(`characters/${nextChar.slug}/`)}>{nextChar.data.name} →</a>
           )}
         </nav>
+      )}
+
+      {(workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
+        <div class="char-detail-block" data-anim>
+          <h2>この作品を入手する</h2>
+          {workTrialLinks.length > 0 && (
+            <>
+              <p class="char-cta-sub">体験版を試す</p>
+              <StoreButtonGroup links={workTrialLinks} trial location="char_detail" />
+            </>
+          )}
+          {workPlatformLinks.length > 0 && (
+            <>
+              <p class="char-cta-sub">購入する</p>
+              <StoreButtonGroup links={workPlatformLinks} location="char_detail" />
+            </>
+          )}
+        </div>
       )}
 
       <div class="char-nav" data-anim>
@@ -331,6 +365,16 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
 .char-body p:last-child {
   margin-bottom: 0;
+}
+
+/* ── CTA sub-heading ── */
+.char-cta-sub {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  margin: 0 0 6px;
+}
+.char-detail-block .char-cta-sub + .char-cta-sub {
+  margin-top: 8px;
 }
 
 /* ── Nav ── */

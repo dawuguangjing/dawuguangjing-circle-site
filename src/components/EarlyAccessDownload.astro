@@ -2,15 +2,21 @@
 interface Props {
   password: string;
   downloadUrl: string;
+  cienUrl?: string;
 }
 
-const { password, downloadUrl } = Astro.props;
+const { password, downloadUrl, cienUrl } = Astro.props;
 // 軽度の難読化: パスワードは HTML ソースに平文で露出させない
 const encodedPw = btoa(encodeURIComponent(password));
 ---
 
 <div class="ea-wrapper">
   <p class="ea-hint">Ci-en で配布した合言葉を入力してください</p>
+  {cienUrl && (
+    <a href={cienUrl} class="ea-cien-link" target="_blank" rel="noopener noreferrer">
+      合言葉を入手する →
+    </a>
+  )}
   <div class="ea-row">
     <input
       type="text"
@@ -89,6 +95,18 @@ const encodedPw = btoa(encodeURIComponent(password));
     color: var(--ink-dim);
     margin: 0;
     line-height: 1.5;
+  }
+
+  .ea-cien-link {
+    font-size: 0.78rem;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .ea-cien-link:hover {
+    opacity: 0.75;
   }
 
   .ea-row {

@@ -9,6 +9,7 @@ import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
+import { buildLinks } from '../../utils/types';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -32,6 +33,15 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
   const w = workIndex.get(slug);
   return w ? [w] : [];
 });
+
+// ギャラリー自身にリンクがない場合、関連作品のリンクを fallback として使用
+const relatedWorkLinks = hasStoreLinks ? [] : relatedWorks.flatMap((w) =>
+  buildLinks(w.data.platformLinks, [
+    { key: 'fanza',  label: 'FANZA で購入',  track: 'click_fanza',  store: 'fanza'  },
+    { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
+  ])
+);
+const hasAnyCta = hasStoreLinks || relatedWorkLinks.length > 0;
 
 // 登場キャラクターを取得（gallerySlugs に自分のスラッグが含まれるキャラ）
 const allCharacters = await getCollection('characters');
@@ -154,13 +164,17 @@ const relatedCharacters = allCharacters
           </table>
 
           <!-- Purchase Links -->
-          {hasStoreLinks && (
+          {hasAnyCta && (
             <>
               <h3>購入する</h3>
-              <StoreButtonGroup links={[
-                ...(data.platformLinks.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks.fanza,  store: 'fanza'  }] : []),
-                ...(data.platformLinks.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks.dlsite, store: 'dlsite' }] : []),
-              ]} />
+              {hasStoreLinks ? (
+                <StoreButtonGroup links={[
+                  ...(data.platformLinks!.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks!.fanza,  store: 'fanza'  }] : []),
+                  ...(data.platformLinks!.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks!.dlsite, store: 'dlsite' }] : []),
+                ]} location="gallery_detail" />
+              ) : (
+                <StoreButtonGroup links={relatedWorkLinks} location="gallery_detail" />
+              )}
             </>
           )}
 
@@ -225,6 +239,6 @@ const relatedCharacters = allCharacters
       item.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
     });
   </script>
-  {hasStoreLinks && <FabPurchase targetId="purchase-section" />}
+  {hasAnyCta && <FabPurchase targetId="purchase-section" />}
 
 </BaseLayout>
