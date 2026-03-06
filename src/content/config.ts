@@ -39,7 +39,12 @@ const works = defineCollection({
       screenshots: z.array(z.string())
     }),
     videoUrl: z.string().url().optional(),
-    sellingPoints: z.array(z.string()).optional()
+    sellingPoints: z.array(z.string()).optional(),
+    earlyAccess: z.object({
+      enabled: z.boolean().default(false),
+      password: z.string(),
+      downloadUrl: z.string(),
+    }).optional(),
   })
 });
 

@@ -21,40 +21,44 @@ const thumbs = previewImages?.slice(0, 3) ?? [];
 ---
 
 <a class="gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
-  <div class={`gallery-card-img-wrap img-skeleton${previewImage ? ' gallery-card-img-wrap--has-preview' : ''}`}>
-    <img
-      class="gallery-card-img"
-      src={cover}
-      alt={`${title} cover`}
-      loading={loading}
-      fetchpriority={fetchpriority}
-      sizes="(max-width: 768px) calc(50vw - 24px), 220px"
-      width="400"
-      height="300"
-    />
-    {previewImage && (
+  <div class={`gallery-card-media img-skeleton${thumbs.length > 0 ? ' gallery-card-media--split' : ''}${previewImage ? ' gallery-card-media--has-preview' : ''}`}>
+    <div class="gallery-card-media-cover">
       <img
-        class="gallery-card-img gallery-card-img--preview"
-        src={previewImage}
-        alt=""
-        loading="lazy"
+        class="gallery-card-img"
+        src={cover}
+        alt={`${title} cover`}
+        loading={loading}
+        fetchpriority={fetchpriority}
         sizes="(max-width: 768px) calc(50vw - 24px), 220px"
         width="400"
         height="300"
-        aria-hidden="true"
       />
+      {previewImage && (
+        <img
+          class="gallery-card-img gallery-card-img--preview"
+          src={previewImage}
+          alt=""
+          loading="lazy"
+          sizes="(max-width: 768px) calc(50vw - 24px), 220px"
+          width="400"
+          height="300"
+          aria-hidden="true"
+        />
+      )}
+      <div class="gallery-card-overlay" aria-hidden="true">
+        <span class="card-view-label">詳細を見る</span>
+      </div>
+    </div>
+    {thumbs.length > 0 && (
+      <div class="gallery-card-media-thumbs">
+        {thumbs.map((img) => (
+          <div class="gallery-card-media-thumb">
+            <img src={img} alt="" loading="lazy" aria-hidden="true" />
+          </div>
+        ))}
+      </div>
     )}
-    <div class="gallery-card-overlay" aria-hidden="true">
-      <span class="card-view-label">詳細を見る</span>
-    </div>
   </div>
-  {thumbs.length > 0 && (
-    <div class="gallery-card-thumb-strip" style={`--thumb-cols: ${thumbs.length}`}>
-      {thumbs.map((img) => (
-        <img src={img} alt="" loading="lazy" aria-hidden="true" />
-      ))}
-    </div>
-  )}
   <div class="gallery-card-footer">
     <h3 class="gallery-card-title">{title}</h3>
     <div class="gallery-card-meta">

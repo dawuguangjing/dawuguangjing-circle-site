@@ -1,0 +1,204 @@
+---
+interface Props {
+  password: string;
+  downloadUrl: string;
+}
+
+const { password, downloadUrl } = Astro.props;
+// 軽度の難読化: パスワードは HTML ソースに平文で露出させない
+const encodedPw = btoa(encodeURIComponent(password));
+---
+
+<div class="ea-wrapper">
+  <p class="ea-hint">Ci-en で配布した合言葉を入力してください</p>
+  <div class="ea-row">
+    <input
+      type="text"
+      class="ea-input"
+      placeholder="合言葉を入力"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    />
+    <button class="ea-submit" type="button">確認</button>
+  </div>
+  <p class="ea-error" hidden>合言葉が違います</p>
+
+  <!-- ダウンロードボタン: 合言葉が正解するまで非活性 -->
+  <a class="ea-download" aria-disabled="true" tabindex="-1" aria-label="先行体験版をダウンロード（合言葉を入力してください）">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+      <polyline points="7 10 12 15 17 10"/>
+      <line x1="12" y1="15" x2="12" y2="3"/>
+    </svg>
+    <span>先行体験版をダウンロード</span>
+  </a>
+</div>
+
+<script define:vars={{ encodedPw, downloadUrl }}>
+  (function () {
+    const wrapper = document.currentScript
+      ? document.currentScript.previousElementSibling
+      : document.querySelector('.ea-wrapper');
+    if (!wrapper) return;
+
+    const input  = wrapper.querySelector('.ea-input');
+    const submit = wrapper.querySelector('.ea-submit');
+    const error  = wrapper.querySelector('.ea-error');
+    const dlBtn  = wrapper.querySelector('.ea-download');
+
+    // 確認ボタンのみで判定（Enter キーや入力変化では判定しない）
+    submit.addEventListener('click', () => {
+      error.hidden = true;
+
+      const val = input.value.trim().replace(/[\u3000\s]/g, '');
+      let match = false;
+      try { match = btoa(encodeURIComponent(val)) === encodedPw; } catch (_) {}
+
+      if (match) {
+        // 正解: ダウンロードボタンを活性化
+        dlBtn.setAttribute('href', downloadUrl);
+        dlBtn.setAttribute('aria-disabled', 'false');
+        dlBtn.removeAttribute('tabindex');
+        dlBtn.setAttribute('aria-label', '先行体験版をダウンロード');
+        dlBtn.classList.add('ea-download--active');
+        // 入力欄・確認ボタンを無効化
+        input.disabled = true;
+        submit.disabled = true;
+        dlBtn.focus();
+      } else {
+        error.hidden = false;
+        input.classList.add('ea-input--shake');
+        setTimeout(() => input.classList.remove('ea-input--shake'), 500);
+        input.select();
+      }
+    });
+  })();
+</script>
+
+<style>
+  .ea-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ea-hint {
+    font-size: 0.78rem;
+    color: var(--ink-dim);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .ea-row {
+    display: flex;
+    gap: 6px;
+  }
+
+  .ea-input {
+    flex: 1;
+    min-width: 0;
+    padding: 7px 10px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .ea-input:focus {
+    border-color: #1e8a52;
+    box-shadow: 0 0 0 2px rgba(30, 138, 82, 0.15);
+  }
+
+  .ea-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .ea-submit {
+    flex-shrink: 0;
+    padding: 7px 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 0.84rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s ease, opacity 0.15s ease;
+  }
+
+  .ea-submit:hover {
+    background: var(--accent-2);
+  }
+
+  .ea-submit:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .ea-error {
+    font-size: 0.78rem;
+    color: #d93025;
+    margin: 0;
+  }
+
+  /* ダウンロードボタン */
+  .ea-download {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: var(--bg-2);
+    color: var(--ink-dim);
+    border: 1px dashed var(--stroke);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-align: center;
+    cursor: not-allowed;
+    pointer-events: none;
+    transition: background 0.2s ease, color 0.2s ease, border 0.2s ease,
+                transform 0.25s var(--easing), box-shadow 0.25s ease;
+  }
+
+  .ea-download--active {
+    background: #1e8a52;
+    color: #fff;
+    border: 1px solid #1e8a52;
+    cursor: pointer;
+    pointer-events: auto;
+  }
+
+  .ea-download--active:hover {
+    background: #177a47;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(30, 138, 82, 0.32);
+  }
+
+  .ea-download--active:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px rgba(30, 138, 82, 0.18);
+  }
+
+  @keyframes ea-shake {
+    0%, 100% { transform: translateX(0); }
+    20%       { transform: translateX(-6px); }
+    40%       { transform: translateX(6px); }
+    60%       { transform: translateX(-4px); }
+    80%       { transform: translateX(4px); }
+  }
+
+  .ea-input--shake {
+    animation: ea-shake 0.45s ease;
+  }
+</style>

@@ -117,15 +117,21 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
               const previewImages = gallery.data.images.slice(0, 3);
               const totalCount = gallery.data.imageCount ?? gallery.data.images.length;
               return (
-                <a class="char-gallery-preview-card" href={withBase(`gallery/${gallery.slug}/`)}>
-                  <img class="char-gallery-preview-cover" src={gallery.data.cover} alt={gallery.data.title} loading="lazy" />
-                  {previewImages.length > 0 && (
-                    <div class="char-gallery-preview-strip" style={`--preview-cols: ${previewImages.length}`}>
-                      {previewImages.map((img) => (
-                        <img src={img} alt="" loading="lazy" aria-hidden="true" />
-                      ))}
+                <a class={`char-gallery-preview-card${previewImages.length > 0 ? ' char-gallery-preview-card--split' : ''}`} href={withBase(`gallery/${gallery.slug}/`)}>
+                  <div class="char-gallery-preview-media">
+                    <div class="char-gallery-preview-cover-wrap">
+                      <img class="char-gallery-preview-cover" src={gallery.data.cover} alt={gallery.data.title} loading="lazy" />
                     </div>
-                  )}
+                    {previewImages.length > 0 && (
+                      <div class="char-gallery-preview-thumbs">
+                        {previewImages.map((img) => (
+                          <div class="char-gallery-preview-thumb">
+                            <img src={img} alt="" loading="lazy" aria-hidden="true" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <div class="char-gallery-preview-footer">
                     <span class="char-gallery-preview-title">{gallery.data.title}</span>
                     <span class="gallery-card-count">{totalCount}枚</span>
@@ -372,11 +378,26 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   transform: translateY(-3px);
 }
 
+.char-gallery-preview-media {
+  display: grid;
+  grid-template-columns: 1fr;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+.char-gallery-preview-card--split .char-gallery-preview-media {
+  grid-template-columns: 3fr 1fr;
+}
+
+.char-gallery-preview-cover-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
 .char-gallery-preview-cover {
   width: 100%;
-  aspect-ratio: 3 / 2;
+  height: 100%;
   object-fit: cover;
-  object-position: center 30%;
+  object-position: center top;
   display: block;
   transition: transform 0.3s var(--easing);
 }
@@ -384,21 +405,31 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   transform: scale(1.03);
 }
 
-.char-gallery-preview-strip {
-  display: grid;
-  grid-template-columns: repeat(var(--preview-cols, 3), 1fr);
+.char-gallery-preview-thumbs {
+  display: flex;
+  flex-direction: column;
   gap: 2px;
+  background: var(--bg);
+  overflow: hidden;
 }
-.char-gallery-preview-strip img {
+.char-gallery-preview-thumb {
+  flex: 1 1 0;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+.char-gallery-preview-thumb img {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  aspect-ratio: 1 / 1;
+  height: 100%;
   object-fit: cover;
   object-position: center 30%;
   display: block;
   transition: transform 0.3s var(--easing);
 }
-.char-gallery-preview-card:hover .char-gallery-preview-strip img {
-  transform: scale(1.04);
+.char-gallery-preview-card:hover .char-gallery-preview-thumb img {
+  transform: scale(1.05);
 }
 
 .char-gallery-preview-footer {

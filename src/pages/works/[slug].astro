@@ -11,6 +11,7 @@ import { buildLinks } from '../../utils/types';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
+import EarlyAccessDownload from '../../components/EarlyAccessDownload.astro';
 
 export async function getStaticPaths() {
   const works = (await getCollection('works')).sort(
@@ -157,6 +158,17 @@ const trialLinks = data.trialLinks
             <>
               <h3>体験版を試す</h3>
               <StoreButtonGroup links={trialLinks} trial />
+            </>
+          )}
+
+          <!-- Early Access Download（合言葉でDL） -->
+          {data.earlyAccess?.enabled && (
+            <>
+              <h3>先行体験版</h3>
+              <EarlyAccessDownload
+                password={data.earlyAccess.password}
+                downloadUrl={data.earlyAccess.downloadUrl}
+              />
             </>
           )}
 

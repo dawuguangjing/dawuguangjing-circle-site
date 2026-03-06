@@ -7,11 +7,11 @@ isR18: true
 platformLinks: {}
 environments:
   windows: true
-  mac: false
+  mac: true
   browserPc: false
   browserMobileBeta: false
   ios: false
-  android: false
+  android: true
 volume:
   playTimeMin: 100
   cgCount: 0
@@ -22,7 +22,17 @@ aiUsage:
   noteShort: "一部のグラフィック素材にAIを使用しています。"
 images:
   cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2.jpg"
-  screenshots: []
+  screenshots: 
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-1.jpg"
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-2.jpg"
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-3.jpg"
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-4.jpg"
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-5.jpg"
+      - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-6.jpg"    
+earlyAccess:
+  enabled: true
+  password: "なかむらりお"
+  downloadUrl: "https://drive.google.com/uc?id=xxxx&export=download"
 ---
 
 ## 制作進捗
