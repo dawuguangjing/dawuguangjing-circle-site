@@ -401,7 +401,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 /* ── Related Gallery ── */
 .char-gallery-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(480px, 100%), 1fr));
   gap: 12px;
 }
 
