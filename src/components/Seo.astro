@@ -57,7 +57,8 @@ const orgSchema = buildOrgSchema(Astro.site?.toString());
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 <meta name="theme-color" content="#0068B7" />
-{noIndex && <meta name="robots" content="noindex" />}
+{noIndex && <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />}
+{noIndex && <meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet" />}
 <meta name="google-site-verification" content="e9vmFdAPu4LMQR9Ae-5P57K5OIjN_HDHNHicUWbW_Dg" />
 <script is:inline type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
 {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}

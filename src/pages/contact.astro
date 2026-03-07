@@ -3,12 +3,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { EXTERNAL_LINKS } from '../utils/constants';
 ---
 
-<BaseLayout title="お問い合わせ" description="お問い合わせ先。">
+<BaseLayout
+  title="お問い合わせ"
+  description="ダウグアングジングへのお問い合わせ窓口。フォームからご質問・ご意見・不具合報告を受け付けています。"
+>
   <div class="page-content contact-page">
   <section class="section container">
     <h1 class="section-title" data-anim>お問い合わせ</h1>
     <p class="section-lead" data-anim style="--anim-delay: 0.07s">
-      ご質問・ご意見・不具合報告などはフォームよりお願いいたします。Ci-en のコメント欄も受け付けています。
+      ご質問・ご意見・不具合報告は、下記フォームよりご連絡ください。
     </p>
 
     <div class="form-wrapper" data-anim style="--anim-delay: 0.14s">
@@ -24,8 +27,8 @@ import { EXTERNAL_LINKS } from '../utils/constants';
       >読み込んでいます…</iframe>
     </div>
 
-    <div class="card card--static" data-anim style="--anim-delay: 0.21s">
-      <p>Ci-en の記事コメント欄からもお気軽にお問い合わせいただけます。</p>
+    <div class="card card--static" data-anim style="--anim-delay: 0.21s" data-nosnippet>
+      <p>補助窓口として、Ci-en からもご連絡いただけます。</p>
       <a class="button secondary" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
         Ci-en を開く &#8599;
       </a>
