@@ -4,7 +4,9 @@
   box-sizing: border-box;
 }
 
-/* viewport レベルで横スクロールを抑制（body に設定すると sticky 要素がクリップされるため html に設定） */
+/* 横スクロールを抑制
+   - html: フォールバック（一部ブラウザで body の clip が効かない場合のため）
+   - body: overflow-x: clip は scroll container を作らず position:sticky を壊さない */
 html {
   overflow-x: hidden;
 }
@@ -19,6 +21,7 @@ body {
   display: flex;
   flex-direction: column;
   -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
 }
 
 main {
@@ -251,6 +254,7 @@ button {
   scroll-margin-top: 100px;
   position: sticky;
   top: 1.5rem;
+  min-width: 0;
 }
 
 /* ── Floating Purchase Button ── */
@@ -2898,7 +2902,7 @@ html.age-verified .age-overlay {
   }
 
   .gallery-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .footer-top {
@@ -3215,9 +3219,6 @@ html.age-verified .age-overlay {
 .related-work-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  text-decoration: none;
-  color: inherit;
   border: 1px solid var(--stroke);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -3227,6 +3228,12 @@ html.age-verified .age-overlay {
 .related-work-card:hover {
   border-color: var(--accent-alpha-25);
   box-shadow: var(--shadow-hover);
+}
+.related-work-card-link-wrap {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
 }
 .related-work-card img {
   width: 100%;
@@ -3258,9 +3265,16 @@ html.age-verified .age-overlay {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-.related-work-card-link {
+.related-work-card-detail {
   font-size: 0.78rem;
   margin-top: 4px;
+}
+.related-work-card-cta {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--stroke);
 }
 
 /* ── Selling Points ── */
