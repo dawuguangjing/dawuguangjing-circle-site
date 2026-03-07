@@ -5,9 +5,9 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { aiLevelLabels, branchingLabels } from '../../utils/labels';
-import { SITE_NAME, EXTERNAL_LINKS } from '../../utils/constants';
+import { SITE_NAME, EXTERNAL_LINKS, COMING_SOON_YEAR } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
-import { buildLinks } from '../../utils/types';
+import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
@@ -43,19 +43,10 @@ const productJsonLd = buildProductSchema({
   datePublished: data.releaseDate,
 });
 
-const isComingSoon = data.releaseDate.getFullYear() >= 2099;
+const isComingSoon = data.releaseDate.getFullYear() >= COMING_SOON_YEAR;
 
-const platformLinks = buildLinks(data.platformLinks, [
-  { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza', store: 'fanza' },
-  { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
-]);
-
-const trialLinks = data.trialLinks
-  ? buildLinks(data.trialLinks, [
-      { key: 'fanza', label: 'FANZA 体験版', track: 'click_trial_fanza', store: 'fanza' },
-      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite', store: 'dlsite' },
-    ])
-  : [];
+const platformLinks = buildLinks(data.platformLinks, PURCHASE_LINK_ENTRIES);
+const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTRIES) : [];
 ---
 
 <BaseLayout

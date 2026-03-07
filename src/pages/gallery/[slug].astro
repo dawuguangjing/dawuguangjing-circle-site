@@ -9,7 +9,7 @@ import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
-import { buildLinks } from '../../utils/types';
+import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 
 export async function getStaticPaths() {
   const galleries = await getCollection('gallery');
@@ -36,12 +36,15 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
 
 // ギャラリー自身にリンクがない場合、関連作品のリンクを fallback として使用
 const relatedWorkLinks = hasStoreLinks ? [] : relatedWorks.flatMap((w) =>
-  buildLinks(w.data.platformLinks, [
-    { key: 'fanza',  label: 'FANZA で購入',  track: 'click_fanza',  store: 'fanza'  },
-    { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
-  ])
+  buildLinks(w.data.platformLinks, PURCHASE_LINK_ENTRIES)
 );
-const hasAnyCta = hasStoreLinks || relatedWorkLinks.length > 0;
+
+// 関連作品の体験版リンク
+const relatedWorkTrialLinks = relatedWorks.flatMap((w) =>
+  buildLinks(w.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES)
+);
+
+const hasAnyCta = hasStoreLinks || relatedWorkLinks.length > 0 || relatedWorkTrialLinks.length > 0;
 
 // 登場キャラクターを取得（gallerySlugs に自分のスラッグが含まれるキャラ）
 const allCharacters = await getCollection('characters');
@@ -163,8 +166,16 @@ const relatedCharacters = allCharacters
             </tbody>
           </table>
 
+          <!-- Trial Links -->
+          {relatedWorkTrialLinks.length > 0 && (
+            <>
+              <h3>体験版を試す</h3>
+              <StoreButtonGroup links={relatedWorkTrialLinks} trial location="gallery_detail" />
+            </>
+          )}
+
           <!-- Purchase Links -->
-          {hasAnyCta && (
+          {(hasStoreLinks || relatedWorkLinks.length > 0) && (
             <>
               <h3>購入する</h3>
               {hasStoreLinks ? (
@@ -197,24 +208,40 @@ const relatedCharacters = allCharacters
           {relatedWorks.length > 0 && (
             <div class="sidebar-divider">
               <h3>関連作品</h3>
-              {relatedWorks.map((work) => (
-                <a class="related-work-card" href={withBase(`works/${work.slug}/`)}>
-                  <img
-                    src={withBase(work.data.images.cover)}
-                    alt={`${work.data.title} cover`}
-                    width="240"
-                    height="160"
-                    loading="lazy"
-                  />
-                  <div class="related-work-card-body">
-                    <p class="related-work-card-title">{work.data.title}</p>
-                    {work.data.shortDescription && (
-                      <p class="related-work-card-desc">{work.data.shortDescription}</p>
+              {relatedWorks.map((work) => {
+                const wPurchaseLinks = buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES);
+                const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
+                return (
+                  <div class="related-work-card">
+                    <a class="related-work-card-link-wrap" href={withBase(`works/${work.slug}/`)}>
+                      <img
+                        src={withBase(work.data.images.cover)}
+                        alt={`${work.data.title} cover`}
+                        width="240"
+                        height="160"
+                        loading="lazy"
+                      />
+                      <div class="related-work-card-body">
+                        <p class="related-work-card-title">{work.data.title}</p>
+                        {work.data.shortDescription && (
+                          <p class="related-work-card-desc">{work.data.shortDescription}</p>
+                        )}
+                        <span class="section-link related-work-card-detail">詳細を見る →</span>
+                      </div>
+                    </a>
+                    {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
+                      <div class="related-work-card-cta">
+                        {wTrialLinks.length > 0 && (
+                          <StoreButtonGroup links={wTrialLinks} trial location="gallery_related_work" />
+                        )}
+                        {wPurchaseLinks.length > 0 && (
+                          <StoreButtonGroup links={wPurchaseLinks} location="gallery_related_work" />
+                        )}
+                      </div>
                     )}
-                    <span class="section-link related-work-card-link">詳細を見る →</span>
                   </div>
-                </a>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

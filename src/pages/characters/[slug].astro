@@ -6,7 +6,7 @@ import { getCollection, getEntry } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
 import { getGalleryIndex } from '../../utils/collections';
-import { buildLinks } from '../../utils/types';
+import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 
 export async function getStaticPaths() {
   const characters = await getCollection('characters');
@@ -28,19 +28,8 @@ const work = char.data.workSlug
   ? await getEntry('works', char.data.workSlug).catch(() => null)
   : null;
 
-const workPlatformLinks = work
-  ? buildLinks(work.data.platformLinks, [
-      { key: 'fanza',  label: 'FANZA で購入',  track: 'click_fanza',  store: 'fanza'  },
-      { key: 'dlsite', label: 'DLsite で購入', track: 'click_dlsite', store: 'dlsite' },
-    ])
-  : [];
-
-const workTrialLinks = work?.data.trialLinks
-  ? buildLinks(work.data.trialLinks, [
-      { key: 'fanza',  label: 'FANZA 体験版',  track: 'click_trial_fanza',  store: 'fanza'  },
-      { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite', store: 'dlsite' },
-    ])
-  : [];
+const workPlatformLinks = work ? buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES) : [];
+const workTrialLinks = work?.data.trialLinks ? buildLinks(work.data.trialLinks, TRIAL_LINK_ENTRIES) : [];
 
 // 関連ギャラリーを取得
 const galleryIndex = await getGalleryIndex();
@@ -172,9 +161,25 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
         </nav>
       )}
 
-      {(workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
+      {work && (workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
         <div class="char-detail-block" data-anim>
           <h2>この作品を入手する</h2>
+          <div class="char-work-info">
+            <img
+              class="char-work-thumb"
+              src={work.data.images.cover}
+              alt={work.data.title}
+              width="120"
+              height="80"
+              loading="lazy"
+            />
+            <div class="char-work-meta">
+              <p class="char-work-title">{work.data.title}</p>
+              {work.data.shortDescription && (
+                <p class="char-work-desc">{work.data.shortDescription}</p>
+              )}
+            </div>
+          </div>
           {workTrialLinks.length > 0 && (
             <>
               <p class="char-cta-sub">体験版を試す</p>
@@ -365,6 +370,42 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
 .char-body p:last-child {
   margin-bottom: 0;
+}
+
+/* ── Work Info in CTA block ── */
+.char-work-info {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--stroke);
+}
+.char-work-thumb {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  flex-shrink: 0;
+}
+.char-work-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.char-work-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink-bright);
+  margin: 0;
+  line-height: 1.4;
+}
+.char-work-desc {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin: 0;
+  line-height: 1.5;
 }
 
 /* ── CTA sub-heading ── */

@@ -40,3 +40,9 @@ export const AGE_GATE_STORAGE_KEY = 'circle_age_gate_until';
 
 /** 年齢確認の有効期間（ミリ秒） */
 export const AGE_GATE_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+/** 「NEW」バッジを表示する期間（ミリ秒） */
+export const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
+
+/** 未発売作品の releaseDate プレースホルダー年 */
+export const COMING_SOON_YEAR = 2099;

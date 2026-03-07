@@ -141,6 +141,14 @@ const themeKey = THEME_STORAGE_KEY;
     )}
 
     <script>
+      import { startRouteProgress, bumpRouteProgress, finishRouteProgress } from '../scripts/route-progress.ts';
+      import '../scripts/animations.ts';
+      import '../scripts/context-nav.ts';
+
+      // ── SCROLL LOCK ─────────────────────────────────────────────────────────
+      // window API: lockBodyScroll / unlockBodyScroll / resetBodyScrollLocks
+      // オーバーレイ系コンポーネントが呼び出す共通ロック機構
+
       type UiWindow = Window & {
         lockBodyScroll?: (key: string) => void;
         unlockBodyScroll?: (key: string) => void;
@@ -171,6 +179,9 @@ const themeKey = THEME_STORAGE_KEY;
 
       ensureScrollLockController();
 
+      // ── OVERLAY CLOSE ────────────────────────────────────────────────────────
+      // ESC キー → ui:close-overlays カスタムイベントをディスパッチ
+
       function closeTransientUi() {
         document.dispatchEvent(new CustomEvent('ui:close-overlays'));
       }
@@ -184,80 +195,11 @@ const themeKey = THEME_STORAGE_KEY;
       }
       document.addEventListener('astro:page-load', initGlobalOverlayClose);
 
-      const routeProgressEl = document.getElementById('route-progress');
-      const routeProgressBar = routeProgressEl?.querySelector<HTMLElement>('.route-progress-bar');
-      let routeProgress = 0;
-      let routeProgressTimer: number | null = null;
-      let routeHideTimer: number | null = null;
-      let routeNavInFlight = false;
+      // ── VIEW TRANSITIONS LIFECYCLE ──────────────────────────────────────────
+      // ナビ開始: オーバーレイ閉じる + スクロールロック解除 + プログレス開始
+      // スワップ後: is-client-nav フラグ + GA4 仮想PV送信
+      // ページ完了: is-client-nav 解除 + プログレス完了
 
-      function setRouteProgress(value: number) {
-        routeProgress = Math.max(0, Math.min(1, value));
-        routeProgressBar?.style.setProperty('--route-progress', routeProgress.toFixed(4));
-      }
-
-      function startRouteProgress() {
-        if (!routeProgressEl || !routeProgressBar) return;
-        routeNavInFlight = true;
-        if (routeHideTimer) {
-          clearTimeout(routeHideTimer);
-          routeHideTimer = null;
-        }
-        if (routeProgressTimer) {
-          clearInterval(routeProgressTimer);
-          routeProgressTimer = null;
-        }
-        routeProgressEl.classList.add('is-active');
-        setRouteProgress(0.08);
-        routeProgressTimer = window.setInterval(() => {
-          setRouteProgress(Math.min(0.78, routeProgress + (0.82 - routeProgress) * 0.18));
-          if (routeProgress >= 0.775 && routeProgressTimer) {
-            clearInterval(routeProgressTimer);
-            routeProgressTimer = null;
-          }
-        }, 70);
-      }
-
-      function bumpRouteProgress(value: number) {
-        if (!routeNavInFlight) return;
-        setRouteProgress(Math.max(routeProgress, value));
-      }
-
-      function finishRouteProgress() {
-        if (!routeNavInFlight) return;
-        routeNavInFlight = false;
-        if (routeProgressTimer) {
-          clearInterval(routeProgressTimer);
-          routeProgressTimer = null;
-        }
-        setRouteProgress(1);
-        routeHideTimer = window.setTimeout(() => {
-          routeProgressEl?.classList.remove('is-active');
-          setRouteProgress(0);
-        }, 180);
-      }
-
-      function initAnimations(instant = false) {
-        if (instant) {
-          document.querySelectorAll<HTMLElement>('[data-anim]').forEach((el) => {
-            el.classList.add('is-visible');
-          });
-          return;
-        }
-        const observer = new IntersectionObserver(
-          (entries) => entries.forEach(e => {
-            if (e.isIntersecting) {
-              e.target.classList.add('is-visible');
-              observer.unobserve(e.target);
-            }
-          }),
-          { threshold: 0.12 }
-        );
-        document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
-      }
-      // VT ナビゲーション時: after-swap で各初期化を VT と並走させ
-      // "完了後に別アニメーションが始まる 2 段階更新" を抑える
-      // 初回ロード時: after-swap は発火しないため page-load にフォールバック
       let _initedBySwap = false;
       document.addEventListener('astro:before-preparation', () => {
         closeTransientUi();
@@ -270,7 +212,6 @@ const themeKey = THEME_STORAGE_KEY;
         closeTransientUi();
         uiWindow.resetBodyScrollLocks?.();
         bumpRouteProgress(0.92);
-        initAnimations(true);
         initImgSkeleton();
         // GA4 仮想ページビュー（View Transitions ナビゲーション時）
         const gtagFn = (window as any).gtag;
@@ -284,7 +225,6 @@ const themeKey = THEME_STORAGE_KEY;
       document.addEventListener('astro:page-load', () => {
         if (!_initedBySwap) {
           document.documentElement.classList.remove('is-client-nav');
-          initAnimations();
           initImgSkeleton();
         } else {
           requestAnimationFrame(() => {
@@ -294,6 +234,26 @@ const themeKey = THEME_STORAGE_KEY;
         _initedBySwap = false;
         finishRouteProgress();
       });
+
+      // ── IMAGE SKELETON ───────────────────────────────────────────────────────
+      // .img-skeleton → 画像ロード完了時に is-loaded クラスを付与してフェードイン
+
+      function initImgSkeleton() {
+        document.querySelectorAll<HTMLElement>('.img-skeleton').forEach((wrap) => {
+          const img = wrap.querySelector<HTMLImageElement>('img:not([aria-hidden])');
+          if (!img) return;
+          const resolve = () => wrap.classList.add('is-loaded');
+          if (img.complete) {
+            resolve();
+          } else {
+            img.addEventListener('load',  resolve, { once: true });
+            img.addEventListener('error', resolve, { once: true });
+          }
+        });
+      }
+
+      // ── TOAST & SHARE COPY ───────────────────────────────────────────────────
+      // URLコピーボタン → clipboard API + トースト通知
 
       function showToast(message: string) {
         const toast = document.createElement('div');
@@ -326,79 +286,9 @@ const themeKey = THEME_STORAGE_KEY;
       }
       document.addEventListener('astro:page-load', initShareCopy);
 
-      function initContextBackLinks() {
-        document.querySelectorAll<HTMLAnchorElement>('a[data-back-context]').forEach((link) => {
-          if ((link as any)._backContextInited) return;
-          (link as any)._backContextInited = true;
-          link.addEventListener('click', (e) => {
-            if (e.defaultPrevented) return;
-            if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-            if (link.target && link.target !== '_self') return;
-            const contextKey = (link.dataset.backContextKey ?? '').trim();
-            let savedContextUrl = '';
-            if (contextKey) {
-              try {
-                const stored = sessionStorage.getItem(`list-context:${contextKey}`) ?? '';
-                if (stored.startsWith('/')) savedContextUrl = stored;
-              } catch {
-                savedContextUrl = '';
-              }
-            }
-            const fallbackHref = savedContextUrl || link.href;
+      // ── GA4 TRACKING ─────────────────────────────────────────────────────────
+      // [data-ga-event] ボタンのクリックをイベント委譲で追跡
 
-            let sameOriginRef = false;
-            try {
-              sameOriginRef = !!document.referrer && new URL(document.referrer).origin === window.location.origin;
-            } catch {
-              sameOriginRef = false;
-            }
-            if (!sameOriginRef || history.length <= 1) {
-              if (savedContextUrl) {
-                e.preventDefault();
-                window.location.href = fallbackHref;
-              }
-              return;
-            }
-
-            e.preventDefault();
-            let navigated = false;
-            const markNavigated = () => { navigated = true; };
-            window.addEventListener('pagehide', markNavigated, { once: true });
-            history.back();
-            window.setTimeout(() => {
-              window.removeEventListener('pagehide', markNavigated);
-              if (!navigated) window.location.href = fallbackHref;
-            }, 480);
-          });
-        });
-      }
-      document.addEventListener('astro:page-load', initContextBackLinks);
-
-      function persistListContext() {
-        const listRoot = document.querySelector<HTMLElement>('[data-list-context]');
-        const contextKey = (listRoot?.dataset.listContext ?? '').trim();
-        if (!contextKey) return;
-        try {
-          sessionStorage.setItem(`list-context:${contextKey}`, `${window.location.pathname}${window.location.search}`);
-        } catch {}
-      }
-      document.addEventListener('astro:page-load', persistListContext);
-
-      function initImgSkeleton() {
-        document.querySelectorAll<HTMLElement>('.img-skeleton').forEach((wrap) => {
-          const img = wrap.querySelector<HTMLImageElement>('img:not([aria-hidden])');
-          if (!img) return;
-          const resolve = () => wrap.classList.add('is-loaded');
-          if (img.complete) {
-            resolve();
-          } else {
-            img.addEventListener('load',  resolve, { once: true });
-            img.addEventListener('error', resolve, { once: true });
-          }
-        });
-      }
-
-      // GA4 CTA クリックトラッキング（イベント委譲）
       document.addEventListener('click', (e) => {
         const btn = (e.target as Element).closest<HTMLElement>('[data-ga-event]');
         if (!btn) return;

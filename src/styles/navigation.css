@@ -1,0 +1,420 @@
+/* ── Route Transition Progress Bar ── */
+.route-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.route-progress.is-active {
+  opacity: 1;
+}
+
+.route-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  --route-progress: 0;
+  transform-origin: left center;
+  transform: scaleX(var(--route-progress));
+  background: linear-gradient(90deg, var(--accent), var(--cta));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: transform 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-progress,
+  .route-progress-bar {
+    transition: none;
+  }
+}
+
+/* ── Scroll Progress Bar ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; /* 画面最上部に固定 */
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: transparent;
+  z-index: 200; /* ヘッダー(z-index:20)より十分上 */
+  transition: width 0.08s linear;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.scroll-progress-tuna {
+  position: absolute;
+  right: -11px;
+  top: 3px; /* バー下端に配置 */
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  pointer-events: none;
+  transform: scaleX(-1); /* JS で上書き: 下スクロール=右向き / 上スクロール=左向き */
+}
+
+/* モーション低減設定のユーザーにはツナアニメを非表示 */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress-tuna { display: none; }
+}
+
+/* ── Announcement Bar ── */
+.announcement-bar {
+  background: var(--accent-dark);
+  color: #fff;
+  font-size: 0.82rem;
+  padding: 8px 0;
+  max-height: 48px;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+}
+.announcement-bar.is-hiding {
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.announcement-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  position: relative;
+}
+.announcement-bar-text {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  text-align: center;
+  flex: 1;
+  transition: text-shadow 0.3s ease;
+}
+a.announcement-bar-text:hover {
+  color: #fff;
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(255,255,255,0.7), 0 0 20px rgba(255,255,255,0.35);
+}
+.announcement-bar-close {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  padding: 4px;
+  line-height: 0;
+  transition: color 0.2s;
+}
+.announcement-bar-close:hover { color: #fff; }
+
+/* ── Header ── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--panel);
+  border-bottom: 1px solid var(--stroke);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
+}
+
+.site-header.is-hidden {
+  transform: translateY(-100%);
+}
+
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  height: 52px;
+}
+
+.logo {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  font-weight: 700;
+  transition: color 0.25s ease, transform 0.3s var(--easing);
+  transform-origin: center center;
+}
+
+.logo-accent {
+  color: #7CCD40;
+}
+
+.logo-pink {
+  color: #E2437F;
+}
+
+.logo-char {
+  display: inline-block;
+  transition: transform 0.3s var(--easing);
+}
+
+.logo:hover {
+  color: var(--accent-dark);
+}
+
+.logo:hover .logo-char,
+.logo--is-top .logo-char {
+  animation: logo-wave 2s ease calc(var(--i) * 0.08s) infinite;
+}
+
+@keyframes logo-wave {
+  0%   { transform: translateY(0); }
+  20%  { transform: translateY(-4px); }
+  40%  { transform: translateY(0); }
+  100% { transform: translateY(0); }
+}
+
+.nav-links {
+  display: flex;
+  gap: 0;
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  height: 100%;
+  align-items: stretch;
+  margin-left: auto;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  color: var(--ink-dim);
+  border-radius: 0;
+  border: none;
+  position: relative;
+  font-weight: 500;
+  transition: color 0.25s ease, transform 0.3s var(--easing);
+  transform-origin: center bottom;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  transition: width 0.3s var(--easing),
+              left 0.3s var(--easing);
+}
+
+.nav-links a:hover {
+  color: var(--accent);
+  transform: scale(1.08);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.nav-links a:active {
+  transform: scale(0.96);
+}
+
+.nav-char {
+  display: inline-block;
+}
+
+.nav-links a.is-active {
+  color: var(--cta);
+  font-weight: 600;
+}
+
+.nav-links a.is-active::after {
+  width: 100%;
+  left: 0;
+  background: var(--cta);
+}
+
+.nav-links a.is-active .nav-char {
+  animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
+}
+
+.nav-links a:hover .nav-char {
+  animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
+}
+
+/* ── Header Right Group ── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 4px;
+}
+
+
+/* ── Mobile Menu Toggle ── */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 1px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ── Page Content Background ── */
+.page-content {
+  background: var(--bg);
+  padding-bottom: 40px;
+}
+
+/* ── Footer ── */
+.site-footer {
+  padding: 40px 0 32px;
+  background: #2a2a2a;
+  margin-top: 0;
+}
+
+.footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.footer-brand {
+  flex-shrink: 0;
+}
+
+.footer-logo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffffff;
+  display: inline-block;
+  margin-bottom: 6px;
+}
+
+.footer-logo:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.footer-desc {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0 0 12px;
+}
+
+.footer-follow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.footer-follow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  color: rgba(255,255,255,0.75);
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.footer-follow-btn:hover {
+  border-color: rgba(255,255,255,0.6);
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}
+.footer-follow-btn--cien:hover { border-color: var(--accent); color: var(--accent); }
+
+.footer-nav-group {
+  display: flex;
+  gap: 48px;
+}
+
+.footer-nav h4 {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 10px;
+  letter-spacing: 0.03em;
+}
+
+.footer-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-nav a {
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.15s ease;
+  white-space: nowrap;
+}
+
+.footer-nav a:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.footer-copy {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.footer-notice {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0;
+  text-align: right;
+}
+

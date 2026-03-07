@@ -12,8 +12,8 @@ const characters = (await getCollection('characters')).sort(
 const works = await getCollection('works');
 const workMap = new Map(works.map((w) => [w.slug, w.data.title]));
 const uniqueWorkSlugs = [...new Set(
-  characters.map((c) => (c.data as any).workSlug).filter(Boolean)
-)] as string[];
+  characters.map((c) => c.data.workSlug).filter(Boolean)
+)];
 const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(slug) ?? slug }));
 ---
 
@@ -51,7 +51,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
             class="char-list-card"
             href={withBase(`characters/${char.slug}/`)}
             data-anim
-            data-work={(char.data as any).workSlug ?? ''}
+            data-work={char.data.workSlug}
             data-order={String(char.data.order)}
             data-name={char.data.name}
             style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s; --char-color: ${char.data.color}`}

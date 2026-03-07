@@ -1,0 +1,240 @@
+* {
+  box-sizing: border-box;
+}
+
+/* 横スクロールを抑制
+   - html: フォールバック（一部ブラウザで body の clip が効かない場合のため）
+   - body: overflow-x: clip は scroll container を作らず position:sticky を壊さない */
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: clip;
+}
+
+main {
+  flex: 1;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+/* ── Focus Styles ── */
+/* マウス/タッチ操作ではアウトラインを非表示、キーボード操作時のみ表示 */
+:focus:not(:focus-visible) { outline: none; }
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+/* 円形ボタン（back-to-topなど）はアウトラインも丸める */
+.back-to-top:focus-visible { border-radius: 50%; }
+
+/* ── Skip Navigation ── */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 100;
+  padding: 8px 16px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 8px;
+  color: #fff;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+.container {
+  width: min(1060px, calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.section {
+  padding: 40px 0;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+}
+
+.card:hover {
+  border-color: var(--accent-alpha-25);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-hover);
+}
+
+.card--static,
+.card--static:hover {
+  transform: none;
+  box-shadow: var(--shadow);
+  border-color: var(--stroke);
+}
+
+.card h2,
+.card h3 {
+  font-size: 1rem;
+  margin: 0 0 8px;
+  color: var(--ink-bright);
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+
+.card p:last-child {
+  margin-bottom: 0;
+}
+
+/* ── Badges / Tags ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  background: var(--accent-alpha-08);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badge--r18 {
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.08);
+}
+
+.badge--category {
+  color: #666666;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.badge--release {
+  color: #16a34a;
+  background: rgba(22, 163, 74, 0.10);
+}
+
+.badge--update {
+  color: #0068B7;
+  background: rgba(0, 104, 183, 0.10);
+}
+
+.badge--sale {
+  color: var(--sale);
+  background: rgba(230, 46, 46, 0.10);
+}
+
+.badge--devlog {
+  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.10);
+}
+
+.badge--futekigo {
+  color: #C026D3;
+  background: rgba(192, 38, 211, 0.10);
+}
+
+/* ── Buttons ── */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  min-height: 44px;
+  border-radius: var(--radius-md);
+  border: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  background: var(--cta);
+  color: #fff;
+  transition: background 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--cta-hover);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-cta-hover);
+}
+
+.button.secondary {
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--stroke);
+}
+
+.button.secondary:hover {
+  background: var(--bg);
+  color: var(--ink-bright);
+}
+
+.button--sm {
+  padding: 6px 14px;
+  font-size: 0.78rem;
+}
+
+.button--block {
+  width: 100%;
+}

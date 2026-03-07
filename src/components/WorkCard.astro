@@ -1,6 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
+import { MS_30_DAYS, COMING_SOON_YEAR } from '../utils/constants';
 
 interface Props {
   slug: string;
@@ -30,8 +31,7 @@ const {
   fetchpriority,
 } = Astro.props;
 
-const MS_30_DAYS = 30 * 24 * 60 * 60 * 1000;
-const isComingSoon = releaseDate.getFullYear() >= 2099;
+const isComingSoon = releaseDate.getFullYear() >= COMING_SOON_YEAR;
 const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
