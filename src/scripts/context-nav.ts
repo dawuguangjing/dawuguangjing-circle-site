@@ -3,9 +3,10 @@
 // sessionStorage に保存されたコンテキストURLを使ってリストの位置を復元する
 
 function initContextBackLinks() {
-  document.querySelectorAll<HTMLAnchorElement>('a[data-back-context]').forEach((link) => {
-    if ((link as any)._backContextInited) return;
-    (link as any)._backContextInited = true;
+  document.querySelectorAll<HTMLAnchorElement>('a[data-back-context]').forEach((node) => {
+    const link = node as HTMLAnchorElement & { _backContextInited?: boolean };
+    if (link._backContextInited) return;
+    link._backContextInited = true;
     link.addEventListener('click', (e) => {
       if (e.defaultPrevented) return;
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
@@ -58,7 +59,9 @@ function persistListContext() {
   if (!contextKey) return;
   try {
     sessionStorage.setItem(`list-context:${contextKey}`, `${window.location.pathname}${window.location.search}`);
-  } catch {}
+  } catch {
+    return;
+  }
 }
 
 document.addEventListener('astro:page-load', initContextBackLinks);
