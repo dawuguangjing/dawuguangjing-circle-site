@@ -13,7 +13,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-dress.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-summer.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-sauna.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/nakamura-rio-introduction.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-3.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-eye-catch.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"

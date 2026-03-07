@@ -14,7 +14,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-running.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-dress.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-summer.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/takizawa-rin-introduction.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-4.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-eye-catch.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"

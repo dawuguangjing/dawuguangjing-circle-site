@@ -11,7 +11,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-cafe.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-dress.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-summer.jpg"  
-  - "https://storage.googleapis.com/dawuguangjing-assets/kanai-miho-introduction.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-2.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-eye-catch.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
