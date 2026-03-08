@@ -377,7 +377,7 @@ html.is-client-nav .hero-banner-cover {
 
 /* 未発売: 彩度を落として制作中感を演出 */
 .dual-hero-cover--upcoming {
-  filter: saturate(0.6);
+  filter: saturate(0.9);
 }
 
 /* タイトル */
