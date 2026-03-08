@@ -278,7 +278,8 @@ const { itemSelector } = Astro.props;
     let _touchFromMedia = false;
     lightbox.addEventListener('touchstart', function(e) {
       _touchStartX = e.touches[0].clientX;
-      _touchFromMedia = !!(e.target as HTMLElement).closest('.lightbox-media');
+      // .lightbox-thumbs からのタッチもスワイプ判定から除外（サムネイルスクロールと競合するため）
+      _touchFromMedia = !!(e.target as HTMLElement).closest('.lightbox-media, .lightbox-thumbs');
     }, { passive: true });
     lightbox.addEventListener('touchend', function(e) {
       if (!lightbox.classList.contains('is-active') || _touchFromMedia) return;
