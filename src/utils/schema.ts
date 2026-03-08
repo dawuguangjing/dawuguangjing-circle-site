@@ -1,4 +1,4 @@
-import { CIRCLE_NAME } from './constants';
+import { CIRCLE_NAME, SITE_NAME } from './constants';
 
 const author = { '@type': 'Organization' as const, name: CIRCLE_NAME };
 
@@ -11,6 +11,17 @@ export function buildOrgSchema(siteUrl?: string) {
     alternateName: 'だうぐあんぐじんぐ',
     url: siteUrl,
     description: '同人ゲームサークル公式サイト',
+  };
+}
+
+/** WebSite JSON-LD（トップページ用） */
+export function buildWebSiteSchema(siteUrl?: string) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE_NAME,
+    alternateName: ['だうぐあんぐじんぐ公式', 'だうぐあんぐじんぐ'],
+    url: siteUrl,
   };
 }
 

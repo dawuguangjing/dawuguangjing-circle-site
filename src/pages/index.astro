@@ -4,10 +4,12 @@ import WorkCard from '../components/WorkCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import HeroBanner from '../components/HeroBanner.astro';
+import DualHero from '../components/DualHero.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../utils/withBase';
-import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../utils/constants';
+import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER, COMING_SOON_YEAR } from '../utils/constants';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
+import { buildWebSiteSchema } from '../utils/schema';
 
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
@@ -16,26 +18,32 @@ const characters = (await getCollection('characters')).sort(
   (a, b) => a.data.order - b.data.order
 );
 const now = new Date();
-const heroWork = allWorks.find(w => w.data.releaseDate <= now) ?? null;
+const heroWork   = allWorks.find(w => w.data.releaseDate <= now) ?? null;
+const comingWork = allWorks.find(w => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ?? null;
+const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 ---
 
 <BaseLayout
   title={SITE_NAME}
-  description="ダウグアングジング公式サイト。成人向け同人ゲーム『従順審査』『従順審査2』の作品情報、開発ログ、キャラクター紹介を掲載。"
+  description="ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。成人向け同人ゲーム『従順審査』『従順審査2』の作品情報、開発ログ、キャラクター紹介を掲載。"
+  jsonLd={websiteSchema}
 >
   <div class="page-content">
-    {heroWork && (
-      <HeroBanner
-        slug={heroWork.slug}
-        title={heroWork.data.title}
-        catch={heroWork.data.catch}
-        cover={heroWork.data.images.cover}
-        isR18={heroWork.data.isR18}
-        platformLinks={heroWork.data.platformLinks}
-        trialLinks={heroWork.data.trialLinks}
-        sellingPoints={heroWork.data.sellingPoints}
-      />
-    )}
+    {heroWork && comingWork
+      ? <DualHero releasedWork={heroWork} comingWork={comingWork} />
+      : heroWork && (
+          <HeroBanner
+            slug={heroWork.slug}
+            title={heroWork.data.title}
+            catch={heroWork.data.catch}
+            cover={heroWork.data.images.cover}
+            isR18={heroWork.data.isR18}
+            platformLinks={heroWork.data.platformLinks}
+            trialLinks={heroWork.data.trialLinks}
+            sellingPoints={heroWork.data.sellingPoints}
+          />
+        )
+    }
 
     <section class="section container">
       <div class="section-header" data-anim>
