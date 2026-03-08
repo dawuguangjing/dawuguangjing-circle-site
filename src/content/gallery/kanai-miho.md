@@ -9,6 +9,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-karaoke.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-nikuman.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-cafe.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/miho-station.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-dress.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-summer.jpg"  
   - "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-2.jpg"
