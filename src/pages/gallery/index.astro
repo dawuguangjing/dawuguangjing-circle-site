@@ -40,7 +40,6 @@ const galleries = await getSortedGallery();
                 title={entry.data.title}
                 cover={entry.data.cover}
                 isR18={entry.data.isR18}
-                releaseDate={entry.data.releaseDate}
                 imageCount={entry.resolvedImageCount}
                 previewImages={entry.data.images}
                 loading={i === 0 ? 'eager' : 'lazy'}

@@ -69,7 +69,6 @@ const relatedCharacters = allCharacters
       <div class="section-header" data-anim>
         <h1 class="section-title detail-title">{data.title}</h1>
         <div class="gallery-header-meta">
-          <span class="muted" style="font-size:0.8rem;white-space:nowrap;">{formatDate(data.releaseDate)}</span>
           {hasMedia && (
             <span class="gallery-count-badge">
               {imageCount > 0 && `${imageCount}枚`}{imageCount > 0 && videoCount > 0 && ' · '}{videoCount > 0 && `動画${videoCount}本`}

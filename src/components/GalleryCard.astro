@@ -1,13 +1,11 @@
 ---
 import { withBase } from '../utils/withBase';
-import { formatDate } from '../utils/format';
 
 interface Props {
   slug: string;
   title: string;
   cover: string;
   isR18: boolean;
-  releaseDate: Date;
   imageCount?: number;
   previewImage?: string;
   previewImages?: string[];
@@ -16,7 +14,7 @@ interface Props {
   fetchpriority?: 'high' | 'low' | 'auto';
 }
 
-const { slug, title, cover, isR18, releaseDate, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;
+const { slug, title, cover, isR18, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;
 const thumbs = previewImages?.slice(0, 3) ?? [];
 ---
 
@@ -62,7 +60,6 @@ const thumbs = previewImages?.slice(0, 3) ?? [];
   <div class="gallery-card-footer">
     <h3 class="gallery-card-title">{title}</h3>
     <div class="gallery-card-meta">
-      <span class="gallery-card-date">{formatDate(releaseDate)}</span>
       <div class="gallery-card-badges">
         {isR18 && <span class="badge badge--r18">R18</span>}
         {imageCount != null && <span class="gallery-card-count">{imageCount}枚</span>}
