@@ -224,7 +224,8 @@ const { itemSelector } = Astro.props;
           const dist = Math.abs(thumbCenter - containerCenter);
           if (dist < closestDist) { closestDist = dist; closestIndex = i; }
         });
-        if (closestIndex !== current) showMedia(closestIndex, 'instant', true);
+        // スクロール停止後にスムーズスナップ＋画像更新（skipScroll=false でスナップも実行）
+        if (closestIndex !== current) showMedia(closestIndex, 'smooth', false);
       }
 
       // scrollend: スナップ完了後に一度だけ発火（モダンブラウザ）
