@@ -60,8 +60,20 @@ const { itemSelector } = Astro.props;
     }));
     let current = 0;
     let triggerEl: HTMLElement | null = null;
+    // プログラム側スクロール中はサムネイル scroll イベントを無視するフラグ
+    let _isProgramScroll = false;
+    let _programScrollTimer: ReturnType<typeof setTimeout> | null = null;
 
-    function showMedia(index: number) {
+    function scrollActiveThumb(behavior: ScrollBehavior = 'smooth') {
+      _isProgramScroll = true;
+      if (_programScrollTimer) clearTimeout(_programScrollTimer);
+      lbThumbs.querySelector<HTMLElement>('.lightbox-thumb.is-active')
+        ?.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+      // smooth アニメーション終了後にフラグをリセット
+      _programScrollTimer = setTimeout(() => { _isProgramScroll = false; }, behavior === 'instant' ? 0 : 450);
+    }
+
+    function showMedia(index: number, scrollBehavior: ScrollBehavior = 'smooth', skipScroll = false) {
       current = (index + items.length) % items.length;
       const { src, type, alt } = items[current];
 
@@ -95,16 +107,17 @@ const { itemSelector } = Astro.props;
       lbThumbs.querySelectorAll('.lightbox-thumb').forEach((t, i) => {
         t.classList.toggle('is-active', i === current);
       });
-      // アクティブサムネイルを中央にスクロール
-      lbThumbs.querySelector('.lightbox-thumb.is-active')
-        ?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      // アクティブサムネイルを中央にスクロール（skipScroll=true のときは呼ばない）
+      if (!skipScroll) scrollActiveThumb(scrollBehavior);
     }
 
     function openLightbox(index: number) {
       triggerEl = document.activeElement as HTMLElement;
-      showMedia(index);
+      showMedia(index, 'instant');
       lightbox.classList.add('is-active');
       lightbox.setAttribute('aria-hidden', 'false');
+      // visibility:hidden 状態では scrollIntoView が効かないブラウザへの対策
+      requestAnimationFrame(() => scrollActiveThumb('instant'));
       if (uiWindow.lockBodyScroll) uiWindow.lockBodyScroll('lightbox');
       else document.body.style.overflow = 'hidden';
       lbClose.focus();
@@ -196,6 +209,31 @@ const { itemSelector } = Astro.props;
         btn.addEventListener('click', (e) => { e.stopPropagation(); showMedia(i); });
         lbThumbs.appendChild(btn);
       });
+
+      // ── サムネイル横スクロールでメイン画像を自動切り替え ──
+      // スクロール停止時に中央のサムネイルを検出し、対応するメイン画像を表示する
+      let _thumbScrollTimer: ReturnType<typeof setTimeout> | null = null;
+
+      function syncFromThumbScroll() {
+        if (_isProgramScroll) return; // プログラム側スクロールは無視
+        const containerCenter = lbThumbs.scrollLeft + lbThumbs.clientWidth / 2;
+        let closestIndex = current;
+        let closestDist = Infinity;
+        lbThumbs.querySelectorAll<HTMLElement>('.lightbox-thumb').forEach((thumb, i) => {
+          const thumbCenter = thumb.offsetLeft + thumb.offsetWidth / 2;
+          const dist = Math.abs(thumbCenter - containerCenter);
+          if (dist < closestDist) { closestDist = dist; closestIndex = i; }
+        });
+        if (closestIndex !== current) showMedia(closestIndex, 'instant', true);
+      }
+
+      // scrollend: スナップ完了後に一度だけ発火（モダンブラウザ）
+      lbThumbs.addEventListener('scrollend', syncFromThumbScroll, { passive: true });
+      // scroll デバウンス: scrollend 未対応ブラウザ（古い Safari 等）向けフォールバック
+      lbThumbs.addEventListener('scroll', () => {
+        if (_thumbScrollTimer) clearTimeout(_thumbScrollTimer);
+        _thumbScrollTimer = setTimeout(syncFromThumbScroll, 150);
+      }, { passive: true });
     }
 
     // ── ピンチズーム対応（モバイル） ──
