@@ -326,8 +326,8 @@ const works = await getSortedWorks();
         allChip.classList.add('is-active');
         allChip.setAttribute('aria-pressed', 'true');
       }
-      applyFilters();
     }
+    applyFilters();
     sortBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         sortBtns.forEach(b => b.classList.remove('is-active'));

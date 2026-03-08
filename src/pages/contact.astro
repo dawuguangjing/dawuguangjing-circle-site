@@ -15,6 +15,7 @@ import { EXTERNAL_LINKS } from '../utils/constants';
     </p>
 
     <div class="form-wrapper" data-anim style="--anim-delay: 0.14s">
+      <div class="form-loading" id="form-loading" aria-hidden="true">読み込んでいます…</div>
       <iframe
         src="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform?embedded=true"
         width="100%"
@@ -23,9 +24,16 @@ import { EXTERNAL_LINKS } from '../utils/constants';
         marginheight="0"
         marginwidth="0"
         title="お問い合わせフォーム"
-        loading="lazy"
-      >読み込んでいます…</iframe>
+        loading="eager"
+        id="contact-iframe"
+      ></iframe>
     </div>
+    <script>
+      document.getElementById('contact-iframe')?.addEventListener('load', () => {
+        const loader = document.getElementById('form-loading');
+        if (loader) loader.hidden = true;
+      }, { once: true });
+    </script>
 
     <div class="card card--static" data-anim style="--anim-delay: 0.21s" data-nosnippet>
       <p>補助窓口として、Ci-en からもご連絡いただけます。</p>
@@ -45,6 +53,13 @@ import { EXTERNAL_LINKS } from '../utils/constants';
     border: 1px solid var(--color-border, rgba(255,255,255,0.08));
     margin-bottom: 2rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  .form-loading {
+    padding: 2rem;
+    text-align: center;
+    color: var(--color-text-muted, rgba(255,255,255,0.5));
+    font-size: 0.9rem;
   }
 
   .form-wrapper iframe {
