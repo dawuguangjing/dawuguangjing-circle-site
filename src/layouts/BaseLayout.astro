@@ -7,7 +7,7 @@ import SiteFooter from '../components/SiteFooter.astro';
 import BackToTop from '../components/BackToTop.astro';
 import AgeGateOverlay from '../components/AgeGateOverlay.astro';
 import AnnouncementBar from '../components/AnnouncementBar.astro';
-import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT, THEME_STORAGE_KEY } from '../utils/constants';
+import { AGE_GATE_STORAGE_KEY, AGE_GATE_TTL_MS, ANNOUNCEMENT, GA4_ID, THEME_STORAGE_KEY } from '../utils/constants';
 
 interface Props {
   title: string;
@@ -38,6 +38,7 @@ const base = import.meta.env.BASE_URL;
 const ageKey = AGE_GATE_STORAGE_KEY;
 const ageTtl = AGE_GATE_TTL_MS;
 const themeKey = THEME_STORAGE_KEY;
+const ga4Id = GA4_ID;
 ---
 
 <!doctype html>
@@ -91,12 +92,12 @@ const themeKey = THEME_STORAGE_KEY;
     )}
     <ViewTransitions />
     <!-- Google tag (gtag.js) -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-JGLGSCB94V"></script>
-    <script is:inline>
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`}></script>
+    <script is:inline define:vars={{ ga4Id }}>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-JGLGSCB94V');
+      gtag('config', ga4Id);
     </script>
     <Seo title={title} description={description} image={image} type={type} noIndex={noIndex} jsonLd={jsonLd} publishedTime={publishedTime} />
     <link rel="manifest" href={`${base}manifest.webmanifest`} />
@@ -152,83 +153,31 @@ const themeKey = THEME_STORAGE_KEY;
       import { startRouteProgress, bumpRouteProgress, finishRouteProgress } from '../scripts/route-progress.ts';
       import '../scripts/animations.ts';
       import '../scripts/context-nav.ts';
-
-      // ── SCROLL LOCK ─────────────────────────────────────────────────────────
-      // window API: lockBodyScroll / unlockBodyScroll / resetBodyScrollLocks
-      // オーバーレイ系コンポーネントが呼び出す共通ロック機構
-
-      type UiWindow = Window & {
-        lockBodyScroll?: (key: string) => void;
-        unlockBodyScroll?: (key: string) => void;
-        resetBodyScrollLocks?: () => void;
-      };
-
-      const uiWindow = window as UiWindow;
-
-      function ensureScrollLockController() {
-        if (uiWindow.lockBodyScroll && uiWindow.unlockBodyScroll && uiWindow.resetBodyScrollLocks) return;
-        const locks = new Set<string>();
-        const syncBodyScroll = () => {
-          document.body.style.overflow = locks.size > 0 ? 'hidden' : '';
-        };
-        uiWindow.lockBodyScroll = (key: string) => {
-          locks.add(key);
-          syncBodyScroll();
-        };
-        uiWindow.unlockBodyScroll = (key: string) => {
-          locks.delete(key);
-          syncBodyScroll();
-        };
-        uiWindow.resetBodyScrollLocks = () => {
-          locks.clear();
-          syncBodyScroll();
-        };
-      }
+      import { ensureScrollLockController, resetBodyScrollLocks } from '../scripts/scroll-lock.ts';
+      import { closeTransientUi, initGlobalOverlayClose } from '../scripts/overlay-close.ts';
+      import { initImgSkeleton } from '../scripts/img-skeleton.ts';
+      import { initShareCopy } from '../scripts/share-copy.ts';
+      import { initGa4EventTracking, sendGa4VirtualPv } from '../scripts/ga4-events.ts';
 
       ensureScrollLockController();
 
-      // ── OVERLAY CLOSE ────────────────────────────────────────────────────────
-      // ESC キー → ui:close-overlays カスタムイベントをディスパッチ
-
-      function closeTransientUi() {
-        document.dispatchEvent(new CustomEvent('ui:close-overlays'));
-      }
-
-      function initGlobalOverlayClose() {
-        if ((document as any)._globalOverlayCloseInited) return;
-        (document as any)._globalOverlayCloseInited = true;
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') closeTransientUi();
-        });
-      }
       document.addEventListener('astro:page-load', initGlobalOverlayClose);
 
       // ── VIEW TRANSITIONS LIFECYCLE ──────────────────────────────────────────
-      // ナビ開始: オーバーレイ閉じる + スクロールロック解除 + プログレス開始
-      // スワップ後: is-client-nav フラグ + GA4 仮想PV送信
-      // ページ完了: is-client-nav 解除 + プログレス完了
-
       let _initedBySwap = false;
       document.addEventListener('astro:before-preparation', () => {
         closeTransientUi();
-        uiWindow.resetBodyScrollLocks?.();
+        resetBodyScrollLocks();
         startRouteProgress();
       });
       document.addEventListener('astro:after-swap', () => {
         _initedBySwap = true;
         document.documentElement.classList.add('is-client-nav');
         closeTransientUi();
-        uiWindow.resetBodyScrollLocks?.();
+        resetBodyScrollLocks();
         bumpRouteProgress(0.92);
         initImgSkeleton();
-        // GA4 仮想ページビュー（View Transitions ナビゲーション時）
-        const gtagFn = (window as any).gtag;
-        if (typeof gtagFn === 'function') {
-          gtagFn('config', 'G-JGLGSCB94V', {
-            page_location: window.location.href,
-            page_title: document.title,
-          });
-        }
+        sendGa4VirtualPv();
       });
       document.addEventListener('astro:page-load', () => {
         if (!_initedBySwap) {
@@ -243,81 +192,8 @@ const themeKey = THEME_STORAGE_KEY;
         finishRouteProgress();
       });
 
-      // ── IMAGE SKELETON ───────────────────────────────────────────────────────
-      // .img-skeleton → 画像ロード完了時に is-loaded クラスを付与してフェードイン
-
-      function initImgSkeleton() {
-        document.querySelectorAll<HTMLElement>('.img-skeleton').forEach((wrap) => {
-          const img = wrap.querySelector<HTMLImageElement>('img:not([aria-hidden])');
-          if (!img) return;
-          const resolve = () => wrap.classList.add('is-loaded');
-          if (img.complete) {
-            resolve();
-          } else {
-            img.addEventListener('load',  resolve, { once: true });
-            img.addEventListener('error', resolve, { once: true });
-          }
-        });
-      }
-
-      // ── TOAST & SHARE COPY ───────────────────────────────────────────────────
-      // URLコピーボタン → clipboard API + トースト通知
-
-      function showToast(message: string) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        const text = document.createElement('span');
-        text.textContent = message;
-        toast.appendChild(text);
-        const close = document.createElement('button');
-        close.className = 'toast-close';
-        close.setAttribute('aria-label', '閉じる');
-        close.textContent = '\u00d7';
-        toast.appendChild(close);
-        document.body.appendChild(toast);
-        let timer: ReturnType<typeof setTimeout>;
-        const dismiss = () => {
-          toast.classList.remove('is-visible');
-          setTimeout(() => toast.remove(), 300);
-        };
-        close.addEventListener('click', () => { clearTimeout(timer); dismiss(); });
-        requestAnimationFrame(() => toast.classList.add('is-visible'));
-        timer = setTimeout(dismiss, 3500);
-      }
-
-      function initShareCopy() {
-        document.querySelectorAll<HTMLElement>('[data-copy-url]').forEach((btn) => {
-          if ((btn as any)._copyInited) return;
-          (btn as any)._copyInited = true;
-          btn.addEventListener('click', async () => {
-            const url = btn.dataset.copyUrl!;
-            try {
-              await navigator.clipboard.writeText(url);
-              btn.classList.add('share-btn--copied');
-              showToast('URLをコピーしました');
-              setTimeout(() => btn.classList.remove('share-btn--copied'), 2000);
-            } catch {
-              showToast('コピーに失敗しました');
-            }
-          });
-        });
-      }
       document.addEventListener('astro:page-load', initShareCopy);
-
-      // ── GA4 TRACKING ─────────────────────────────────────────────────────────
-      // [data-ga-event] ボタンのクリックをイベント委譲で追跡
-
-      document.addEventListener('click', (e) => {
-        const btn = (e.target as Element).closest<HTMLElement>('[data-ga-event]');
-        if (!btn) return;
-        const gtagFn = (window as any).gtag;
-        if (typeof gtagFn !== 'function') return;
-        gtagFn('event', btn.dataset.gaEvent, {
-          store: btn.dataset.store ?? '',
-          click_location: btn.dataset.gaLocation ?? '',
-          link_url: (btn as HTMLAnchorElement).href ?? '',
-        });
-      }, { capture: true });
+      initGa4EventTracking();
     </script>
   </body>
 </html>

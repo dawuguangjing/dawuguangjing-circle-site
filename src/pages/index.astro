@@ -262,4 +262,26 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
     opacity: 1;
   }
 }
+
+@media (max-width: 480px) {
+  .home-char-grid {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  .home-char-body {
+    padding: 8px 10px;
+  }
+}
+
+@media (hover: none) {
+  .home-char-accent {
+    opacity: 1;
+  }
+
+  .home-char-card:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
+}
 </style>

@@ -338,7 +338,10 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 
     const sort = getActiveSort();
     updateStateSummary(resolvedWork, sort);
-    if (updateUrl) syncStateToUrl(resolvedWork, sort);
+    if (updateUrl) {
+      syncStateToUrl(resolvedWork, sort);
+      charGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   function applyCharSort(sort: string, updateUrl = true) {
@@ -360,7 +363,10 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 
     const work = getActiveWork();
     updateStateSummary(work, resolvedSort);
-    if (updateUrl) syncStateToUrl(work, resolvedSort);
+    if (updateUrl) {
+      syncStateToUrl(work, resolvedSort);
+      charGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   charChips.forEach((chip) => {

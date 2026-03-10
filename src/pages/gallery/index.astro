@@ -127,6 +127,7 @@ const galleries = await getSortedGallery();
         url.searchParams.set('sort', resolvedSort);
       }
       history.replaceState(null, '', url.toString());
+      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -141,6 +142,6 @@ const galleries = await getSortedGallery();
 
   // 初期化: URL パラメーターから状態を復元
   const urlSort = new URL(window.location.href).searchParams.get('sort');
-  if (urlSort) applySort(urlSort);
+  if (urlSort) applySort(urlSort, false);
   else updateSortSummary('newest');
 </script>

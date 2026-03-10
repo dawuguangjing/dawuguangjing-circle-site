@@ -170,7 +170,7 @@ const works = await getSortedWorks();
 
     const emptyEl = document.getElementById('works-empty');
 
-    function applyFilters() {
+    function applyFilters(scroll = false) {
       const active = getActiveFilters();
       let visibleCount = 0;
       items.forEach((el) => {
@@ -214,6 +214,10 @@ const works = await getSortedWorks();
           sheetTrigger?.classList.remove('has-active');
         }
       }
+
+      if (scroll) {
+        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     chips.forEach((chip, i) => {
@@ -237,7 +241,7 @@ const works = await getSortedWorks();
             allChip.setAttribute('aria-pressed', 'true');
           }
         }
-        applyFilters();
+        applyFilters(true);
       });
 
       // 矢印キーでチップ間を移動
@@ -291,6 +295,7 @@ const works = await getSortedWorks();
       }
     }
     applyFilters();
+    let isRestoring = false;
     sortBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
         sortBtns.forEach(b => b.classList.remove('is-active'));
@@ -311,14 +316,19 @@ const works = await getSortedWorks();
         });
         syncStateToUrl();
         updateStateSummary();
+        if (!isRestoring) {
+          grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       });
     });
 
     const urlSort = url.searchParams.get('sort');
     if (urlSort) {
+      isRestoring = true;
       const targetSortBtn = sortBtns.find((b) => b.dataset.sort === urlSort);
       if (targetSortBtn) targetSortBtn.click();
       else syncStateToUrl();
+      isRestoring = false;
     }
     updateStateSummary();
   </script>

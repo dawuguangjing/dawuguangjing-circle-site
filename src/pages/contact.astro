@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { EXTERNAL_LINKS } from '../utils/constants';
+import { withBase } from '../utils/withBase';
+import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 ---
 
 <BaseLayout
@@ -10,12 +11,21 @@ import { EXTERNAL_LINKS } from '../utils/constants';
   <div class="page-content contact-page">
   <section class="section container">
     <h1 class="section-title" data-anim>お問い合わせ</h1>
-    <p class="section-lead" data-anim style="--anim-delay: 0.07s">
+    <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>
       ご質問・ご意見・不具合報告は、下記フォームよりご連絡ください。
     </p>
 
-    <div class="form-wrapper" data-anim style="--anim-delay: 0.14s">
-      <div class="form-loading" id="form-loading">読み込んでいます…</div>
+    <div class="form-wrapper" data-anim style={`--anim-delay: ${animDelay(0, 0.06)}`}>
+      <div class="form-loading" id="form-loading">
+        <div class="form-loading-content" id="form-loading-spinner">
+          <img class="form-loading-tuna" src={withBase('images/tuna.png')} alt="" width="40" height="40" />
+          <span class="form-loading-text">読み込んでいます…</span>
+        </div>
+        <div class="form-loading-content form-loading-error" id="form-loading-error" hidden>
+          <p class="form-loading-error-text">フォームの読み込みに失敗しました。</p>
+          <button class="button button--sm" id="form-retry" type="button">再読み込み</button>
+        </div>
+      </div>
       <iframe
         data-src="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform?embedded=true"
         width="100%"
@@ -28,28 +38,60 @@ import { EXTERNAL_LINKS } from '../utils/constants';
       ></iframe>
     </div>
     <script>
-      const iframe = document.getElementById('contact-iframe') as HTMLIFrameElement | null;
-      const loader = document.getElementById('form-loading');
-      function hideLoader() {
-        if (loader && !loader.classList.contains('is-hidden')) {
-          loader.classList.add('is-hidden');
+      import { FORM_LOAD_TIMEOUT_MS, FORM_OBSERVE_MARGIN } from '../utils/constants';
+
+      function initContactForm() {
+        const iframe = document.getElementById('contact-iframe') as HTMLIFrameElement | null;
+        const loader = document.getElementById('form-loading');
+        const spinner = document.getElementById('form-loading-spinner');
+        const errorEl = document.getElementById('form-loading-error');
+        const retryBtn = document.getElementById('form-retry');
+        if (!iframe || !loader || !spinner || !errorEl || !iframe.dataset.src) return;
+
+        let loaded = false;
+
+        function hideLoader() {
+          loader!.classList.add('is-hidden');
         }
-      }
-      if (iframe && iframe.dataset.src) {
+
+        function showError() {
+          spinner!.hidden = true;
+          errorEl!.hidden = false;
+        }
+
+        function loadIframe() {
+          loaded = false;
+          spinner!.hidden = false;
+          errorEl!.hidden = true;
+          loader!.classList.remove('is-hidden');
+
+          iframe!.addEventListener('load', () => {
+            loaded = true;
+            hideLoader();
+          }, { once: true });
+
+          iframe!.src = iframe!.dataset.src!;
+
+          setTimeout(() => {
+            if (!loaded) showError();
+          }, FORM_LOAD_TIMEOUT_MS);
+        }
+
+        retryBtn?.addEventListener('click', loadIframe);
+
         const observer = new IntersectionObserver((entries) => {
           if (entries[0].isIntersecting) {
             observer.disconnect();
-            iframe.addEventListener('load', hideLoader, { once: true });
-            iframe.src = iframe.dataset.src!;
-            // フォールバック: load が発火しない場合に備え 8 秒後に強制非表示
-            setTimeout(hideLoader, 8000);
+            loadIframe();
           }
-        }, { rootMargin: '200px' });
+        }, { rootMargin: FORM_OBSERVE_MARGIN });
         observer.observe(iframe);
       }
+
+      document.addEventListener('astro:page-load', initContactForm);
     </script>
 
-    <div class="card card--static" data-anim style="--anim-delay: 0.21s" data-nosnippet>
+    <div class="card card--static" data-anim style={`--anim-delay: ${animDelay(1, 0.06)}`} data-nosnippet>
       <p>補助窓口として、Ci-en からもご連絡いただけます。</p>
       <a class="button button--cien" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
         Ci-en を開く &#8599;
@@ -76,13 +118,32 @@ import { EXTERNAL_LINKS } from '../utils/constants';
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--ink-dim);
-    font-size: 0.9rem;
-    background: linear-gradient(90deg, var(--stroke) 25%, var(--bg) 50%, var(--stroke) 75%);
-    background-size: 800px 100%;
-    animation: skeleton-shimmer 1.5s ease-in-out infinite;
-    transition: opacity 0.3s ease;
+    background: var(--bg);
+    transition: opacity 0.4s ease;
     z-index: 1;
+  }
+
+  .form-loading-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .form-loading-tuna {
+    animation: tuna-loading 1.8s ease-in-out infinite;
+    opacity: 0.5;
+  }
+
+  .form-loading-text {
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+
+  @keyframes tuna-loading {
+    0%, 100% { transform: translateX(-12px) scaleX(-1); }
+    50% { transform: translateX(12px) scaleX(-1); }
   }
 
   .form-loading.is-hidden {
@@ -90,9 +151,28 @@ import { EXTERNAL_LINKS } from '../utils/constants';
     pointer-events: none;
   }
 
+  .form-loading-error-text {
+    color: var(--ink-dim);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
   .form-wrapper iframe {
     display: block;
     min-height: 800px;
     border: none;
+  }
+
+  @media (max-width: 640px) {
+    .form-wrapper iframe {
+      min-height: 600px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .form-wrapper iframe {
+      min-height: 500px;
+    }
   }
 </style>

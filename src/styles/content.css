@@ -1796,6 +1796,20 @@ html.age-verified .age-overlay {
   margin: 0 0 28px;
 }
 
+.not-found-path {
+  font-family: "SF Mono", "Fira Code", "Fira Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  margin: 0 auto 20px;
+  display: inline-block;
+  word-break: break-all;
+  max-width: 100%;
+}
+
 .not-found-links {
   display: flex;
   flex-wrap: wrap;

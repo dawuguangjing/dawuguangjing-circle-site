@@ -34,7 +34,13 @@
       "Bash(gh run list:*)",
       "Bash(gh run watch:*)",
       "mcp__ide__getDiagnostics",
-      "Bash(npx astro build:*)"
+      "Bash(npx astro build:*)",
+      "Bash(git -C /Users/yurupro/Desktop/projects/dawuguangjing-circle-site status)",
+      "Bash(find:*)",
+      "Bash(git -C /Users/yurupro/Desktop/projects/dawuguangjing-circle-site show:*)",
+      "Bash(ORIG=\"git -C /Users/yurupro/Desktop/projects/dawuguangjing-circle-site show HEAD:src/styles/global.css\")",
+      "Bash(STYLES=\"/Users/yurupro/Desktop/projects/dawuguangjing-circle-site/src/styles\")",
+      "Bash(__NEW_LINE_a5bfada9659a55f9__ $ORIG)"
     ]
   }
 }

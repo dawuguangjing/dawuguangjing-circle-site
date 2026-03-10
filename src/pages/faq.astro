@@ -1,72 +1,73 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { withBase } from '../utils/withBase';
+import { animDelay, ANIM_STAGGER } from '../utils/constants';
 ---
 
 <BaseLayout title="FAQ" description="よくある質問。">
   <div class="page-content faq-page">
   <section class="section container">
     <h1 class="section-title" data-anim>FAQ</h1>
-    <p class="section-lead" data-anim style="--anim-delay: 0.07s">よくある質問にお答えします。</p>
+    <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>よくある質問にお答えします。</p>
     <div class="grid">
-      <details class="faq-item" data-anim style="--anim-delay: 0.12s">
-        <summary><h3>サークル名の読み方は？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(0, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-0"><h3>サークル名の読み方は？</h3></summary>
+        <div class="faq-answer" id="faq-answer-0"><div class="faq-answer-inner">
           <p>「ダウグアングジング」は <strong>だうぐあんぐじんぐ</strong> と読みます。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.19s">
-        <summary><h3>どこで購入できますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(1, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-1"><h3>どこで購入できますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-1"><div class="faq-answer-inner">
           <p>各作品ページに公式ストアの購入リンクを掲載しています。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.26s">
-        <summary><h3>返金対応はありますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(2, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-2"><h3>返金対応はありますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-2"><div class="faq-answer-inner">
           <p>返金や決済トラブルは各ストアが対応します。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.33s">
-        <summary><h3>最新版の確認方法は？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(3, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-3"><h3>最新版の確認方法は？</h3></summary>
+        <div class="faq-answer" id="faq-answer-3"><div class="faq-answer-inner">
           <p>ストアにてゲームの更新履歴とお知らせをご確認ください。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.40s">
-        <summary><h3>年齢制限はありますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(4, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-4"><h3>年齢制限はありますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-4"><div class="faq-answer-inner">
           <p>R18作品は年齢確認が必要です。作品ページ前に年齢確認ページへ誘導します。</p>
           <a class="button secondary" href={withBase('age/')}>年齢確認</a>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.47s">
-        <summary><h3>動作環境を教えてください。</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(5, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-5"><h3>動作環境を教えてください。</h3></summary>
+        <div class="faq-answer" id="faq-answer-5"><div class="faq-answer-inner">
           <p>Windows 10 / 11 (64bit) を推奨環境としています。各作品ページの動作環境欄もあわせてご確認ください。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.54s">
-        <summary><h3>体験版から製品版へのデータ引き継ぎはできますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(6, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-6"><h3>体験版から製品版へのデータ引き継ぎはできますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-6"><div class="faq-answer-inner">
           <p>基本的には引き継ぎ不可能ですが、データ引き継ぎほぼ不要でもお楽しみいただけるように設計しておりますので、お客様への影響は最小限になっております。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.61s">
-        <summary><h3>バージョンアップ後もセーブデータは使えますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(7, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-7"><h3>バージョンアップ後もセーブデータは使えますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-7"><div class="faq-answer-inner">
           <p>基本的にセーブ互換を維持しています。大幅な仕様変更を伴うアップデートの場合は、更新履歴にてお知らせします。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.68s">
-        <summary><h3>AI は制作にどの程度使われていますか？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(8, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-8"><h3>AI は制作にどの程度使われていますか？</h3></summary>
+        <div class="faq-answer" id="faq-answer-8"><div class="faq-answer-inner">
           <p>開発補助（調査・翻訳・コード支援など）、立ち絵/CGにAIを活用しています。</p>
         </div></div>
       </details>
-      <details class="faq-item" data-anim style="--anim-delay: 0.75s">
-        <summary><h3>今後のアップデートや新作の予定は？</h3></summary>
-        <div class="faq-answer"><div class="faq-answer-inner">
+      <details class="faq-item" data-anim style={`--anim-delay: ${animDelay(9, 0.04)}`}>
+        <summary aria-expanded="false" aria-controls="faq-answer-9"><h3>今後のアップデートや新作の予定は？</h3></summary>
+        <div class="faq-answer" id="faq-answer-9"><div class="faq-answer-inner">
           <p>リリース後のバグ修正・品質改善は随時行います。大型アップデートや次回作の情報は本サイトか、主にCi-enにてお知らせします。</p>
         </div></div>
       </details>
@@ -75,6 +76,8 @@ import { withBase } from '../utils/withBase';
   </div>
 
   <script>
+    import { FAQ_CLEANUP_MS } from '../utils/constants';
+
     function initFaqAccordion() {
       document.querySelectorAll('.faq-item summary').forEach(summary => {
         summary.addEventListener('click', (e) => {
@@ -84,27 +87,27 @@ import { withBase } from '../utils/withBase';
           if (!answer) return;
 
           if (details.open) {
-            // 閉じる: テキスト消去 → スライドアップ → open除去
+            // 閉じる: テキスト消去＋スライドを同時実行
             details.classList.add('is-closing');
+            summary.setAttribute('aria-expanded', 'false');
             answer.style.gridTemplateRows = '0fr';
-            const onEnd = (ev: TransitionEvent) => {
-              if (ev.propertyName !== 'grid-template-rows') return;
-              answer.removeEventListener('transitionend', onEnd);
+
+            const cleanup = () => {
               details.open = false;
               details.classList.remove('is-closing');
               answer.style.gridTemplateRows = '';
             };
+            const onEnd = (ev: TransitionEvent) => {
+              if (ev.propertyName !== 'grid-template-rows') return;
+              answer.removeEventListener('transitionend', onEnd);
+              cleanup();
+            };
             answer.addEventListener('transitionend', onEnd);
-            setTimeout(() => {
-              if (details.classList.contains('is-closing')) {
-                details.open = false;
-                details.classList.remove('is-closing');
-                answer.style.gridTemplateRows = '';
-              }
-            }, 450);
+            setTimeout(cleanup, FAQ_CLEANUP_MS);
           } else {
             // 開く: open付与 → 0frから開始 → 1frへスライド
             details.open = true;
+            summary.setAttribute('aria-expanded', 'true');
             answer.style.gridTemplateRows = '0fr';
             requestAnimationFrame(() => {
               requestAnimationFrame(() => {

@@ -67,16 +67,15 @@ html[data-theme="dark"] .about-page .external-link-desc {
   transform: translateY(0);
 }
 
-/* 閉じるとき: テキストを先に素早く消す */
+/* 閉じるとき: テキスト消去＋スライドを同時・素早く */
 .faq-item.is-closing .faq-answer {
-  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.18s ease-in;
 }
 
 .faq-item.is-closing .faq-answer-inner > * {
   opacity: 0;
-  transform: translateY(-6px);
-  transition-delay: 0s;
-  transition-duration: 0.12s;
+  transform: translateY(-4px);
+  transition: opacity 0.1s ease-in, transform 0.1s ease-in;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,6 +83,12 @@ html[data-theme="dark"] .about-page .external-link-desc {
   .faq-answer-inner > * {
     transition: none;
   }
+}
+
+.faq-item summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+  border-radius: var(--radius-lg);
 }
 
 .faq-item summary {
@@ -374,4 +379,11 @@ html.theme-transitioning *::after {
     color: var(--accent);
     font-weight: 700;
   }
+}
+
+/* ── Scroll offset for filter/sort auto-scroll ── */
+#works-grid,
+#gallery-grid,
+#char-list-grid {
+  scroll-margin-top: 72px;
 }
