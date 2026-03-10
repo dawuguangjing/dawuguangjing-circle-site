@@ -1,0 +1,47 @@
+---
+/**
+ * FilterSheet — モバイルフィルターシートの共通シェル。
+ *
+ * トリガーボタン、オーバーレイ、シートヘッダー、ステートサマリーを共通化。
+ * フィルターチップやソートボタンはデフォルト <slot /> で各ページから注入する。
+ * フィルターバーとステートサマリーの間に追加 UI（ソートバーなど）を挿入したい場合は
+ * <slot name="sort" /> を使用する。
+ */
+interface Props {
+  filterBarId: string;
+  triggerText: string;
+  ariaLabel: string;
+  stateId: string;
+  clearText?: string;
+}
+
+const {
+  filterBarId,
+  triggerText,
+  ariaLabel,
+  stateId,
+  clearText = '条件を解除',
+} = Astro.props;
+---
+
+<button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls={filterBarId}>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+  {triggerText}
+  <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
+</button>
+<div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
+
+<div class="filter-bar" id={filterBarId} role="group" aria-label={ariaLabel}>
+  <div class="filter-sheet-header">
+    <span class="filter-sheet-header-title">{triggerText}</span>
+    <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
+  </div>
+  <slot />
+</div>
+
+<slot name="sort" />
+
+<div class="list-state-summary" id={`${stateId}-state-summary`} aria-live="polite">
+  <p class="list-state-summary-text" id={`${stateId}-state-text`}>現在条件: すべて</p>
+  <button class="list-state-summary-clear" id={`${stateId}-state-clear`} type="button" hidden>{clearText}</button>
+</div>

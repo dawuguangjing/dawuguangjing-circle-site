@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import RelatedWorks from '../../components/RelatedWorks.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
+import FilterSheet from '../../components/FilterSheet.astro';
 import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
 import { animDelay } from '../../utils/constants';
 import { categoryLabels } from '../../utils/labels';
@@ -29,28 +30,17 @@ function extractExcerpt(body: string, maxLen = 100): string {
     <section class="section container">
       <SectionHeader title="開発ログ" as="h1" />
 
-      <!-- モバイル: フィルターシート開閉トリガー -->
-      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="news-filter">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-        絞り込み
-        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
-      </button>
-      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
-
-      <div class="filter-bar" id="news-filter" role="group" aria-label="記事フィルター">
-        <div class="filter-sheet-header">
-          <span class="filter-sheet-header-title">絞り込み</span>
-          <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
-        </div>
+      <FilterSheet
+        filterBarId="news-filter"
+        triggerText="絞り込み"
+        ariaLabel="記事フィルター"
+        stateId="news"
+      >
         <button class="filter-chip is-active" data-category="all">すべて</button>
         {categories.map(([key, label]) => (
           <button class="filter-chip" data-category={key}>{label}</button>
         ))}
-      </div>
-      <div class="list-state-summary" id="news-state-summary" aria-live="polite">
-        <p class="list-state-summary-text" id="news-state-text">現在条件: すべて</p>
-        <button class="list-state-summary-clear" id="news-state-clear" type="button" hidden>条件を解除</button>
-      </div>
+      </FilterSheet>
 
       <div class="news-grid" id="news-grid">
         {news.map((entry, i) => (

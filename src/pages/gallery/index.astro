@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GalleryCard from '../../components/GalleryCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
+import FilterSheet from '../../components/FilterSheet.astro';
 import { getSortedGallery } from '../../utils/collections';
 import { SITE_NAME, animDelay } from '../../utils/constants';
 
@@ -17,27 +18,17 @@ const galleries = await getSortedGallery();
       <SectionHeader title="ギャラリー" as="h1">
         <span class="section-count muted">{galleries.length}件</span>
       </SectionHeader>
-      <!-- モバイル: フィルターシート開閉トリガー -->
-      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="gallery-filter-bar">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
-        並び替え
-        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
-      </button>
-      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
-
-      <div class="filter-bar" id="gallery-filter-bar" role="group" aria-label="並び替え">
-        <div class="filter-sheet-header">
-          <span class="filter-sheet-header-title">並び替え</span>
-          <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
-        </div>
+      <FilterSheet
+        filterBarId="gallery-filter-bar"
+        triggerText="並び替え"
+        ariaLabel="並び替え"
+        stateId="gallery"
+        clearText="並び順をリセット"
+      >
         <button class="filter-chip is-active" data-sort="newest">新着順</button>
         <button class="filter-chip" data-sort="oldest">古い順</button>
         <button class="filter-chip" data-sort="title">タイトル順</button>
-      </div>
-      <div class="list-state-summary" id="gallery-state-summary" aria-live="polite">
-        <p class="list-state-summary-text" id="gallery-state-text">現在条件: すべて</p>
-        <button class="list-state-summary-clear" id="gallery-state-clear" type="button" hidden>並び順をリセット</button>
-      </div>
+      </FilterSheet>
       {galleries.length > 0 ? (
         <div class="gallery-album-grid" id="gallery-grid">
           {galleries.map((entry, i) => (
