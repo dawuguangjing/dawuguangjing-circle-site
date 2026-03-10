@@ -40,6 +40,52 @@ html[data-theme="dark"] .about-page .external-link-desc {
   overflow: hidden;
 }
 
+/* ドロワースライド: grid-template-rows 0fr → 1fr (JS制御) */
+.faq-item .faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--easing);
+}
+
+.faq-item[open] .faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer-inner {
+  overflow: hidden;
+}
+
+/* テキスト: スライド開始後に遅延フェードイン */
+.faq-answer-inner > * {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+}
+
+.faq-item[open] .faq-answer-inner > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 閉じるとき: テキストを先に素早く消す */
+.faq-item.is-closing .faq-answer {
+  grid-template-rows: 0fr;
+}
+
+.faq-item.is-closing .faq-answer-inner > * {
+  opacity: 0;
+  transform: translateY(-6px);
+  transition-delay: 0s;
+  transition-duration: 0.12s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-item .faq-answer,
+  .faq-answer-inner > * {
+    transition: none;
+  }
+}
+
 .faq-item summary {
   display: flex;
   align-items: center;
@@ -84,20 +130,23 @@ html[data-theme="dark"] .about-page .external-link-desc {
   background: var(--accent-alpha-5);
 }
 
-.faq-item p,
-.faq-item .button {
-  padding: 0 20px;
-  margin: 0 0 16px;
+.faq-answer-inner {
+  padding: 0 20px 16px;
 }
 
-.faq-item p {
+.faq-answer p {
   font-size: 0.9rem;
   color: var(--ink-dim);
   line-height: 1.6;
+  margin: 0 0 12px;
 }
 
-.faq-item p:first-of-type {
-  margin-top: -4px;
+.faq-answer p:last-child {
+  margin-bottom: 0;
+}
+
+.faq-answer .button {
+  margin-top: 4px;
 }
 
 /* ── Dark mode: FAQページ ── */
