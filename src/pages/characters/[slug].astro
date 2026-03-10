@@ -5,22 +5,14 @@ import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import { getCollection, getEntry } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
-import { getGalleryIndex } from '../../utils/collections';
+import { getGalleryIndex, buildPrevNext } from '../../utils/collections';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 
 export async function getStaticPaths() {
-  const characters = await getCollection('characters');
-  return characters.map((char, i) => ({
-    params: { slug: char.slug },
-    props: {
-      char,
-      prevChar: characters[i - 1] ?? null,
-      nextChar: characters[i + 1] ?? null,
-    }
-  }));
+  return buildPrevNext(await getCollection('characters'));
 }
 
-const { char, prevChar, nextChar } = Astro.props;
+const { entry: char, prev: nextChar, next: prevChar } = Astro.props;
 const { Content } = await char.render();
 
 // 関連作品を取得

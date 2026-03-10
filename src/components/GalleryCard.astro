@@ -1,7 +1,8 @@
 ---
 import { withBase } from '../utils/withBase';
+import type { ImageLoadProps } from '../utils/types';
 
-interface Props {
+interface Props extends ImageLoadProps {
   slug: string;
   title: string;
   cover: string;
@@ -9,9 +10,6 @@ interface Props {
   imageCount?: number;
   previewImage?: string;
   previewImages?: string[];
-  /** 先頭カード（LCP候補）は 'eager' + 'high' を渡す */
-  loading?: 'lazy' | 'eager';
-  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 const { slug, title, cover, isR18, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;

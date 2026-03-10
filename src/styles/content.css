@@ -816,7 +816,7 @@
     padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px));
     box-shadow: var(--shadow-sheet);
     transform: translateY(100%);
-    transition: transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition: transform 0.32s var(--easing);
     margin-bottom: 0;
     /* ソフトキーボード表示時もシートが画面外に出ないよう高さ制限 */
     max-height: calc(80vh - env(safe-area-inset-bottom, 0px));
@@ -872,7 +872,7 @@
     min-height: 44px;
     background: var(--panel);
     border: 1px solid var(--stroke);
-    border-radius: 20px;
+    border-radius: var(--radius-pill);
     font-size: 0.8rem;
     font-weight: 500;
     color: var(--ink-dim);
@@ -1003,7 +1003,7 @@
 .filter-chip {
   padding: 6px 14px;
   border: 1px solid var(--stroke);
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   background: var(--panel);
   color: var(--ink-dim);
   font-size: 0.78rem;
@@ -1027,7 +1027,7 @@
 
 /* フィルターチップは pill 形状に合わせて丸いフォーカスリング */
 .filter-chip:focus-visible {
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
 }
 
 /* ── Tap Feedback (mobile/touch) ── */
@@ -1112,7 +1112,7 @@
   color: var(--ink-dim);
   background: var(--bg);
   border: 1px solid var(--stroke);
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   padding: 2px 10px;
   white-space: nowrap;
 }
@@ -1777,10 +1777,51 @@ html.age-verified .age-overlay {
   opacity: 0.3;
 }
 
+.not-found-icon {
+  color: var(--accent);
+  opacity: 0.25;
+  margin-bottom: 12px;
+}
+
 .not-found-message {
   font-size: 1rem;
   color: var(--ink-dim);
-  margin: 0 0 24px;
+  margin: 0 0 6px;
+}
+
+.not-found-sub {
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  opacity: 0.7;
+  margin: 0 0 28px;
+}
+
+.not-found-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--stroke);
+}
+
+.not-found-links-label {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+.not-found-links a {
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity var(--dur-quick) ease;
+}
+
+.not-found-links a:hover {
+  opacity: 0.7;
 }
 
 .noscript-block {

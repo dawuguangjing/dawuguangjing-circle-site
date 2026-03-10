@@ -27,3 +27,9 @@ export const TRIAL_LINK_ENTRIES = [
   { key: 'fanza',  label: 'FANZA 体験版',  track: 'click_trial_fanza',  store: 'fanza'  },
   { key: 'dlsite', label: 'DLsite 体験版', track: 'click_trial_dlsite', store: 'dlsite' },
 ] satisfies Parameters<typeof buildLinks>[1];
+
+/** カード・画像コンポーネント共通の画像最適化 Props */
+export interface ImageLoadProps {
+  loading?: 'lazy' | 'eager';
+  fetchpriority?: 'high' | 'low' | 'auto';
+}

@@ -11,6 +11,7 @@
  *   after-chars    — キャラクターの後（ギャラリーの関連作品など）
  */
 import StoreButtonGroup from './StoreButtonGroup.astro';
+import ShareBar from './ShareBar.astro';
 import { withBase } from '../utils/withBase';
 
 interface CharacterRef {
@@ -88,22 +89,6 @@ const {
   <slot name="after-chars" />
 
   {shareUrl && shareTitle && (
-    <div class="share-bar">
-      <span class="share-bar-label">シェア</span>
-      <a
-        class="share-btn"
-        href={`https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Xでシェア"
-      >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.843L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        X でシェア
-      </a>
-      <button class="share-btn" data-copy-url={shareUrl} aria-label="URLをコピー">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        URLをコピー
-      </button>
-    </div>
+    <ShareBar url={shareUrl} title={shareTitle} />
   )}
 </div>

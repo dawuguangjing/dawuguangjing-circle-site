@@ -3,16 +3,15 @@ import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
 import { categoryLabels } from '../utils/labels';
 import type { NewsCategory } from '../content/config';
+import type { ImageLoadProps } from '../utils/types';
 
-interface Props {
+interface Props extends ImageLoadProps {
   slug: string;
   title: string;
   date: Date;
   category: NewsCategory;
   thumbnail?: string;
   excerpt?: string;
-  loading?: 'lazy' | 'eager';
-  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 const { slug, title, date, category, thumbnail, excerpt, loading = 'lazy', fetchpriority } = Astro.props;

@@ -8,26 +8,17 @@ import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME, EXTERNAL_LINKS, COMING_SOON_YEAR } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
+import { getSortedWorks, buildPrevNext } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
 import EarlyAccessDownload from '../../components/EarlyAccessDownload.astro';
 
 export async function getStaticPaths() {
-  const works = (await getCollection('works')).sort(
-    (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime()
-  );
-  return works.map((entry, i) => ({
-    params: { slug: entry.slug },
-    props: {
-      entry,
-      prevWork: works[i + 1] ?? null,
-      nextWork: works[i - 1] ?? null,
-    }
-  }));
+  return buildPrevNext(await getSortedWorks());
 }
 
-const { entry, prevWork, nextWork } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
@@ -67,14 +58,14 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
         { label: data.title },
       ]} />
       <!-- 上部コンパクトナビ（ページ末尾まで戻らずに前後作品へ移動できる） -->
-      {(prevWork || nextWork) && (
+      {(prev || next) && (
         <nav class="work-top-nav" aria-label="前後の作品へ">
-          {prevWork
-            ? <a class="work-top-nav-link" href={withBase(`works/${prevWork.slug}/`)}>← {prevWork.data.title}</a>
+          {prev
+            ? <a class="work-top-nav-link" href={withBase(`works/${prev.slug}/`)}>← {prev.data.title}</a>
             : <span></span>
           }
-          {nextWork && (
-            <a class="work-top-nav-link work-top-nav-link--next" href={withBase(`works/${nextWork.slug}/`)}>{nextWork.data.title} →</a>
+          {next && (
+            <a class="work-top-nav-link work-top-nav-link--next" href={withBase(`works/${next.slug}/`)}>{next.data.title} →</a>
           )}
         </nav>
       )}
@@ -243,12 +234,12 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
       </div>
       <nav class="work-pagination" aria-label="作品ナビゲーション">
         <div class="work-pagination-prev">
-          {prevWork && (
-            <a class="work-pagination-link" href={withBase(`works/${prevWork.slug}/`)}>
+          {prev && (
+            <a class="work-pagination-link" href={withBase(`works/${prev.slug}/`)}>
               <span class="work-pagination-arrow">←</span>
               <span class="work-pagination-meta">
                 <span class="work-pagination-label">前の作品</span>
-                <span class="work-pagination-title">{prevWork.data.title}</span>
+                <span class="work-pagination-title">{prev.data.title}</span>
               </span>
             </a>
           )}
@@ -257,11 +248,11 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
           <a class="section-link" href={withBase('works/')} data-back-context data-back-context-key="works">作品一覧</a>
         </div>
         <div class="work-pagination-next">
-          {nextWork && (
-            <a class="work-pagination-link work-pagination-link--next" href={withBase(`works/${nextWork.slug}/`)}>
+          {next && (
+            <a class="work-pagination-link work-pagination-link--next" href={withBase(`works/${next.slug}/`)}>
               <span class="work-pagination-meta">
                 <span class="work-pagination-label">次の作品</span>
-                <span class="work-pagination-title">{nextWork.data.title}</span>
+                <span class="work-pagination-title">{next.data.title}</span>
               </span>
               <span class="work-pagination-arrow">→</span>
             </a>

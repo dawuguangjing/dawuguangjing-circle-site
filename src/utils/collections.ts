@@ -46,3 +46,17 @@ export async function getGalleryIndex() {
   const galleries = await getCollection('gallery');
   return new Map(galleries.map((g) => [g.slug, g]));
 }
+
+/** ソート済みコレクション配列から getStaticPaths 用の prev/next 付きパス配列を生成 */
+export function buildPrevNext<T extends { slug: string }>(
+  entries: T[]
+): { params: { slug: string }; props: { entry: T; prev: T | null; next: T | null } }[] {
+  return entries.map((entry, i) => ({
+    params: { slug: entry.slug },
+    props: {
+      entry,
+      prev: entries[i + 1] ?? null,
+      next: entries[i - 1] ?? null,
+    },
+  }));
+}

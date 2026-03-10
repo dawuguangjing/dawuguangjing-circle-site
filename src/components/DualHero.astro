@@ -2,8 +2,10 @@
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../utils/withBase';
 import { EXTERNAL_LINKS } from '../utils/constants';
+import { buildLinks, PURCHASE_LINK_ENTRIES } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
+import TrialLinks from './TrialLinks.astro';
 
 interface Props {
   releasedWork: CollectionEntry<'works'>;
@@ -12,10 +14,7 @@ interface Props {
 
 const { releasedWork: rw, comingWork: cw } = Astro.props;
 
-const rwLinks = [
-  ...(rw.data.platformLinks.fanza  ? [{ label: 'FANZA で購入',  href: rw.data.platformLinks.fanza,  store: 'fanza'  }] : []),
-  ...(rw.data.platformLinks.dlsite ? [{ label: 'DLsite で購入', href: rw.data.platformLinks.dlsite, store: 'dlsite' }] : []),
-];
+const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
 ---
 
 <section class="dual-hero">
@@ -69,18 +68,7 @@ const rwLinks = [
       )}
 
       <div class="hero-banner-sub">
-        {(rw.data.trialLinks?.fanza || rw.data.trialLinks?.dlsite) && (
-          <span class="hero-trial-group">
-            <span class="hero-trial-label">無料体験版：</span>
-            {rw.data.trialLinks.fanza && (
-              <a class="hero-trial-link" href={rw.data.trialLinks.fanza} target="_blank" rel="noopener noreferrer" data-ga-event="trial_click" data-store="fanza" data-ga-location="dual_hero_released">FANZA</a>
-            )}
-            {rw.data.trialLinks.fanza && rw.data.trialLinks.dlsite && <span class="hero-sub-sep">·</span>}
-            {rw.data.trialLinks.dlsite && (
-              <a class="hero-trial-link" href={rw.data.trialLinks.dlsite} target="_blank" rel="noopener noreferrer" data-ga-event="trial_click" data-store="dlsite" data-ga-location="dual_hero_released">DLsite</a>
-            )}
-          </span>
-        )}
+        <TrialLinks trialLinks={rw.data.trialLinks} location="dual_hero_released" />
         <a class="hero-banner-detail-link" href={withBase(`works/${rw.slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
       </div>
     </div>

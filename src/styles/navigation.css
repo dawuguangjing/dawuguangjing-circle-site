@@ -347,7 +347,7 @@ a.announcement-bar-text:hover {
   gap: 6px;
   padding: 7px 14px;
   border: 1px solid var(--footer-btn-border);
-  border-radius: 20px;
+  border-radius: var(--radius-pill);
   color: var(--footer-btn-color);
   font-size: 0.78rem;
   font-weight: 500;

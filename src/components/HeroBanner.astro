@@ -1,7 +1,9 @@
 ---
 import { withBase } from '../utils/withBase';
+import { buildLinks, PURCHASE_LINK_ENTRIES } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
+import TrialLinks from './TrialLinks.astro';
 
 interface Props {
   slug: string;
@@ -15,6 +17,7 @@ interface Props {
 }
 
 const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks, sellingPoints } = Astro.props;
+const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
 ---
 
 <section class="hero-banner">
@@ -50,25 +53,11 @@ const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks
       )}
 
       <div class="hero-banner-cta">
-        <StoreButtonGroup links={[
-          ...(platformLinks.fanza  ? [{ label: 'FANZA で購入',  href: platformLinks.fanza,  store: 'fanza'  }] : []),
-          ...(platformLinks.dlsite ? [{ label: 'DLsite で購入', href: platformLinks.dlsite, store: 'dlsite' }] : []),
-        ]} location="hero_banner" />
+        <StoreButtonGroup links={purchaseLinks} location="hero_banner" />
       </div>
 
       <div class="hero-banner-sub">
-        {(trialLinks?.fanza || trialLinks?.dlsite) && (
-          <span class="hero-trial-group">
-            <span class="hero-trial-label">無料体験版：</span>
-            {trialLinks.fanza && (
-              <a class="hero-trial-link" href={trialLinks.fanza} target="_blank" rel="noopener noreferrer" data-ga-event="trial_click" data-store="fanza" data-ga-location="hero_banner">FANZA</a>
-            )}
-            {trialLinks.fanza && trialLinks.dlsite && <span class="hero-sub-sep">·</span>}
-            {trialLinks.dlsite && (
-              <a class="hero-trial-link" href={trialLinks.dlsite} target="_blank" rel="noopener noreferrer" data-ga-event="trial_click" data-store="dlsite" data-ga-location="hero_banner">DLsite</a>
-            )}
-          </span>
-        )}
+        <TrialLinks trialLinks={trialLinks} location="hero_banner" />
         <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
       </div>
     </div>

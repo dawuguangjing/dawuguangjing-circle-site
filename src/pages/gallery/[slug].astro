@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
-import { getWorkIndex, resolveImageCount } from '../../utils/collections';
+import { getWorkIndex, resolveImageCount, getSortedGallery, buildPrevNext } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
@@ -13,14 +13,10 @@ import FabPurchase from '../../components/FabPurchase.astro';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 
 export async function getStaticPaths() {
-  const galleries = await getCollection('gallery');
-  return galleries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry }
-  }));
+  return buildPrevNext(await getSortedGallery());
 }
 
-const { entry } = Astro.props;
+const { entry, prev, next } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
@@ -59,10 +55,7 @@ const sidebarChars = relatedCharacters.map((c) => ({
 }));
 
 const galleryPurchaseLinks = hasStoreLinks
-  ? [
-      ...(data.platformLinks!.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks!.fanza,  store: 'fanza'  }] : []),
-      ...(data.platformLinks!.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks!.dlsite, store: 'dlsite' }] : []),
-    ]
+  ? buildLinks(data.platformLinks!, PURCHASE_LINK_ENTRIES)
   : relatedWorkLinks;
 ---
 
@@ -229,6 +222,33 @@ const galleryPurchaseLinks = hasStoreLinks
       <div class="back-link">
         <a class="section-link" href={withBase('gallery/')} data-back-context data-back-context-key="gallery">← ギャラリー一覧へ戻る</a>
       </div>
+
+      {(prev || next) && (
+        <nav class="article-pagination" aria-label="前後のギャラリーへ">
+          <div class="article-pagination-prev">
+            {prev && (
+              <a class="article-pagination-link" href={withBase(`gallery/${prev.slug}/`)}>
+                <span class="article-pagination-arrow">←</span>
+                <span class="article-pagination-meta">
+                  <span class="article-pagination-label">前のギャラリー</span>
+                  <span class="article-pagination-title">{prev.data.title}</span>
+                </span>
+              </a>
+            )}
+          </div>
+          <div class="article-pagination-next">
+            {next && (
+              <a class="article-pagination-link article-pagination-link--next" href={withBase(`gallery/${next.slug}/`)}>
+                <span class="article-pagination-meta">
+                  <span class="article-pagination-label">次のギャラリー</span>
+                  <span class="article-pagination-title">{next.data.title}</span>
+                </span>
+                <span class="article-pagination-arrow">→</span>
+              </a>
+            )}
+          </div>
+        </nav>
+      )}
     </section>
   </div>
 
