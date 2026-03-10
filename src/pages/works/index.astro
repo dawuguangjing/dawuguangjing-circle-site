@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkCard from '../../components/WorkCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { getSortedWorks } from '../../utils/collections';
-import { ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
+import { animDelay } from '../../utils/constants';
 
 const works = await getSortedWorks();
 ---
@@ -10,10 +11,9 @@ const works = await getSortedWorks();
 <BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
   <div class="page-content" data-list-context="works">
     <section class="section container">
-      <div class="section-header" data-anim>
-        <h1 class="section-title">全作品</h1>
+      <SectionHeader title="全作品" as="h1">
         <span class="muted" id="work-count">{works.length} タイトル</span>
-      </div>
+      </SectionHeader>
 
       <!-- モバイル: フィルターシート開閉トリガー -->
       <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="filter-bar">
@@ -56,7 +56,7 @@ const works = await getSortedWorks();
           <div
             class="work-filter-item"
             data-anim
-            style={`--anim-delay: ${ANIM_BASE_DELAY + 0.04 + i * ANIM_STAGGER}s`}
+            style={`--anim-delay: ${animDelay(i, 0.04)}`}
             data-r18={String(entry.data.isR18)}
             data-windows={String(entry.data.environments.windows)}
             data-mac={String(entry.data.environments.mac)}
@@ -91,44 +91,19 @@ const works = await getSortedWorks();
   </div>
 
   <script>
-    // ── フィルターボトムシート（モバイル） ──
-    const sheetTrigger = document.getElementById('filter-sheet-trigger');
-    const sheetOverlay = document.getElementById('filter-sheet-overlay');
-    const sheetClose   = document.getElementById('filter-sheet-close');
-    const filterBar    = document.getElementById('filter-bar');
-    const activeBadge  = document.getElementById('filter-active-badge');
-    const uiWindow = window as Window & {
-      lockBodyScroll?: (key: string) => void;
-      unlockBodyScroll?: (key: string) => void;
-    };
+    import { initFilterSheet } from '../../scripts/filter-sheet';
+    import { FILTER_STAGGER } from '../../utils/constants';
 
-    function openSheet() {
-      filterBar?.classList.add('is-open');
-      sheetOverlay?.classList.add('is-visible');
-      sheetOverlay?.removeAttribute('aria-hidden');
-      sheetTrigger?.setAttribute('aria-expanded', 'true');
-      if (uiWindow.lockBodyScroll) uiWindow.lockBodyScroll('works-filter-sheet');
-      else document.body.style.overflow = 'hidden';
-    }
-    function closeSheet() {
-      filterBar?.classList.remove('is-open');
-      sheetOverlay?.classList.remove('is-visible');
-      sheetOverlay?.setAttribute('aria-hidden', 'true');
-      sheetTrigger?.setAttribute('aria-expanded', 'false');
-      if (uiWindow.unlockBodyScroll) uiWindow.unlockBodyScroll('works-filter-sheet');
-      else document.body.style.overflow = '';
-    }
-    sheetTrigger?.addEventListener('click', () => {
-      if (filterBar?.classList.contains('is-open')) closeSheet();
-      else openSheet();
+    // ── フィルターボトムシート（モバイル） ──
+    const { close: closeSheet } = initFilterSheet({
+      filterBarId: 'filter-bar',
+      overlayId:   'filter-sheet-overlay',
+      triggerId:   'filter-sheet-trigger',
+      closeBtnId:  'filter-sheet-close',
+      lockKey:     'works-filter-sheet',
     });
-    sheetOverlay?.addEventListener('click', closeSheet);
-    sheetClose?.addEventListener('click', closeSheet);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeSheet();
-    });
-    document.addEventListener('ui:close-overlays', closeSheet);
-    document.addEventListener('astro:before-preparation', closeSheet);
+    const sheetTrigger = document.getElementById('filter-sheet-trigger');
+    const activeBadge  = document.getElementById('filter-active-badge');
 
     const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
     const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
@@ -216,7 +191,7 @@ const works = await getSortedWorks();
         if (show) {
           el.style.display = '';
           el.classList.remove('is-visible');
-          el.style.setProperty('--anim-delay', `${visibleCount * 0.06}s`);
+          el.style.setProperty('--anim-delay', `${visibleCount * FILTER_STAGGER}s`);
           void el.offsetWidth; // force reflow to restart transition
           el.classList.add('is-visible');
           visibleCount++;
@@ -340,7 +315,7 @@ const works = await getSortedWorks();
           return sort === 'oldest' ? da - db : db - da;
         });
         sorted.forEach((el, idx) => {
-          el.style.setProperty('--anim-delay', `${idx * 0.05}s`);
+          el.style.setProperty('--anim-delay', `${idx * FILTER_STAGGER}s`);
           el.classList.remove('is-visible');
           grid.appendChild(el);
           void el.offsetWidth;

@@ -29,7 +29,7 @@ main {
 a {
   color: inherit;
   text-decoration: none;
-  transition: color 0.15s ease;
+  transition: color var(--dur-fast) ease;
 }
 
 a:hover {
@@ -52,14 +52,14 @@ a:hover {
   position: absolute;
   top: -100%;
   left: 16px;
-  z-index: 100;
+  z-index: var(--z-tooltip);
   padding: 8px 16px;
   background: var(--accent);
   color: #fff;
   font-size: 0.85rem;
   font-weight: 600;
   border-radius: var(--radius-md);
-  transition: top 0.2s ease;
+  transition: top var(--dur-quick) ease;
 }
 
 .skip-link:focus {
@@ -107,7 +107,7 @@ button {
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow);
-  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .card:hover {
@@ -159,23 +159,23 @@ button {
 }
 
 .badge--r18 {
-  color: #dc2626;
-  background: rgba(220, 38, 38, 0.08);
+  color: var(--color-r18);
+  background: var(--color-r18-bg);
 }
 
 .badge--category {
-  color: #666666;
-  background: rgba(0, 0, 0, 0.06);
+  color: var(--color-category);
+  background: var(--color-category-bg);
 }
 
 .badge--release {
-  color: #16a34a;
-  background: rgba(22, 163, 74, 0.10);
+  color: var(--color-release);
+  background: var(--color-release-bg);
 }
 
 .badge--update {
-  color: #0068B7;
-  background: rgba(0, 104, 183, 0.10);
+  color: var(--color-update);
+  background: var(--color-update-bg);
 }
 
 .badge--sale {
@@ -184,13 +184,13 @@ button {
 }
 
 .badge--devlog {
-  color: #7c3aed;
-  background: rgba(124, 58, 237, 0.10);
+  color: var(--color-devlog);
+  background: var(--color-devlog-bg);
 }
 
 .badge--futekigo {
-  color: #C026D3;
-  background: rgba(192, 38, 211, 0.10);
+  color: var(--color-futekigo);
+  background: var(--color-futekigo-bg);
 }
 
 /* ── Buttons ── */
@@ -208,7 +208,7 @@ button {
   letter-spacing: 0.02em;
   background: var(--cta);
   color: #fff;
-  transition: background 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  transition: background var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
   cursor: pointer;
 }
 
@@ -247,9 +247,9 @@ button {
   background: var(--accent-2);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
 }
-[data-theme="dark"] .button--cien {
+html[data-theme="dark"] .button--cien {
   box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
 }
-[data-theme="dark"] .button--cien:hover {
+html[data-theme="dark"] .button--cien:hover {
   box-shadow: 0 6px 20px rgba(255, 255, 255, 0.20);
 }

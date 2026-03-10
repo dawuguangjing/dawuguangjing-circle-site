@@ -34,29 +34,13 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 </header>
 
 <script>
+  import { lockScroll, unlockScroll } from '../scripts/scroll-lock';
+
   function getMenuElements() {
     return {
       toggle: document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null,
       nav: document.getElementById('main-nav'),
     };
-  }
-
-  function lockMenuScroll() {
-    const uiWindow = window as Window & { lockBodyScroll?: (key: string) => void };
-    if (uiWindow.lockBodyScroll) {
-      uiWindow.lockBodyScroll('mobile-menu');
-      return;
-    }
-    document.body.style.overflow = 'hidden';
-  }
-
-  function unlockMenuScroll() {
-    const uiWindow = window as Window & { unlockBodyScroll?: (key: string) => void };
-    if (uiWindow.unlockBodyScroll) {
-      uiWindow.unlockBodyScroll('mobile-menu');
-      return;
-    }
-    document.body.style.overflow = '';
   }
 
   function closeMenu() {
@@ -65,7 +49,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
     nav.classList.remove('is-open');
-    unlockMenuScroll();
+    unlockScroll('mobile-menu');
   }
 
   function openMenu() {
@@ -76,7 +60,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'メニューを閉じる');
     nav.classList.add('is-open');
-    lockMenuScroll();
+    lockScroll('mobile-menu');
   }
 
   // モバイルメニューのイベントは page-load ごとに再初期化（VTでDOMが差し替わるため）

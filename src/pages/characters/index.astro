@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
-import { SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
+import SectionHeader from '../../components/SectionHeader.astro';
+import { SITE_NAME, animDelay } from '../../utils/constants';
 
 const characters = (await getCollection('characters')).sort(
   (a, b) => a.data.order - b.data.order
@@ -23,12 +24,22 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 >
   <div class="page-content" data-list-context="characters">
     <div class="container section">
-      <div class="section-header" data-anim>
-        <h1 class="section-title">キャラクター</h1>
-      </div>
+      <SectionHeader title="キャラクター" as="h1" />
+
+      <!-- モバイル: フィルターシート開閉トリガー -->
+      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="char-filter">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        絞り込み・並び替え
+        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
+      </button>
+      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
 
       {filterWorks.length > 1 && (
         <div class="filter-bar" id="char-filter" role="group" aria-label="登場作品でフィルター">
+          <div class="filter-sheet-header">
+            <span class="filter-sheet-header-title">絞り込み・並び替え</span>
+            <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
+          </div>
           <button class="filter-chip is-active" data-work="all" aria-pressed="true">すべて</button>
           {filterWorks.map((w) => (
             <button class="filter-chip" data-work={w.slug} aria-pressed="false">{w.title}</button>
@@ -54,7 +65,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
             data-work={char.data.workSlug}
             data-order={String(char.data.order)}
             data-name={char.data.name}
-            style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s; --char-color: ${char.data.color}`}
+            style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
           >
             <div class="char-list-img-wrap">
               <img
@@ -224,6 +235,33 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 </style>
 
 <script>
+  import { initFilterSheet } from '../../scripts/filter-sheet';
+  import { FILTER_STAGGER } from '../../utils/constants';
+
+  // ── フィルターボトムシート（モバイル） ──
+  const { close: closeSheet } = initFilterSheet({
+    filterBarId: 'char-filter',
+    overlayId:   'filter-sheet-overlay',
+    triggerId:   'filter-sheet-trigger',
+    closeBtnId:  'filter-sheet-close',
+    lockKey:     'char-filter-sheet',
+  });
+  const sheetTrigger = document.getElementById('filter-sheet-trigger');
+  const activeBadge  = document.getElementById('filter-active-badge');
+
+  function updateCharBadge(work: string, sort: string) {
+    if (!activeBadge) return;
+    const count = (work !== 'all' ? 1 : 0) + (sort !== 'order' ? 1 : 0);
+    if (count > 0) {
+      activeBadge.textContent = String(count);
+      activeBadge.removeAttribute('hidden');
+      sheetTrigger?.classList.add('has-active');
+    } else {
+      activeBadge.setAttribute('hidden', '');
+      sheetTrigger?.classList.remove('has-active');
+    }
+  }
+
   const charChips = Array.from(document.querySelectorAll<HTMLButtonElement>('#char-filter .filter-chip'));
   const charCards = Array.from(document.querySelectorAll<HTMLElement>('#char-list-grid .char-list-card'));
   const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-char-sort]'));
@@ -280,6 +318,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
       stateClear.hidden = false;
     }
+    updateCharBadge(work, sort);
   }
 
   function applyWorkFilter(work: string, updateUrl = true) {
@@ -296,7 +335,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       if (show) {
         card.style.display = '';
         card.classList.remove('is-visible');
-        card.style.setProperty('--anim-delay', `${idx * 0.05}s`);
+        card.style.setProperty('--anim-delay', `${idx * FILTER_STAGGER}s`);
         void card.offsetWidth;
         card.classList.add('is-visible');
         idx++;
@@ -320,7 +359,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       return Number(a.dataset.order) - Number(b.dataset.order);
     });
     sorted.forEach((el, i) => {
-      el.style.setProperty('--anim-delay', `${i * 0.05}s`);
+      el.style.setProperty('--anim-delay', `${i * FILTER_STAGGER}s`);
       el.classList.remove('is-visible');
       charGrid.appendChild(el);
       void el.offsetWidth;

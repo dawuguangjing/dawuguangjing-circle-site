@@ -27,6 +27,19 @@
   --accent-alpha-08: rgba(0, 104, 183, 0.08);
   --accent-alpha-25: rgba(0, 104, 183, 0.25);
   --accent-alpha-30: rgba(0, 104, 183, 0.30);
+  /* ── Badge semantic colors ── */
+  --color-r18: #dc2626;
+  --color-r18-bg: rgba(220, 38, 38, 0.08);
+  --color-category: #666666;
+  --color-category-bg: rgba(0, 0, 0, 0.06);
+  --color-release: #16a34a;
+  --color-release-bg: rgba(22, 163, 74, 0.10);
+  --color-update: #0068B7;
+  --color-update-bg: rgba(0, 104, 183, 0.10);
+  --color-devlog: #7c3aed;
+  --color-devlog-bg: rgba(124, 58, 237, 0.10);
+  --color-futekigo: #C026D3;
+  --color-futekigo-bg: rgba(192, 38, 211, 0.10);
   /* Store brand colors */
   --color-fanza:        #E83655;
   --color-fanza-hover:  #EC4060;
@@ -38,17 +51,72 @@
   --shadow-dlsite-active: 0 2px 6px  rgba(41, 82, 204, 0.20);
   --pulse-fanza:  rgba(232, 54, 85, 0.50);
   --pulse-dlsite: rgba(41, 82, 204, 0.50);
+  /* ── Store trial variant colors ── */
+  --color-fanza-trial: #EE2737;
+  --color-fanza-trial-hover: #d42232;
+  --color-fanza-trial-bg: rgba(238, 39, 55, 0.05);
+  --color-fanza-trial-shadow: rgba(238, 39, 55, 0.12);
+  --color-dlsite-trial: #052A83;
+  --color-dlsite-trial-hover: #041e63;
+  --color-dlsite-trial-bg: rgba(5, 42, 131, 0.05);
+  --color-dlsite-trial-shadow: rgba(5, 42, 131, 0.12);
+  /* ── Logo colors ── */
+  --color-logo: var(--accent);
+  --color-logo-hover: var(--accent-dark);
+  --color-logo-green: #7CCD40;
+  --color-logo-pink: #E2437F;
   --news-card-cover-empty-bg: #EBEBEB;
   --radius-lg: 6px;
   --radius-md: 4px;
   --radius-sm: 3px;
   --easing: cubic-bezier(0.25, 0.8, 0.25, 1);
+  /* ── Duration scale ── */
+  --dur-fast: 0.15s;       /* link hover, subtle state changes */
+  --dur-quick: 0.2s;       /* focus rings, small interactive feedback */
+  --dur-normal: 0.25s;     /* standard component transitions */
+  --dur-medium: 0.3s;      /* card hover lifts, transform + easing */
+  --dur-slow: 0.4s;        /* image zoom, gallery transitions */
+  --dur-entrance: 0.5s;    /* scroll-triggered entrance animations */
   --font-display: "Inter", "Noto Sans JP", system-ui, sans-serif;
   --font-body: "Noto Sans JP", "Inter", system-ui, sans-serif;
+  /* ── Always-dark context colors (footer) ── */
+  --footer-bg: #2a2a2a;
+  --footer-text: rgba(255, 255, 255, 0.5);
+  --footer-text-strong: rgba(255, 255, 255, 0.8);
+  --footer-text-bright: #ffffff;
+  --footer-text-dim: rgba(255, 255, 255, 0.4);
+  --footer-text-muted: rgba(255, 255, 255, 0.3);
+  --footer-stroke: rgba(255, 255, 255, 0.08);
+  --footer-btn-border: rgba(255, 255, 255, 0.2);
+  --footer-btn-color: rgba(255, 255, 255, 0.75);
+  --footer-btn-hover-border: rgba(255, 255, 255, 0.6);
+  --footer-btn-hover-bg: rgba(255, 255, 255, 0.08);
+  /* ── Z-index scale ── */
+  --z-dropdown: 19;
+  --z-header: 20;
+  --z-float: 40;
+  --z-lightbox: 50;
+  --z-tooltip: 100;
+  --z-progress: 200;
+  --z-progress-top: 250;
+  --z-sheet-scrim: 299;
+  --z-sheet: 300;
+  --z-age-gate: 9000;
+  /* ── Additional shadows ── */
+  --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.15);
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.14);
 }
 
+/* ── Breakpoints (reference only; not usable in @media queries) ──
+ * 480px  — mobile small
+ * 540px  — mobile large
+ * 640px  — tablet / animation opt-out
+ * 768px  — tablet landscape
+ * 860px  — desktop small
+ */
+
 /* ── Dark mode tokens ── */
-[data-theme="dark"] {
+html[data-theme="dark"] {
   color-scheme: dark;
   --bg: #0d1117;
   --bg-2: #161b22;
@@ -68,5 +136,28 @@
   --accent-alpha-08: rgba(0, 104, 183, 0.14);
   --accent-alpha-25: rgba(0, 104, 183, 0.35);
   --accent-alpha-30: rgba(0, 104, 183, 0.40);
+  --color-logo: #58A6FF;
+  --color-logo-hover: #79BBFF;
+  --color-logo-green: #A3E635;
+  --color-logo-pink: #F472B6;
   --news-card-cover-empty-bg: #22272e;
+  /* Store brand colors (brightened for dark bg contrast) */
+  --color-fanza:        #F04A6A;
+  --color-fanza-hover:  #F5607C;
+  --color-dlsite:       #4A72E8;
+  --color-dlsite-hover: #5B80F0;
+  --shadow-fanza-hover:  0 6px 20px rgba(240, 74, 106, 0.45);
+  --shadow-fanza-active: 0 2px 6px  rgba(240, 74, 106, 0.25);
+  --shadow-dlsite-hover:  0 6px 20px rgba(74, 114, 232, 0.45);
+  --shadow-dlsite-active: 0 2px 6px  rgba(74, 114, 232, 0.25);
+  --pulse-fanza:  rgba(240, 74, 106, 0.55);
+  --pulse-dlsite: rgba(74, 114, 232, 0.55);
+  --color-fanza-trial: #F06A82;
+  --color-fanza-trial-hover: #F5849A;
+  --color-fanza-trial-bg: rgba(240, 106, 130, 0.08);
+  --color-dlsite-trial: #6B8EF0;
+  --color-dlsite-trial-hover: #85A4F5;
+  --color-dlsite-trial-bg: rgba(107, 142, 240, 0.08);
+  --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.45);
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.40);
 }

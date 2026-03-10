@@ -9,7 +9,7 @@ import { SITE_NAME, EXTERNAL_LINKS, COMING_SOON_YEAR } from '../../utils/constan
 import { buildProductSchema } from '../../utils/schema';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 import Breadcrumb from '../../components/Breadcrumb.astro';
-import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
+import StoreSidebar from '../../components/StoreSidebar.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
 import EarlyAccessDownload from '../../components/EarlyAccessDownload.astro';
 
@@ -35,6 +35,11 @@ const allCharacters = await getCollection('characters');
 const workCharacters = allCharacters
   .filter((c) => c.data.workSlug === entry.slug)
   .sort((a, b) => a.data.order - b.data.order);
+const sidebarChars = workCharacters.map((c) => ({
+  slug: c.slug,
+  name: c.data.name,
+  cover: c.data.cover,
+}));
 
 const productJsonLd = buildProductSchema({
   title: data.title,
@@ -137,142 +142,96 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar" id="purchase-section" data-anim="slide-right" style="--anim-delay: 0.2s">
-          <!-- Age Rating -->
-          <div>
-            {data.isR18
-              ? <span class="badge badge--r18">R18 作品</span>
-              : <span class="badge">全年齢</span>
-            }
-          </div>
+        <StoreSidebar
+          isR18={data.isR18}
+          trialLinks={trialLinks}
+          purchaseLinks={platformLinks}
+          characters={sidebarChars}
+          location="work_sidebar"
+          shareUrl={Astro.url.href}
+          shareTitle={data.title}
+        >
+          <Fragment slot="before-purchase">
+            {data.earlyAccess?.enabled && (
+              <>
+                <h3>先行体験版</h3>
+                <EarlyAccessDownload
+                  password={data.earlyAccess.password}
+                  downloadUrl={data.earlyAccess.downloadUrl}
+                  cienUrl={EXTERNAL_LINKS.cien}
+                />
+              </>
+            )}
+          </Fragment>
 
-          <!-- Trial Buttons（先に試せる導線） -->
-          {trialLinks.length > 0 && (
-            <>
-              <h3>体験版を試す</h3>
-              <StoreButtonGroup links={trialLinks} trial location="work_sidebar" />
-            </>
-          )}
-
-          <!-- Early Access Download（合言葉でDL） -->
-          {data.earlyAccess?.enabled && (
-            <>
-              <h3>先行体験版</h3>
-              <EarlyAccessDownload
-                password={data.earlyAccess.password}
-                downloadUrl={data.earlyAccess.downloadUrl}
-                cienUrl={EXTERNAL_LINKS.cien}
-              />
-            </>
-          )}
-
-          <!-- Purchase Buttons -->
-          {platformLinks.length > 0 ? (
-            <>
-              <h3>購入する</h3>
-              <StoreButtonGroup links={platformLinks} location="work_sidebar" />
-            </>
-          ) : (
-            <div class="sidebar-coming-soon">
-              <p class="sidebar-small">販売情報は後日公開予定</p>
-              <a class="button button--cien button--block" href={EXTERNAL_LINKS.cien}
-                 target="_blank" rel="noopener noreferrer">
-                Ci-en で進捗を見る →
-              </a>
-              <a class="button button--cien button--block" href={withBase('news/')}>
-                開発ログを見る →
-              </a>
-            </div>
-          )}
-
-          <!-- Spec Table -->
-          <h3>仕様</h3>
-          <table class="spec-table">
-            <tbody>
-              <tr>
-                <td>リリース日</td>
-                <td>{isComingSoon ? '未定' : formatDate(data.releaseDate)}</td>
-              </tr>
-              <tr>
-                <td>プレイ時間</td>
-                <td>{data.volume.playTimeMin} 分</td>
-              </tr>
-              <tr>
-                <td>CG枚数</td>
-                <td>{data.volume.cgCount === 0 ? '後日公開' : `${data.volume.cgCount} 枚`}</td>
-              </tr>
-              <tr>
-                <td>Hシーン</td>
-                <td>{data.volume.hSceneCount === 0 ? '後日公開' : `${data.volume.hSceneCount} シーン`}</td>
-              </tr>
-              <tr>
-                <td>分岐</td>
-                <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <!-- Environment -->
-          <h3>対応環境</h3>
-          <div class="env-tags">
-            <span class={`env-tag ${data.environments.windows ? 'env-tag--yes' : 'env-tag--no'}`}>
-              Windows
-            </span>
-            <span class={`env-tag ${data.environments.mac ? 'env-tag--yes' : 'env-tag--no'}`}>
-              Mac
-            </span>
-            <span class={`env-tag ${data.environments.browserPc ? 'env-tag--yes' : 'env-tag--no'}`}>
-              ブラウザ PC
-            </span>
-            <span class={`env-tag ${data.environments.browserMobileBeta ? 'env-tag--yes' : 'env-tag--no'}`}>
-              モバイル β
-            </span>
-          </div>
-
-          <!-- Characters -->
-          {workCharacters.length > 0 && (
-            <div class="sidebar-chars">
-              <h3>登場キャラクター</h3>
-              <div class="sidebar-char-list">
-                {workCharacters.map((c) => (
-                  <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.data.name}>
-                    <img class="sidebar-char-img" src={withBase(c.data.cover)} alt={c.data.name} width="60" height="60" loading="lazy" />
-                    <span class="sidebar-char-name">{c.data.name}</span>
-                  </a>
-                ))}
+          <Fragment slot="after-purchase">
+            {platformLinks.length === 0 && (
+              <div class="sidebar-coming-soon">
+                <p class="sidebar-small">販売情報は後日公開予定</p>
+                <a class="button button--cien button--block" href={EXTERNAL_LINKS.cien}
+                   target="_blank" rel="noopener noreferrer">
+                  Ci-en で進捗を見る →
+                </a>
+                <a class="button button--cien button--block" href={withBase('news/')}>
+                  開発ログを見る →
+                </a>
               </div>
+            )}
+
+            <h3>仕様</h3>
+            <table class="spec-table">
+              <tbody>
+                <tr>
+                  <td>リリース日</td>
+                  <td>{isComingSoon ? '未定' : formatDate(data.releaseDate)}</td>
+                </tr>
+                <tr>
+                  <td>プレイ時間</td>
+                  <td>{data.volume.playTimeMin} 分</td>
+                </tr>
+                <tr>
+                  <td>CG枚数</td>
+                  <td>{data.volume.cgCount === 0 ? '後日公開' : `${data.volume.cgCount} 枚`}</td>
+                </tr>
+                <tr>
+                  <td>Hシーン</td>
+                  <td>{data.volume.hSceneCount === 0 ? '後日公開' : `${data.volume.hSceneCount} シーン`}</td>
+                </tr>
+                <tr>
+                  <td>分岐</td>
+                  <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>対応環境</h3>
+            <div class="env-tags">
+              <span class={`env-tag ${data.environments.windows ? 'env-tag--yes' : 'env-tag--no'}`}>
+                Windows
+              </span>
+              <span class={`env-tag ${data.environments.mac ? 'env-tag--yes' : 'env-tag--no'}`}>
+                Mac
+              </span>
+              <span class={`env-tag ${data.environments.browserPc ? 'env-tag--yes' : 'env-tag--no'}`}>
+                ブラウザ PC
+              </span>
+              <span class={`env-tag ${data.environments.browserMobileBeta ? 'env-tag--yes' : 'env-tag--no'}`}>
+                モバイル β
+              </span>
             </div>
-          )}
+          </Fragment>
 
-          <!-- AI Usage -->
-          <div class="sidebar-divider">
-            <p class="sidebar-small">
-              AI使用: {aiLevelLabels[data.aiUsage.level] ?? data.aiUsage.level}
-            </p>
-            <p class="sidebar-xsmall">
-              {data.aiUsage.noteShort}
-            </p>
-          </div>
-
-          <!-- Share -->
-          <div class="share-bar">
-            <span class="share-bar-label">シェア</span>
-            <a
-              class="share-btn"
-              href={`https://x.com/intent/tweet?url=${encodeURIComponent(Astro.url.href)}&text=${encodeURIComponent(data.title)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Xでシェア"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.843L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-              X でシェア
-            </a>
-            <button class="share-btn" data-copy-url={Astro.url.href} aria-label="URLをコピー">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              URLをコピー
-            </button>
-          </div>
-        </div>
+          <Fragment slot="after-chars">
+            <div class="sidebar-divider">
+              <p class="sidebar-small">
+                AI使用: {aiLevelLabels[data.aiUsage.level] ?? data.aiUsage.level}
+              </p>
+              <p class="sidebar-xsmall">
+                {data.aiUsage.noteShort}
+              </p>
+            </div>
+          </Fragment>
+        </StoreSidebar>
       </div>
     </section>
 

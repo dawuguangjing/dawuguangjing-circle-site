@@ -28,7 +28,11 @@ const { Content } = await entry.render();
 const data = entry.data;
 
 const workIndex = await getWorkIndex();
-const articleJsonLd = buildArticleSchema({ headline: data.title, datePublished: data.date });
+const articleJsonLd = buildArticleSchema({
+  headline: data.title,
+  datePublished: data.date,
+  image: data.eyecatch,
+});
 
 // 読了時間（日本語 約500字/分）
 const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 500));

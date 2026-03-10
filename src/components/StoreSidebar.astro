@@ -1,0 +1,109 @@
+---
+/**
+ * StoreSidebar — 作品詳細・ギャラリー詳細で共通のサイドバーシェル。
+ *
+ * 共通部分（バッジ、体験版/購入ボタン、キャラクター、シェア）を Props で受け取り、
+ * ページ固有のコンテンツは named slot で挿入する。
+ *
+ * Slot 挿入ポイント:
+ *   before-trial  — 体験版ボタンの前（ギャラリーの情報テーブルなど）
+ *   after-purchase — 購入ボタンの後（作品の仕様テーブル・対応環境など）
+ *   after-chars    — キャラクターの後（ギャラリーの関連作品など）
+ */
+import StoreButtonGroup from './StoreButtonGroup.astro';
+import { withBase } from '../utils/withBase';
+
+interface CharacterRef {
+  slug: string;
+  name: string;
+  cover: string;
+}
+
+interface Props {
+  isR18: boolean;
+  trialLinks?: { label: string; href: string; store: string }[];
+  purchaseLinks?: { label: string; href: string; store: string }[];
+  characters?: CharacterRef[];
+  location: string;
+  shareUrl?: string;
+  shareTitle?: string;
+  animDelay?: string;
+}
+
+const {
+  isR18,
+  trialLinks = [],
+  purchaseLinks = [],
+  characters = [],
+  location,
+  shareUrl,
+  shareTitle,
+  animDelay = '0.2s',
+} = Astro.props;
+---
+
+<div class="store-sidebar" id="purchase-section" data-anim="slide-right" style={`--anim-delay: ${animDelay}`}>
+  <!-- Age Rating -->
+  <div>
+    {isR18
+      ? <span class="badge badge--r18">R18 作品</span>
+      : <span class="badge">全年齢</span>
+    }
+  </div>
+
+  <slot name="before-trial" />
+
+  {trialLinks.length > 0 && (
+    <>
+      <h3>体験版を試す</h3>
+      <StoreButtonGroup links={trialLinks} trial location={location} />
+    </>
+  )}
+
+  <slot name="before-purchase" />
+
+  {purchaseLinks.length > 0 && (
+    <>
+      <h3>購入する</h3>
+      <StoreButtonGroup links={purchaseLinks} location={location} />
+    </>
+  )}
+
+  <slot name="after-purchase" />
+
+  {characters.length > 0 && (
+    <div class="sidebar-chars">
+      <h3>登場キャラクター</h3>
+      <div class="sidebar-char-list">
+        {characters.map((c) => (
+          <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.name}>
+            <img class="sidebar-char-img" src={withBase(c.cover)} alt={c.name} width="60" height="60" loading="lazy" />
+            <span class="sidebar-char-name">{c.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  <slot name="after-chars" />
+
+  {shareUrl && shareTitle && (
+    <div class="share-bar">
+      <span class="share-bar-label">シェア</span>
+      <a
+        class="share-btn"
+        href={`https://x.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Xでシェア"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.843L1.254 2.25H8.08l4.261 5.632zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X でシェア
+      </a>
+      <button class="share-btn" data-copy-url={shareUrl} aria-label="URLをコピー">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        URLをコピー
+      </button>
+    </div>
+  )}
+</div>

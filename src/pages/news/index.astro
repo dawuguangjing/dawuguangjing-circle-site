@@ -2,8 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import RelatedWorks from '../../components/RelatedWorks.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
-import { ANIM_BASE_DELAY, ANIM_STAGGER } from '../../utils/constants';
+import { animDelay } from '../../utils/constants';
 import { categoryLabels } from '../../utils/labels';
 
 const news = await getSortedNews();
@@ -26,11 +27,21 @@ function extractExcerpt(body: string, maxLen = 100): string {
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
   <div class="page-content" data-list-context="news">
     <section class="section container">
-      <div class="section-header" data-anim>
-        <h1 class="section-title">開発ログ</h1>
-      </div>
+      <SectionHeader title="開発ログ" as="h1" />
 
-      <div class="filter-chips" id="news-filter" role="group" aria-label="記事フィルター">
+      <!-- モバイル: フィルターシート開閉トリガー -->
+      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="news-filter">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        絞り込み
+        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
+      </button>
+      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
+
+      <div class="filter-bar" id="news-filter" role="group" aria-label="記事フィルター">
+        <div class="filter-sheet-header">
+          <span class="filter-sheet-header-title">絞り込み</span>
+          <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
+        </div>
         <button class="filter-chip is-active" data-category="all">すべて</button>
         {categories.map(([key, label]) => (
           <button class="filter-chip" data-category={key}>{label}</button>
@@ -43,7 +54,7 @@ function extractExcerpt(body: string, maxLen = 100): string {
 
       <div class="news-grid" id="news-grid">
         {news.map((entry, i) => (
-          <div data-anim data-category={entry.data.category} style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+          <div data-anim data-category={entry.data.category} style={`--anim-delay: ${animDelay(i)}`}>
             <NewsCard
               slug={entry.slug}
               title={entry.data.title}
@@ -66,6 +77,20 @@ function extractExcerpt(body: string, maxLen = 100): string {
 </BaseLayout>
 
 <script>
+  import { initFilterSheet } from '../../scripts/filter-sheet';
+  import { FILTER_STAGGER } from '../../utils/constants';
+
+  // ── フィルターボトムシート（モバイル） ──
+  const { close: closeSheet } = initFilterSheet({
+    filterBarId: 'news-filter',
+    overlayId:   'filter-sheet-overlay',
+    triggerId:   'filter-sheet-trigger',
+    closeBtnId:  'filter-sheet-close',
+    lockKey:     'news-filter-sheet',
+  });
+  const sheetTrigger = document.getElementById('filter-sheet-trigger');
+  const activeBadge  = document.getElementById('filter-active-badge');
+
   const chips = document.querySelectorAll<HTMLButtonElement>('#news-filter .filter-chip');
   const items = document.querySelectorAll<HTMLElement>('#news-grid [data-category]');
   const validCategories = new Set(['all', ...Array.from(chips).map((c) => c.dataset.category ?? '').filter(Boolean)]);
@@ -74,6 +99,18 @@ function extractExcerpt(body: string, maxLen = 100): string {
   const categoryLabelMap = new Map(
     Array.from(chips).map((chip) => [chip.dataset.category ?? '', (chip.textContent ?? '').trim()])
   );
+
+  function updateBadge(category: string) {
+    if (!activeBadge) return;
+    if (category === 'all') {
+      activeBadge.setAttribute('hidden', '');
+      sheetTrigger?.classList.remove('has-active');
+    } else {
+      activeBadge.textContent = '1';
+      activeBadge.removeAttribute('hidden');
+      sheetTrigger?.classList.add('has-active');
+    }
+  }
 
   function updateCategorySummary(category: string) {
     if (!stateText || !stateClear) return;
@@ -98,7 +135,7 @@ function extractExcerpt(body: string, maxLen = 100): string {
       if (show) {
         el.style.display = '';
         el.classList.remove('is-visible');
-        el.style.setProperty('--anim-delay', `${visibleIndex * 0.06}s`);
+        el.style.setProperty('--anim-delay', `${visibleIndex * FILTER_STAGGER}s`);
         void el.offsetWidth; // force reflow to restart transition
         el.classList.add('is-visible');
         visibleIndex++;
@@ -107,6 +144,7 @@ function extractExcerpt(body: string, maxLen = 100): string {
       }
     });
     updateCategorySummary(resolvedCat);
+    updateBadge(resolvedCat);
 
     if (updateUrl) {
       const url = new URL(window.location.href);
@@ -132,5 +170,5 @@ function extractExcerpt(body: string, maxLen = 100): string {
   // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
   const urlCat = new URL(window.location.href).searchParams.get('category');
   if (urlCat) applyCategory(urlCat);
-  else updateCategorySummary('all');
+  else { updateCategorySummary('all'); updateBadge('all'); }
 </script>

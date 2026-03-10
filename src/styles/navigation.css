@@ -5,7 +5,7 @@
   left: 0;
   right: 0;
   height: 2px;
-  z-index: 250;
+  z-index: var(--z-progress-top);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.18s ease;
@@ -42,7 +42,7 @@
   height: 3px;
   width: 0%;
   background: transparent;
-  z-index: 200; /* ヘッダー(z-index:20)より十分上 */
+  z-index: var(--z-progress); /* ヘッダーより十分上 */
   transition: width 0.08s linear;
   pointer-events: none;
   overflow: visible;
@@ -71,7 +71,7 @@
   font-size: 0.82rem;
   padding: 8px 0;
   max-height: 48px;
-  transition: max-height 0.3s ease, padding 0.3s ease;
+  transition: max-height var(--dur-medium) ease, padding var(--dur-medium) ease;
   overflow: hidden;
 }
 .announcement-bar.is-hiding {
@@ -92,7 +92,7 @@
   font-weight: 500;
   text-align: center;
   flex: 1;
-  transition: text-shadow 0.3s ease;
+  transition: text-shadow var(--dur-medium) ease;
 }
 a.announcement-bar-text:hover {
   color: #fff;
@@ -108,7 +108,7 @@ a.announcement-bar-text:hover {
   cursor: pointer;
   padding: 4px;
   line-height: 0;
-  transition: color 0.2s;
+  transition: color var(--dur-quick);
 }
 .announcement-bar-close:hover { color: #fff; }
 
@@ -116,11 +116,11 @@ a.announcement-bar-text:hover {
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: var(--z-header);
   background: var(--panel);
   border-bottom: 1px solid var(--stroke);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: transform 0.3s ease;
+  transition: transform var(--dur-medium) ease;
 }
 
 .site-header.is-hidden {
@@ -138,27 +138,27 @@ a.announcement-bar-text:hover {
   font-family: var(--font-body);
   font-size: 0.95rem;
   letter-spacing: 0.02em;
-  color: var(--accent);
+  color: var(--color-logo);
   font-weight: 700;
-  transition: color 0.25s ease, transform 0.3s var(--easing);
+  transition: color var(--dur-normal) ease, transform var(--dur-medium) var(--easing);
   transform-origin: center center;
 }
 
 .logo-accent {
-  color: #7CCD40;
+  color: var(--color-logo-green);
 }
 
 .logo-pink {
-  color: #E2437F;
+  color: var(--color-logo-pink);
 }
 
 .logo-char {
   display: inline-block;
-  transition: transform 0.3s var(--easing);
+  transition: transform var(--dur-medium) var(--easing);
 }
 
 .logo:hover {
-  color: var(--accent-dark);
+  color: var(--color-logo-hover);
 }
 
 .logo:hover .logo-char,
@@ -192,7 +192,7 @@ a.announcement-bar-text:hover {
   border: none;
   position: relative;
   font-weight: 500;
-  transition: color 0.25s ease, transform 0.3s var(--easing);
+  transition: color var(--dur-normal) ease, transform var(--dur-medium) var(--easing);
   transform-origin: center bottom;
 }
 
@@ -205,8 +205,8 @@ a.announcement-bar-text:hover {
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
-  transition: width 0.3s var(--easing),
-              left 0.3s var(--easing);
+  transition: width var(--dur-medium) var(--easing),
+              left var(--dur-medium) var(--easing);
 }
 
 .nav-links a:hover {
@@ -274,7 +274,7 @@ a.announcement-bar-text:hover {
   height: 2px;
   background: var(--ink);
   border-radius: 1px;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition: transform var(--dur-medium) ease, opacity var(--dur-medium) ease;
 }
 
 .mobile-menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
@@ -298,7 +298,7 @@ a.announcement-bar-text:hover {
 /* ── Footer ── */
 .site-footer {
   padding: 40px 0 32px;
-  background: #2a2a2a;
+  background: var(--footer-bg);
   margin-top: 0;
 }
 
@@ -321,18 +321,18 @@ a.announcement-bar-text:hover {
 .footer-logo {
   font-size: 1rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--footer-text-bright);
   display: inline-block;
   margin-bottom: 6px;
 }
 
 .footer-logo:hover {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--footer-text-strong);
 }
 
 .footer-desc {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--footer-text);
   margin: 0 0 12px;
 }
 
@@ -346,19 +346,19 @@ a.announcement-bar-text:hover {
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid var(--footer-btn-border);
   border-radius: 20px;
-  color: rgba(255,255,255,0.75);
+  color: var(--footer-btn-color);
   font-size: 0.78rem;
   font-weight: 500;
   text-decoration: none;
-  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  transition: border-color var(--dur-quick), color var(--dur-quick), background var(--dur-quick);
   white-space: nowrap;
 }
 .footer-follow-btn:hover {
-  border-color: rgba(255,255,255,0.6);
+  border-color: var(--footer-btn-hover-border);
   color: #fff;
-  background: rgba(255,255,255,0.08);
+  background: var(--footer-btn-hover-bg);
 }
 .footer-follow-btn--cien:hover { border-color: var(--accent); color: var(--accent); }
 
@@ -370,7 +370,7 @@ a.announcement-bar-text:hover {
 .footer-nav h4 {
   font-size: 0.78rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--footer-text-strong);
   margin: 0 0 10px;
   letter-spacing: 0.03em;
 }
@@ -386,18 +386,18 @@ a.announcement-bar-text:hover {
 
 .footer-nav a {
   font-size: 0.82rem;
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.15s ease;
+  color: var(--footer-text);
+  transition: color var(--dur-fast) ease;
   white-space: nowrap;
 }
 
 .footer-nav a:hover {
-  color: #ffffff;
+  color: var(--footer-text-bright);
 }
 
 .footer-bottom {
   padding-top: 20px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--footer-stroke);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -406,14 +406,14 @@ a.announcement-bar-text:hover {
 
 .footer-copy {
   font-size: 0.78rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: var(--footer-text-dim);
   margin: 0;
   white-space: nowrap;
 }
 
 .footer-notice {
   font-size: 0.75rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--footer-text-muted);
   margin: 0;
   text-align: right;
 }

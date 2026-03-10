@@ -15,24 +15,38 @@ import { EXTERNAL_LINKS } from '../utils/constants';
     </p>
 
     <div class="form-wrapper" data-anim style="--anim-delay: 0.14s">
-      <div class="form-loading" id="form-loading" aria-hidden="true">読み込んでいます…</div>
+      <div class="form-loading" id="form-loading">読み込んでいます…</div>
       <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform?embedded=true"
+        data-src="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform?embedded=true"
         width="100%"
         height="800"
         frameborder="0"
         marginheight="0"
         marginwidth="0"
         title="お問い合わせフォーム"
-        loading="eager"
         id="contact-iframe"
       ></iframe>
     </div>
     <script>
-      document.getElementById('contact-iframe')?.addEventListener('load', () => {
-        const loader = document.getElementById('form-loading');
-        if (loader) loader.hidden = true;
-      }, { once: true });
+      const iframe = document.getElementById('contact-iframe') as HTMLIFrameElement | null;
+      const loader = document.getElementById('form-loading');
+      function hideLoader() {
+        if (loader && !loader.classList.contains('is-hidden')) {
+          loader.classList.add('is-hidden');
+        }
+      }
+      if (iframe && iframe.dataset.src) {
+        const observer = new IntersectionObserver((entries) => {
+          if (entries[0].isIntersecting) {
+            observer.disconnect();
+            iframe.addEventListener('load', hideLoader, { once: true });
+            iframe.src = iframe.dataset.src!;
+            // フォールバック: load が発火しない場合に備え 8 秒後に強制非表示
+            setTimeout(hideLoader, 8000);
+          }
+        }, { rootMargin: '200px' });
+        observer.observe(iframe);
+      }
     </script>
 
     <div class="card card--static" data-anim style="--anim-delay: 0.21s" data-nosnippet>
@@ -47,6 +61,7 @@ import { EXTERNAL_LINKS } from '../utils/constants';
 
 <style>
   .form-wrapper {
+    position: relative;
     border-radius: var(--radius-lg, 12px);
     overflow: hidden;
     background: var(--color-surface, #1a1a2e);
@@ -56,10 +71,23 @@ import { EXTERNAL_LINKS } from '../utils/constants';
   }
 
   .form-loading {
-    padding: 2rem;
-    text-align: center;
-    color: var(--color-text-muted, rgba(255,255,255,0.5));
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-dim);
     font-size: 0.9rem;
+    background: linear-gradient(90deg, var(--stroke) 25%, var(--bg) 50%, var(--stroke) 75%);
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+  }
+
+  .form-loading.is-hidden {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .form-wrapper iframe {

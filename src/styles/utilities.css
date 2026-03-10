@@ -81,20 +81,6 @@ html[data-theme="dark"] .nav-links a:not(.is-active) {
   color: var(--ink-bright);
 }
 
-/* ── Dark mode: ロゴ文字色を明るめに ── */
-html[data-theme="dark"] .logo {
-  color: #58A6FF;
-}
-html[data-theme="dark"] .logo:hover {
-  color: #79BBFF;
-}
-html[data-theme="dark"] .logo-accent {
-  color: #A3E635;
-}
-html[data-theme="dark"] .logo-pink {
-  color: #F472B6;
-}
-
 /* works-grid 内のラッパー div がカードを満たすように */
 .works-grid > [data-anim] {
   display: flex;
@@ -109,8 +95,8 @@ html[data-theme="dark"] .logo-pink {
   opacity: 0;
   transform: translateY(20px);
   transition:
-    opacity  0.5s var(--easing),
-    transform 0.5s var(--easing);
+    opacity  var(--dur-entrance) var(--easing),
+    transform var(--dur-entrance) var(--easing);
   transition-delay: var(--anim-delay, 0s);
 }
 [data-anim="slide-right"] {
@@ -156,7 +142,7 @@ html.is-client-nav [data-anim] {
   border-radius: var(--radius-md);
   text-decoration: none;
   color: var(--ink);
-  transition: border-color 0.2s, background 0.2s;
+  transition: border-color var(--dur-quick), background var(--dur-quick);
   max-width: 240px;
 }
 .article-pagination-link--next {
@@ -235,7 +221,7 @@ html.is-client-nav [data-anim] {
   gap: 4px;
   text-decoration: none;
   color: var(--ink);
-  transition: color 0.15s;
+  transition: color var(--dur-fast);
 }
 .sidebar-char:hover { color: var(--accent); }
 .sidebar-char-img {
@@ -244,7 +230,7 @@ html.is-client-nav [data-anim] {
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--stroke);
-  transition: border-color 0.15s;
+  transition: border-color var(--dur-fast);
 }
 .sidebar-char:hover .sidebar-char-img { border-color: var(--accent); }
 .sidebar-char-name {

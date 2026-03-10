@@ -25,6 +25,23 @@ export const ANIM_BASE_DELAY = 0.08;
 /** スクロールアニメーション: 要素ごとのスタガー間隔（秒） */
 export const ANIM_STAGGER = 0.07;
 
+/** スクロールアニメーション: CSS --anim-delay の値を計算する
+ *  @param index - 0始まりのアイテムインデックス
+ *  @param extraDelay - 追加ベース遅延（秒）、デフォルト 0 */
+export function animDelay(index: number, extraDelay = 0): string {
+  return `${ANIM_BASE_DELAY + extraDelay + index * ANIM_STAGGER}s`;
+}
+
+/** フィルター/ソート再適用時のスタガー間隔（秒）
+ *  初期ロードの ANIM_STAGGER より短く、リフロー後の軽快な印象を優先 */
+export const FILTER_STAGGER = 0.05;
+
+/** 操作ヒントの自動消去タイマー（ミリ秒） */
+export const HINT_DISMISS_MS = 3000;
+
+/** コンテキストナビ: 復帰ハイライト表示時間（ミリ秒） */
+export const RETURN_HIGHLIGHT_MS = 1500;
+
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'shinsa2-2026v1',

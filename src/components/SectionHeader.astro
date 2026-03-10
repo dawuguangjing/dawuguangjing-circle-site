@@ -1,0 +1,19 @@
+---
+interface Props {
+  title: string;
+  href?: string;
+  linkText?: string;
+  as?: 'h1' | 'h2' | 'h3';
+}
+
+const { title, href, linkText = 'すべて見る →', as: Tag = 'h2' } = Astro.props;
+---
+
+<div class="section-header" data-anim>
+  <Tag class="section-title">{title}</Tag>
+  {href ? (
+    <a class="section-link" href={href}>{linkText}</a>
+  ) : (
+    <slot />
+  )}
+</div>

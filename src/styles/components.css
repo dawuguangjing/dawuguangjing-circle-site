@@ -45,7 +45,7 @@
   position: fixed;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   left: 24px;
-  z-index: 40;
+  z-index: var(--z-float);
   width: 44px;
   height: 44px;
   display: flex;
@@ -56,10 +56,10 @@
   border-radius: 50%;
   color: var(--ink-dim);
   cursor: pointer;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  box-shadow: var(--shadow-float);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s ease, transform 0.25s ease, border-color 0.2s;
+  transition: opacity var(--dur-medium) ease, transform var(--dur-normal) ease, border-color var(--dur-quick);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
@@ -77,7 +77,7 @@
   position: fixed;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   right: 24px;
-  z-index: 40;
+  z-index: var(--z-float);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -91,7 +91,7 @@
   font-family: inherit;
   cursor: pointer;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
-  transition: opacity 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+  transition: opacity var(--dur-normal) ease, transform var(--dur-normal) ease, box-shadow var(--dur-normal) ease;
   white-space: nowrap;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
@@ -183,7 +183,7 @@
   color: #fff;
   font-weight: 600;
   font-size: 0.88rem;
-  transition: background 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  transition: background var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .store-button:hover {
@@ -241,7 +241,7 @@
 
 .store-button[data-store="fanza"] .arrow,
 .store-button[data-store="dlsite"] .arrow {
-  transition: transform 0.3s var(--easing);
+  transition: transform var(--dur-medium) var(--easing);
 }
 
 .store-button[data-store="fanza"]:hover .arrow,
@@ -251,26 +251,26 @@
 
 .store-button--trial[data-store="fanza"] {
   background: var(--panel);
-  color: #EE2737;
-  border: 1px solid #EE2737;
+  color: var(--color-fanza-trial);
+  border: 1px solid var(--color-fanza-trial);
 }
 
 .store-button--trial[data-store="fanza"]:hover {
-  background: rgba(238, 39, 55, 0.05);
-  color: #d42232;
-  box-shadow: 0 4px 12px rgba(238, 39, 55, 0.12);
+  background: var(--color-fanza-trial-bg);
+  color: var(--color-fanza-trial-hover);
+  box-shadow: 0 4px 12px var(--color-fanza-trial-shadow);
 }
 
 .store-button--trial[data-store="dlsite"] {
   background: var(--panel);
-  color: #052A83;
-  border: 1px solid #052A83;
+  color: var(--color-dlsite-trial);
+  border: 1px solid var(--color-dlsite-trial);
 }
 
 .store-button--trial[data-store="dlsite"]:hover {
-  background: rgba(5, 42, 131, 0.05);
-  color: #041e63;
-  box-shadow: 0 4px 12px rgba(5, 42, 131, 0.12);
+  background: var(--color-dlsite-trial-bg);
+  color: var(--color-dlsite-trial-hover);
+  box-shadow: 0 4px 12px var(--color-dlsite-trial-shadow);
 }
 
 .store-button .arrow {
@@ -358,11 +358,11 @@
   font-weight: 500;
   background: transparent;
   letter-spacing: 0.01em;
-  transition: color 0.3s var(--easing),
-              background 0.3s var(--easing),
-              transform 0.3s var(--easing),
-              box-shadow 0.3s var(--easing),
-              letter-spacing 0.3s var(--easing);
+  transition: color var(--dur-medium) var(--easing),
+              background var(--dur-medium) var(--easing),
+              transform var(--dur-medium) var(--easing),
+              box-shadow var(--dur-medium) var(--easing),
+              letter-spacing var(--dur-medium) var(--easing);
 }
 
 .section-link::after {

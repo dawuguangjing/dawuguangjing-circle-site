@@ -5,9 +5,10 @@ import NewsCard from '../components/NewsCard.astro';
 import GalleryCard from '../components/GalleryCard.astro';
 import HeroBanner from '../components/HeroBanner.astro';
 import DualHero from '../components/DualHero.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../utils/withBase';
-import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, ANIM_BASE_DELAY, ANIM_STAGGER, COMING_SOON_YEAR } from '../utils/constants';
+import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, animDelay, COMING_SOON_YEAR } from '../utils/constants';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
 import { buildWebSiteSchema } from '../utils/schema';
 
@@ -46,13 +47,10 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
     }
 
     <section class="section container">
-      <div class="section-header" data-anim>
-        <h2 class="section-title">作品</h2>
-        <a class="section-link" href={withBase('works/')}>すべて見る →</a>
-      </div>
+      <SectionHeader title="作品" href={withBase('works/')} />
       <div class="works-grid">
         {allWorks.map((entry, i) => (
-          <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+          <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
             <WorkCard
               slug={entry.slug}
               title={entry.data.title}
@@ -70,17 +68,14 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 
     {characters.length > 0 && (
       <section class="section container">
-        <div class="section-header" data-anim>
-          <h2 class="section-title">キャラクター</h2>
-          <a class="section-link" href={withBase('characters/')}>すべて見る →</a>
-        </div>
+        <SectionHeader title="キャラクター" href={withBase('characters/')} />
         <div class="home-char-grid">
           {characters.map((char, i) => (
             <a
               class="home-char-card"
               href={withBase(`characters/${char.slug}/`)}
               data-anim
-              style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s; --char-color: ${char.data.color}`}
+              style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
             >
               <div class="home-char-img-wrap">
                 <img
@@ -107,13 +102,10 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 
     {galleries.length > 0 && (
       <section class="section container">
-        <div class="section-header" data-anim>
-          <h2 class="section-title">ギャラリー</h2>
-          <a class="section-link" href={withBase('gallery/')}>すべて見る →</a>
-        </div>
+        <SectionHeader title="ギャラリー" href={withBase('gallery/')} />
         <div class="gallery-album-grid">
           {galleries.map((entry, i) => (
-            <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+            <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
               <GalleryCard
                 slug={entry.slug}
                 title={entry.data.title}
@@ -129,13 +121,10 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
     )}
 
     <section class="section container">
-      <div class="section-header" data-anim>
-        <h2 class="section-title">開発ログ</h2>
-        <a class="section-link" href={withBase('news/')}>すべて見る →</a>
-      </div>
+      <SectionHeader title="開発ログ" href={withBase('news/')} />
       <div class="news-grid">
         {news.map((entry, i) => (
-          <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + i * ANIM_STAGGER}s`}>
+          <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
             <NewsCard
               slug={entry.slug}
               title={entry.data.title}
@@ -145,7 +134,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
             />
           </div>
         ))}
-        <div data-anim style={`--anim-delay: ${ANIM_BASE_DELAY + news.length * ANIM_STAGGER}s`}>
+        <div data-anim style={`--anim-delay: ${animDelay(news.length)}`}>
           <a class="news-card-more" href={withBase('news/')}>
             <svg class="news-card-more-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>

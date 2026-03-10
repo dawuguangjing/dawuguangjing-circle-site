@@ -48,12 +48,20 @@ export function buildProductSchema(opts: {
 export function buildArticleSchema(opts: {
   headline: string;
   datePublished: Date;
+  dateModified?: Date;
+  image?: string;
 }) {
+  const published = opts.datePublished.toISOString().split('T')[0];
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: opts.headline,
-    datePublished: opts.datePublished.toISOString().split('T')[0],
+    datePublished: published,
+    dateModified: opts.dateModified
+      ? opts.dateModified.toISOString().split('T')[0]
+      : published,
     author,
+    publisher: author,
+    ...(opts.image ? { image: opts.image } : {}),
   };
 }

@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GalleryCard from '../../components/GalleryCard.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
 import { getSortedGallery } from '../../utils/collections';
-import { SITE_NAME, ANIM_STAGGER } from '../../utils/constants';
+import { SITE_NAME, animDelay } from '../../utils/constants';
 
 const galleries = await getSortedGallery();
 ---
@@ -13,11 +14,22 @@ const galleries = await getSortedGallery();
 >
   <div class="page-content" data-list-context="gallery">
     <section class="section container">
-      <div class="section-header" data-anim>
-        <h1 class="section-title">ギャラリー</h1>
+      <SectionHeader title="ギャラリー" as="h1">
         <span class="section-count muted">{galleries.length}件</span>
-      </div>
-      <div class="gallery-sort" role="group" aria-label="並び替え">
+      </SectionHeader>
+      <!-- モバイル: フィルターシート開閉トリガー -->
+      <button class="filter-sheet-trigger" id="filter-sheet-trigger" aria-expanded="false" aria-controls="gallery-filter-bar">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        並び替え
+        <span class="filter-sheet-trigger-badge" id="filter-active-badge" hidden>0</span>
+      </button>
+      <div class="filter-sheet-overlay" id="filter-sheet-overlay" aria-hidden="true"></div>
+
+      <div class="filter-bar" id="gallery-filter-bar" role="group" aria-label="並び替え">
+        <div class="filter-sheet-header">
+          <span class="filter-sheet-header-title">並び替え</span>
+          <button class="filter-sheet-close" id="filter-sheet-close">閉じる</button>
+        </div>
         <button class="filter-chip is-active" data-sort="newest">新着順</button>
         <button class="filter-chip" data-sort="oldest">古い順</button>
         <button class="filter-chip" data-sort="title">タイトル順</button>
@@ -31,7 +43,7 @@ const galleries = await getSortedGallery();
           {galleries.map((entry, i) => (
             <div
               data-anim
-              style={`--anim-delay: ${i * ANIM_STAGGER}s`}
+              style={`--anim-delay: ${animDelay(i)}`}
               data-release={entry.data.releaseDate.getTime().toString()}
               data-title={entry.data.title}
             >
@@ -56,7 +68,32 @@ const galleries = await getSortedGallery();
 </BaseLayout>
 
 <script>
-  const chips = document.querySelectorAll<HTMLButtonElement>('.gallery-sort [data-sort]');
+  import { initFilterSheet } from '../../scripts/filter-sheet';
+
+  // ── フィルターボトムシート（モバイル） ──
+  const { close: closeSheet } = initFilterSheet({
+    filterBarId: 'gallery-filter-bar',
+    overlayId:   'filter-sheet-overlay',
+    triggerId:   'filter-sheet-trigger',
+    closeBtnId:  'filter-sheet-close',
+    lockKey:     'gallery-filter-sheet',
+  });
+  const sheetTrigger = document.getElementById('filter-sheet-trigger');
+  const activeBadge  = document.getElementById('filter-active-badge');
+
+  function updateGalleryBadge(sort: string) {
+    if (!activeBadge) return;
+    if (sort === 'newest') {
+      activeBadge.setAttribute('hidden', '');
+      sheetTrigger?.classList.remove('has-active');
+    } else {
+      activeBadge.textContent = '1';
+      activeBadge.removeAttribute('hidden');
+      sheetTrigger?.classList.add('has-active');
+    }
+  }
+
+  const chips = document.querySelectorAll<HTMLButtonElement>('#gallery-filter-bar [data-sort]');
   const grid = document.getElementById('gallery-grid');
   const validSorts = new Set(['newest', 'oldest', 'title']);
   const stateText = document.getElementById('gallery-state-text');
@@ -70,10 +107,11 @@ const galleries = await getSortedGallery();
     if (sort === 'newest') {
       stateText.textContent = '現在条件: すべて';
       stateClear.hidden = true;
-      return;
+    } else {
+      stateText.textContent = `現在条件: 並び順 ${sortLabelMap.get(sort) ?? sort}`;
+      stateClear.hidden = false;
     }
-    stateText.textContent = `現在条件: 並び順 ${sortLabelMap.get(sort) ?? sort}`;
-    stateClear.hidden = false;
+    updateGalleryBadge(sort);
   }
 
   function applySort(sort: string, updateUrl = true) {

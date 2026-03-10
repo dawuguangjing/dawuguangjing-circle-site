@@ -7,6 +7,7 @@ import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
 import { getWorkIndex, resolveImageCount } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
+import StoreSidebar from '../../components/StoreSidebar.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
@@ -51,6 +52,18 @@ const allCharacters = await getCollection('characters');
 const relatedCharacters = allCharacters
   .filter((c) => (c.data.gallerySlugs ?? []).includes(entry.slug))
   .sort((a, b) => a.data.order - b.data.order);
+const sidebarChars = relatedCharacters.map((c) => ({
+  slug: c.slug,
+  name: c.data.name,
+  cover: c.data.cover,
+}));
+
+const galleryPurchaseLinks = hasStoreLinks
+  ? [
+      ...(data.platformLinks!.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks!.fanza,  store: 'fanza'  }] : []),
+      ...(data.platformLinks!.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks!.dlsite, store: 'dlsite' }] : []),
+    ]
+  : relatedWorkLinks;
 ---
 
 <BaseLayout
@@ -135,115 +148,78 @@ const relatedCharacters = allCharacters
         </div>
 
         <!-- Sidebar -->
-        <div class="store-sidebar" id="purchase-section" data-anim="slide-right" style="--anim-delay: 0.15s">
-          <!-- Age Rating -->
-          <div>
-            {data.isR18
-              ? <span class="badge badge--r18">R18 作品</span>
-              : <span class="badge">全年齢</span>
-            }
-          </div>
-
-          <!-- Info Table -->
-          <h3>情報</h3>
-          <table class="spec-table">
-            <tbody>
-              <tr>
-                <td>リリース日</td>
-                <td>{formatDate(data.releaseDate)}</td>
-              </tr>
-              <tr>
-                <td>収録枚数</td>
-                <td>{imageCount}枚</td>
-              </tr>
-              {videoCount > 0 && (
+        <StoreSidebar
+          isR18={data.isR18}
+          trialLinks={relatedWorkTrialLinks}
+          purchaseLinks={galleryPurchaseLinks}
+          characters={sidebarChars}
+          location="gallery_detail"
+          animDelay="0.15s"
+        >
+          <Fragment slot="before-trial">
+            <h3>情報</h3>
+            <table class="spec-table">
+              <tbody>
                 <tr>
-                  <td>動画本数</td>
-                  <td>{videoCount}本</td>
+                  <td>リリース日</td>
+                  <td>{formatDate(data.releaseDate)}</td>
                 </tr>
-              )}
-            </tbody>
-          </table>
+                <tr>
+                  <td>収録枚数</td>
+                  <td>{imageCount}枚</td>
+                </tr>
+                {videoCount > 0 && (
+                  <tr>
+                    <td>動画本数</td>
+                    <td>{videoCount}本</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </Fragment>
 
-          <!-- Trial Links -->
-          {relatedWorkTrialLinks.length > 0 && (
-            <>
-              <h3>体験版を試す</h3>
-              <StoreButtonGroup links={relatedWorkTrialLinks} trial location="gallery_detail" />
-            </>
-          )}
-
-          <!-- Purchase Links -->
-          {(hasStoreLinks || relatedWorkLinks.length > 0) && (
-            <>
-              <h3>購入する</h3>
-              {hasStoreLinks ? (
-                <StoreButtonGroup links={[
-                  ...(data.platformLinks!.fanza  ? [{ label: 'FANZA で購入',  href: data.platformLinks!.fanza,  store: 'fanza'  }] : []),
-                  ...(data.platformLinks!.dlsite ? [{ label: 'DLsite で購入', href: data.platformLinks!.dlsite, store: 'dlsite' }] : []),
-                ]} location="gallery_detail" />
-              ) : (
-                <StoreButtonGroup links={relatedWorkLinks} location="gallery_detail" />
-              )}
-            </>
-          )}
-
-          <!-- Related Characters -->
-          {relatedCharacters.length > 0 && (
-            <div class="sidebar-divider sidebar-chars">
-              <h3>登場キャラクター</h3>
-              <div class="sidebar-char-list">
-                {relatedCharacters.map((c) => (
-                  <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.data.name}>
-                    <img class="sidebar-char-img" src={c.data.cover} alt={c.data.name} width="60" height="60" loading="lazy" />
-                    <span class="sidebar-char-name">{c.data.name}</span>
-                  </a>
-                ))}
+          <Fragment slot="after-chars">
+            {relatedWorks.length > 0 && (
+              <div class="sidebar-divider">
+                <h3>関連作品</h3>
+                {relatedWorks.map((work) => {
+                  const wPurchaseLinks = buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES);
+                  const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
+                  return (
+                    <div class="related-work-card">
+                      <a class="related-work-card-link-wrap" href={withBase(`works/${work.slug}/`)}>
+                        <img
+                          src={withBase(work.data.images.cover)}
+                          alt={`${work.data.title} cover`}
+                          width="240"
+                          height="160"
+                          loading="lazy"
+                        />
+                        <div class="related-work-card-body">
+                          <p class="related-work-card-title">{work.data.title}</p>
+                          {work.data.shortDescription && (
+                            <p class="related-work-card-desc">{work.data.shortDescription}</p>
+                          )}
+                          <span class="section-link related-work-card-detail">詳細を見る →</span>
+                        </div>
+                      </a>
+                      {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
+                        <div class="related-work-card-cta">
+                          {wTrialLinks.length > 0 && (
+                            <StoreButtonGroup links={wTrialLinks} trial location="gallery_related_work" />
+                          )}
+                          {wPurchaseLinks.length > 0 && (
+                            <StoreButtonGroup links={wPurchaseLinks} location="gallery_related_work" />
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            </div>
-          )}
-
-          <!-- Related Works -->
-          {relatedWorks.length > 0 && (
-            <div class="sidebar-divider">
-              <h3>関連作品</h3>
-              {relatedWorks.map((work) => {
-                const wPurchaseLinks = buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES);
-                const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
-                return (
-                  <div class="related-work-card">
-                    <a class="related-work-card-link-wrap" href={withBase(`works/${work.slug}/`)}>
-                      <img
-                        src={withBase(work.data.images.cover)}
-                        alt={`${work.data.title} cover`}
-                        width="240"
-                        height="160"
-                        loading="lazy"
-                      />
-                      <div class="related-work-card-body">
-                        <p class="related-work-card-title">{work.data.title}</p>
-                        {work.data.shortDescription && (
-                          <p class="related-work-card-desc">{work.data.shortDescription}</p>
-                        )}
-                        <span class="section-link related-work-card-detail">詳細を見る →</span>
-                      </div>
-                    </a>
-                    {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
-                      <div class="related-work-card-cta">
-                        {wTrialLinks.length > 0 && (
-                          <StoreButtonGroup links={wTrialLinks} trial location="gallery_related_work" />
-                        )}
-                        {wPurchaseLinks.length > 0 && (
-                          <StoreButtonGroup links={wPurchaseLinks} location="gallery_related_work" />
-                        )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
+            )}
+          </Fragment>
+        </StoreSidebar>
       </div>
     </section>
 
