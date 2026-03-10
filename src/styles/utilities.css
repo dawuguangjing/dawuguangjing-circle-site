@@ -30,9 +30,79 @@ html[data-theme="dark"] .about-page .external-link-desc {
   color: var(--ink-bright);
 }
 
-/* ── Dark mode: FAQページの説明文とカード本文 ── */
+/* ── FAQ accordion ── */
+.faq-item {
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  padding: 0;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::marker {
+  content: "";
+}
+
+.faq-item summary::after {
+  content: "";
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-left: 12px;
+  background: var(--ink-dim);
+  clip-path: polygon(25% 20%, 75% 50%, 25% 80%);
+  transition: transform 0.25s ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.faq-item summary h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: var(--ink-bright);
+  font-weight: 600;
+}
+
+.faq-item summary:hover {
+  background: var(--accent-alpha-5);
+}
+
+.faq-item p,
+.faq-item .button {
+  padding: 0 20px;
+  margin: 0 0 16px;
+}
+
+.faq-item p {
+  font-size: 0.9rem;
+  color: var(--ink-dim);
+  line-height: 1.6;
+}
+
+.faq-item p:first-of-type {
+  margin-top: -4px;
+}
+
+/* ── Dark mode: FAQページ ── */
 html[data-theme="dark"] .faq-page .section-lead,
-html[data-theme="dark"] .faq-page .card p {
+html[data-theme="dark"] .faq-page .faq-item p {
   color: var(--ink-bright);
 }
 
