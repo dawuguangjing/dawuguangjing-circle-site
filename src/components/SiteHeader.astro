@@ -86,7 +86,10 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     }, { signal });
 
     nav.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
-      link.addEventListener('click', () => closeMenu(), { signal });
+      link.addEventListener('click', () => {
+        closeMenu();
+        requestAnimationFrame(() => toggle.focus());
+      }, { signal });
     });
 
     // 外側タップで閉じる

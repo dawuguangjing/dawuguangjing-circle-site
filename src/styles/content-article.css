@@ -76,6 +76,7 @@
   border: 1px solid var(--stroke);
   border-radius: var(--radius-md);
   padding: 16px 20px;
+  scroll-margin-top: 68px;
 }
 .toc-heading {
   font-size: 0.78rem;
@@ -177,6 +178,7 @@
   margin: 28px 0 10px;
   padding-bottom: 6px;
   border-bottom: 2px solid var(--accent);
+  scroll-margin-top: 68px;
 }
 
 .article-body h3 {
@@ -184,6 +186,7 @@
   font-weight: 600;
   color: var(--ink-bright);
   margin: 20px 0 8px;
+  scroll-margin-top: 68px;
 }
 
 .article-body strong {
@@ -312,9 +315,6 @@
     font-size: 1rem;
   }
 
-  h2, h3 {
-    scroll-margin-top: 64px;
-  }
 
   .detail-layout {
     grid-template-columns: 1fr;

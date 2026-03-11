@@ -506,9 +506,10 @@ a.announcement-bar-text:hover {
   }
 
   .nav-links a.is-active {
-    background: var(--accent-alpha-05);
+    background: var(--accent-alpha-08);
     border-left-color: var(--accent);
-    color: var(--accent);
+    color: var(--cta);
+    font-weight: 600;
   }
 
   .nav-links a.is-active .nav-char {
