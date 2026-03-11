@@ -237,6 +237,15 @@ html.is-client-nav [data-anim] {
   [data-anim] { opacity: 1; transform: none; transition: none; }
 }
 
+/* ── Filter debounce feedback ── */
+.is-filtering {
+  opacity: 0.6;
+  transition: opacity var(--dur-fast) ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .is-filtering { transition: none; }
+}
+
 /* ── TOC scroll spy active ── */
 .toc-item a.is-active {
   color: var(--accent);

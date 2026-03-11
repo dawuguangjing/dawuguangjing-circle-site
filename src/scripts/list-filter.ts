@@ -125,6 +125,7 @@ export function setupListFilter(config: ListFilterConfig) {
   const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function applyAll(scroll: boolean) {
+    grid!.classList.remove('is-filtering');
     // 1) 表示判定
     let visibleCount = 0;
     const toHide: HTMLElement[] = [];
@@ -207,6 +208,7 @@ export function setupListFilter(config: ListFilterConfig) {
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
   function applyAllDebounced(scroll: boolean) {
     if (debounceTimer) clearTimeout(debounceTimer);
+    grid!.classList.add('is-filtering');
     debounceTimer = setTimeout(() => applyAll(scroll), FILTER_DEBOUNCE_MS);
   }
 
