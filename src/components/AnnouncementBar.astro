@@ -43,11 +43,11 @@ const { message, href, storageKey } = Astro.props;
     const key = bar.dataset.storageKey!;
 
     try {
-      if (localStorage.getItem(key)) { bar.remove(); return; }
+      if (sessionStorage.getItem(key)) { bar.remove(); return; }
     } catch (e) {}
 
     function dismiss() {
-      try { localStorage.setItem(key, '1'); } catch (e) {}
+      try { sessionStorage.setItem(key, '1'); } catch (e) {}
       bar.classList.add('is-hiding');
       // transitionend の代わりに setTimeout で確実に除去
       setTimeout(() => bar.remove(), 350);

@@ -144,6 +144,8 @@ function extractExcerpt(body: string, maxLen = 100): string {
         url.searchParams.set('category', resolvedCat);
       }
       history.replaceState(null, '', url.toString());
+      const grid = document.getElementById('news-grid');
+      if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -159,6 +161,6 @@ function extractExcerpt(body: string, maxLen = 100): string {
 
   // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
   const urlCat = new URL(window.location.href).searchParams.get('category');
-  if (urlCat) applyCategory(urlCat);
+  if (urlCat) applyCategory(urlCat, false);
   else { updateCategorySummary('all'); updateBadge('all'); }
 </script>

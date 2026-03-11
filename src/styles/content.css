@@ -1410,14 +1410,24 @@ html.age-verified .age-overlay {
 
 /* モバイル向け TOC ジャンプリンク（デスクトップでは aside に表示されるため非表示） */
 .toc-jump-link {
-  display: inline-block;
-  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 500;
   color: var(--accent);
   text-decoration: none;
   margin-bottom: 16px;
-  padding: 4px 0;
+  padding: 6px 14px;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-pill);
+  transition: background var(--dur-quick) ease, color var(--dur-quick) ease;
 }
-.toc-jump-link:hover { text-decoration: underline; }
+.toc-jump-link:hover {
+  background: var(--accent);
+  color: #fff;
+  text-decoration: none;
+}
 @media (min-width: 769px) {
   .toc-jump-link { display: none; }
 }
@@ -1909,6 +1919,15 @@ html.age-verified .age-overlay {
   .nav-links.is-open {
     display: flex;
     animation: menu-slide-down 0.18s ease;
+  }
+
+  .nav-links.is-closing {
+    display: flex;
+    animation: menu-slide-up 0.15s ease forwards;
+  }
+  @keyframes menu-slide-up {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-6px); }
   }
 
   .nav-links a {

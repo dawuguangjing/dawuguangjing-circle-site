@@ -112,6 +112,18 @@ a.announcement-bar-text:hover {
 }
 .announcement-bar-close:hover { color: #fff; }
 
+@keyframes bar-hint {
+  0%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-3px); }
+  60% { transform: translateY(0); }
+}
+.announcement-bar {
+  animation: bar-hint 0.6s ease 1.5s 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .announcement-bar { animation: none; }
+}
+
 /* ── Header ── */
 .site-header {
   position: sticky;

@@ -45,11 +45,19 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
   function closeMenu() {
     const { toggle, nav } = getMenuElements();
-    if (!toggle || !nav) return;
+    if (!toggle || !nav || !nav.classList.contains('is-open')) return;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
-    nav.classList.remove('is-open');
-    unlockScroll('mobile-menu');
+    nav.classList.add('is-closing');
+    nav.addEventListener('animationend', () => {
+      nav.classList.remove('is-open', 'is-closing');
+      unlockScroll('mobile-menu');
+    }, { once: true });
+    // フォールバック
+    setTimeout(() => {
+      nav.classList.remove('is-open', 'is-closing');
+      unlockScroll('mobile-menu');
+    }, 200);
   }
 
   function openMenu() {

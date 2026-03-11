@@ -114,6 +114,17 @@
   transform: translateY(12px);
 }
 
+@keyframes fab-attention {
+  0%, 100% { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28); }
+  50% { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28), 0 0 0 6px rgba(var(--cta-rgb, 59, 130, 246), 0.3); }
+}
+.fab-purchase:not(.is-hidden) {
+  animation: fab-attention 1.5s ease 0.3s 2;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-purchase:not(.is-hidden) { animation: none; }
+}
+
 /* FAB が表示されている画面幅では back-to-top を上に逃がして重なりを防ぐ */
 @media (max-width: 480px) {
   .back-to-top { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }

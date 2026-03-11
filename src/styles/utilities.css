@@ -384,6 +384,7 @@ html.theme-transitioning *::after {
 /* ── Scroll offset for filter/sort auto-scroll ── */
 #works-grid,
 #gallery-grid,
-#char-list-grid {
+#char-list-grid,
+#news-grid {
   scroll-margin-top: 72px;
 }
