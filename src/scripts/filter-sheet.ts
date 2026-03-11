@@ -28,7 +28,10 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
   const trigger   = document.getElementById(config.triggerId);
   const closeBtn  = document.getElementById(config.closeBtnId);
 
+  let prevFocus: HTMLElement | null = null;
+
   function open() {
+    prevFocus = document.activeElement as HTMLElement;
     filterBar?.classList.add('is-open');
     overlay?.classList.add('is-visible');
     overlay?.removeAttribute('aria-hidden');
@@ -42,6 +45,7 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
     overlay?.setAttribute('aria-hidden', 'true');
     trigger?.setAttribute('aria-expanded', 'false');
     unlockScroll(config.lockKey);
+    if (prevFocus && typeof prevFocus.focus === 'function') prevFocus.focus();
   }
 
   trigger?.addEventListener('click', () => {

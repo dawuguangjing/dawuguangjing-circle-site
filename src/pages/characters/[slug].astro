@@ -266,8 +266,13 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
 }
 
-.char-hero-img-wrap:hover .char-cover-zoom-hint {
+.char-hero-img-wrap:hover .char-cover-zoom-hint,
+.char-hero-img-wrap:focus-visible .char-cover-zoom-hint {
   opacity: 1;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .char-cover-zoom-hint { opacity: 0.7; }
 }
 
 .char-hero-text {
