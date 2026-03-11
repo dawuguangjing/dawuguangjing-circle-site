@@ -45,7 +45,7 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'shinsa2-2026v1',
-  message: '🎉 従順審査2 制作開始！続報は開発ログまたは、Ci-enで配信中',
+  message: '🎉 従順審査2 制作開始！続報は開発ログ・Ci-enで配信中',
   href: 'https://ci-en.dlsite.com/creator/35269',
 };
 
