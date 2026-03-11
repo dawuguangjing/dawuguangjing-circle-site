@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { withBase } from '../utils/withBase';
 import { animDelay, ANIM_STAGGER } from '../utils/constants';
 ---
@@ -7,6 +8,7 @@ import { animDelay, ANIM_STAGGER } from '../utils/constants';
 <BaseLayout title="FAQ" description="よくある質問。">
   <div class="page-content faq-page">
   <section class="section container">
+    <Breadcrumb crumbs={[{ label: 'FAQ' }]} />
     <h1 class="section-title" data-anim>FAQ</h1>
     <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>よくある質問にお答えします。</p>
     <div class="grid">

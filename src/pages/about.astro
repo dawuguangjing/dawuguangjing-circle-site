@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { withBase } from '../utils/withBase';
 import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 ---
@@ -7,6 +8,7 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 <BaseLayout title="サークル情報" description="サークル概要と方針。">
   <div class="page-content about-page">
   <section class="section container">
+    <Breadcrumb crumbs={[{ label: 'サークル情報' }]} />
     <h1 class="section-title" data-anim>サークル情報</h1>
     <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>
       訪問者・ストア・関係者向けの簡潔なプロフィールです。

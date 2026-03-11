@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 ---
 
 <BaseLayout title="プライバシー" description="プライバシーポリシー概要。">
   <div class="page-content">
   <section class="section container">
+    <Breadcrumb crumbs={[{ label: 'プライバシー' }]} />
     <h1 class="section-title">プライバシー</h1>
     <p class="section-lead">
       当サイトは情報提供のみで、決済は行いません。

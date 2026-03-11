@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
 import { withBase } from '../utils/withBase';
 import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 ---
@@ -10,6 +11,7 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 >
   <div class="page-content contact-page">
   <section class="section container">
+    <Breadcrumb crumbs={[{ label: 'お問い合わせ' }]} />
     <h1 class="section-title" data-anim>お問い合わせ</h1>
     <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>
       ご質問・ご意見・不具合報告は、下記フォームよりご連絡ください。
