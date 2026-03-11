@@ -195,7 +195,7 @@ export function setupListFilter(config: ListFilterConfig) {
 
     // 5) スクロール
     if (scroll) {
-      grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      grid.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
     }
   }
 

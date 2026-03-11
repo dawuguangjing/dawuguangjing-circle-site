@@ -250,6 +250,12 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   transform: scale(1.03);
 }
 
+.char-hero-img-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-lg);
+}
+
 .char-cover-zoom-hint {
   position: absolute;
   bottom: 10px;

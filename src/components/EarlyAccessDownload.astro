@@ -54,7 +54,10 @@ const encodedPw = btoa(encodeURIComponent(password));
     const error  = wrapper.querySelector('.ea-error');
     const dlBtn  = wrapper.querySelector('.ea-download');
 
-    // 確認ボタンのみで判定（Enter キーや入力変化では判定しない）
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit.click();
+    });
+
     submit.addEventListener('click', () => {
       error.hidden = true;
 

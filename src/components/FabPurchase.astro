@@ -32,7 +32,8 @@ const { targetId } = Astro.props;
       observer.observe(target);
 
       fab.addEventListener('click', () => {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        target.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
       });
     }
   }
