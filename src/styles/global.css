@@ -5,6 +5,10 @@
 @import './lightbox.css';
 @import './filter-controls.css';
 @import './age-gate.css';
+@import './content-works.css';
+@import './content-news.css';
+@import './content-gallery.css';
+@import './content-article.css';
 @import './content.css';
 @import './hero.css';
 @import './utilities.css';

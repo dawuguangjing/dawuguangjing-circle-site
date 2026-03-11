@@ -430,3 +430,109 @@ a.announcement-bar-text:hover {
   text-align: right;
 }
 
+/* ── Responsive (768px) ── */
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+
+  .site-header-inner {
+    height: 52px;
+    padding: 0 4px;
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--panel);
+    border-top: 1px solid var(--stroke);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    padding: 8px 0 20px;
+    z-index: var(--z-dropdown);
+  }
+
+  @keyframes menu-slide-down {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .nav-links.is-open {
+    display: flex;
+    animation: menu-slide-down 0.18s ease;
+  }
+
+  .nav-links.is-closing {
+    display: flex;
+    animation: menu-slide-up var(--dur-fast) ease forwards;
+  }
+  @keyframes menu-slide-up {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-6px); }
+  }
+
+  .nav-links a {
+    padding: 0 20px;
+    min-height: 52px;
+    font-size: 1rem;
+    border-radius: 0;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-links a:hover {
+    transform: none;
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  .nav-links a:hover .nav-char {
+    animation: none;
+  }
+
+  .nav-links a:active {
+    transform: none;
+    background: rgba(0, 0, 0, 0.08);
+    transition-duration: 0.05s;
+  }
+
+  .nav-links a::after {
+    display: none;
+  }
+
+  .nav-links a.is-active {
+    background: var(--accent-alpha-05);
+    border-left-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .nav-links a.is-active .nav-char {
+    animation: none;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .footer-nav-group {
+    gap: 24px 32px;
+    flex-wrap: wrap;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .footer-notice {
+    text-align: left;
+  }
+}
+

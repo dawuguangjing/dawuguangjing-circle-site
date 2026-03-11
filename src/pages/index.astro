@@ -72,12 +72,12 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
         <div class="home-char-grid">
           {characters.map((char, i) => (
             <a
-              class="home-char-card"
+              class="char-card home-char-card"
               href={withBase(`characters/${char.slug}/`)}
               data-anim
               style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
             >
-              <div class="home-char-img-wrap">
+              <div class="char-card-img-wrap">
                 <img
                   src={char.data.cover}
                   alt={char.data.name}
@@ -85,15 +85,15 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
                   height="213"
                   loading="lazy"
                 />
-                <div class="home-char-overlay" aria-hidden="true">
-                  <span class="home-char-view">プロフィールを見る</span>
+                <div class="char-card-overlay" aria-hidden="true">
+                  <span class="char-card-view home-char-view">プロフィールを見る</span>
                 </div>
               </div>
-              <div class="home-char-body">
-                <p class="home-char-reading">{char.data.nameReading}</p>
-                <h3 class="home-char-name">{char.data.name}</h3>
+              <div class="char-card-body home-char-body">
+                <p class="char-card-reading">{char.data.nameReading}</p>
+                <h3 class="char-card-name">{char.data.name}</h3>
               </div>
-              <div class="home-char-accent" aria-hidden="true"></div>
+              <div class="char-card-accent" aria-hidden="true"></div>
             </a>
           ))}
         </div>
@@ -162,105 +162,33 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   gap: 14px;
 }
 
-.home-char-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
-}
-
-.home-char-img-wrap {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.home-char-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 14px;
-  opacity: 0;
-  transition: opacity var(--dur-medium) ease;
+/* ── Size overrides for compact home cards ── */
+.home-char-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .home-char-view {
-  color: #fff;
   font-size: 0.72rem;
-  font-weight: 600;
   padding: 4px 12px;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-}
-
-.home-char-img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform var(--dur-slow) var(--easing);
 }
 
 .home-char-body {
   padding: 10px 12px;
-  display: flex;
-  flex-direction: column;
   gap: 2px;
 }
 
-.home-char-reading {
+.char-card-reading {
   font-size: 0.65rem;
-  color: var(--ink-dim);
-  margin: 0;
-  letter-spacing: 0.05em;
 }
 
-.home-char-name {
+.char-card-name {
   font-size: 0.88rem;
-  font-weight: 700;
-  margin: 0;
-  color: var(--char-color, var(--accent));
   letter-spacing: 0.02em;
 }
 
-.home-char-accent {
-  height: 3px;
-  background: var(--char-color, var(--accent));
-  opacity: 0;
-  transition: opacity var(--dur-normal) ease;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .home-char-card:hover {
-    border-color: var(--char-color, var(--accent));
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-  }
-
-  .home-char-card:hover .home-char-overlay {
-    opacity: 1;
-  }
-
-  .home-char-card:hover .home-char-img-wrap img {
-    transform: scale(1.05);
-  }
-
-  .home-char-card:hover .home-char-accent {
-    opacity: 1;
-  }
+.char-card-overlay {
+  padding-bottom: 14px;
 }
 
 @media (max-width: 480px) {
@@ -275,10 +203,6 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 }
 
 @media (hover: none) {
-  .home-char-accent {
-    opacity: 1;
-  }
-
   .home-char-card:active {
     transform: scale(0.97);
     transition: transform 0.1s ease;

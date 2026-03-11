@@ -51,7 +51,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       <div class="char-list-grid" id="char-list-grid">
         {characters.map((char, i) => (
           <a
-            class="char-list-card"
+            class="char-card char-list-card"
             href={withBase(`characters/${char.slug}/`)}
             data-anim
             data-work={char.data.workSlug}
@@ -59,9 +59,8 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
             data-name={char.data.name}
             style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
           >
-            <div class="char-list-img-wrap">
+            <div class="char-card-img-wrap">
               <img
-                class="char-list-img"
                 src={char.data.cover}
                 alt={char.data.name}
                 sizes="(max-width: 480px) calc(50vw - 18px), (max-width: 1100px) calc(33vw - 28px), 260px"
@@ -70,18 +69,18 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
                 loading={i === 0 ? 'eager' : 'lazy'}
                 fetchpriority={i === 0 ? 'high' : undefined}
               />
-              <div class="char-list-overlay">
-                <span class="char-list-view">プロフィールを見る</span>
+              <div class="char-card-overlay">
+                <span class="char-card-view char-list-view">プロフィールを見る</span>
               </div>
             </div>
-            <div class="char-list-body">
-              <p class="char-list-reading">{char.data.nameReading}</p>
-              <h2 class="char-list-name">{char.data.name}</h2>
+            <div class="char-card-body char-list-body">
+              <p class="char-card-reading">{char.data.nameReading}</p>
+              <h2 class="char-card-name">{char.data.name}</h2>
               <p class="char-list-personality">{char.data.personality}</p>
               <!-- タッチデバイスでも CTA を認識できるよう常時表示 -->
               <span class="char-list-cta" aria-hidden="true">プロフィールを見る →</span>
             </div>
-            <div class="char-list-accent" aria-hidden="true"></div>
+            <div class="char-card-accent" aria-hidden="true"></div>
           </a>
         ))}
       </div>
@@ -96,92 +95,34 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   gap: 20px;
 }
 
-.char-list-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  text-decoration: none;
-  color: inherit;
-  box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
-}
-
+/* ── Size overrides for full-size list cards ── */
 .char-list-card:hover {
-  border-color: var(--char-color, var(--accent));
   transform: translateY(-5px);
   box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
 }
 
-.char-list-img-wrap {
-  position: relative;
-  aspect-ratio: 3 / 4;
-  overflow: hidden;
-  background: var(--bg);
-}
-
-.char-list-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform var(--dur-slow) var(--easing);
-}
-
-.char-list-card:hover .char-list-img {
-  transform: scale(1.05);
-}
-
-.char-list-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  padding-bottom: 20px;
-  opacity: 0;
-  transition: opacity var(--dur-medium) ease;
-}
-
-.char-list-card:hover .char-list-overlay {
-  opacity: 1;
-}
-
 .char-list-view {
-  color: #fff;
   font-size: 0.82rem;
-  font-weight: 600;
   padding: 6px 16px;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
-  letter-spacing: 0.04em;
 }
 
 .char-list-body {
   padding: 16px;
-  display: flex;
-  flex-direction: column;
   gap: 4px;
   flex: 1;
 }
 
-.char-list-reading {
+.char-card-reading {
   font-size: 0.72rem;
-  color: var(--ink-dim);
-  margin: 0;
-  letter-spacing: 0.05em;
 }
 
-.char-list-name {
+.char-card-name {
   font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0;
-  color: var(--char-color, var(--accent));
   letter-spacing: 0.03em;
+}
+
+.char-card-overlay {
+  padding-bottom: 20px;
 }
 
 .char-list-personality {
@@ -204,18 +145,6 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   letter-spacing: 0.03em;
   margin-top: auto;
   padding-top: 10px;
-}
-
-/* 下部のカラーアクセントバー */
-.char-list-accent {
-  height: 3px;
-  background: var(--char-color, var(--accent));
-  opacity: 0;
-  transition: opacity var(--dur-normal) ease;
-}
-
-.char-list-card:hover .char-list-accent {
-  opacity: 1;
 }
 
 @media (max-width: 480px) {

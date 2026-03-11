@@ -2,53 +2,11 @@
 // 一覧ページのフィルタ・ソート・URL同期・バッジ更新を一元管理する。
 
 import { FILTER_STAGGER } from '../utils/constants';
+import type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
+import { getActiveFilterValues, getActiveSortValue, restoreFilterFromUrl, syncFilterStateToUrl } from './filter-url';
 
-// ── 型定義 ──
-
-export interface FilterDimension {
-  type: 'filter-single' | 'filter-multi';
-  /** URL パラメータ名 */
-  paramName: string;
-  /** デフォルト値（'all' 等） */
-  defaultValue: string;
-  /** チップの CSS セレクタ */
-  chipSelector: string;
-  /** chip.dataset のキー名（data-filter → 'filter'） */
-  chipDataKey: string;
-  /** item.dataset のキー名（data-category → 'category'）。filterTest がある場合は不要 */
-  itemDataKey?: string;
-  /** filter-multi 用カスタム述語マップ */
-  filterTest?: Record<string, (el: HTMLElement) => boolean>;
-  /** 状態サマリーの接頭辞（例: '絞り込み'） */
-  summaryPrefix?: string;
-}
-
-export interface SortDimension {
-  type: 'sort';
-  paramName: string;
-  defaultValue: string;
-  chipSelector: string;
-  chipDataKey: string;
-  sortFn: (a: HTMLElement, b: HTMLElement, value: string) => number;
-  summaryPrefix?: string;
-}
-
-export type Dimension = FilterDimension | SortDimension;
-
-export interface ListFilterConfig {
-  /** 状態サマリー要素のプレフィックス（#{stateId}-state-text 等） */
-  stateId: string;
-  /** グリッドコンテナの CSS セレクタ */
-  gridSelector: string;
-  /** フィルタ対象アイテムの CSS セレクタ */
-  itemSelector: string;
-  /** フィルタ/ソートの次元定義 */
-  dimensions: Dimension[];
-  /** --anim-delay 再計算の有無（デフォルト: true） */
-  animateDelay?: boolean;
-  /** フィルタ/ソート適用後のコールバック */
-  onUpdate?: (visibleCount: number, totalCount: number) => void;
-}
+// Re-export types for public API
+export type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
 
 // ── ヘルパー ──
 
@@ -101,24 +59,14 @@ export function setupListFilter(config: ListFilterConfig) {
   const filterDims = dimensions.filter((d): d is FilterDimension => d.type === 'filter-single' || d.type === 'filter-multi');
   const sortDims = dimensions.filter((d): d is SortDimension => d.type === 'sort');
 
-  // ── 状態取得 ──
+  // ── 状態取得ラッパー ──
 
   function getActiveValues(dim: FilterDimension): string[] {
-    const chips = dimChips.get(dim)!;
-    if (dim.type === 'filter-multi') {
-      return chips
-        .filter(c => c.classList.contains('is-active') && chipValue(c, dim.chipDataKey) !== dim.defaultValue)
-        .map(c => chipValue(c, dim.chipDataKey));
-    }
-    const active = chips.find(c => c.classList.contains('is-active'));
-    const val = active ? chipValue(active, dim.chipDataKey) : dim.defaultValue;
-    return val === dim.defaultValue ? [] : [val];
+    return getActiveFilterValues(dimChips.get(dim)!, dim);
   }
 
-  function getActiveSortValue(dim: SortDimension): string {
-    const chips = dimChips.get(dim)!;
-    const active = chips.find(c => c.classList.contains('is-active'));
-    return active ? chipValue(active, dim.chipDataKey) : dim.defaultValue;
+  function getSortValue(dim: SortDimension): string {
+    return getActiveSortValue(dimChips.get(dim)!, dim);
   }
 
   // ── バッジ更新 ──
@@ -131,7 +79,7 @@ export function setupListFilter(config: ListFilterConfig) {
       count += dim.type === 'filter-multi' ? vals.length : (vals.length > 0 ? 1 : 0);
     }
     for (const dim of sortDims) {
-      if (getActiveSortValue(dim) !== dim.defaultValue) count++;
+      if (getSortValue(dim) !== dim.defaultValue) count++;
     }
     if (count > 0) {
       activeBadge.textContent = String(count);
@@ -157,7 +105,7 @@ export function setupListFilter(config: ListFilterConfig) {
       }
     }
     for (const dim of sortDims) {
-      const val = getActiveSortValue(dim);
+      const val = getSortValue(dim);
       if (val !== dim.defaultValue) {
         const prefix = dim.summaryPrefix ?? '並び順';
         parts.push(`${prefix}: ${dimLabels.get(dim)!.get(val) ?? val}`);
@@ -170,31 +118,6 @@ export function setupListFilter(config: ListFilterConfig) {
       stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
       stateClear.hidden = false;
     }
-  }
-
-  // ── URL 同期 ──
-
-  function syncStateToUrl() {
-    const url = new URL(window.location.href);
-    for (const dim of filterDims) {
-      const vals = getActiveValues(dim);
-      if (vals.length === 0) {
-        url.searchParams.delete(dim.paramName);
-      } else if (dim.type === 'filter-multi') {
-        url.searchParams.set(dim.paramName, vals.join(','));
-      } else {
-        url.searchParams.set(dim.paramName, vals[0]);
-      }
-    }
-    for (const dim of sortDims) {
-      const val = getActiveSortValue(dim);
-      if (val === dim.defaultValue) {
-        url.searchParams.delete(dim.paramName);
-      } else {
-        url.searchParams.set(dim.paramName, val);
-      }
-    }
-    history.replaceState(null, '', url.toString());
   }
 
   // ── フィルタ＆ソート適用 ──
@@ -228,7 +151,7 @@ export function setupListFilter(config: ListFilterConfig) {
     if (sortDims.length > 0) {
       const allItems = [...items];
       for (const dim of sortDims) {
-        const val = getActiveSortValue(dim);
+        const val = getSortValue(dim);
         allItems.sort((a, b) => dim.sortFn(a, b, val));
       }
       allItems.forEach(el => grid.appendChild(el));
@@ -250,7 +173,7 @@ export function setupListFilter(config: ListFilterConfig) {
     // 4) UI 更新
     updateBadge();
     updateStateSummary();
-    syncStateToUrl();
+    syncFilterStateToUrl(filterDims, sortDims, dimChips);
     onUpdate?.(visibleCount, items.length);
 
     // 5) スクロール
@@ -327,66 +250,9 @@ export function setupListFilter(config: ListFilterConfig) {
     applyAll(true);
   });
 
-  // ── URL パラメータからの復元 ──
-
-  function restoreFromUrl() {
-    const params = new URL(window.location.href).searchParams;
-    let restored = false;
-
-    for (const dim of filterDims) {
-      const paramVal = params.get(dim.paramName);
-      if (!paramVal) continue;
-      const chips = dimChips.get(dim)!;
-      if (dim.type === 'filter-multi') {
-        const allChip = chips.find(c => chipValue(c, dim.chipDataKey) === dim.defaultValue);
-        const values = paramVal.split(',');
-        let activeCount = 0;
-        allChip?.classList.remove('is-active');
-        allChip?.setAttribute('aria-pressed', 'false');
-        for (const v of values) {
-          const chip = chips.find(c => chipValue(c, dim.chipDataKey) === v);
-          if (chip) {
-            chip.classList.add('is-active');
-            chip.setAttribute('aria-pressed', 'true');
-            activeCount++;
-          }
-        }
-        if (activeCount === 0) {
-          allChip?.classList.add('is-active');
-          allChip?.setAttribute('aria-pressed', 'true');
-        }
-        restored = true;
-      } else {
-        // filter-single
-        const targetChip = chips.find(c => chipValue(c, dim.chipDataKey) === paramVal);
-        if (targetChip) {
-          chips.forEach(c => {
-            const isTarget = c === targetChip;
-            c.classList.toggle('is-active', isTarget);
-            c.setAttribute('aria-pressed', String(isTarget));
-          });
-          restored = true;
-        }
-      }
-    }
-
-    for (const dim of sortDims) {
-      const paramVal = params.get(dim.paramName);
-      if (!paramVal) continue;
-      const chips = dimChips.get(dim)!;
-      const targetChip = chips.find(c => chipValue(c, dim.chipDataKey) === paramVal);
-      if (targetChip) {
-        chips.forEach(c => c.classList.toggle('is-active', c === targetChip));
-        restored = true;
-      }
-    }
-
-    return restored;
-  }
-
   // ── 初期化実行 ──
 
-  restoreFromUrl();
+  restoreFilterFromUrl(filterDims, sortDims, dimChips);
   applyAll(false);
 
   return { applyAll, dimChips };
