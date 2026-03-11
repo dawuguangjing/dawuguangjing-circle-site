@@ -15,6 +15,12 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
       ご質問・ご意見・不具合報告は、下記フォームよりご連絡ください。
     </p>
 
+    <p class="form-fallback-note" data-anim style={`--anim-delay: ${animDelay(0, 0.06)}`}>
+      フォームが表示されない場合は
+      <a href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">Ci-en</a>
+      からもご連絡いただけます。
+    </p>
+
     <div class="form-wrapper" data-anim style={`--anim-delay: ${animDelay(0, 0.06)}`}>
       <div class="form-loading" id="form-loading">
         <div class="form-loading-content" id="form-loading-spinner">
@@ -24,6 +30,12 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
         <div class="form-loading-content form-loading-error" id="form-loading-error" hidden>
           <p class="form-loading-error-text">フォームの読み込みに失敗しました。</p>
           <button class="button button--sm" id="form-retry" type="button">再読み込み</button>
+          <a
+            class="form-direct-link"
+            href="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+          >フォームを別タブで開く &#8599;</a>
         </div>
       </div>
       <iframe
@@ -166,13 +178,30 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 
   @media (max-width: 640px) {
     .form-wrapper iframe {
-      min-height: 600px;
+      min-height: 750px;
     }
   }
 
   @media (max-width: 400px) {
     .form-wrapper iframe {
-      min-height: 500px;
+      min-height: 700px;
     }
+  }
+
+  .form-fallback-note {
+    font-size: 0.82rem;
+    color: var(--ink-dim);
+    margin: 0 0 12px;
+  }
+  .form-fallback-note a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  .form-direct-link {
+    font-size: 0.82rem;
+    color: var(--accent);
+    text-decoration: underline;
+    margin-top: 4px;
   }
 </style>

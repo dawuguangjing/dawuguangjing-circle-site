@@ -94,6 +94,7 @@ function highlightReturnedItem() {
 
   requestAnimationFrame(() => {
     target.classList.add('is-returning');
+    target.scrollIntoView({ behavior: 'instant', block: 'center' });
     setTimeout(() => target.classList.remove('is-returning'), RETURN_HIGHLIGHT_MS);
   });
 }

@@ -150,6 +150,22 @@
   flex-direction: column;
   gap: 4px;
   justify-content: center;
+  position: relative;
+}
+
+/* タッチデバイス: ホバーオーバーレイが見えないためシェブロンでタップ可能を示す */
+@media (hover: none) {
+  .work-row-body::after {
+    content: '›';
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.4rem;
+    color: var(--ink-dim);
+    opacity: 0.45;
+    pointer-events: none;
+  }
 }
 
 .work-row-body h3 {

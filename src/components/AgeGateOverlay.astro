@@ -9,7 +9,7 @@ interface Props {
 const { ageKey, ageTtl } = Astro.props;
 ---
 
-<div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title" data-nosnippet>
+<div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title" aria-describedby="age-overlay-desc" data-nosnippet>
   <TunaTank
     triggerSelector="#age-confirm-overlay"
     fishes={[
@@ -22,13 +22,13 @@ const { ageKey, ageTtl } = Astro.props;
   />
   <div class="age-gate-card">
     <h1 id="age-overlay-title">年齢確認</h1>
-    <p>
+    <p id="age-overlay-desc">
       本サークルでは成人向け製品を取り扱っております。<br />
       あなたは18歳以上ですか？
     </p>
     <div class="age-gate-actions">
       <button class="button" id="age-confirm-overlay">はい（18歳以上）</button>
-      <button class="button button--cien" id="age-deny-overlay">いいえ</button>
+      <button class="button secondary" id="age-deny-overlay">いいえ</button>
     </div>
     <div class="age-gate-denied" id="age-denied-overlay" hidden>
       18歳未満の方はご利用いただけません。ブラウザを閉じてください。
@@ -57,7 +57,10 @@ const { ageKey, ageTtl } = Astro.props;
         try { localStorage.removeItem(ageKey); } catch(e) {}
         try { sessionStorage.removeItem(ageKey); } catch(e) {}
         if (denied) denied.removeAttribute('hidden');
+        if (btn) { btn.setAttribute('disabled', ''); btn.setAttribute('aria-disabled', 'true'); }
+        deny.setAttribute('disabled', '');
       });
     }
+    if (btn) btn.focus();
   })();
 </script>

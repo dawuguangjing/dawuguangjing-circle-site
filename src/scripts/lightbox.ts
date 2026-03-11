@@ -121,6 +121,12 @@ function initLightbox() {
 
   // アイテムへのクリック・キーボードイベント
   itemEls.forEach((el, i) => {
+    // キーボードアクセシビリティを保証（未設定の要素のみ補完）
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    if (!el.getAttribute('role'))     el.setAttribute('role', 'button');
+    if (!el.getAttribute('aria-label')) {
+      el.setAttribute('aria-label', items[i].alt || `画像 ${i + 1} を拡大する`);
+    }
     el.addEventListener('click', () => openLightbox(i));
     el.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
