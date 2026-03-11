@@ -230,13 +230,17 @@ const galleryPurchaseLinks = hasStoreLinks
     </section>
   </div>
 
-  <!-- ホバーで動画プレビューを再生 -->
+  <!-- ホバー／フォーカスで動画プレビューを再生 -->
   <script>
     document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
       const video = item.querySelector('video');
       if (!video) return;
-      item.addEventListener('mouseenter', () => video.play().catch(() => {}));
-      item.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+      const play  = () => video.play().catch(() => {});
+      const reset = () => { video.pause(); video.currentTime = 0; };
+      item.addEventListener('mouseenter', play);
+      item.addEventListener('mouseleave', reset);
+      item.addEventListener('focusin',    play);
+      item.addEventListener('focusout',   reset);
     });
   </script>
   {hasAnyCta && <FabPurchase targetId="purchase-section" />}

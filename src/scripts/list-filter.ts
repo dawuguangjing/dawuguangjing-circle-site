@@ -122,9 +122,12 @@ export function setupListFilter(config: ListFilterConfig) {
 
   // ── フィルタ＆ソート適用 ──
 
+  const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   function applyAll(scroll: boolean) {
     // 1) 表示判定
     let visibleCount = 0;
+    const toHide: HTMLElement[] = [];
     items.forEach(el => {
       let show = true;
       for (const dim of filterDims) {
@@ -141,11 +144,25 @@ export function setupListFilter(config: ListFilterConfig) {
       if (show) {
         el.style.display = '';
         visibleCount++;
-      } else {
-        el.style.display = 'none';
+      } else if (el.style.display !== 'none') {
+        // 現在表示中 → 退出アニメーション
         el.classList.remove('is-visible');
+        el.classList.add('is-exiting');
+        toHide.push(el);
       }
     });
+
+    // 退出アニメーション完了後に非表示化
+    if (toHide.length > 0) {
+      const dur = prefersReducedMotion ? 0
+        : (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-fast')) * 1000 || 150);
+      setTimeout(() => {
+        toHide.forEach(el => {
+          el.style.display = 'none';
+          el.classList.remove('is-exiting');
+        });
+      }, dur);
+    }
 
     // 2) ソート（表示中アイテムのみ）
     if (sortDims.length > 0) {

@@ -221,6 +221,12 @@ html[data-theme="dark"] .nav-links a:not(.is-active) {
   opacity: 1;
   transform: none;
 }
+[data-anim].is-exiting {
+  opacity: 0;
+  transform: translateY(8px) scale(0.97);
+  transition-duration: var(--dur-fast);
+  transition-delay: 0s;
+}
 /* ページ遷移直後は data-anim を即時表示し、遷移後の二重フェードを防ぐ */
 html.is-client-nav [data-anim] {
   opacity: 1;
