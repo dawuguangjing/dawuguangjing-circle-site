@@ -30,27 +30,10 @@
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 16px;
 }
-/* data-anim wrapper divs inside the grid act as flex containers so cards fill the cell */
-.gallery-album-grid > [data-anim] {
-  display: flex;
-  flex-direction: column;
-}
-.gallery-album-grid > [data-anim] > .gallery-card {
-  flex: 1;
-}
-
 /* ── Gallery Card ── */
 .gallery-card {
   display: flex;
   flex-direction: column;
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease,
-              transform var(--dur-medium) var(--easing),
-              box-shadow var(--dur-medium) ease;
   color: inherit;
   text-decoration: none;
 }

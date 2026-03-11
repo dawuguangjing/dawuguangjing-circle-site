@@ -16,7 +16,7 @@ const { slug, title, cover, isR18, imageCount, previewImage, previewImages, load
 const thumbs = previewImages?.slice(0, 3) ?? [];
 ---
 
-<a class="gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
+<a class="card-interactive gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
   <div class={`gallery-card-media img-skeleton${thumbs.length > 0 ? ' gallery-card-media--split' : ''}${previewImage ? ' gallery-card-media--has-preview' : ''}`}>
     <div class="gallery-card-media-cover">
       <img

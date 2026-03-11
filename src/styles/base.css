@@ -100,6 +100,15 @@ button {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+/* Grid child wrappers: stretch their content to fill each cell */
+.grid-stretch-items > * {
+  display: flex;
+  flex-direction: column;
+}
+.grid-stretch-items > * > * {
+  flex: 1;
+}
+
 /* ── Cards ── */
 .card {
   background: var(--panel);
@@ -140,6 +149,19 @@ button {
 
 .card p:last-child {
   margin-bottom: 0;
+}
+
+/* ── Interactive Cards (image-edge, no padding) ── */
+.card-interactive {
+  position: relative;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: border-color var(--dur-normal) ease,
+              transform var(--dur-medium) var(--easing),
+              box-shadow var(--dur-medium) ease;
 }
 
 /* ── Badges / Tags ── */

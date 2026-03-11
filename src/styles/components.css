@@ -409,17 +409,10 @@
 
 /* ── Character Card (shared base) ── */
 .char-card {
-  position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
   text-decoration: none;
   color: inherit;
-  box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .char-card-img-wrap {

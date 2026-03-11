@@ -103,12 +103,6 @@
   display: grid;
   grid-template-columns: 160px 1fr;
   gap: 0;
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
-  box-shadow: var(--shadow);
 }
 
 .work-row-cover {

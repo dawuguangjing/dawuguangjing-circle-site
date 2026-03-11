@@ -7,23 +7,10 @@
 
 /* ── News Card ── */
 
-/* grid item wrapper (data-anim div) fills row height; card stretches inside it */
-.news-grid > * {
-  display: flex;
-  flex-direction: column;
-}
-
 .news-card {
-  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1;
-  background: var(--panel);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--stroke);
-  box-shadow: var(--shadow);
-  overflow: hidden;
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .news-card-cover {

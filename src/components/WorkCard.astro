@@ -34,7 +34,7 @@ const isComingSoon = releaseDate.getFullYear() >= COMING_SOON_YEAR;
 const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
-<a class="work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>
+<a class="card-interactive work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>
   <div class="work-row-cover img-skeleton">
     <img
       src={withBase(cover)}

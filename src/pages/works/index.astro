@@ -39,7 +39,7 @@ const works = await getSortedWorks();
         </div>
       </FilterSheet>
 
-      <div class="works-grid" id="works-grid">
+      <div class="works-grid grid-stretch-items" id="works-grid">
         {works.map((entry, i) => (
           <div
             class="work-filter-item"
@@ -81,6 +81,7 @@ const works = await getSortedWorks();
   <script>
     import { initPageFilterSheet } from '../../scripts/filter-sheet';
     import { setupListFilter } from '../../scripts/list-filter';
+    import { dateTitleSort } from '../../scripts/sort-helpers';
 
     initPageFilterSheet('filter-bar', 'works-filter-sheet');
 
@@ -115,12 +116,7 @@ const works = await getSortedWorks();
           defaultValue: 'newest',
           chipSelector: '.sort-btn[data-sort]',
           chipDataKey: 'sort',
-          sortFn: (a, b, sort) => {
-            if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
-            const da = Number(a.dataset.releaseDate);
-            const db = Number(b.dataset.releaseDate);
-            return sort === 'oldest' ? da - db : db - da;
-          },
+          sortFn: dateTitleSort('releaseDate'),
         },
       ],
       onUpdate: (visibleCount) => {

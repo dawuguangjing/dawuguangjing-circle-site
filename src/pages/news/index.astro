@@ -31,7 +31,7 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         ))}
       </FilterSheet>
 
-      <div class="news-grid" id="news-grid">
+      <div class="news-grid grid-stretch-items" id="news-grid">
         {news.map((entry, i) => (
           <div data-anim data-category={entry.data.category} style={`--anim-delay: ${animDelay(i)}`}>
             <NewsCard

@@ -205,15 +205,6 @@ html[data-theme="dark"] .nav-links a:not(.is-active) {
   color: var(--ink-bright);
 }
 
-/* works-grid 内のラッパー div がカードを満たすように */
-.works-grid > [data-anim] {
-  display: flex;
-  flex-direction: column;
-}
-.works-grid > [data-anim] > * {
-  flex: 1;
-}
-
 /* ── Scroll-triggered entrance animations ── */
 [data-anim] {
   opacity: 0;

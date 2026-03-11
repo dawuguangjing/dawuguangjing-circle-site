@@ -30,7 +30,7 @@ const galleries = await getSortedGallery();
         <button class="filter-chip" data-sort="title">タイトル順</button>
       </FilterSheet>
       {galleries.length > 0 ? (
-        <div class="gallery-album-grid" id="gallery-grid">
+        <div class="gallery-album-grid grid-stretch-items" id="gallery-grid">
           {galleries.map((entry, i) => (
             <div
               data-anim
@@ -61,6 +61,7 @@ const galleries = await getSortedGallery();
 <script>
   import { initPageFilterSheet } from '../../scripts/filter-sheet';
   import { setupListFilter } from '../../scripts/list-filter';
+  import { dateTitleSort } from '../../scripts/sort-helpers';
 
   initPageFilterSheet('gallery-filter-bar', 'gallery-filter-sheet');
 
@@ -76,11 +77,7 @@ const galleries = await getSortedGallery();
         defaultValue: 'newest',
         chipSelector: '#gallery-filter-bar [data-sort]',
         chipDataKey: 'sort',
-        sortFn: (a, b, sort) => {
-          if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
-          if (sort === 'oldest') return Number(a.dataset.release) - Number(b.dataset.release);
-          return Number(b.dataset.release) - Number(a.dataset.release);
-        },
+        sortFn: dateTitleSort('release'),
       },
     ],
   });

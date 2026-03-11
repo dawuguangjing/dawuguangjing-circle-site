@@ -48,7 +48,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 
     <section class="section container">
       <SectionHeader title="作品" href={withBase('works/')} />
-      <div class="works-grid">
+      <div class="works-grid grid-stretch-items">
         {allWorks.map((entry, i) => (
           <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
             <WorkCard
@@ -72,7 +72,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
         <div class="home-char-grid">
           {characters.map((char, i) => (
             <a
-              class="char-card home-char-card"
+              class="card-interactive char-card home-char-card"
               href={withBase(`characters/${char.slug}/`)}
               data-anim
               style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
@@ -103,7 +103,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
     {galleries.length > 0 && (
       <section class="section container">
         <SectionHeader title="ギャラリー" href={withBase('gallery/')} />
-        <div class="gallery-album-grid">
+        <div class="gallery-album-grid grid-stretch-items">
           {galleries.map((entry, i) => (
             <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
               <GalleryCard
@@ -122,7 +122,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 
     <section class="section container">
       <SectionHeader title="開発ログ" href={withBase('news/')} />
-      <div class="news-grid">
+      <div class="news-grid grid-stretch-items">
         {news.map((entry, i) => (
           <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
             <NewsCard
