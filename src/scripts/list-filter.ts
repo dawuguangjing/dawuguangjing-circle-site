@@ -278,7 +278,27 @@ export function setupListFilter(config: ListFilterConfig) {
       });
     }
     applyAll(true);
+    document.getElementById('filter-sheet-trigger')?.focus();
   });
+
+  // ── チップ間の矢印キーナビゲーション ──
+
+  for (const dim of dimensions) {
+    const chips = dimChips.get(dim)!;
+    chips.forEach((chip, i) => {
+      chip.addEventListener('keydown', (e) => {
+        let target: HTMLElement | null = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          target = chips[(i + 1) % chips.length];
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          target = chips[(i - 1 + chips.length) % chips.length];
+        }
+        target?.focus();
+      });
+    });
+  }
 
   // ── 初期化実行 ──
 
