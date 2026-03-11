@@ -156,16 +156,10 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 </style>
 
 <script>
-  import { initFilterSheet } from '../../scripts/filter-sheet';
+  import { initPageFilterSheet } from '../../scripts/filter-sheet';
   import { setupListFilter } from '../../scripts/list-filter';
 
-  initFilterSheet({
-    filterBarId: 'char-filter',
-    overlayId:   'filter-sheet-overlay',
-    triggerId:   'filter-sheet-trigger',
-    closeBtnId:  'filter-sheet-close',
-    lockKey:     'char-filter-sheet',
-  });
+  initPageFilterSheet('char-filter', 'char-filter-sheet');
 
   setupListFilter({
     stateId: 'characters',

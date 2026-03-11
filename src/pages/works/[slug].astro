@@ -1,16 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
-import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME, EXTERNAL_LINKS, COMING_SOON_YEAR } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
-import { getSortedWorks, buildPrevNext } from '../../utils/collections';
+import { getSortedWorks, buildPrevNext, getCharactersByWork } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
+import ArticlePagination from '../../components/ArticlePagination.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
 import EarlyAccessDownload from '../../components/EarlyAccessDownload.astro';
 
@@ -22,10 +22,7 @@ const { entry, prev, next } = Astro.props;
 const { Content } = await entry.render();
 const data = entry.data;
 
-const allCharacters = await getCollection('characters');
-const workCharacters = allCharacters
-  .filter((c) => c.data.workSlug === entry.slug)
-  .sort((a, b) => a.data.order - b.data.order);
+const workCharacters = await getCharactersByWork(entry.slug);
 const sidebarChars = workCharacters.map((c) => ({
   slug: c.slug,
   name: c.data.name,
@@ -232,33 +229,17 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
       <div class="notice">
         販売・決済・納品は外部ストアが担当します。
       </div>
-      <nav class="work-pagination" aria-label="作品ナビゲーション">
-        <div class="work-pagination-prev">
-          {prev && (
-            <a class="work-pagination-link" href={withBase(`works/${prev.slug}/`)}>
-              <span class="work-pagination-arrow">←</span>
-              <span class="work-pagination-meta">
-                <span class="work-pagination-label">前の作品</span>
-                <span class="work-pagination-title">{prev.data.title}</span>
-              </span>
-            </a>
-          )}
-        </div>
-        <div class="work-pagination-center">
-          <a class="section-link" href={withBase('works/')} data-back-context data-back-context-key="works">作品一覧</a>
-        </div>
-        <div class="work-pagination-next">
-          {next && (
-            <a class="work-pagination-link work-pagination-link--next" href={withBase(`works/${next.slug}/`)}>
-              <span class="work-pagination-meta">
-                <span class="work-pagination-label">次の作品</span>
-                <span class="work-pagination-title">{next.data.title}</span>
-              </span>
-              <span class="work-pagination-arrow">→</span>
-            </a>
-          )}
-        </div>
-      </nav>
+      <ArticlePagination
+        prev={prev}
+        next={next}
+        basePath="works/"
+        prevLabel="前の作品"
+        nextLabel="次の作品"
+        ariaLabel="作品ナビゲーション"
+        centerHref={withBase('works/')}
+        centerText="作品一覧"
+        centerBackContextKey="works"
+      />
     </section>
   </div>
 

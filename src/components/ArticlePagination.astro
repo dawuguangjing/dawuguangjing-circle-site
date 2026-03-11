@@ -1,0 +1,63 @@
+---
+import { withBase } from '../utils/withBase';
+
+interface Props {
+  prev: { slug: string; data: { title: string } } | null;
+  next: { slug: string; data: { title: string } } | null;
+  basePath: string;
+  prevLabel: string;
+  nextLabel: string;
+  ariaLabel: string;
+  centerHref?: string;
+  centerText?: string;
+  centerBackContextKey?: string;
+}
+
+const {
+  prev, next, basePath, prevLabel, nextLabel, ariaLabel,
+  centerHref, centerText, centerBackContextKey,
+} = Astro.props;
+
+const hasCenter = !!(centerHref && centerText);
+---
+
+{(prev || next) && (
+  <nav
+    class:list={['article-pagination', { 'article-pagination--with-center': hasCenter }]}
+    aria-label={ariaLabel}
+  >
+    <div class="article-pagination-prev">
+      {prev && (
+        <a class="article-pagination-link" href={withBase(`${basePath}${prev.slug}/`)}>
+          <span class="article-pagination-arrow">&larr;</span>
+          <span class="article-pagination-meta">
+            <span class="article-pagination-label">{prevLabel}</span>
+            <span class="article-pagination-title">{prev.data.title}</span>
+          </span>
+        </a>
+      )}
+    </div>
+    {hasCenter && (
+      <div class="article-pagination-center">
+        <a
+          class="section-link"
+          href={centerHref}
+          {...(centerBackContextKey ? { 'data-back-context': true, 'data-back-context-key': centerBackContextKey } : {})}
+        >
+          {centerText}
+        </a>
+      </div>
+    )}
+    <div class="article-pagination-next">
+      {next && (
+        <a class="article-pagination-link article-pagination-link--next" href={withBase(`${basePath}${next.slug}/`)}>
+          <span class="article-pagination-meta">
+            <span class="article-pagination-label">{nextLabel}</span>
+            <span class="article-pagination-title">{next.data.title}</span>
+          </span>
+          <span class="article-pagination-arrow">&rarr;</span>
+        </a>
+      )}
+    </div>
+  </nav>
+)}

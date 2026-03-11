@@ -209,67 +209,6 @@
   font-size: 0.66rem;
 }
 
-/* ── Work Pagination ── */
-.work-pagination {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid var(--stroke);
-}
-.work-pagination-prev { display: flex; justify-content: flex-start; }
-.work-pagination-center { white-space: nowrap; }
-.work-pagination-next { display: flex; justify-content: flex-end; }
-.work-pagination-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 14px;
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-md);
-  text-decoration: none;
-  color: var(--ink);
-  transition: border-color var(--dur-quick), background var(--dur-quick);
-  max-width: 220px;
-}
-.work-pagination-link:hover {
-  border-color: var(--accent);
-  background: var(--panel);
-}
-.work-pagination-arrow {
-  font-size: 1rem;
-  color: var(--ink-dim);
-  flex-shrink: 0;
-}
-.work-pagination-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  overflow: hidden;
-}
-.work-pagination-label {
-  font-size: 0.68rem;
-  color: var(--ink-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.work-pagination-title {
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--ink-bright);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-@media (max-width: 540px) {
-  .work-pagination { grid-template-columns: 1fr 1fr; gap: 8px; }
-  .work-pagination-center { display: none; }
-  .work-pagination-next { grid-column: 2; }
-  .work-pagination-link { max-width: none; }
-}
-
 /* ── Work Top Nav（ページ上部の前後ナビ） ── */
 .work-top-nav {
   display: flex;

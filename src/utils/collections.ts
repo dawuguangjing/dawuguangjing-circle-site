@@ -47,6 +47,22 @@ export async function getGalleryIndex() {
   return new Map(galleries.map((g) => [g.slug, g]));
 }
 
+/** 作品に属するキャラクター一覧を取得（order 昇順） */
+export async function getCharactersByWork(workSlug: string) {
+  const all = await getCollection('characters');
+  return all
+    .filter((c) => c.data.workSlug === workSlug)
+    .sort((a, b) => a.data.order - b.data.order);
+}
+
+/** ギャラリーに関連するキャラクター一覧を取得（order 昇順） */
+export async function getCharactersByGallery(gallerySlug: string) {
+  const all = await getCollection('characters');
+  return all
+    .filter((c) => (c.data.gallerySlugs ?? []).includes(gallerySlug))
+    .sort((a, b) => a.data.order - b.data.order);
+}
+
 /** ソート済みコレクション配列から getStaticPaths 用の prev/next 付きパス配列を生成 */
 export function buildPrevNext<T extends { slug: string }>(
   entries: T[]

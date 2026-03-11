@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
-import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
-import { getWorkIndex, resolveImageCount, getSortedGallery, buildPrevNext } from '../../utils/collections';
+import { getWorkIndex, resolveImageCount, getSortedGallery, buildPrevNext, getCharactersByGallery } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
+import ArticlePagination from '../../components/ArticlePagination.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
 import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
 
@@ -43,11 +43,7 @@ const relatedWorkTrialLinks = relatedWorks.flatMap((w) =>
 
 const hasAnyCta = hasStoreLinks || relatedWorkLinks.length > 0 || relatedWorkTrialLinks.length > 0;
 
-// 登場キャラクターを取得（gallerySlugs に自分のスラッグが含まれるキャラ）
-const allCharacters = await getCollection('characters');
-const relatedCharacters = allCharacters
-  .filter((c) => (c.data.gallerySlugs ?? []).includes(entry.slug))
-  .sort((a, b) => a.data.order - b.data.order);
+const relatedCharacters = await getCharactersByGallery(entry.slug);
 const sidebarChars = relatedCharacters.map((c) => ({
   slug: c.slug,
   name: c.data.name,
@@ -223,32 +219,14 @@ const galleryPurchaseLinks = hasStoreLinks
         <a class="section-link" href={withBase('gallery/')} data-back-context data-back-context-key="gallery">← ギャラリー一覧へ戻る</a>
       </div>
 
-      {(prev || next) && (
-        <nav class="article-pagination" aria-label="前後のギャラリーへ">
-          <div class="article-pagination-prev">
-            {prev && (
-              <a class="article-pagination-link" href={withBase(`gallery/${prev.slug}/`)}>
-                <span class="article-pagination-arrow">←</span>
-                <span class="article-pagination-meta">
-                  <span class="article-pagination-label">前のギャラリー</span>
-                  <span class="article-pagination-title">{prev.data.title}</span>
-                </span>
-              </a>
-            )}
-          </div>
-          <div class="article-pagination-next">
-            {next && (
-              <a class="article-pagination-link article-pagination-link--next" href={withBase(`gallery/${next.slug}/`)}>
-                <span class="article-pagination-meta">
-                  <span class="article-pagination-label">次のギャラリー</span>
-                  <span class="article-pagination-title">{next.data.title}</span>
-                </span>
-                <span class="article-pagination-arrow">→</span>
-              </a>
-            )}
-          </div>
-        </nav>
-      )}
+      <ArticlePagination
+        prev={prev}
+        next={next}
+        basePath="gallery/"
+        prevLabel="前のギャラリー"
+        nextLabel="次のギャラリー"
+        ariaLabel="前後のギャラリーへ"
+      />
     </section>
   </div>
 

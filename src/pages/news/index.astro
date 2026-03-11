@@ -7,22 +7,11 @@ import FilterSheet from '../../components/FilterSheet.astro';
 import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
 import { animDelay } from '../../utils/constants';
 import { categoryLabels } from '../../utils/labels';
+import { extractExcerpt } from '../../utils/format';
 
 const news = await getSortedNews();
 const workIndex = await getWorkIndex();
 const categories = Object.entries(categoryLabels) as [string, string][];
-
-function extractExcerpt(body: string, maxLen = 100): string {
-  const text = body
-    .replace(/^#{1,6}\s+.+$/gm, '')
-    .replace(/!\[.*?\]\(.*?\)/g, '')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/<[^>]+>/g, '')
-    .replace(/[*_`~>#\-|]+/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-  return text.length > maxLen ? text.slice(0, maxLen) + '…' : text;
-}
 ---
 
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
@@ -67,16 +56,10 @@ function extractExcerpt(body: string, maxLen = 100): string {
 </BaseLayout>
 
 <script>
-  import { initFilterSheet } from '../../scripts/filter-sheet';
+  import { initPageFilterSheet } from '../../scripts/filter-sheet';
   import { setupListFilter } from '../../scripts/list-filter';
 
-  initFilterSheet({
-    filterBarId: 'news-filter',
-    overlayId:   'filter-sheet-overlay',
-    triggerId:   'filter-sheet-trigger',
-    closeBtnId:  'filter-sheet-close',
-    lockKey:     'news-filter-sheet',
-  });
+  initPageFilterSheet('news-filter', 'news-filter-sheet');
 
   setupListFilter({
     stateId: 'news',

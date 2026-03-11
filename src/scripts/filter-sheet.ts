@@ -58,3 +58,20 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
 
   return { open, close };
 }
+
+/**
+ * ページ固有パラメータだけを渡す簡易ラッパー。
+ * overlayId / triggerId / closeBtnId は全ページ共通のため省略。
+ */
+export function initPageFilterSheet(
+  filterBarId: string,
+  lockKey: string,
+): FilterSheetControls {
+  return initFilterSheet({
+    filterBarId,
+    overlayId: 'filter-sheet-overlay',
+    triggerId: 'filter-sheet-trigger',
+    closeBtnId: 'filter-sheet-close',
+    lockKey,
+  });
+}

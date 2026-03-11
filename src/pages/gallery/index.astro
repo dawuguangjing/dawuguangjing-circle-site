@@ -59,16 +59,10 @@ const galleries = await getSortedGallery();
 </BaseLayout>
 
 <script>
-  import { initFilterSheet } from '../../scripts/filter-sheet';
+  import { initPageFilterSheet } from '../../scripts/filter-sheet';
   import { setupListFilter } from '../../scripts/list-filter';
 
-  initFilterSheet({
-    filterBarId: 'gallery-filter-bar',
-    overlayId:   'filter-sheet-overlay',
-    triggerId:   'filter-sheet-trigger',
-    closeBtnId:  'filter-sheet-close',
-    lockKey:     'gallery-filter-sheet',
-  });
+  initPageFilterSheet('gallery-filter-bar', 'gallery-filter-sheet');
 
   setupListFilter({
     stateId: 'gallery',

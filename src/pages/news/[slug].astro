@@ -9,6 +9,7 @@ import { buildArticleSchema } from '../../utils/schema';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import ScrollProgress from '../../components/ScrollProgress.astro';
 import ShareBar from '../../components/ShareBar.astro';
+import ArticlePagination from '../../components/ArticlePagination.astro';
 
 export async function getStaticPaths() {
   return buildPrevNext(await getSortedNews());
@@ -65,32 +66,14 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
             <a class="section-link" href={withBase(`news/?category=${data.category}`)} data-back-context data-back-context-key="news">← 開発ログへ戻る</a>
           </div>
 
-          {(prev || next) && (
-            <nav class="article-pagination" aria-label="前後の記事へ">
-              <div class="article-pagination-prev">
-                {prev && (
-                  <a class="article-pagination-link" href={withBase(`news/${prev.slug}/`)}>
-                    <span class="article-pagination-arrow">←</span>
-                    <span class="article-pagination-meta">
-                      <span class="article-pagination-label">前の記事</span>
-                      <span class="article-pagination-title">{prev.data.title}</span>
-                    </span>
-                  </a>
-                )}
-              </div>
-              <div class="article-pagination-next">
-                {next && (
-                  <a class="article-pagination-link article-pagination-link--next" href={withBase(`news/${next.slug}/`)}>
-                    <span class="article-pagination-meta">
-                      <span class="article-pagination-label">次の記事</span>
-                      <span class="article-pagination-title">{next.data.title}</span>
-                    </span>
-                    <span class="article-pagination-arrow">→</span>
-                  </a>
-                )}
-              </div>
-            </nav>
-          )}
+          <ArticlePagination
+            prev={prev}
+            next={next}
+            basePath="news/"
+            prevLabel="前の記事"
+            nextLabel="次の記事"
+            ariaLabel="前後の記事へ"
+          />
         </div>
         <aside class="article-layout-aside">
           <nav class="toc" id="toc" hidden aria-label="目次">

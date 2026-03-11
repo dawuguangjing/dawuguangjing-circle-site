@@ -79,16 +79,10 @@ const works = await getSortedWorks();
   </div>
 
   <script>
-    import { initFilterSheet } from '../../scripts/filter-sheet';
+    import { initPageFilterSheet } from '../../scripts/filter-sheet';
     import { setupListFilter } from '../../scripts/list-filter';
 
-    initFilterSheet({
-      filterBarId: 'filter-bar',
-      overlayId:   'filter-sheet-overlay',
-      triggerId:   'filter-sheet-trigger',
-      closeBtnId:  'filter-sheet-close',
-      lockKey:     'works-filter-sheet',
-    });
+    initPageFilterSheet('filter-bar', 'works-filter-sheet');
 
     const emptyEl = document.getElementById('works-empty');
     const countEl = document.getElementById('work-count');
