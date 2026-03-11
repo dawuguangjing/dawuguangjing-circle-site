@@ -1,7 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
-import { MS_30_DAYS, COMING_SOON_YEAR } from '../utils/constants';
+import { MS_30_DAYS, COMING_SOON_YEAR, IMAGE_DIMENSIONS, IMAGE_SIZES } from '../utils/constants';
 import type { ImageLoadProps } from '../utils/types';
 
 interface Props extends ImageLoadProps {
@@ -41,9 +41,9 @@ const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
       alt={`${title} cover`}
       loading={loading}
       fetchpriority={fetchpriority}
-      sizes="(max-width: 768px) 120px, 160px"
-      width="160"
-      height="160"
+      sizes={IMAGE_SIZES.workCard}
+      width={IMAGE_DIMENSIONS.workCard.width}
+      height={IMAGE_DIMENSIONS.workCard.height}
     />
     <div class="work-row-overlay" aria-hidden="true">
       <span class="card-view-label">詳細を見る</span>

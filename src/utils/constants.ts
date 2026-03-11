@@ -133,3 +133,21 @@ export const LIGHTBOX_SWIPE_THRESHOLD_PX = 50;
 
 /** IntersectionObserver の交差閾値 */
 export const ANIM_INTERSECTION_THRESHOLD = 0.12;
+
+// ── 画像サイズ ───────────────────────────────────────────────────────────
+
+/** カード・ヒーロー画像のサイズ定義 */
+export const IMAGE_DIMENSIONS = {
+  galleryCard: { width: 400, height: 300 },
+  newsCard:    { width: 480, height: 270 },
+  workCard:    { width: 160, height: 160 },
+  heroBanner:  { width: 480, height: 320 },
+  dualHero:    { width: 480, height: 360 },
+} as const;
+
+/** レスポンシブ画像の sizes 属性 */
+export const IMAGE_SIZES = {
+  galleryCard: '(max-width: 768px) calc(50vw - 24px), 220px',
+  newsCard:    '(max-width: 768px) calc(100vw - 32px), (max-width: 960px) calc(50vw - 24px), 320px',
+  workCard:    '(max-width: 768px) 120px, 160px',
+} as const;

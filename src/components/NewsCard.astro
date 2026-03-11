@@ -1,6 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
+import { IMAGE_DIMENSIONS, IMAGE_SIZES } from '../utils/constants';
 import { categoryLabels } from '../utils/labels';
 import type { NewsCategory } from '../content/config';
 import type { ImageLoadProps } from '../utils/types';
@@ -21,7 +22,7 @@ const href = withBase(`news/${slug}/`);
 <article class="card-interactive news-card">
   <div class="news-card-cover img-skeleton">
     {thumbnail
-      ? <img src={thumbnail} alt="" loading={loading} fetchpriority={fetchpriority} sizes="(max-width: 768px) calc(100vw - 32px), (max-width: 960px) calc(50vw - 24px), 320px" width="480" height="270" />
+      ? <img src={thumbnail} alt="" loading={loading} fetchpriority={fetchpriority} sizes={IMAGE_SIZES.newsCard} width={IMAGE_DIMENSIONS.newsCard.width} height={IMAGE_DIMENSIONS.newsCard.height} />
       : <div class="news-card-cover-empty"></div>
     }
   </div>

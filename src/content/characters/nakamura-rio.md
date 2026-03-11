@@ -6,7 +6,7 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/rio-eye-catch.jpg"
 color: "#16A34A"
 age: 22
 height: 165
-personality: "冷静で知性的。物事を論理的に捉える一方、感情をあまり表に出さない。審査制度に疑問を抱きながらも、現実と折り合いをつけようとしている。"
+personality: "真面目で少し臆病な性格。審査制度に疑問を抱きながらも、現実と折り合いをつけようとしている。"
 order: 2
 gallerySlugs:
   - "nakamura-rio"

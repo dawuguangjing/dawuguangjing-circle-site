@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/withBase';
+import { IMAGE_DIMENSIONS, IMAGE_SIZES } from '../utils/constants';
 import type { ImageLoadProps } from '../utils/types';
 
 interface Props extends ImageLoadProps {
@@ -14,6 +15,8 @@ interface Props extends ImageLoadProps {
 
 const { slug, title, cover, isR18, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;
 const thumbs = previewImages?.slice(0, 3) ?? [];
+const { width: gw, height: gh } = IMAGE_DIMENSIONS.galleryCard;
+const gSizes = IMAGE_SIZES.galleryCard;
 ---
 
 <a class="card-interactive gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
@@ -25,9 +28,9 @@ const thumbs = previewImages?.slice(0, 3) ?? [];
         alt={`${title} cover`}
         loading={loading}
         fetchpriority={fetchpriority}
-        sizes="(max-width: 768px) calc(50vw - 24px), 220px"
-        width="400"
-        height="300"
+        sizes={gSizes}
+        width={gw}
+        height={gh}
       />
       {previewImage && (
         <img
@@ -35,9 +38,9 @@ const thumbs = previewImages?.slice(0, 3) ?? [];
           src={previewImage}
           alt=""
           loading="lazy"
-          sizes="(max-width: 768px) calc(50vw - 24px), 220px"
-          width="400"
-          height="300"
+          sizes={gSizes}
+          width={gw}
+          height={gh}
           aria-hidden="true"
         />
       )}
@@ -49,7 +52,7 @@ const thumbs = previewImages?.slice(0, 3) ?? [];
       <div class="gallery-card-media-thumbs">
         {thumbs.map((img) => (
           <div class="gallery-card-media-thumb">
-            <img src={img} alt="" loading="lazy" width="400" height="300" aria-hidden="true" />
+            <img src={img} alt="" loading="lazy" width={gw} height={gh} aria-hidden="true" />
           </div>
         ))}
       </div>

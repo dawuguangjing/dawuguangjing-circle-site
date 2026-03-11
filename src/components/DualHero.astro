@@ -1,7 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../utils/withBase';
-import { EXTERNAL_LINKS } from '../utils/constants';
+import { EXTERNAL_LINKS, IMAGE_DIMENSIONS } from '../utils/constants';
 import { buildLinks, PURCHASE_LINK_ENTRIES } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
@@ -45,8 +45,8 @@ const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
           class="dual-hero-cover"
           src={rw.data.images.cover}
           alt={`${rw.data.title} cover`}
-          width="480"
-          height="360"
+          width={IMAGE_DIMENSIONS.dualHero.width}
+          height={IMAGE_DIMENSIONS.dualHero.height}
           fetchpriority="high"
           loading="eager"
         />
@@ -88,8 +88,8 @@ const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
           class="dual-hero-cover dual-hero-cover--upcoming"
           src={cw.data.images.cover}
           alt={`${cw.data.title} cover`}
-          width="480"
-          height="360"
+          width={IMAGE_DIMENSIONS.dualHero.width}
+          height={IMAGE_DIMENSIONS.dualHero.height}
           loading="lazy"
         />
       </a>

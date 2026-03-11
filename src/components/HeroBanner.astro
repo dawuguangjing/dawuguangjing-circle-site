@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/withBase';
+import { IMAGE_DIMENSIONS } from '../utils/constants';
 import { buildLinks, PURCHASE_LINK_ENTRIES } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
@@ -64,7 +65,7 @@ const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
 
     <!-- 右: カバー画像 -->
     <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
-      <img src={cover} alt={`${title} cover`} width="480" height="320" fetchpriority="high" loading="eager" />
+      <img src={cover} alt={`${title} cover`} width={IMAGE_DIMENSIONS.heroBanner.width} height={IMAGE_DIMENSIONS.heroBanner.height} fetchpriority="high" loading="eager" />
     </a>
 
   </div>
