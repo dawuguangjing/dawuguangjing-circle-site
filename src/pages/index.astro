@@ -173,7 +173,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   text-decoration: none;
   color: inherit;
   box-shadow: var(--shadow);
-  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .home-char-img-wrap {
@@ -192,7 +192,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   justify-content: center;
   padding-bottom: 14px;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-medium) ease;
 }
 
 .home-char-view {
@@ -211,7 +211,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s var(--easing);
+  transition: transform var(--dur-slow) var(--easing);
 }
 
 .home-char-body {
@@ -240,7 +240,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   height: 3px;
   background: var(--char-color, var(--accent));
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--dur-normal) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {

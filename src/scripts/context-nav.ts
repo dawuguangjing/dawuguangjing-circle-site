@@ -2,7 +2,7 @@
 // 一覧ページ → 詳細ページのバックナビゲーション:
 // sessionStorage に保存されたコンテキストURLを使ってリストの位置を復元する
 
-import { RETURN_HIGHLIGHT_MS } from '../utils/constants';
+import { RETURN_HIGHLIGHT_MS, BACK_NAV_TIMEOUT_MS } from '../utils/constants';
 
 function initContextBackLinks() {
   document.querySelectorAll<HTMLAnchorElement>('a[data-back-context]').forEach((node) => {
@@ -47,7 +47,7 @@ function initContextBackLinks() {
       window.setTimeout(() => {
         window.removeEventListener('pagehide', markNavigated);
         if (!navigated) window.location.href = fallbackHref;
-      }, 480);
+      }, BACK_NAV_TIMEOUT_MS);
     });
   });
 }

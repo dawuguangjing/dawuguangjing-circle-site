@@ -59,7 +59,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
 .faq-answer-inner > * {
   opacity: 0;
   transform: translateY(-6px);
-  transition: opacity 0.3s ease 0.15s, transform 0.3s ease 0.15s;
+  transition: opacity var(--dur-medium) ease var(--dur-fast), transform var(--dur-medium) ease var(--dur-fast);
 }
 
 .faq-item[open] .faq-answer-inner > * {
@@ -117,7 +117,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
   margin-left: 12px;
   background: var(--ink-dim);
   clip-path: polygon(25% 20%, 75% 50%, 25% 80%);
-  transition: transform 0.25s ease;
+  transition: transform var(--dur-normal) ease;
 }
 
 .faq-item[open] summary::after {
@@ -370,7 +370,7 @@ html.is-client-nav [data-anim] {
 html.theme-transitioning *,
 html.theme-transitioning *::before,
 html.theme-transitioning *::after {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+  transition: background-color var(--dur-medium) ease, color var(--dur-medium) ease, border-color var(--dur-medium) ease !important;
 }
 
 /* ── Mobile nav active state ── */

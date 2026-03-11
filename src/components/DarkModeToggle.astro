@@ -39,7 +39,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
   border-radius: 50%;
   background: none;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background var(--dur-quick) ease;
   flex-shrink: 0;
   font-family: inherit;
 }
@@ -60,11 +60,11 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
 </style>
 
 <script>
-  import { THEME_STORAGE_KEY } from '../utils/constants';
+  import { THEME_STORAGE_KEY, DARK_MODE_ICON_MS, DARK_MODE_TRANSITION_MS } from '../utils/constants';
   const STORAGE_KEY = THEME_STORAGE_KEY;
   const SLIDE_PX = 24;
   const ANIM_OPTS: KeyframeAnimationOptions = {
-    duration: 260,
+    duration: DARK_MODE_ICON_MS,
     easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
     fill: 'forwards',
   };
@@ -84,7 +84,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
     }
     setTimeout(() => {
       document.documentElement.classList.remove('theme-transitioning');
-    }, 320);
+    }, DARK_MODE_TRANSITION_MS);
   }
 
   /** アニメーションなしで即時表示切り替え（初期化・ページ遷移後用） */

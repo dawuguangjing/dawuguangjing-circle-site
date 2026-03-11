@@ -35,6 +35,8 @@ const { message, href, storageKey } = Astro.props;
 </style>
 
 <script>
+  import { ANNOUNCEMENT_DISMISS_MS } from '../utils/constants';
+
   function initAnnouncementBar() {
     const bar = document.getElementById('announcement-bar') as HTMLElement | null;
     if (!bar || (bar as any)._barInited) return;
@@ -50,7 +52,7 @@ const { message, href, storageKey } = Astro.props;
       try { sessionStorage.setItem(key, '1'); } catch (e) {}
       bar.classList.add('is-hiding');
       // transitionend の代わりに setTimeout で確実に除去
-      setTimeout(() => bar.remove(), 350);
+      setTimeout(() => bar.remove(), ANNOUNCEMENT_DISMISS_MS);
     }
 
     bar.querySelector('.announcement-bar-close')?.addEventListener('click', dismiss);

@@ -1,0 +1,390 @@
+/* ── Sort Bar ── */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.sort-label {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+}
+.sort-btn {
+  padding: 4px 12px;
+  min-height: 44px;
+  border: 1px solid var(--stroke);
+  border-radius: 16px;
+  background: none;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  cursor: pointer;
+  transition: all var(--dur-quick) ease;
+  font-family: inherit;
+}
+.sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+.sort-btn.is-active { background: var(--accent-alpha-08); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+/* ── Share Buttons ── */
+.share-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--stroke);
+  flex-wrap: wrap;
+}
+.share-bar-label {
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  margin-right: 2px;
+}
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  min-height: 44px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: inherit;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--dur-quick), color var(--dur-quick), background var(--dur-quick);
+}
+.share-btn:hover { border-color: var(--accent); color: var(--accent); }
+.share-btn--copied { border-color: #16a34a !important; color: #16a34a !important; }
+
+/* ── Toast Notification ── */
+.toast {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: var(--ink-bright);
+  color: var(--bg);
+  padding: 9px 12px 9px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity var(--dur-normal) ease, transform var(--dur-normal) ease;
+  z-index: var(--z-tooltip);
+  pointer-events: none;
+  white-space: nowrap;
+  box-shadow: var(--shadow-toast);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.toast.is-visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.toast-close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 2px 4px;
+  opacity: 0.6;
+  transition: opacity var(--dur-fast) ease;
+}
+.toast-close:hover { opacity: 1; }
+
+/* ── Character Pagination ── */
+.char-pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 12px 0;
+  border-top: 1px solid var(--stroke);
+  border-bottom: 1px solid var(--stroke);
+}
+.char-pagination-link {
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: none;
+  transition: color var(--dur-quick) ease, opacity var(--dur-quick) ease;
+  max-width: 45%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.char-pagination-link:hover { opacity: 0.75; }
+
+/* ── Environment tags ── */
+.env-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.env-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 2px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.env-tag--yes {
+  background: var(--accent-alpha-08);
+  color: var(--accent);
+}
+
+.env-tag--no {
+  background: rgba(0, 0, 0, 0.03);
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* ── Filter Bar ── */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  /* フィルターバーをボトムシートとして固定配置 */
+  .filter-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-sheet);
+    flex-wrap: wrap;
+    flex-direction: row;
+    background: var(--panel);
+    border-top: 1px solid var(--stroke);
+    border-radius: 16px 16px 0 0;
+    padding: 16px 16px calc(20px + env(safe-area-inset-bottom, 0px));
+    box-shadow: var(--shadow-sheet);
+    transform: translateY(100%);
+    transition: transform 0.32s var(--easing);
+    margin-bottom: 0;
+    /* ソフトキーボード表示時もシートが画面外に出ないよう高さ制限 */
+    max-height: calc(80vh - env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    /* 横スクロール無効化 */
+    overflow-x: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
+    scrollbar-width: auto;
+  }
+  .filter-bar.is-open {
+    transform: translateY(0);
+  }
+  .filter-bar .filter-chip { flex-shrink: 0; }
+
+  /* モバイル時のみ表示するシートのヘッダー */
+  .filter-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--stroke);
+  }
+  .filter-sheet-header-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .filter-sheet-close {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--stroke);
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: inherit;
+    touch-action: manipulation;
+  }
+
+  /* トリガーボタン */
+  .filter-sheet-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    min-height: 44px;
+    background: var(--panel);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: inherit;
+    margin-bottom: 16px;
+    touch-action: manipulation;
+    transition: border-color var(--dur-quick) ease, color var(--dur-quick) ease;
+  }
+  .filter-sheet-trigger.has-active {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .filter-sheet-trigger-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 9px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* ソートバーを横スクロール可能にし、ボタンにスナップを適用 */
+  .sort-bar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .sort-bar::-webkit-scrollbar { display: none; }
+  .sort-btn {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
+
+  /* スクリム（半透明オーバーレイ） */
+  .filter-sheet-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-sheet-scrim);
+    background: var(--overlay-dark);
+    animation: filter-overlay-in var(--dur-normal) ease forwards;
+  }
+  .filter-sheet-overlay.is-visible { display: block; }
+}
+@keyframes filter-overlay-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* デスクトップではトリガー・ヘッダー・オーバーレイを非表示 */
+@media (min-width: 641px) {
+  .filter-sheet-trigger,
+  .filter-sheet-overlay,
+  .filter-sheet-close,
+  .filter-sheet-header { display: none !important; }
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+/* ── List State Summary (filter/sort) ── */
+.list-state-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: -4px 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--panel) 80%, var(--bg));
+}
+
+.list-state-summary-text {
+  margin: 0;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: var(--ink-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-state-summary-clear {
+  flex-shrink: 0;
+  border: 1px solid var(--stroke);
+  border-radius: 999px;
+  background: var(--panel);
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: border-color var(--dur-quick) ease, color var(--dur-quick) ease, background var(--dur-quick) ease;
+}
+
+.list-state-summary-clear:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-alpha-05);
+}
+
+@media (max-width: 640px) {
+  .list-state-summary {
+    padding: 8px 10px;
+    margin-top: -6px;
+  }
+  .list-state-summary-text {
+    font-size: 0.74rem;
+  }
+}
+
+.filter-chip {
+  padding: 6px 14px;
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-pill);
+  background: var(--panel);
+  color: var(--ink-dim);
+  font-size: 0.78rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all var(--dur-quick) ease;
+  touch-action: manipulation;
+}
+
+.filter-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter-chip.is-active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* フィルターチップは pill 形状に合わせて丸いフォーカスリング */
+.filter-chip:focus-visible {
+  border-radius: var(--radius-pill);
+}

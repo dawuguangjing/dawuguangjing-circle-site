@@ -3,7 +3,7 @@
 // astro:page-load で毎回再初期化（VT 後も確実にリスナーを付け直す）。
 
 import { lockScroll, unlockScroll } from './scroll-lock';
-import { HINT_DISMISS_MS } from '../utils/constants';
+import { HINT_DISMISS_MS, LIGHTBOX_SCROLL_SYNC_MS, LIGHTBOX_SCROLL_DEBOUNCE_MS } from '../utils/constants';
 
 const _initedElements = new WeakSet<HTMLElement>();
 
@@ -41,7 +41,7 @@ function initLightbox() {
     lbThumbs.querySelector<HTMLElement>('.lightbox-thumb.is-active')
       ?.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
     // smooth アニメーション終了後にフラグをリセット
-    _programScrollTimer = setTimeout(() => { _isProgramScroll = false; }, behavior === 'instant' ? 0 : 450);
+    _programScrollTimer = setTimeout(() => { _isProgramScroll = false; }, behavior === 'instant' ? 0 : LIGHTBOX_SCROLL_SYNC_MS);
   }
 
   function showMedia(index: number, scrollBehavior: ScrollBehavior = 'smooth', skipScroll = false) {
@@ -219,7 +219,7 @@ function initLightbox() {
     // scroll デバウンス: scrollend 未対応ブラウザ（古い Safari 等）向けフォールバック
     lbThumbs.addEventListener('scroll', () => {
       if (_thumbScrollTimer) clearTimeout(_thumbScrollTimer);
-      _thumbScrollTimer = setTimeout(syncFromThumbScroll, 250);
+      _thumbScrollTimer = setTimeout(syncFromThumbScroll, LIGHTBOX_SCROLL_DEBOUNCE_MS);
     }, { passive: true });
   }
 

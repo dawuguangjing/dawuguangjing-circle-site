@@ -68,99 +68,29 @@ function extractExcerpt(body: string, maxLen = 100): string {
 
 <script>
   import { initFilterSheet } from '../../scripts/filter-sheet';
-  import { FILTER_STAGGER } from '../../utils/constants';
+  import { setupListFilter } from '../../scripts/list-filter';
 
-  // ── フィルターボトムシート（モバイル） ──
-  const { close: closeSheet } = initFilterSheet({
+  initFilterSheet({
     filterBarId: 'news-filter',
     overlayId:   'filter-sheet-overlay',
     triggerId:   'filter-sheet-trigger',
     closeBtnId:  'filter-sheet-close',
     lockKey:     'news-filter-sheet',
   });
-  const sheetTrigger = document.getElementById('filter-sheet-trigger');
-  const activeBadge  = document.getElementById('filter-active-badge');
 
-  const chips = document.querySelectorAll<HTMLButtonElement>('#news-filter .filter-chip');
-  const items = document.querySelectorAll<HTMLElement>('#news-grid [data-category]');
-  const validCategories = new Set(['all', ...Array.from(chips).map((c) => c.dataset.category ?? '').filter(Boolean)]);
-  const stateText = document.getElementById('news-state-text');
-  const stateClear = document.getElementById('news-state-clear') as HTMLButtonElement | null;
-  const categoryLabelMap = new Map(
-    Array.from(chips).map((chip) => [chip.dataset.category ?? '', (chip.textContent ?? '').trim()])
-  );
-
-  function updateBadge(category: string) {
-    if (!activeBadge) return;
-    if (category === 'all') {
-      activeBadge.setAttribute('hidden', '');
-      sheetTrigger?.classList.remove('has-active');
-    } else {
-      activeBadge.textContent = '1';
-      activeBadge.removeAttribute('hidden');
-      sheetTrigger?.classList.add('has-active');
-    }
-  }
-
-  function updateCategorySummary(category: string) {
-    if (!stateText || !stateClear) return;
-    if (category === 'all') {
-      stateText.textContent = '現在条件: すべて';
-      stateClear.hidden = true;
-      return;
-    }
-    stateText.textContent = `現在条件: ${categoryLabelMap.get(category) ?? category}`;
-    stateClear.hidden = false;
-  }
-
-  function applyCategory(cat: string, updateUrl = true) {
-    const resolvedCat = validCategories.has(cat) ? cat : 'all';
-    chips.forEach((chip) => {
-      chip.classList.toggle('is-active', chip.dataset.category === resolvedCat);
-    });
-
-    let visibleIndex = 0;
-    items.forEach((el) => {
-      const show = resolvedCat === 'all' || el.dataset.category === resolvedCat;
-      if (show) {
-        el.style.display = '';
-        el.classList.remove('is-visible');
-        el.style.setProperty('--anim-delay', `${visibleIndex * FILTER_STAGGER}s`);
-        void el.offsetWidth; // force reflow to restart transition
-        el.classList.add('is-visible');
-        visibleIndex++;
-      } else {
-        el.style.display = 'none';
-      }
-    });
-    updateCategorySummary(resolvedCat);
-    updateBadge(resolvedCat);
-
-    if (updateUrl) {
-      const url = new URL(window.location.href);
-      if (resolvedCat === 'all') {
-        url.searchParams.delete('category');
-      } else {
-        url.searchParams.set('category', resolvedCat);
-      }
-      history.replaceState(null, '', url.toString());
-      const grid = document.getElementById('news-grid');
-      if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      const cat = chip.dataset.category ?? 'all';
-      applyCategory(cat);
-    });
+  setupListFilter({
+    stateId: 'news',
+    gridSelector: '#news-grid',
+    itemSelector: '#news-grid > [data-category]',
+    dimensions: [
+      {
+        type: 'filter-single',
+        paramName: 'category',
+        defaultValue: 'all',
+        chipSelector: '#news-filter .filter-chip[data-category]',
+        chipDataKey: 'category',
+        itemDataKey: 'category',
+      },
+    ],
   });
-  stateClear?.addEventListener('click', () => {
-    applyCategory('all');
-  });
-
-  // URL の ?category= パラメーターを自動適用（ニュース詳細のタグリンクから遷移した場合）
-  const urlCat = new URL(window.location.href).searchParams.get('category');
-  if (urlCat) applyCategory(urlCat, false);
-  else { updateCategorySummary('all'); updateBadge('all'); }
 </script>

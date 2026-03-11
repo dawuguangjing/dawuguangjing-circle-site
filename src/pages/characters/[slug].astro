@@ -256,7 +256,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   right: 10px;
   font-size: 1rem;
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--dur-normal) ease;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
 }
 
@@ -324,7 +324,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 .char-stat-link {
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: opacity 0.2s ease;
+  transition: opacity var(--dur-quick) ease;
 }
 
 .char-stat-link:hover {
@@ -424,7 +424,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
-  transition: color 0.2s ease;
+  transition: color var(--dur-quick) ease;
 }
 
 .char-nav-back:hover {
@@ -447,7 +447,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--panel);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s var(--easing);
+  transition: border-color var(--dur-normal) ease, box-shadow var(--dur-normal) ease, transform var(--dur-normal) var(--easing);
 }
 .char-gallery-preview-card:hover {
   border-color: var(--accent-alpha-25);
@@ -478,7 +478,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform 0.3s var(--easing);
+  transition: transform var(--dur-medium) var(--easing);
 }
 .char-gallery-preview-card:hover .char-gallery-preview-cover {
   transform: scale(1.03);
@@ -505,7 +505,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   object-fit: cover;
   object-position: center 30%;
   display: block;
-  transition: transform 0.3s var(--easing);
+  transition: transform var(--dur-medium) var(--easing);
 }
 .char-gallery-preview-card:hover .char-gallery-preview-thumb img {
   transform: scale(1.05);

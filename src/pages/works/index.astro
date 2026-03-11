@@ -80,256 +80,86 @@ const works = await getSortedWorks();
 
   <script>
     import { initFilterSheet } from '../../scripts/filter-sheet';
-    import { FILTER_STAGGER } from '../../utils/constants';
+    import { setupListFilter } from '../../scripts/list-filter';
 
-    // ── フィルターボトムシート（モバイル） ──
-    const { close: closeSheet } = initFilterSheet({
+    initFilterSheet({
       filterBarId: 'filter-bar',
       overlayId:   'filter-sheet-overlay',
       triggerId:   'filter-sheet-trigger',
       closeBtnId:  'filter-sheet-close',
       lockKey:     'works-filter-sheet',
     });
-    const sheetTrigger = document.getElementById('filter-sheet-trigger');
-    const activeBadge  = document.getElementById('filter-active-badge');
-
-    const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip'));
-    const items = Array.from(document.querySelectorAll<HTMLElement>('.work-filter-item'));
-    const allChip = chips.find(c => c.dataset.filter === 'all')!;
-    const sortBtns = Array.from(document.querySelectorAll<HTMLElement>('.sort-btn'));
-    const stateText = document.getElementById('works-state-text');
-    const stateClear = document.getElementById('works-state-clear') as HTMLButtonElement | null;
-    const grid = document.getElementById('works-grid')!;
-    const VALID_SORTS = new Set(['newest', 'oldest', 'title']);
-    const filterLabelMap = new Map(
-      chips
-        .filter((c) => (c.dataset.filter ?? '') !== '' && c.dataset.filter !== 'all')
-        .map((c) => [c.dataset.filter!, (c.textContent ?? '').trim() || c.dataset.filter!])
-    );
-    const sortLabelMap = new Map(
-      sortBtns
-        .filter((b) => VALID_SORTS.has(b.dataset.sort ?? ''))
-        .map((b) => [b.dataset.sort!, (b.textContent ?? '').trim() || b.dataset.sort!])
-    );
-
-    // フィルターキー → 表示条件
-    const filterTest: Record<string, (el: HTMLElement) => boolean> = {
-      'r18':      el => el.dataset.r18      === 'true',
-      'all-ages': el => el.dataset.r18      === 'false',
-      'windows':  el => el.dataset.windows  === 'true',
-      'mac':      el => el.dataset.mac      === 'true',
-      'browser':  el => el.dataset.browser  === 'true',
-      'ios':      el => el.dataset.ios      === 'true',
-      'android':  el => el.dataset.android  === 'true',
-    };
-
-    function getActiveFilters() {
-      return chips.filter(c => c.classList.contains('is-active') && c.dataset.filter !== 'all')
-                  .map(c => c.dataset.filter!);
-    }
-
-    function getActiveSort() {
-      const active = sortBtns.find((b) => b.classList.contains('is-active'))?.dataset.sort;
-      return VALID_SORTS.has(active ?? '') ? active! : 'newest';
-    }
-
-    function syncStateToUrl(activeFilters = getActiveFilters()) {
-      const url = new URL(window.location.href);
-      if (activeFilters.length === 0) {
-        url.searchParams.delete('filters');
-      } else {
-        url.searchParams.set('filters', activeFilters.join(','));
-      }
-      const sort = getActiveSort();
-      if (sort === 'newest') {
-        url.searchParams.delete('sort');
-      } else {
-        url.searchParams.set('sort', sort);
-      }
-      history.replaceState(null, '', url.toString());
-    }
-
-    function updateStateSummary(activeFilters = getActiveFilters(), sort = getActiveSort()) {
-      if (!stateText || !stateClear) return;
-      const parts: string[] = [];
-      if (activeFilters.length > 0) {
-        const labels = activeFilters.map((f) => filterLabelMap.get(f) ?? f);
-        parts.push(`絞り込み: ${labels.join(' / ')}`);
-      }
-      if (sort !== 'newest') {
-        parts.push(`並び順: ${sortLabelMap.get(sort) ?? sort}`);
-      }
-      if (parts.length === 0) {
-        stateText.textContent = '現在条件: すべて';
-        stateClear.hidden = true;
-      } else {
-        stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
-        stateClear.hidden = false;
-      }
-    }
 
     const emptyEl = document.getElementById('works-empty');
+    const countEl = document.getElementById('work-count');
+    const totalCount = document.querySelectorAll('.work-filter-item').length;
 
-    function applyFilters(scroll = false) {
-      const active = getActiveFilters();
-      let visibleCount = 0;
-      items.forEach((el) => {
-        // アクティブなフィルターがなければ全件表示、あれば全条件 AND
-        const show = active.length === 0 || active.every(f => filterTest[f]?.(el));
-        if (show) {
-          el.style.display = '';
-          el.classList.remove('is-visible');
-          el.style.setProperty('--anim-delay', `${visibleCount * FILTER_STAGGER}s`);
-          void el.offsetWidth; // force reflow to restart transition
-          el.classList.add('is-visible');
-          visibleCount++;
-        } else {
-          el.style.display = 'none';
+    const result = setupListFilter({
+      stateId: 'works',
+      gridSelector: '#works-grid',
+      itemSelector: '.work-filter-item',
+      dimensions: [
+        {
+          type: 'filter-multi',
+          paramName: 'filters',
+          defaultValue: 'all',
+          chipSelector: '.filter-chip[data-filter]',
+          chipDataKey: 'filter',
+          filterTest: {
+            'r18':      el => el.dataset.r18      === 'true',
+            'all-ages': el => el.dataset.r18      === 'false',
+            'windows':  el => el.dataset.windows  === 'true',
+            'mac':      el => el.dataset.mac      === 'true',
+            'browser':  el => el.dataset.browser  === 'true',
+            'ios':      el => el.dataset.ios      === 'true',
+            'android':  el => el.dataset.android  === 'true',
+          },
+        },
+        {
+          type: 'sort',
+          paramName: 'sort',
+          defaultValue: 'newest',
+          chipSelector: '.sort-btn[data-sort]',
+          chipDataKey: 'sort',
+          sortFn: (a, b, sort) => {
+            if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
+            const da = Number(a.dataset.releaseDate);
+            const db = Number(b.dataset.releaseDate);
+            return sort === 'oldest' ? da - db : db - da;
+          },
+        },
+      ],
+      onUpdate: (visibleCount) => {
+        emptyEl?.classList.toggle('is-visible', visibleCount === 0);
+        if (countEl) {
+          countEl.textContent = visibleCount < totalCount
+            ? `${visibleCount} 件表示中`
+            : `${totalCount} タイトル`;
         }
-      });
-
-      // 空状態表示
-      emptyEl?.classList.toggle('is-visible', visibleCount === 0);
-
-      // 件数表示更新
-      const countEl = document.getElementById('work-count');
-      if (countEl) {
-        countEl.textContent = active.length === 0
-          ? `${items.length} タイトル`
-          : `${visibleCount} 件表示中`;
-      }
-      updateStateSummary(active, getActiveSort());
-
-      // URL に状態を保存（ブックマーク・シェア対応）
-      syncStateToUrl(active);
-
-      // トリガーボタンのバッジ更新
-      if (activeBadge) {
-        if (active.length > 0) {
-          activeBadge.textContent = String(active.length);
-          activeBadge.removeAttribute('hidden');
-          sheetTrigger?.classList.add('has-active');
-        } else {
-          activeBadge.setAttribute('hidden', '');
-          sheetTrigger?.classList.remove('has-active');
-        }
-      }
-
-      if (scroll) {
-        grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }
-
-    chips.forEach((chip, i) => {
-      chip.addEventListener('click', () => {
-        if (chip.dataset.filter === 'all') {
-          // "すべて" → 他チップをリセットして "すべて" だけオン
-          chips.forEach(c => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
-          chip.classList.add('is-active');
-          chip.setAttribute('aria-pressed', 'true');
-        } else {
-          // "すべて" をオフ
-          allChip.classList.remove('is-active');
-          allChip.setAttribute('aria-pressed', 'false');
-          // このチップをトグル
-          const next = !chip.classList.contains('is-active');
-          chip.classList.toggle('is-active', next);
-          chip.setAttribute('aria-pressed', String(next));
-          // 何も選択されていなければ "すべて" に戻す
-          if (getActiveFilters().length === 0) {
-            allChip.classList.add('is-active');
-            allChip.setAttribute('aria-pressed', 'true');
-          }
-        }
-        applyFilters(true);
-      });
-
-      // 矢印キーでチップ間を移動
-      chip.addEventListener('keydown', (e) => {
-        let target: HTMLElement | null = null;
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault();
-          target = chips[(i + 1) % chips.length];
-        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault();
-          target = chips[(i - 1 + chips.length) % chips.length];
-        }
-        target?.focus();
-      });
+      },
     });
 
-    // フィルターリセットボタン
+    // 空状態リセットボタン
     document.getElementById('works-filter-reset')?.addEventListener('click', () => {
-      allChip.click();
-    });
-    stateClear?.addEventListener('click', () => {
-      const newestBtn = sortBtns.find((b) => b.dataset.sort === 'newest');
-      if (newestBtn && !newestBtn.classList.contains('is-active')) {
-        newestBtn.click();
-      }
-      if (getActiveFilters().length > 0 || !allChip.classList.contains('is-active')) {
-        allChip.click();
-      } else {
-        updateStateSummary();
-      }
+      document.querySelector<HTMLElement>('.filter-chip[data-filter="all"]')?.click();
     });
 
-    // 初期化: URL パラメーターから状態を復元
-    const url = new URL(window.location.href);
-    const urlFilters = url.searchParams.get('filters');
-    if (urlFilters) {
-      allChip.classList.remove('is-active');
-      allChip.setAttribute('aria-pressed', 'false');
-      let activeCount = 0;
-      urlFilters.split(',').forEach((f) => {
-        const chip = chips.find((c) => c.dataset.filter === f);
-        if (chip) {
-          chip.classList.add('is-active');
-          chip.setAttribute('aria-pressed', 'true');
-          activeCount++;
-        }
-      });
-      if (activeCount === 0) {
-        allChip.classList.add('is-active');
-        allChip.setAttribute('aria-pressed', 'true');
-      }
-    }
-    applyFilters();
-    let isRestoring = false;
-    sortBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        sortBtns.forEach(b => b.classList.remove('is-active'));
-        btn.classList.add('is-active');
-        const sort = btn.dataset.sort;
-        const sorted = [...items].sort((a, b) => {
-          if (sort === 'title') return (a.dataset.title ?? '').localeCompare(b.dataset.title ?? '', 'ja');
-          const da = Number(a.dataset.releaseDate);
-          const db = Number(b.dataset.releaseDate);
-          return sort === 'oldest' ? da - db : db - da;
+    // 矢印キーでフィルタチップ間を移動（works 固有）
+    if (result) {
+      const chips = Array.from(document.querySelectorAll<HTMLElement>('.filter-chip[data-filter]'));
+      chips.forEach((chip, i) => {
+        chip.addEventListener('keydown', (e) => {
+          let target: HTMLElement | null = null;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+            e.preventDefault();
+            target = chips[(i + 1) % chips.length];
+          } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            target = chips[(i - 1 + chips.length) % chips.length];
+          }
+          target?.focus();
         });
-        sorted.forEach((el, idx) => {
-          el.style.setProperty('--anim-delay', `${idx * FILTER_STAGGER}s`);
-          el.classList.remove('is-visible');
-          grid.appendChild(el);
-          void el.offsetWidth;
-          if (el.style.display !== 'none') el.classList.add('is-visible');
-        });
-        syncStateToUrl();
-        updateStateSummary();
-        if (!isRestoring) {
-          grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
       });
-    });
-
-    const urlSort = url.searchParams.get('sort');
-    if (urlSort) {
-      isRestoring = true;
-      const targetSortBtn = sortBtns.find((b) => b.dataset.sort === urlSort);
-      if (targetSortBtn) targetSortBtn.click();
-      else syncStateToUrl();
-      isRestoring = false;
     }
-    updateStateSummary();
   </script>
 </BaseLayout>

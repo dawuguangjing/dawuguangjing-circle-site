@@ -107,7 +107,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   text-decoration: none;
   color: inherit;
   box-shadow: var(--shadow);
-  transition: border-color 0.25s ease, transform 0.3s var(--easing), box-shadow 0.3s ease;
+  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
 .char-list-card:hover {
@@ -128,7 +128,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s var(--easing);
+  transition: transform var(--dur-slow) var(--easing);
 }
 
 .char-list-card:hover .char-list-img {
@@ -144,7 +144,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   justify-content: center;
   padding-bottom: 20px;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity var(--dur-medium) ease;
 }
 
 .char-list-card:hover .char-list-overlay {
@@ -211,7 +211,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   height: 3px;
   background: var(--char-color, var(--accent));
   opacity: 0;
-  transition: opacity 0.25s ease;
+  transition: opacity var(--dur-normal) ease;
 }
 
 .char-list-card:hover .char-list-accent {
@@ -228,175 +228,41 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 
 <script>
   import { initFilterSheet } from '../../scripts/filter-sheet';
-  import { FILTER_STAGGER } from '../../utils/constants';
+  import { setupListFilter } from '../../scripts/list-filter';
 
-  // ── フィルターボトムシート（モバイル） ──
-  const { close: closeSheet } = initFilterSheet({
+  initFilterSheet({
     filterBarId: 'char-filter',
     overlayId:   'filter-sheet-overlay',
     triggerId:   'filter-sheet-trigger',
     closeBtnId:  'filter-sheet-close',
     lockKey:     'char-filter-sheet',
   });
-  const sheetTrigger = document.getElementById('filter-sheet-trigger');
-  const activeBadge  = document.getElementById('filter-active-badge');
 
-  function updateCharBadge(work: string, sort: string) {
-    if (!activeBadge) return;
-    const count = (work !== 'all' ? 1 : 0) + (sort !== 'order' ? 1 : 0);
-    if (count > 0) {
-      activeBadge.textContent = String(count);
-      activeBadge.removeAttribute('hidden');
-      sheetTrigger?.classList.add('has-active');
-    } else {
-      activeBadge.setAttribute('hidden', '');
-      sheetTrigger?.classList.remove('has-active');
-    }
-  }
-
-  const charChips = Array.from(document.querySelectorAll<HTMLButtonElement>('#char-filter .filter-chip'));
-  const charCards = Array.from(document.querySelectorAll<HTMLElement>('#char-list-grid .char-list-card'));
-  const sortBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-char-sort]'));
-  const charGrid = document.getElementById('char-list-grid');
-  const validSorts = new Set(['order', 'name']);
-  const validWorks = new Set(['all', ...charChips.map((c) => c.dataset.work ?? '').filter(Boolean)]);
-  const stateText = document.getElementById('characters-state-text');
-  const stateClear = document.getElementById('characters-state-clear') as HTMLButtonElement | null;
-  const workLabelMap = new Map(
-    charChips.map((chip) => [chip.dataset.work ?? '', (chip.textContent ?? '').trim()])
-  );
-  const sortLabelMap = new Map(
-    sortBtns.map((btn) => [btn.dataset.charSort ?? '', (btn.textContent ?? '').trim()])
-  );
-
-  function getActiveWork() {
-    const active = charChips.find((c) => c.classList.contains('is-active'))?.dataset.work;
-    return validWorks.has(active ?? '') ? active! : 'all';
-  }
-
-  function getActiveSort() {
-    const active = sortBtns.find((b) => b.classList.contains('is-active'))?.dataset.charSort;
-    return validSorts.has(active ?? '') ? active! : 'order';
-  }
-
-  function syncStateToUrl(work = getActiveWork(), sort = getActiveSort()) {
-    const url = new URL(window.location.href);
-    if (work === 'all') {
-      url.searchParams.delete('work');
-    } else {
-      url.searchParams.set('work', work);
-    }
-    if (sort === 'order') {
-      url.searchParams.delete('sort');
-    } else {
-      url.searchParams.set('sort', sort);
-    }
-    history.replaceState(null, '', url.toString());
-  }
-
-  function updateStateSummary(work = getActiveWork(), sort = getActiveSort()) {
-    if (!stateText || !stateClear) return;
-    const parts: string[] = [];
-    if (work !== 'all') {
-      parts.push(`作品: ${workLabelMap.get(work) ?? work}`);
-    }
-    if (sort !== 'order') {
-      parts.push(`並び順: ${sortLabelMap.get(sort) ?? sort}`);
-    }
-    if (parts.length === 0) {
-      stateText.textContent = '現在条件: すべて';
-      stateClear.hidden = true;
-    } else {
-      stateText.textContent = `現在条件: ${parts.join(' ・ ')}`;
-      stateClear.hidden = false;
-    }
-    updateCharBadge(work, sort);
-  }
-
-  function applyWorkFilter(work: string, updateUrl = true) {
-    const resolvedWork = validWorks.has(work) ? work : 'all';
-    charChips.forEach((c) => {
-      const isActive = (c.dataset.work ?? '') === resolvedWork;
-      c.classList.toggle('is-active', isActive);
-      c.setAttribute('aria-pressed', String(isActive));
-    });
-
-    let idx = 0;
-    charCards.forEach((card) => {
-      const show = resolvedWork === 'all' || card.dataset.work === resolvedWork;
-      if (show) {
-        card.style.display = '';
-        card.classList.remove('is-visible');
-        card.style.setProperty('--anim-delay', `${idx * FILTER_STAGGER}s`);
-        void card.offsetWidth;
-        card.classList.add('is-visible');
-        idx++;
-      } else {
-        card.style.display = 'none';
-      }
-    });
-
-    const sort = getActiveSort();
-    updateStateSummary(resolvedWork, sort);
-    if (updateUrl) {
-      syncStateToUrl(resolvedWork, sort);
-      charGrid?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  function applyCharSort(sort: string, updateUrl = true) {
-    const resolvedSort = validSorts.has(sort) ? sort : 'order';
-    sortBtns.forEach((b) => b.classList.toggle('is-active', b.dataset.charSort === resolvedSort));
-    if (!charGrid) return;
-
-    const sorted = [...charCards].sort((a, b) => {
-      if (resolvedSort === 'name') return (a.dataset.name ?? '').localeCompare(b.dataset.name ?? '', 'ja');
-      return Number(a.dataset.order) - Number(b.dataset.order);
-    });
-    sorted.forEach((el, i) => {
-      el.style.setProperty('--anim-delay', `${i * FILTER_STAGGER}s`);
-      el.classList.remove('is-visible');
-      charGrid.appendChild(el);
-      void el.offsetWidth;
-      if (el.style.display !== 'none') el.classList.add('is-visible');
-    });
-
-    const work = getActiveWork();
-    updateStateSummary(work, resolvedSort);
-    if (updateUrl) {
-      syncStateToUrl(work, resolvedSort);
-      charGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }
-
-  charChips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      applyWorkFilter(chip.dataset.work ?? 'all');
-    });
+  setupListFilter({
+    stateId: 'characters',
+    gridSelector: '#char-list-grid',
+    itemSelector: '#char-list-grid .char-list-card',
+    dimensions: [
+      {
+        type: 'filter-single',
+        paramName: 'work',
+        defaultValue: 'all',
+        chipSelector: '#char-filter .filter-chip[data-work]',
+        chipDataKey: 'work',
+        itemDataKey: 'work',
+        summaryPrefix: '作品',
+      },
+      {
+        type: 'sort',
+        paramName: 'sort',
+        defaultValue: 'order',
+        chipSelector: '[data-char-sort]',
+        chipDataKey: 'charSort',
+        sortFn: (a, b, sort) => {
+          if (sort === 'name') return (a.dataset.name ?? '').localeCompare(b.dataset.name ?? '', 'ja');
+          return Number(a.dataset.order) - Number(b.dataset.order);
+        },
+      },
+    ],
   });
-
-  sortBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      applyCharSort(btn.dataset.charSort ?? 'order');
-    });
-  });
-  stateClear?.addEventListener('click', () => {
-    const defaultSortBtn = sortBtns.find((btn) => btn.dataset.charSort === 'order');
-    if (defaultSortBtn && !defaultSortBtn.classList.contains('is-active')) {
-      defaultSortBtn.click();
-    }
-    const allWorkChip = charChips.find((chip) => chip.dataset.work === 'all');
-    if (allWorkChip && !allWorkChip.classList.contains('is-active')) {
-      allWorkChip.click();
-    } else {
-      updateStateSummary();
-    }
-  });
-
-  // 初期化: URL パラメーターから状態を復元
-  const params = new URL(window.location.href).searchParams;
-  applyCharSort(params.get('sort') ?? 'order', false);
-  applyWorkFilter(params.get('work') ?? 'all', false);
-  syncStateToUrl();
-  updateStateSummary();
 </script>

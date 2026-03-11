@@ -85,3 +85,29 @@ export const FAQ_CLEANUP_MS = 250;
 export const FORM_LOAD_TIMEOUT_MS = 20000;
 /** お問い合わせフォーム: 遅延読み込みの IntersectionObserver rootMargin */
 export const FORM_OBSERVE_MARGIN = '200px';
+
+// ── UI タイミング（追加分） ──────────────────────────────────────────────
+
+/** コンテキストナビ: history.back() フォールバックタイムアウト（ms） */
+export const BACK_NAV_TIMEOUT_MS = 480;
+
+/** ライトボックス: サムネイルスクロール完了待ち（ms） */
+export const LIGHTBOX_SCROLL_SYNC_MS = 450;
+
+/** ライトボックス: サムネイル scroll デバウンス間隔（ms） */
+export const LIGHTBOX_SCROLL_DEBOUNCE_MS = 250;
+
+/** ルートプログレス: 進捗アニメーション間隔（ms） */
+export const ROUTE_PROGRESS_INTERVAL_MS = 70;
+
+/** ルートプログレス: 完了後の非表示遅延（ms） */
+export const ROUTE_PROGRESS_HIDE_MS = 180;
+
+/** アナウンスバー: 閉じるアニメーション完了待ち（ms） */
+export const ANNOUNCEMENT_DISMISS_MS = 350;
+
+/** ダークモード: アイコン切替アニメーション時間（ms） */
+export const DARK_MODE_ICON_MS = 260;
+
+/** ダークモード: テーマ遷移クラス除去タイマー（ms） */
+export const DARK_MODE_TRANSITION_MS = 320;

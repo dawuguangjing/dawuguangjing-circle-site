@@ -1,3 +1,5 @@
+import { ROUTE_PROGRESS_INTERVAL_MS, ROUTE_PROGRESS_HIDE_MS } from '../utils/constants';
+
 const routeProgressEl = document.getElementById('route-progress');
 const routeProgressBar = routeProgressEl?.querySelector<HTMLElement>('.route-progress-bar');
 let routeProgress = 0;
@@ -29,7 +31,7 @@ export function startRouteProgress() {
       clearInterval(routeProgressTimer);
       routeProgressTimer = null;
     }
-  }, 70);
+  }, ROUTE_PROGRESS_INTERVAL_MS);
 }
 
 export function bumpRouteProgress(value: number) {
@@ -48,5 +50,5 @@ export function finishRouteProgress() {
   routeHideTimer = window.setTimeout(() => {
     routeProgressEl?.classList.remove('is-active');
     setRouteProgress(0);
-  }, 180);
+  }, ROUTE_PROGRESS_HIDE_MS);
 }
