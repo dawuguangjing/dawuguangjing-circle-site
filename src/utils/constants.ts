@@ -82,6 +82,6 @@ export const COPY_FEEDBACK_MS = 2000;
 export const FAQ_CLEANUP_MS = 250;
 
 /** お問い合わせフォーム: iframe 読み込みタイムアウト（ms） */
-export const FORM_LOAD_TIMEOUT_MS = 5000;
+export const FORM_LOAD_TIMEOUT_MS = 20000;
 /** お問い合わせフォーム: 遅延読み込みの IntersectionObserver rootMargin */
 export const FORM_OBSERVE_MARGIN = '200px';
