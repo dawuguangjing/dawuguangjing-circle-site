@@ -14,6 +14,7 @@
   --accent-dark: #004A82;
   --cta: #F96532;
   --cta-hover: #E85525;
+  --cta-rgb: 249, 101, 50;
   --cta-text: #ffffff;
   --highlight: #0068B7;
   --sale: #E62E2E;
@@ -131,6 +132,18 @@
   --shadow-card-md: 0 8px 20px rgba(0, 0, 0, 0.1);
   --shadow-toast: 0 4px 16px rgba(0, 0, 0, 0.18);
   --shadow-age-gate: 0 4px 24px rgba(0, 0, 0, 0.08);
+  /* ── Sale badge ── */
+  --color-sale-bg: rgba(230, 46, 46, 0.10);
+  /* ── Notice ── */
+  --notice-bg: rgba(0, 104, 183, 0.04);
+  /* ── Cien button shadows ── */
+  --shadow-cien: 0 4px 14px rgba(0, 0, 0, 0.30);
+  --shadow-cien-hover: 0 6px 20px rgba(0, 0, 0, 0.45);
+  /* ── Section link hover ── */
+  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.1);
+  /* ── Character card overlay ── */
+  --overlay-char: rgba(0, 0, 0, 0.3);
+  --char-view-border: rgba(255, 255, 255, 0.7);
 }
 
 /* ── Breakpoints (reference only; not usable in @media queries) ──
@@ -194,4 +207,9 @@ html[data-theme="dark"] {
   --shadow-card-md: 0 8px 20px rgba(0, 0, 0, 0.4);
   --shadow-toast: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-age-gate: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --color-sale-bg: rgba(230, 46, 46, 0.14);
+  --notice-bg: rgba(0, 104, 183, 0.08);
+  --shadow-cien: 0 4px 14px rgba(255, 255, 255, 0.12);
+  --shadow-cien-hover: 0 6px 20px rgba(255, 255, 255, 0.20);
+  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.15);
 }

@@ -45,7 +45,7 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'shinsa2-2026v1',
-  message: '🎉 従順審査2 制作開始！続報は開発ログ・Ci-enで配信中',
+  message: '🎉従順審査2 制作開始！続報は開発ログ/Ci-enで配信中',
   href: 'https://ci-en.dlsite.com/creator/35269',
 };
 
@@ -114,3 +114,22 @@ export const DARK_MODE_TRANSITION_MS = 320;
 
 /** フィルター操作: デバウンス間隔（ms） */
 export const FILTER_DEBOUNCE_MS = 150;
+
+// ── ライトボックス: タッチ操作 ─────────────────────────────────────────────
+
+/** ピンチズーム最大倍率 */
+export const LIGHTBOX_MAX_ZOOM = 4;
+
+/** ピンチズーム最小倍率 */
+export const LIGHTBOX_MIN_ZOOM = 1;
+
+/** ピンチズーム: リセット閾値（この倍率未満で等倍に戻す） */
+export const LIGHTBOX_ZOOM_RESET_THRESHOLD = 1.1;
+
+/** タッチスワイプ: 有効判定の最小距離（px） */
+export const LIGHTBOX_SWIPE_THRESHOLD_PX = 50;
+
+// ── スクロールアニメーション ──────────────────────────────────────────────
+
+/** IntersectionObserver の交差閾値 */
+export const ANIM_INTERSECTION_THRESHOLD = 0.12;

@@ -4,10 +4,12 @@
 import { COPY_FEEDBACK_MS } from '../utils/constants';
 import { showToast } from './toast';
 
+const _initedBtns = new WeakSet<Element>();
+
 export function initShareCopy() {
   document.querySelectorAll<HTMLElement>('[data-copy-url]').forEach((btn) => {
-    if ((btn as any)._copyInited) return;
-    (btn as any)._copyInited = true;
+    if (_initedBtns.has(btn)) return;
+    _initedBtns.add(btn);
     btn.addEventListener('click', async () => {
       const url = btn.dataset.copyUrl!;
       try {

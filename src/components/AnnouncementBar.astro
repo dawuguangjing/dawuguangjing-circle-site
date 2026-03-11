@@ -39,8 +39,8 @@ const { message, href, storageKey } = Astro.props;
 
   function initAnnouncementBar() {
     const bar = document.getElementById('announcement-bar') as HTMLElement | null;
-    if (!bar || (bar as any)._barInited) return;
-    (bar as any)._barInited = true;
+    if (!bar || bar.dataset.inited) return;
+    bar.dataset.inited = '1';
 
     const key = bar.dataset.storageKey!;
 

@@ -202,7 +202,7 @@ button {
 
 .badge--sale {
   color: var(--sale);
-  background: rgba(230, 46, 46, 0.10);
+  background: var(--color-sale-bg);
 }
 
 .badge--devlog {
@@ -263,15 +263,9 @@ button {
 
 .button--cien {
   background: var(--accent);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.30);
+  box-shadow: var(--shadow-cien);
 }
 .button--cien:hover {
   background: var(--accent-2);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
-}
-html[data-theme="dark"] .button--cien {
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.12);
-}
-html[data-theme="dark"] .button--cien:hover {
-  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.20);
+  box-shadow: var(--shadow-cien-hover);
 }

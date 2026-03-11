@@ -59,7 +59,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
             data-name={char.data.name}
             style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
           >
-            <div class="char-card-img-wrap">
+            <div class="char-card-img-wrap img-skeleton">
               <img
                 src={char.data.cover}
                 alt={char.data.name}

@@ -77,7 +77,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
               data-anim
               style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
             >
-              <div class="char-card-img-wrap">
+              <div class="char-card-img-wrap img-skeleton">
                 <img
                   src={char.data.cover}
                   alt={char.data.name}

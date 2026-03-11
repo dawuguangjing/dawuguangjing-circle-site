@@ -113,6 +113,16 @@
   padding-top: 4px;
 }
 
+/* ── News Empty State ── */
+.news-empty-state {
+  display: none;
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--ink-dim);
+}
+.news-empty-state.is-visible { display: block; }
+.news-empty-state p { margin: 0 0 16px; font-size: 0.92rem; }
+
 /* ── News "See All" Card ── */
 .news-card-more {
   display: flex;

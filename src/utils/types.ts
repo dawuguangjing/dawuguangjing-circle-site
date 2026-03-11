@@ -1,15 +1,18 @@
+/** ストア名 */
+export type StoreName = 'fanza' | 'dlsite';
+
 /** ストア購入・体験版リンクの表示用データ */
 export type StoreLink = {
   label: string;
   href: string;
   track: string;
-  store: string;
+  store: StoreName;
 };
 
 /** sources オブジェクトから StoreLink 配列を構築するユーティリティ */
 export function buildLinks(
   sources: Record<string, string | undefined>,
-  entries: { key: string; label: string; track: string; store: string }[]
+  entries: { key: string; label: string; track: string; store: StoreName }[]
 ): StoreLink[] {
   return entries.flatMap(({ key, label, track, store }) =>
     sources[key] ? [{ label, href: sources[key]!, track, store }] : []

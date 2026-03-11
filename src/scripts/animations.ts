@@ -1,3 +1,5 @@
+import { ANIM_INTERSECTION_THRESHOLD } from '../utils/constants';
+
 function initAnimations(instant = false) {
   if (instant) {
     document.querySelectorAll<HTMLElement>('[data-anim]').forEach((el) => {
@@ -12,7 +14,7 @@ function initAnimations(instant = false) {
         observer.unobserve(e.target);
       }
     }),
-    { threshold: 0.12 }
+    { threshold: ANIM_INTERSECTION_THRESHOLD }
   );
   document.querySelectorAll('[data-anim]').forEach(el => observer.observe(el));
 }

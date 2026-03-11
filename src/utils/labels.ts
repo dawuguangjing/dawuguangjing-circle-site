@@ -1,5 +1,8 @@
 import type { NewsCategory } from '../content/config';
 
+type BranchingType = 'none' | 'light' | 'multi';
+type AiUsageLevel = 'none' | 'partial' | 'major';
+
 export const categoryLabels: Record<NewsCategory, string> = {
   release: 'リリース',
   update: '更新',
@@ -8,13 +11,13 @@ export const categoryLabels: Record<NewsCategory, string> = {
   futekigo: '不適合記録',
 };
 
-export const branchingLabels: Record<string, string> = {
+export const branchingLabels: Record<BranchingType, string> = {
   none: '一本道',
   light: '軽い分岐あり',
   multi: '複数ルートあり',
 };
 
-export const aiLevelLabels: Record<string, string> = {
+export const aiLevelLabels: Record<AiUsageLevel, string> = {
   none: '未使用',
   partial: '一部使用',
   major: '主要部分で使用',

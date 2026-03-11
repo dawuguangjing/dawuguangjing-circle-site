@@ -1,8 +1,10 @@
 ---
+import type { StoreName } from '../utils/types';
+
 interface Link {
   label: string;
   href: string;
-  store: string;
+  store: StoreName;
   track?: string;
 }
 

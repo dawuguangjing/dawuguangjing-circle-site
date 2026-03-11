@@ -5,9 +5,11 @@ export function closeTransientUi() {
   document.dispatchEvent(new CustomEvent('ui:close-overlays'));
 }
 
+let _inited = false;
+
 export function initGlobalOverlayClose() {
-  if ((document as any)._globalOverlayCloseInited) return;
-  (document as any)._globalOverlayCloseInited = true;
+  if (_inited) return;
+  _inited = true;
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeTransientUi();
   });

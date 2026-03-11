@@ -51,6 +51,11 @@ const categories = Object.entries(categoryLabels) as [string, string][];
           </div>
         ))}
       </div>
+
+      <div class="news-empty-state" id="news-empty" aria-live="polite">
+        <p>該当する記事がありません</p>
+        <button class="button" id="news-filter-reset">フィルターをリセット</button>
+      </div>
     </section>
   </div>
 </BaseLayout>
@@ -61,10 +66,13 @@ const categories = Object.entries(categoryLabels) as [string, string][];
 
   initPageFilterSheet('news-filter', 'news-filter-sheet');
 
+  const emptyEl = document.getElementById('news-empty');
+
   setupListFilter({
     stateId: 'news',
     gridSelector: '#news-grid',
     itemSelector: '#news-grid > [data-category]',
+    emptySelector: '#news-empty',
     dimensions: [
       {
         type: 'filter-single',
@@ -75,5 +83,14 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         itemDataKey: 'category',
       },
     ],
+    onUpdate: (visibleCount) => {
+      emptyEl?.classList.toggle('is-visible', visibleCount === 0);
+    },
+  });
+
+  // 空状態リセットボタン
+  document.getElementById('news-filter-reset')?.addEventListener('click', () => {
+    document.querySelector<HTMLElement>('#news-filter .filter-chip[data-category="all"]')?.click();
+    document.getElementById('filter-sheet-trigger')?.focus();
   });
 </script>

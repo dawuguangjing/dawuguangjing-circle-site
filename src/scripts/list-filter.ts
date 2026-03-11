@@ -171,7 +171,7 @@ export function setupListFilter(config: ListFilterConfig) {
         const val = getSortValue(dim);
         allItems.sort((a, b) => dim.sortFn(a, b, val));
       }
-      allItems.forEach(el => grid.appendChild(el));
+      allItems.forEach(el => grid!.appendChild(el));
     }
 
     // 3) アニメーションとリフロー
@@ -193,9 +193,12 @@ export function setupListFilter(config: ListFilterConfig) {
     syncFilterStateToUrl(filterDims, sortDims, dimChips);
     onUpdate?.(visibleCount, items.length);
 
-    // 5) スクロール
+    // 5) スクロール（0件時は空状態要素にスクロール）
     if (scroll) {
-      grid.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+      const scrollTarget = (visibleCount === 0 && config.emptySelector)
+        ? document.querySelector<HTMLElement>(config.emptySelector) ?? grid!
+        : grid!;
+      scrollTarget.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
     }
   }
 

@@ -3,7 +3,15 @@
 // astro:page-load で毎回再初期化（VT 後も確実にリスナーを付け直す）。
 
 import { lockScroll, unlockScroll } from './scroll-lock';
-import { HINT_DISMISS_MS, LIGHTBOX_SCROLL_SYNC_MS, LIGHTBOX_SCROLL_DEBOUNCE_MS } from '../utils/constants';
+import {
+  HINT_DISMISS_MS,
+  LIGHTBOX_SCROLL_SYNC_MS,
+  LIGHTBOX_SCROLL_DEBOUNCE_MS,
+  LIGHTBOX_MAX_ZOOM,
+  LIGHTBOX_MIN_ZOOM,
+  LIGHTBOX_ZOOM_RESET_THRESHOLD,
+  LIGHTBOX_SWIPE_THRESHOLD_PX,
+} from '../utils/constants';
 
 const _initedElements = new WeakSet<HTMLElement>();
 
@@ -250,7 +258,7 @@ function initLightbox() {
       e.touches[1].clientX - e.touches[0].clientX,
       e.touches[1].clientY - e.touches[0].clientY
     );
-    const scale = Math.min(4, Math.max(1, (_pinchScale * dist) / _pinchStartDist));
+    const scale = Math.min(LIGHTBOX_MAX_ZOOM, Math.max(LIGHTBOX_MIN_ZOOM, (_pinchScale * dist) / _pinchStartDist));
     lbImg.style.transform = `scale(${scale})`;
   }, { passive: false });
 
@@ -258,7 +266,7 @@ function initLightbox() {
     if (e.touches.length < 2) {
       const m = lbImg.style.transform.match(/scale\(([\d.]+)\)/);
       _pinchScale = m ? parseFloat(m[1]) : 1;
-      if (_pinchScale < 1.1) {
+      if (_pinchScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
         _pinchScale = 1;
         lbImg.style.transform = '';
       }
@@ -276,7 +284,7 @@ function initLightbox() {
   lightbox.addEventListener('touchend', function(e) {
     if (!lightbox.classList.contains('is-active') || _touchFromMedia) return;
     const delta = e.changedTouches[0].clientX - _touchStartX;
-    if (Math.abs(delta) > 50) {
+    if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
       if (delta < 0) showMedia(current + 1);
       else showMedia(current - 1);
     }

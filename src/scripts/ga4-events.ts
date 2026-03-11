@@ -3,14 +3,19 @@
 
 import { GA4_ID } from '../utils/constants';
 
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
+
 /** [data-ga-event] ボタンのクリックをイベント委譲で追跡 */
 export function initGa4EventTracking() {
   document.addEventListener('click', (e) => {
     const btn = (e.target as Element).closest<HTMLElement>('[data-ga-event]');
     if (!btn) return;
-    const gtagFn = (window as any).gtag;
-    if (typeof gtagFn !== 'function') return;
-    gtagFn('event', btn.dataset.gaEvent, {
+    if (typeof window.gtag !== 'function') return;
+    window.gtag('event', btn.dataset.gaEvent, {
       store: btn.dataset.store ?? '',
       click_location: btn.dataset.gaLocation ?? '',
       link_url: (btn as HTMLAnchorElement).href ?? '',
@@ -20,9 +25,8 @@ export function initGa4EventTracking() {
 
 /** View Transitions ナビゲーション時の仮想ページビュー送信 */
 export function sendGa4VirtualPv() {
-  const gtagFn = (window as any).gtag;
-  if (typeof gtagFn === 'function') {
-    gtagFn('config', GA4_ID, {
+  if (typeof window.gtag === 'function') {
+    window.gtag('config', GA4_ID, {
       page_location: window.location.href,
       page_title: document.title,
     });

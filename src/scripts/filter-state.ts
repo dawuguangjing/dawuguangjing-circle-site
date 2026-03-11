@@ -43,4 +43,6 @@ export interface ListFilterConfig {
   animateDelay?: boolean;
   /** フィルタ/ソート適用後のコールバック */
   onUpdate?: (visibleCount: number, totalCount: number) => void;
+  /** 0件時にスクロールする空状態要素の CSS セレクタ */
+  emptySelector?: string;
 }

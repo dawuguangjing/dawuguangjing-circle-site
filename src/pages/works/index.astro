@@ -93,6 +93,7 @@ const works = await getSortedWorks();
       stateId: 'works',
       gridSelector: '#works-grid',
       itemSelector: '.work-filter-item',
+      emptySelector: '#works-empty',
       dimensions: [
         {
           type: 'filter-multi',
@@ -129,9 +130,10 @@ const works = await getSortedWorks();
       },
     });
 
-    // 空状態リセットボタン
+    // 空状態リセットボタン（リセット後フォーカスをフィルタートリガーに移動）
     document.getElementById('works-filter-reset')?.addEventListener('click', () => {
       document.querySelector<HTMLElement>('.filter-chip[data-filter="all"]')?.click();
+      document.getElementById('filter-sheet-trigger')?.focus();
     });
 
     // 矢印キーでフィルタチップ間を移動（works 固有）
