@@ -27,16 +27,16 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
           <img class="form-loading-tuna" src={withBase('images/tuna.png')} alt="" width="40" height="40" />
           <span class="form-loading-text">読み込んでいます…</span>
           <span class="form-loading-hint" id="form-loading-hint" hidden>時間がかかっています…もう少しお待ちください</span>
-        </div>
-        <div class="form-loading-content form-loading-error" id="form-loading-error" hidden>
-          <p class="form-loading-error-text">フォームの読み込みに失敗しました。</p>
-          <button class="button button--sm" id="form-retry" type="button">再読み込み</button>
-          <a
-            class="form-direct-link"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform"
-            target="_blank"
-            rel="noopener noreferrer"
-          >フォームを別タブで開く &#8599;</a>
+          <div class="form-loading-slow" id="form-loading-slow" hidden>
+            <p class="form-loading-slow-text">読み込みに時間がかかっています。</p>
+            <button class="button button--sm" id="form-retry" type="button">再読み込み</button>
+            <a
+              class="form-direct-link"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform"
+              target="_blank"
+              rel="noopener noreferrer"
+            >フォームを別タブで開く &#8599;</a>
+          </div>
         </div>
       </div>
       <iframe
@@ -56,33 +56,32 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
       function initContactForm() {
         const iframe = document.getElementById('contact-iframe') as HTMLIFrameElement | null;
         const loader = document.getElementById('form-loading');
-        const spinner = document.getElementById('form-loading-spinner');
-        const errorEl = document.getElementById('form-loading-error');
         const hintEl = document.getElementById('form-loading-hint');
+        const slowEl = document.getElementById('form-loading-slow');
         const retryBtn = document.getElementById('form-retry');
-        if (!iframe || !loader || !spinner || !errorEl || !iframe.dataset.src) return;
+        if (!iframe || !loader || !iframe.dataset.src) return;
 
         let loaded = false;
         let hintTimer: ReturnType<typeof setTimeout> | null = null;
+        let slowTimer: ReturnType<typeof setTimeout> | null = null;
+
+        function clearTimers() {
+          if (hintTimer) clearTimeout(hintTimer);
+          if (slowTimer) clearTimeout(slowTimer);
+        }
 
         function hideLoader() {
           loader!.classList.add('is-hidden');
-          if (hintTimer) clearTimeout(hintTimer);
+          clearTimers();
           if (hintEl) hintEl.hidden = true;
-        }
-
-        function showError() {
-          spinner!.hidden = true;
-          errorEl!.hidden = false;
-          if (hintTimer) clearTimeout(hintTimer);
-          if (hintEl) hintEl.hidden = true;
+          if (slowEl) slowEl.hidden = true;
         }
 
         function loadIframe() {
           loaded = false;
-          spinner!.hidden = false;
-          errorEl!.hidden = true;
+          clearTimers();
           if (hintEl) hintEl.hidden = true;
+          if (slowEl) slowEl.hidden = true;
           loader!.classList.remove('is-hidden');
 
           iframe!.addEventListener('load', () => {
@@ -97,8 +96,9 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
             if (!loaded && hintEl) hintEl.hidden = false;
           }, FORM_LOAD_TIMEOUT_MS / 3);
 
-          setTimeout(() => {
-            if (!loaded) showError();
+          // さらに時間がかかる場合に再読み込み・別タブリンクを表示
+          slowTimer = setTimeout(() => {
+            if (!loaded && slowEl) slowEl.hidden = false;
           }, FORM_LOAD_TIMEOUT_MS);
         }
 
@@ -188,7 +188,15 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
     pointer-events: none;
   }
 
-  .form-loading-error-text {
+  .form-loading-slow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    animation: hint-fade-in 0.4s ease;
+  }
+
+  .form-loading-slow-text {
     color: var(--ink-dim);
     font-size: 0.85rem;
     letter-spacing: 0.04em;
