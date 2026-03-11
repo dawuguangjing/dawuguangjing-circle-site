@@ -111,3 +111,6 @@ export const DARK_MODE_ICON_MS = 260;
 
 /** ダークモード: テーマ遷移クラス除去タイマー（ms） */
 export const DARK_MODE_TRANSITION_MS = 320;
+
+/** フィルター操作: デバウンス間隔（ms） */
+export const FILTER_DEBOUNCE_MS = 150;

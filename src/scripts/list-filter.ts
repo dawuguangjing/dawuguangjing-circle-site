@@ -1,7 +1,7 @@
 // ── List Filter/Sort 共通モジュール ──────────────────────────────────────
 // 一覧ページのフィルタ・ソート・URL同期・バッジ更新を一元管理する。
 
-import { FILTER_STAGGER } from '../utils/constants';
+import { FILTER_STAGGER, FILTER_DEBOUNCE_MS } from '../utils/constants';
 import type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
 import { getActiveFilterValues, getActiveSortValue, restoreFilterFromUrl, syncFilterStateToUrl } from './filter-url';
 
@@ -199,6 +199,14 @@ export function setupListFilter(config: ListFilterConfig) {
     }
   }
 
+  // ── デバウンス付き applyAll ──
+
+  let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  function applyAllDebounced(scroll: boolean) {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => applyAll(scroll), FILTER_DEBOUNCE_MS);
+  }
+
   // ── チップイベント ──
 
   for (const dim of filterDims) {
@@ -224,7 +232,7 @@ export function setupListFilter(config: ListFilterConfig) {
               allChip?.setAttribute('aria-pressed', 'true');
             }
           }
-          applyAll(true);
+          applyAllDebounced(true);
         });
       });
     } else {
@@ -236,7 +244,7 @@ export function setupListFilter(config: ListFilterConfig) {
             c.classList.toggle('is-active', isActive);
             c.setAttribute('aria-pressed', String(isActive));
           });
-          applyAll(true);
+          applyAllDebounced(true);
         });
       });
     }
@@ -247,7 +255,7 @@ export function setupListFilter(config: ListFilterConfig) {
     chips.forEach(chip => {
       chip.addEventListener('click', () => {
         chips.forEach(c => c.classList.toggle('is-active', c === chip));
-        applyAll(true);
+        applyAllDebounced(true);
       });
     });
   }

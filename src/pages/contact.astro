@@ -17,15 +17,16 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
 
     <p class="form-fallback-note" data-anim style={`--anim-delay: ${animDelay(0, 0.06)}`}>
       フォームが表示されない場合は
-      <a href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">Ci-en</a>
-      からもご連絡いただけます。
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSeI3gTEuIA8876IBdE9Ok0Qv8fGi8fe1PicLdpK_YNApfbDjA/viewform" target="_blank" rel="noopener noreferrer">別タブで開く &#8599;</a>
+      か、<a href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">Ci-en</a> からもご連絡いただけます。
     </p>
 
     <div class="form-wrapper" data-anim style={`--anim-delay: ${animDelay(0, 0.06)}`}>
-      <div class="form-loading" id="form-loading">
+      <div class="form-loading" id="form-loading" role="status" aria-live="polite">
         <div class="form-loading-content" id="form-loading-spinner">
           <img class="form-loading-tuna" src={withBase('images/tuna.png')} alt="" width="40" height="40" />
           <span class="form-loading-text">読み込んでいます…</span>
+          <span class="form-loading-hint" id="form-loading-hint" hidden>時間がかかっています…もう少しお待ちください</span>
         </div>
         <div class="form-loading-content form-loading-error" id="form-loading-error" hidden>
           <p class="form-loading-error-text">フォームの読み込みに失敗しました。</p>
@@ -57,24 +58,31 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
         const loader = document.getElementById('form-loading');
         const spinner = document.getElementById('form-loading-spinner');
         const errorEl = document.getElementById('form-loading-error');
+        const hintEl = document.getElementById('form-loading-hint');
         const retryBtn = document.getElementById('form-retry');
         if (!iframe || !loader || !spinner || !errorEl || !iframe.dataset.src) return;
 
         let loaded = false;
+        let hintTimer: ReturnType<typeof setTimeout> | null = null;
 
         function hideLoader() {
           loader!.classList.add('is-hidden');
+          if (hintTimer) clearTimeout(hintTimer);
+          if (hintEl) hintEl.hidden = true;
         }
 
         function showError() {
           spinner!.hidden = true;
           errorEl!.hidden = false;
+          if (hintTimer) clearTimeout(hintTimer);
+          if (hintEl) hintEl.hidden = true;
         }
 
         function loadIframe() {
           loaded = false;
           spinner!.hidden = false;
           errorEl!.hidden = true;
+          if (hintEl) hintEl.hidden = true;
           loader!.classList.remove('is-hidden');
 
           iframe!.addEventListener('load', () => {
@@ -83,6 +91,11 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
           }, { once: true });
 
           iframe!.src = iframe!.dataset.src!;
+
+          // 読み込みが遅い場合にヒントを表示
+          hintTimer = setTimeout(() => {
+            if (!loaded && hintEl) hintEl.hidden = false;
+          }, FORM_LOAD_TIMEOUT_MS / 3);
 
           setTimeout(() => {
             if (!loaded) showError();
@@ -151,6 +164,18 @@ import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
     color: var(--ink-dim);
     font-size: 0.85rem;
     letter-spacing: 0.04em;
+  }
+
+  .form-loading-hint {
+    color: var(--ink-dim);
+    font-size: 0.78rem;
+    opacity: 0.7;
+    animation: hint-fade-in 0.4s ease;
+  }
+
+  @keyframes hint-fade-in {
+    from { opacity: 0; }
+    to { opacity: 0.7; }
   }
 
   @keyframes tuna-loading {
