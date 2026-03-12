@@ -28,6 +28,12 @@
   font-size: clamp(0.8rem, 2.5vw, 0.9rem);
   color: var(--ink-dim);
 }
+.breadcrumb-item {
+  white-space: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .breadcrumb-item + .breadcrumb-item::before {
   content: '/';
   color: var(--stroke);
@@ -336,6 +342,11 @@
   color: var(--ink-dim);
   padding-right: 16px;
   white-space: nowrap;
+}
+@media (max-width: 480px) {
+  .spec-table td:first-child {
+    white-space: normal;
+  }
 }
 
 .spec-table td:last-child {

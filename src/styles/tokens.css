@@ -103,6 +103,7 @@
   --z-progress-top: 250;
   --z-sheet-scrim: 299;
   --z-sheet: 300;
+  --z-toast: 400;
   --z-age-gate: 9000;
   /* ── Additional shadows ── */
   --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.15);

@@ -218,9 +218,9 @@
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  /* カバー画像をコンパクトな正方形に（DOM上は2番目だが order:-1 で先頭に表示） */
+  /* カバー画像をコンパクトに（DOM上は2番目だが order:-1 で先頭に表示） */
   .hero-banner-cover {
-    max-width: 140px;
+    max-width: 110px;
     margin: 0 auto;
   }
 }

@@ -401,6 +401,7 @@ a.announcement-bar-text:hover {
   color: var(--footer-text);
   transition: color var(--dur-fast) ease;
   white-space: nowrap;
+  padding: 6px 0;
 }
 
 .footer-nav a:hover {
@@ -443,6 +444,7 @@ a.announcement-bar-text:hover {
 
   .header-right {
     margin-left: auto;
+    gap: 8px;
   }
 
   .nav-links {

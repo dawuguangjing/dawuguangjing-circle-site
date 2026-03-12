@@ -315,4 +315,6 @@
 
   .gallery-album-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
   .gallery-detail-grid { grid-template-columns: repeat(2, 1fr); }
+  /* モバイルではサムネイルを正方形にし視認性を向上 */
+  .gallery-detail-item { aspect-ratio: 1 / 1; }
 }
