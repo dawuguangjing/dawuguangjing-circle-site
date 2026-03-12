@@ -85,8 +85,13 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
             data-lightbox-src={withBase(data.images.cover)}
             data-lightbox-type="image"
             data-lightbox-alt={`${data.title} cover`}
+            role="button"
+            tabindex="0"
+            aria-label={`${data.title}の画像を拡大する`}
+            title="クリックで拡大"
           >
             <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" fetchpriority="high" loading="eager" />
+            <div class="work-cover-zoom-hint" aria-hidden="true">🔍</div>
           </div>
 
           <!-- Video -->

@@ -14,21 +14,49 @@
 
 /* ── Cover image ── */
 .work-cover {
+  position: relative;
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--stroke);
+  cursor: zoom-in;
 }
 
 .work-cover img {
   width: 100%;
   height: auto;
-  cursor: pointer;
-  transition: opacity var(--dur-quick) ease;
+  display: block;
+  transition: transform 0.35s var(--easing);
 }
+
+.work-cover:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-md);
+}
+
+.work-cover-zoom-hint {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: var(--fs-heading);
+  opacity: 0;
+  transition: opacity var(--dur-normal) ease;
+  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+  pointer-events: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .work-cover img:hover {
-    opacity: 0.88;
+  .work-cover:hover img {
+    transform: scale(1.03);
   }
+  .work-cover:hover .work-cover-zoom-hint,
+  .work-cover:focus-visible .work-cover-zoom-hint {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .work-cover-zoom-hint { opacity: 0.7; }
 }
 
 /* ── Meta rows (detail page) ── */

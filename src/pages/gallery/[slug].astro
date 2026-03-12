@@ -233,27 +233,31 @@ const galleryPurchaseLinks = hasStoreLinks
 
   <!-- ホバー／フォーカス／ビューポート内で動画プレビューを再生 -->
   <script>
-    const isTouch = matchMedia('(hover: none)').matches;
+    const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
-      const video = item.querySelector('video');
-      if (!video) return;
-      const play  = () => video.play().catch(() => {});
-      const reset = () => { video.pause(); video.currentTime = 0; };
+    if (!prefersReducedMotion) {
+      const isTouch = matchMedia('(hover: none)').matches;
 
-      if (isTouch) {
-        const io = new IntersectionObserver(([e]) => {
-          e.isIntersecting ? play() : reset();
-        }, { threshold: 0.5 });
-        io.observe(item);
-      } else {
-        item.addEventListener('mouseenter', play);
-        item.addEventListener('mouseleave', reset);
-      }
+      document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
+        const video = item.querySelector('video');
+        if (!video) return;
+        const play  = () => video.play().catch(() => {});
+        const reset = () => { video.pause(); video.currentTime = 0; };
 
-      item.addEventListener('focusin',  play);
-      item.addEventListener('focusout', reset);
-    });
+        if (isTouch) {
+          const io = new IntersectionObserver(([e]) => {
+            e.isIntersecting ? play() : reset();
+          }, { threshold: 0.5 });
+          io.observe(item);
+        } else {
+          item.addEventListener('mouseenter', play);
+          item.addEventListener('mouseleave', reset);
+        }
+
+        item.addEventListener('focusin',  play);
+        item.addEventListener('focusout', reset);
+      });
+    }
   </script>
   {hasAnyCta && <FabPurchase targetId="purchase-section" />}
 

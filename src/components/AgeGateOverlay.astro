@@ -49,7 +49,21 @@ const { ageKey, ageTtl } = Astro.props;
         } catch(e) {
           try { sessionStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e2) {}
         }
-        document.documentElement.classList.add('age-verified');
+        var overlay = document.querySelector('.age-overlay');
+        var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!overlay || rm) {
+          document.documentElement.classList.add('age-verified');
+          return;
+        }
+        overlay.style.opacity = '0';
+        var done = false;
+        function finish() {
+          if (done) return;
+          done = true;
+          document.documentElement.classList.add('age-verified');
+        }
+        overlay.addEventListener('transitionend', finish, { once: true });
+        setTimeout(finish, 400);
       });
     }
     if (deny) {
