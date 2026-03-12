@@ -129,6 +129,15 @@ function initLightbox() {
       };
       lbImg.src = src;
       lbImg.alt = alt;
+      // プリロード済み（キャッシュ済み）画像は transition なしで即表示
+      if (lbImg.complete && lbImg.naturalWidth > 0) {
+        lbImg.style.transition = 'none';
+        lbImg.style.opacity = '1';
+        lbSpinner.classList.add('is-hidden');
+        requestAnimationFrame(() => {
+          lbImg.style.transition = '';
+        });
+      }
     }
 
     lbPrev.classList.toggle('is-hidden', items.length <= 1);
