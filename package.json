@@ -12,6 +12,8 @@
     "lint": "eslint 'src/**/*.{ts,mjs}'",
     "format": "prettier --write 'src/**/*.{ts,astro,css,mjs}'",
     "check:image-paths": "node scripts/check-image-paths.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepare": "husky"
   },
   "dependencies": {
@@ -27,7 +29,8 @@
     "pagefind": "^1.4.0",
     "prettier": "^3.8.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.55.0"
+    "typescript-eslint": "^8.55.0",
+    "vitest": "^3.2.4"
   },
   "lint-staged": {
     "*.{ts,mjs}": [

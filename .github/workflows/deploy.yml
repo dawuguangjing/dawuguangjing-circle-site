@@ -30,6 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Check image paths
+        run: npm run check:image-paths
+
+      - name: Run tests
+        run: npm test
+
       - name: Build
         run: npm run build
         env:
