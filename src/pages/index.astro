@@ -9,6 +9,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../utils/withBase';
 import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, animDelay, COMING_SOON_YEAR } from '../utils/constants';
+import { imageLoadingProps } from '../utils/format';
 import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
 import { buildWebSiteSchema } from '../utils/schema';
 
@@ -58,8 +59,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
               description={entry.data.shortDescription}
               releaseDate={entry.data.releaseDate}
               isR18={entry.data.isR18}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchpriority={i === 0 ? 'high' : undefined}
+              {...imageLoadingProps(i)}
             />
           </div>
         ))}

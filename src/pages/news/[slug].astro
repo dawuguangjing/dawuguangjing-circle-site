@@ -91,6 +91,8 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
 </BaseLayout>
 
 <script>
+  import { prefersReducedMotion } from '../../scripts/motion';
+
   const toc = document.getElementById('toc');
   const tocList = document.getElementById('toc-list');
   const headings = Array.from(
@@ -139,8 +141,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
       );
       tocObs.observe(toc);
       fabToc.addEventListener('click', () => {
-        const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        toc.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+        toc.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
       });
     }
   }

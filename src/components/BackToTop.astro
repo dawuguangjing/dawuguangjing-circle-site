@@ -7,14 +7,15 @@
 </button>
 
 <script>
+  import { prefersReducedMotion } from '../scripts/motion';
+
   const btn = document.getElementById('back-to-top');
   if (btn) {
     window.addEventListener('scroll', () => {
       btn.classList.toggle('is-visible', window.scrollY >= 300);
     }, { passive: true });
     btn.addEventListener('click', () => {
-      const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' });
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     });
   }
 </script>

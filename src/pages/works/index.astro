@@ -5,6 +5,7 @@ import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
 import { getSortedWorks } from '../../utils/collections';
 import { animDelay } from '../../utils/constants';
+import { imageLoadingProps } from '../../utils/format';
 
 const works = await getSortedWorks();
 ---
@@ -66,8 +67,7 @@ const works = await getSortedWorks();
               hasTrial={!!(entry.data.trialLinks?.fanza || entry.data.trialLinks?.dlsite)}
               showEnvironments
               environments={entry.data.environments}
-              loading={i === 0 ? 'eager' : 'lazy'}
-              fetchpriority={i === 0 ? 'high' : undefined}
+              {...imageLoadingProps(i)}
             />
           </div>
         ))}
@@ -119,7 +119,7 @@ const works = await getSortedWorks();
           defaultValue: 'newest',
           chipSelector: '.sort-btn[data-sort]',
           chipDataKey: 'sort',
-          sortFn: dateTitleSort('releaseDate'),
+          sortFn: dateTitleSort(),
         },
       ],
       resetButtonId: 'works-filter-reset',

@@ -233,9 +233,9 @@ const galleryPurchaseLinks = hasStoreLinks
 
   <!-- ホバー／フォーカス／ビューポート内で動画プレビューを再生 -->
   <script>
-    const prefersReducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    import { prefersReducedMotion } from '../../scripts/motion';
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion()) {
       const isTouch = matchMedia('(hover: none)').matches;
 
       document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {

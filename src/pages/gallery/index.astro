@@ -5,6 +5,7 @@ import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
 import { getSortedGallery } from '../../utils/collections';
 import { SITE_NAME, animDelay } from '../../utils/constants';
+import { imageLoadingProps } from '../../utils/format';
 
 const galleries = await getSortedGallery();
 ---
@@ -35,7 +36,7 @@ const galleries = await getSortedGallery();
             <div
               data-anim
               style={`--anim-delay: ${animDelay(i)}`}
-              data-release={entry.data.releaseDate.getTime().toString()}
+              data-release-date={entry.data.releaseDate.getTime().toString()}
               data-title={entry.data.title}
             >
               <GalleryCard
@@ -45,8 +46,7 @@ const galleries = await getSortedGallery();
                 isR18={entry.data.isR18}
                 imageCount={entry.resolvedImageCount}
                 previewImages={entry.data.images}
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchpriority={i === 0 ? 'high' : undefined}
+                {...imageLoadingProps(i)}
               />
             </div>
           ))}
@@ -77,7 +77,7 @@ const galleries = await getSortedGallery();
         defaultValue: 'newest',
         chipSelector: '#gallery-filter-bar [data-sort]',
         chipDataKey: 'sort',
-        sortFn: dateTitleSort('release'),
+        sortFn: dateTitleSort(),
       },
     ],
   });

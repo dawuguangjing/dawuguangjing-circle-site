@@ -5,6 +5,7 @@ import { withBase } from '../../utils/withBase';
 import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
 import { SITE_NAME, animDelay } from '../../utils/constants';
+import { imageLoadingProps } from '../../utils/format';
 
 const characters = (await getCollection('characters')).sort(
   (a, b) => a.data.order - b.data.order
@@ -66,8 +67,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
                 sizes="(max-width: 480px) calc(50vw - 18px), (max-width: 1100px) calc(33vw - 28px), 260px"
                 width="300"
                 height="400"
-                loading={i === 0 ? 'eager' : 'lazy'}
-                fetchpriority={i === 0 ? 'high' : undefined}
+                {...imageLoadingProps(i)}
               />
               <div class="char-card-overlay">
                 <span class="char-card-view char-list-view">プロフィールを見る</span>
@@ -183,7 +183,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         defaultValue: 'order',
         chipSelector: '[data-char-sort]',
         chipDataKey: 'charSort',
-        sortFn: orderNameSort('order', 'name'),
+        sortFn: orderNameSort(),
       },
     ],
   });

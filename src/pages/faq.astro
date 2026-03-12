@@ -79,6 +79,7 @@ import { animDelay, ANIM_STAGGER } from '../utils/constants';
 
   <script>
     import { FAQ_CLEANUP_MS } from '../utils/constants';
+    import { prefersReducedMotion } from '../scripts/motion';
 
     function initFaqAccordion() {
       document.querySelectorAll('.faq-item summary').forEach(summary => {
@@ -117,9 +118,8 @@ import { animDelay, ANIM_STAGGER } from '../utils/constants';
               });
             });
             // 展開アニメーション完了後に回答をビューポート内にスクロール
-            const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
             setTimeout(() => {
-              details.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'nearest' });
+              details.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
             }, 300);
           }
         });

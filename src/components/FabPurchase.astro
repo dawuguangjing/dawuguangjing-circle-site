@@ -15,6 +15,8 @@ const { targetId } = Astro.props;
 </button>
 
 <script>
+  import { prefersReducedMotion } from '../scripts/motion';
+
   function initFab() {
     const fab = document.getElementById('fab-purchase') as HTMLButtonElement | null;
     const targetId = fab?.dataset.target;
@@ -32,8 +34,7 @@ const { targetId } = Astro.props;
       observer.observe(target);
 
       fab.addEventListener('click', () => {
-        const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        target.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
       });
     }
   }
