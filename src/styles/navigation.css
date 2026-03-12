@@ -394,7 +394,7 @@ a.announcement-bar-text:hover {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 2px;
 }
 
 .footer-nav a {
@@ -403,6 +403,9 @@ a.announcement-bar-text:hover {
   transition: color var(--dur-fast) ease;
   white-space: nowrap;
   padding: 6px 0;
+  min-height: var(--touch-min);
+  display: inline-flex;
+  align-items: center;
 }
 
 .footer-nav a:hover {

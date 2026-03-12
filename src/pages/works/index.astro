@@ -31,11 +31,13 @@ const works = await getSortedWorks();
         <button class="filter-chip" data-filter="ios" aria-pressed="false">iOS</button>
         <button class="filter-chip" data-filter="android" aria-pressed="false">Android</button>
 
-        <div class="sort-bar" slot="sort">
-          <span class="sort-label">並び順:</span>
-          <button class="sort-btn is-active" data-sort="newest">新しい順</button>
-          <button class="sort-btn" data-sort="oldest">古い順</button>
-          <button class="sort-btn" data-sort="title">タイトル順</button>
+        <div class="sort-bar-wrap" slot="sort">
+          <div class="sort-bar">
+            <span class="sort-label">並び順:</span>
+            <button class="sort-btn is-active" data-sort="newest">新しい順</button>
+            <button class="sort-btn" data-sort="oldest">古い順</button>
+            <button class="sort-btn" data-sort="title">タイトル順</button>
+          </div>
         </div>
       </FilterSheet>
 
@@ -130,5 +132,17 @@ const works = await getSortedWorks();
         }
       },
     });
+
+    // ── ソートバー横スクロールフェードヒント ──
+    const sortBar = document.querySelector<HTMLElement>('.sort-bar');
+    const sortWrap = document.querySelector<HTMLElement>('.sort-bar-wrap');
+    if (sortBar && sortWrap) {
+      const checkScrollEnd = () => {
+        const atEnd = sortBar.scrollLeft + sortBar.clientWidth >= sortBar.scrollWidth - 2;
+        sortWrap.classList.toggle('is-scrolled-end', atEnd);
+      };
+      sortBar.addEventListener('scroll', checkScrollEnd, { passive: true });
+      checkScrollEnd();
+    }
   </script>
 </BaseLayout>

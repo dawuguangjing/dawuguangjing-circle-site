@@ -58,6 +58,7 @@
 }
 .share-btn:hover { border-color: var(--accent); color: var(--accent); }
 .share-btn--copied { border-color: #16a34a !important; color: #16a34a !important; }
+.share-btn--native { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 
 /* ── Toast Notification ── */
 .toast {
@@ -287,6 +288,25 @@
   .sort-btn {
     flex-shrink: 0;
     scroll-snap-align: start;
+  }
+
+  /* ソートバー右端フェードヒント（スクロール可能であることを示す） */
+  .sort-bar-wrap {
+    position: relative;
+  }
+  .sort-bar-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40px;
+    background: linear-gradient(to right, transparent, var(--bg));
+    pointer-events: none;
+    transition: opacity var(--dur-fast) ease;
+  }
+  .sort-bar-wrap.is-scrolled-end::after {
+    opacity: 0;
   }
 
   /* スクリム（半透明オーバーレイ） */

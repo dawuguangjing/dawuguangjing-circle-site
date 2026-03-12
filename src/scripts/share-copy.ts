@@ -23,3 +23,31 @@ export function initShareCopy() {
     });
   });
 }
+
+// ── NATIVE SHARE ──────────────────────────────────────────────────────────
+// navigator.share 対応デバイスでネイティブ共有シートを開く
+
+const _initedShareBtns = new WeakSet<Element>();
+
+export function initNativeShare() {
+  if (typeof navigator.share !== 'function') return;
+
+  document.querySelectorAll<HTMLElement>('[data-share-native]').forEach((btn) => {
+    if (_initedShareBtns.has(btn)) return;
+    _initedShareBtns.add(btn);
+
+    btn.removeAttribute('hidden');
+
+    btn.addEventListener('click', async () => {
+      const url = btn.dataset.shareUrl!;
+      const title = btn.dataset.shareTitle ?? '';
+      try {
+        await navigator.share({ title, url });
+      } catch (err) {
+        if (err instanceof Error && err.name !== 'AbortError') {
+          showToast('シェアに失敗しました');
+        }
+      }
+    });
+  });
+}

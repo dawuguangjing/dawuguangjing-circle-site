@@ -82,6 +82,10 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
           </nav>
         </aside>
       </div>
+      <button class="fab-toc" id="fab-toc" aria-label="目次へジャンプ" hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span>目次</span>
+      </button>
     </section>
   </div>
 </BaseLayout>
@@ -124,5 +128,20 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
       { rootMargin: '-68px 0px -40% 0px', threshold: 0 }
     );
     headings.forEach((h) => spy.observe(h));
+
+    // ── フローティング目次ボタン（モバイル） ──
+    const fabToc = document.getElementById('fab-toc');
+    if (fabToc) {
+      fabToc.removeAttribute('hidden');
+      const tocObs = new IntersectionObserver(
+        ([e]) => fabToc.classList.toggle('is-visible', !e.isIntersecting),
+        { threshold: 0 }
+      );
+      tocObs.observe(toc);
+      fabToc.addEventListener('click', () => {
+        const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        toc.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'start' });
+      });
+    }
   }
 </script>

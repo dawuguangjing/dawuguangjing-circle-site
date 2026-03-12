@@ -327,3 +327,52 @@
     order: -1;
   }
 }
+
+/* ── Floating TOC Button (モバイル記事ページ) ── */
+.fab-toc {
+  position: fixed;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  left: 80px;
+  z-index: var(--z-float);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 16px;
+  height: var(--touch-min);
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: 99px;
+  color: var(--accent);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-float);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-medium) ease, transform var(--dur-normal) ease, border-color var(--dur-quick);
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+.fab-toc.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.fab-toc:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.fab-toc:active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: var(--dur-fast);
+}
+@media (min-width: 769px) {
+  .fab-toc { display: none; }
+}
+@media (max-width: 640px) {
+  .fab-toc { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fab-toc { transition: none; }
+}

@@ -156,7 +156,7 @@ const ga4Id = GA4_ID;
       import { ensureScrollLockController, resetBodyScrollLocks } from '../scripts/scroll-lock.ts';
       import { closeTransientUi, initGlobalOverlayClose } from '../scripts/overlay-close.ts';
       import { initImgSkeleton } from '../scripts/img-skeleton.ts';
-      import { initShareCopy } from '../scripts/share-copy.ts';
+      import { initShareCopy, initNativeShare } from '../scripts/share-copy.ts';
       import { initGa4EventTracking, sendGa4VirtualPv } from '../scripts/ga4-events.ts';
 
       ensureScrollLockController();
@@ -193,6 +193,7 @@ const ga4Id = GA4_ID;
       });
 
       document.addEventListener('astro:page-load', initShareCopy);
+      document.addEventListener('astro:page-load', initNativeShare);
       initGa4EventTracking();
     </script>
   </body>

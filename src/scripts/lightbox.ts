@@ -275,14 +275,15 @@ function initLightbox() {
 
   // ── タッチスワイプ対応（モバイル） ──
   let _touchStartX = 0;
-  let _touchFromMedia = false;
+  let _swipeBlocked = false;
   lightbox.addEventListener('touchstart', function(e) {
     _touchStartX = e.touches[0].clientX;
-    // .lightbox-thumbs からのタッチもスワイプ判定から除外（サムネイルスクロールと競合するため）
-    _touchFromMedia = !!(e.target as HTMLElement).closest('.lightbox-media, .lightbox-thumbs');
+    // サムネイルスクロールとの競合防止 + ピンチズーム中はスワイプ無効
+    const fromThumbs = !!(e.target as HTMLElement).closest('.lightbox-thumbs');
+    _swipeBlocked = fromThumbs || _pinchScale !== 1;
   }, { passive: true });
   lightbox.addEventListener('touchend', function(e) {
-    if (!lightbox.classList.contains('is-active') || _touchFromMedia) return;
+    if (!lightbox.classList.contains('is-active') || _swipeBlocked) return;
     const delta = e.changedTouches[0].clientX - _touchStartX;
     if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
       if (delta < 0) showMedia(current + 1);
