@@ -13,12 +13,17 @@
   inset: 0;
   z-index: var(--z-lightbox);
   background: var(--overlay-scrim);
-  display: flex;
   align-items: center;
   justify-content: center;
   cursor: zoom-out;
   opacity: 0;
   transition: opacity var(--dur-medium) ease;
+}
+
+/* dialog 未オープン時はブラウザデフォルト (display:none) を維持。
+   [open] 時のみ flex レイアウトを有効化する。 */
+.lightbox-overlay[open] {
+  display: flex;
 }
 
 .lightbox-overlay::backdrop {
