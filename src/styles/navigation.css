@@ -156,6 +156,10 @@ a.announcement-bar-text:hover {
   transform: translateY(-100%);
 }
 
+.site-header.is-menu-open {
+  z-index: calc(var(--z-float) + 1);
+}
+
 .site-header-inner {
   display: flex;
   align-items: center;
@@ -495,12 +499,24 @@ a.announcement-bar-text:hover {
     left: 0;
     right: 0;
     height: auto;
+    min-height: calc(100dvh - 52px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     flex-direction: column;
-    background: var(--panel);
+    background: var(--panel, #ffffff);
     border-top: 1px solid var(--stroke);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    padding: 8px 0 20px;
-    z-index: var(--z-dropdown);
+    padding: 8px 0 calc(20px + env(safe-area-inset-bottom));
+    z-index: 1;
+  }
+
+  /* メニュー展開時のスクリム（背景オーバーレイ） */
+  .site-header:has(.nav-links.is-open)::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
   }
 
   @keyframes menu-slide-down {

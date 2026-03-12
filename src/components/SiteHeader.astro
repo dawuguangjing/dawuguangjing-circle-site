@@ -10,17 +10,41 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
 <header class="site-header">
   <div class="container site-header-inner">
-    <a class:list={['logo', { 'logo--is-top': isTop }]} href={withBase('')} aria-label="ダウグアングジング公式 トップページへ">
-      <span class="logo-char" style="--i:0">ダ</span><span class="logo-char logo-accent" style="--i:1">ウ</span><span class="logo-char logo-pink" style="--i:2">グ</span><span class="logo-char logo-pink" style="--i:3">ア</span><span class="logo-char logo-pink" style="--i:4">ン</span><span class="logo-char logo-pink" style="--i:5">グ</span><span class="logo-char" style="--i:6">ジ</span><span class="logo-char" style="--i:7">ン</span><span class="logo-char" style="--i:8">グ</span><span class="logo-char" style="--i:9">公</span><span class="logo-char" style="--i:10">式</span>
+    <a
+      class:list={['logo', { 'logo--is-top': isTop }]}
+      href={withBase('')}
+      aria-label="ダウグアングジング公式 トップページへ"
+    >
+      <span class="logo-char" style="--i:0">ダ</span><span
+        class="logo-char logo-accent"
+        style="--i:1">ウ</span
+      ><span class="logo-char logo-pink" style="--i:2">グ</span><span
+        class="logo-char logo-pink"
+        style="--i:3">ア</span
+      ><span class="logo-char logo-pink" style="--i:4">ン</span><span
+        class="logo-char logo-pink"
+        style="--i:5">グ</span
+      ><span class="logo-char" style="--i:6">ジ</span><span class="logo-char" style="--i:7">ン</span
+      ><span class="logo-char" style="--i:8">グ</span><span class="logo-char" style="--i:9">公</span
+      ><span class="logo-char" style="--i:10">式</span>
     </a>
     <nav class="nav-links" id="main-nav" aria-label="メインナビゲーション">
-      {mainNav.map((item) => (
-        <a href={item.href} {...(currentPath.startsWith(item.href) ? { 'aria-current': 'page', class: 'is-active' } : {})}>
-          {item.label.split('').map((char, i) => (
-            <span class="nav-char" style={`--i:${i}`}>{char}</span>
-          ))}
-        </a>
-      ))}
+      {
+        mainNav.map((item) => (
+          <a
+            href={item.href}
+            {...(currentPath.startsWith(item.href)
+              ? { 'aria-current': 'page', class: 'is-active' }
+              : {})}
+          >
+            {item.label.split('').map((char, i) => (
+              <span class="nav-char" style={`--i:${i}`}>
+                {char}
+              </span>
+            ))}
+          </a>
+        ))
+      }
     </nav>
     <div class="header-right">
       <DarkModeToggle />
@@ -39,33 +63,37 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
   function getMenuElements() {
     return {
+      header: document.querySelector<HTMLElement>('.site-header'),
       toggle: document.querySelector('.mobile-menu-toggle') as HTMLButtonElement | null,
-      nav: document.getElementById('main-nav'),
+      nav: document.getElementById('main-nav')
     };
   }
 
   function closeMenu() {
-    const { toggle, nav } = getMenuElements();
+    const { header, toggle, nav } = getMenuElements();
     if (!toggle || !nav || !nav.classList.contains('is-open')) return;
     toggle.setAttribute('aria-expanded', 'false');
     toggle.setAttribute('aria-label', 'メニューを開く');
     nav.classList.add('is-closing');
-    nav.addEventListener('animationend', () => {
+    let finalized = false;
+    const finalizeClose = () => {
+      if (finalized) return;
+      finalized = true;
       nav.classList.remove('is-open', 'is-closing');
+      header?.classList.remove('is-menu-open');
       unlockScroll('mobile-menu');
-    }, { once: true });
+    };
+    nav.addEventListener('animationend', finalizeClose, { once: true });
     // フォールバック
-    setTimeout(() => {
-      nav.classList.remove('is-open', 'is-closing');
-      unlockScroll('mobile-menu');
-    }, 200);
+    setTimeout(finalizeClose, 200);
   }
 
   function openMenu() {
-    const { toggle, nav } = getMenuElements();
+    const { header, toggle, nav } = getMenuElements();
     if (!toggle || !nav) return;
     // メニューを開く際はヘッダーを強制表示（hide-on-scroll で隠れている場合）
-    document.querySelector<HTMLElement>('.site-header')?.classList.remove('is-hidden');
+    header?.classList.remove('is-hidden');
+    header?.classList.add('is-menu-open');
     toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', 'メニューを閉じる');
     nav.classList.add('is-open');
@@ -81,46 +109,59 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     const { toggle, nav } = getMenuElements();
     if (!toggle || !nav) return;
 
-    toggle.addEventListener('click', () => {
-      const expanded = toggle.getAttribute('aria-expanded') === 'true';
-      expanded ? closeMenu() : openMenu();
-    }, { signal });
+    toggle.addEventListener(
+      'click',
+      () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        expanded ? closeMenu() : openMenu();
+      },
+      { signal }
+    );
 
     nav.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((link) => {
-      link.addEventListener('click', () => {
-        closeMenu();
-        requestAnimationFrame(() => toggle.focus());
-      }, { signal });
+      link.addEventListener(
+        'click',
+        () => {
+          closeMenu();
+          requestAnimationFrame(() => toggle.focus());
+        },
+        { signal }
+      );
     });
 
     // 外側タップで閉じる
-    document.addEventListener('click', (e) => {
-      const { toggle, nav } = getMenuElements();
-      if (!toggle || !nav) return;
-      if (!nav.classList.contains('is-open')) return;
-      if (!nav.contains(e.target as Node) && !toggle.contains(e.target as Node)) {
-        closeMenu();
-      }
-    }, { signal });
+    document.addEventListener(
+      'click',
+      (e) => {
+        const { toggle, nav } = getMenuElements();
+        if (!toggle || !nav) return;
+        if (!nav.classList.contains('is-open')) return;
+        if (!nav.contains(e.target as Node) && !toggle.contains(e.target as Node)) {
+          closeMenu();
+        }
+      },
+      { signal }
+    );
 
     // Esc キーで閉じる + Tab フォーカストラップ（モバイルメニュー開放中）
-    document.addEventListener('keydown', (e) => {
-      const { toggle, nav } = getMenuElements();
-      if (!toggle || !nav) return;
-      if (!nav.classList.contains('is-open')) return;
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        const { toggle, nav } = getMenuElements();
+        if (!toggle || !nav) return;
+        if (!nav.classList.contains('is-open')) return;
 
-      if (e.key === 'Escape') {
-        closeMenu();
-        toggle.focus();
-        return;
-      }
+        if (e.key === 'Escape') {
+          closeMenu();
+          toggle.focus();
+          return;
+        }
 
-      const focusable = [
-        toggle,
-        ...Array.from(nav.querySelectorAll<HTMLElement>('a[href]')),
-      ];
-      trapFocus(e, focusable);
-    }, { signal });
+        const focusable = [toggle, ...Array.from(nav.querySelectorAll<HTMLElement>('a[href]'))];
+        trapFocus(e, focusable);
+      },
+      { signal }
+    );
   }
   document.addEventListener('astro:page-load', initMobileMenu);
   document.addEventListener('astro:after-swap', initMobileMenu);
@@ -141,17 +182,21 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     _scrollAbort?.abort();
     _scrollAbort = new AbortController();
     let lastY = window.scrollY;
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      if (y < 80) {
-        header.classList.remove('is-hidden');
-      } else if (y > lastY + 4) {
-        header.classList.add('is-hidden');
-      } else if (y < lastY - 4) {
-        header.classList.remove('is-hidden');
-      }
-      lastY = y;
-    }, { passive: true, signal: _scrollAbort.signal });
+    window.addEventListener(
+      'scroll',
+      () => {
+        const y = window.scrollY;
+        if (y < 80) {
+          header.classList.remove('is-hidden');
+        } else if (y > lastY + 4) {
+          header.classList.add('is-hidden');
+        } else if (y < lastY - 4) {
+          header.classList.remove('is-hidden');
+        }
+        lastY = y;
+      },
+      { passive: true, signal: _scrollAbort.signal }
+    );
   }
   document.addEventListener('astro:page-load', initHideOnScroll);
 
@@ -163,6 +208,8 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     header.style.transition = 'none';
     header.classList.remove('is-hidden');
     void header.offsetHeight; // reflow を強制
-    requestAnimationFrame(() => { header.style.transition = ''; });
+    requestAnimationFrame(() => {
+      header.style.transition = '';
+    });
   });
 </script>

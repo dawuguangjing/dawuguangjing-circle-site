@@ -5,6 +5,7 @@ import path from 'node:path';
 const repoRoot = process.cwd();
 const scanRoots = ['src', 'public', 'README.md', 'docs'];
 const ignoredDirs = new Set(['.git', 'node_modules', 'dist', '.astro']);
+const ignoredFileRe = /\.(test|spec)\.[cm]?[jt]sx?$/;
 const textExtensions = new Set([
   '.md',
   '.mdx',
@@ -16,7 +17,7 @@ const textExtensions = new Set([
   '.cjs',
   '.ts',
   '.tsx',
-  '.json',
+  '.json'
 ]);
 
 const imageExtRe = /\.(png|jpe?g|webp|gif|avif|svg)(?:[?#].*)?$/i;
@@ -31,7 +32,7 @@ const signedUrlHints = [
   'expires=',
   'exp=',
   'x-amz-signature=',
-  'x-goog-signature=',
+  'x-goog-signature='
 ];
 const externalAllowlist = new Set(['img.dlsite.jp']);
 
@@ -96,8 +97,7 @@ function lineMatches(line) {
     push(m[1], 'withBase');
   }
 
-  const quotedImagePathRe =
-    /["']([^"']+\.(?:png|jpe?g|webp|gif|avif|svg)(?:\?[^"']*)?)["']/gi;
+  const quotedImagePathRe = /["']([^"']+\.(?:png|jpe?g|webp|gif|avif|svg)(?:\?[^"']*)?)["']/gi;
   for (const m of line.matchAll(quotedImagePathRe)) {
     push(m[1], 'quoted-path');
   }
@@ -188,7 +188,7 @@ async function analyzeTarget(filePath, lineNumber, sourceType, target) {
     line: lineNumber,
     sourceType,
     target,
-    reasons,
+    reasons
   };
 }
 
@@ -217,6 +217,7 @@ async function* walkFiles(entryPath) {
       continue;
     }
     if (entry.isFile()) {
+      if (ignoredFileRe.test(entry.name)) continue;
       const ext = path.extname(entry.name).toLowerCase();
       if (textExtensions.has(ext)) {
         yield next;
