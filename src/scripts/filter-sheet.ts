@@ -3,6 +3,7 @@
 // バッジ更新はページ固有のため含めない。
 
 import { lockScroll, unlockScroll } from './scroll-lock';
+import { trapFocus } from './focus-trap';
 
 export interface FilterSheetConfig {
   /** フィルターバー要素の ID（ページごとに異なる） */
@@ -57,18 +58,11 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') close();
     // フォーカストラップ: シートが開いている間、Tab をシート内に閉じ込める
-    if (e.key === 'Tab' && filterBar?.classList.contains('is-open') && filterBar) {
+    if (filterBar?.classList.contains('is-open') && filterBar) {
       const focusable = Array.from(
         filterBar.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled])')
       ).filter((el) => el.offsetParent !== null);
-      if (focusable.length === 0) return;
-      const first = focusable[0];
-      const last  = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last.focus(); }
-      } else {
-        if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
-      }
+      trapFocus(e, focusable);
     }
   });
   document.addEventListener('ui:close-overlays', close);

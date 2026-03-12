@@ -91,7 +91,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
 </BaseLayout>
 
 <script>
-  import { prefersReducedMotion } from '../../scripts/motion';
+  import { smoothScrollBehavior } from '../../scripts/motion';
 
   const toc = document.getElementById('toc');
   const tocList = document.getElementById('toc-list');
@@ -141,7 +141,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
       );
       tocObs.observe(toc);
       fabToc.addEventListener('click', () => {
-        toc.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+        toc.scrollIntoView({ behavior: smoothScrollBehavior(), block: 'start' });
       });
     }
   }

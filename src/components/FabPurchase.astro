@@ -15,7 +15,7 @@ const { targetId } = Astro.props;
 </button>
 
 <script>
-  import { prefersReducedMotion } from '../scripts/motion';
+  import { smoothScrollBehavior } from '../scripts/motion';
 
   function initFab() {
     const fab = document.getElementById('fab-purchase') as HTMLButtonElement | null;
@@ -34,7 +34,7 @@ const { targetId } = Astro.props;
       observer.observe(target);
 
       fab.addEventListener('click', () => {
-        target.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+        target.scrollIntoView({ behavior: smoothScrollBehavior(), block: 'start' });
       });
     }
   }

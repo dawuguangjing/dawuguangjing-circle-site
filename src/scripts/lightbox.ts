@@ -3,6 +3,8 @@
 // astro:page-load で毎回再初期化（VT 後も確実にリスナーを付け直す）。
 
 import { lockScroll, unlockScroll } from './scroll-lock';
+import { trapFocus } from './focus-trap';
+import { safeGet, safeSet } from './safe-storage';
 import {
   HINT_DISMISS_MS,
   LIGHTBOX_HINT_KEY,
@@ -96,11 +98,11 @@ function initLightbox() {
 
   function showHint() {
     if (!lbHint) return;
-    try { if (localStorage.getItem(LIGHTBOX_HINT_KEY)) return; } catch {}
+    if (safeGet(LIGHTBOX_HINT_KEY)) return;
     lbHint.classList.add('is-visible');
     const dismiss = () => {
       lbHint.classList.remove('is-visible');
-      try { localStorage.setItem(LIGHTBOX_HINT_KEY, '1'); } catch {}
+      safeSet(LIGHTBOX_HINT_KEY, '1');
     };
     lbHint.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); }, { once: true });
     setTimeout(dismiss, HINT_DISMISS_MS);
@@ -174,18 +176,10 @@ function initLightbox() {
       _pinchScale = 1;
     }
     // Tab フォーカストラップ
-    if (e.key === 'Tab') {
-      const focusable = [lbClose, lbPrev, lbNext].filter(
-        (el) => el && !el.classList.contains('is-hidden')
-      );
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (e.shiftKey) {
-        if (document.activeElement === first) { e.preventDefault(); last?.focus(); }
-      } else {
-        if (document.activeElement === last) { e.preventDefault(); first?.focus(); }
-      }
-    }
+    const focusable = ([lbClose, lbPrev, lbNext] as (HTMLElement | null)[]).filter(
+      (el): el is HTMLElement => !!el && !el.classList.contains('is-hidden')
+    );
+    trapFocus(e, focusable);
   });
 
   // ── サムネイルストリップ生成 ──

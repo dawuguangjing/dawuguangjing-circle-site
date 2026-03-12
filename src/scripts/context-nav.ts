@@ -8,6 +8,7 @@ import {
   LIST_CONTEXT_KEY_PREFIX,
   RETURN_HIGHLIGHT_SLUG_KEY,
 } from '../utils/constants';
+import { safeGet, safeSet, safeRemove } from './safe-storage';
 
 function initContextBackLinks() {
   document.querySelectorAll<HTMLAnchorElement>('a[data-back-context]').forEach((node) => {
@@ -21,12 +22,8 @@ function initContextBackLinks() {
       const contextKey = (link.dataset.backContextKey ?? '').trim();
       let savedContextUrl = '';
       if (contextKey) {
-        try {
-          const stored = sessionStorage.getItem(`${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`) ?? '';
-          if (stored.startsWith('/')) savedContextUrl = stored;
-        } catch {
-          savedContextUrl = '';
-        }
+        const stored = safeGet(`${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`, 'session') ?? '';
+        if (stored.startsWith('/')) savedContextUrl = stored;
       }
       const fallbackHref = savedContextUrl || link.href;
 
@@ -64,11 +61,7 @@ function persistListContext() {
   const listRoot = document.querySelector<HTMLElement>('[data-list-context]');
   const contextKey = (listRoot?.dataset.listContext ?? '').trim();
   if (!contextKey) return;
-  try {
-    sessionStorage.setItem(`${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`, `${window.location.pathname}${window.location.search}`);
-  } catch {
-    return;
-  }
+  safeSet(`${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`, `${window.location.pathname}${window.location.search}`, 'session');
 }
 
 // ── Return Highlight ────────────────────────────────────────────────────────
@@ -78,17 +71,16 @@ function persistDetailSlug() {
   // 詳細ページ（/works/<slug>/ 等）にいる場合、スラッグを保存
   const match = window.location.pathname.match(/\/(works|news|gallery|characters)\/([^/]+)\/?$/);
   if (match) {
-    try { sessionStorage.setItem(RETURN_HIGHLIGHT_SLUG_KEY, match[2]); } catch {}
+    safeSet(RETURN_HIGHLIGHT_SLUG_KEY, match[2], 'session');
   }
 }
 
 function highlightReturnedItem() {
   const listRoot = document.querySelector<HTMLElement>('[data-list-context]');
   if (!listRoot) return;
-  let slug = '';
-  try { slug = sessionStorage.getItem(RETURN_HIGHLIGHT_SLUG_KEY) ?? ''; } catch {}
+  const slug = safeGet(RETURN_HIGHLIGHT_SLUG_KEY, 'session') ?? '';
   if (!slug) return;
-  try { sessionStorage.removeItem(RETURN_HIGHLIGHT_SLUG_KEY); } catch {}
+  safeRemove(RETURN_HIGHLIGHT_SLUG_KEY, 'session');
 
   // カード内のリンクからスラッグを逆引き
   const card = listRoot.querySelector<HTMLElement>(

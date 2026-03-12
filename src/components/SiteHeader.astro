@@ -35,6 +35,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 
 <script>
   import { lockScroll, unlockScroll } from '../scripts/scroll-lock';
+  import { trapFocus } from '../scripts/focus-trap';
 
   function getMenuElements() {
     return {
@@ -114,25 +115,11 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
         return;
       }
 
-      if (e.key === 'Tab') {
-        const focusable = [
-          toggle,
-          ...Array.from(nav.querySelectorAll<HTMLElement>('a[href]')),
-        ];
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey) {
-          if (document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          }
-        } else {
-          if (document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        }
-      }
+      const focusable = [
+        toggle,
+        ...Array.from(nav.querySelectorAll<HTMLElement>('a[href]')),
+      ];
+      trapFocus(e, focusable);
     }, { signal });
   }
   document.addEventListener('astro:page-load', initMobileMenu);

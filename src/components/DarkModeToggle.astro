@@ -61,6 +61,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
 
 <script>
   import { THEME_STORAGE_KEY, DARK_MODE_ICON_MS, DARK_MODE_TRANSITION_MS } from '../utils/constants';
+  import { safeGet, safeSet } from '../scripts/safe-storage';
   const STORAGE_KEY = THEME_STORAGE_KEY;
   const SLIDE_PX = 24;
   const ANIM_OPTS: KeyframeAnimationOptions = {
@@ -70,7 +71,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
   };
 
   function getPreferred(): 'dark' | 'light' {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = safeGet(STORAGE_KEY);
     if (saved === 'dark' || saved === 'light') return saved;
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
@@ -149,7 +150,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
     btn.addEventListener('click', () => {
       const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
       const next = current === 'dark' ? 'light' : 'dark';
-      localStorage.setItem(STORAGE_KEY, next);
+      safeSet(STORAGE_KEY, next);
       applyTheme(next);
       const [outEl, inEl] = next === 'dark' ? [sunEl, moonEl] : [moonEl, sunEl];
       animateSwitch(outEl, inEl);

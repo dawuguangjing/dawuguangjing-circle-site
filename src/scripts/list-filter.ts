@@ -2,7 +2,7 @@
 // 一覧ページのフィルタ・ソート・URL同期・バッジ更新を一元管理する。
 
 import { FILTER_STAGGER, FILTER_DEBOUNCE_MS } from '../utils/constants';
-import { prefersReducedMotion as prefersReducedMotionFn } from './motion';
+import { prefersReducedMotion, smoothScrollBehavior } from './motion';
 import type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
 import { getActiveFilterValues, getActiveSortValue, restoreFilterFromUrl, syncFilterStateToUrl } from './filter-url';
 
@@ -123,7 +123,7 @@ export function setupListFilter(config: ListFilterConfig) {
 
   // ── フィルタ＆ソート適用 ──
 
-  const prefersReducedMotion = prefersReducedMotionFn();
+  const reducedMotion = prefersReducedMotion();
 
   function applyAll(scroll: boolean) {
     grid!.classList.remove('is-filtering');
@@ -156,7 +156,7 @@ export function setupListFilter(config: ListFilterConfig) {
 
     // 退出アニメーション完了後に非表示化
     if (toHide.length > 0) {
-      const dur = prefersReducedMotion ? 0
+      const dur = reducedMotion ? 0
         : (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-fast')) * 1000 || 150);
       setTimeout(() => {
         toHide.forEach(el => {
@@ -200,7 +200,7 @@ export function setupListFilter(config: ListFilterConfig) {
       const scrollTarget = (visibleCount === 0 && config.emptySelector)
         ? document.querySelector<HTMLElement>(config.emptySelector) ?? grid!
         : grid!;
-      scrollTarget.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+      scrollTarget.scrollIntoView({ behavior: smoothScrollBehavior(), block: 'start' });
     }
   }
 

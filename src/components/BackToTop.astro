@@ -7,7 +7,7 @@
 </button>
 
 <script>
-  import { prefersReducedMotion } from '../scripts/motion';
+  import { smoothScrollBehavior } from '../scripts/motion';
 
   const btn = document.getElementById('back-to-top');
   if (btn) {
@@ -15,7 +15,7 @@
       btn.classList.toggle('is-visible', window.scrollY >= 300);
     }, { passive: true });
     btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+      window.scrollTo({ top: 0, behavior: smoothScrollBehavior() });
     });
   }
 </script>

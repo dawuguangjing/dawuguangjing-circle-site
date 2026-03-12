@@ -36,6 +36,7 @@ const { message, href, storageKey } = Astro.props;
 
 <script>
   import { ANNOUNCEMENT_DISMISS_MS } from '../utils/constants';
+  import { safeGet, safeSet } from '../scripts/safe-storage';
 
   function initAnnouncementBar() {
     const bar = document.getElementById('announcement-bar') as HTMLElement | null;
@@ -44,12 +45,10 @@ const { message, href, storageKey } = Astro.props;
 
     const key = bar.dataset.storageKey!;
 
-    try {
-      if (sessionStorage.getItem(key)) { bar.remove(); return; }
-    } catch (e) {}
+    if (safeGet(key, 'session')) { bar.remove(); return; }
 
     function dismiss() {
-      try { sessionStorage.setItem(key, '1'); } catch (e) {}
+      safeSet(key, '1', 'session');
       bar.classList.add('is-hiding');
       // transitionend の代わりに setTimeout で確実に除去
       setTimeout(() => bar.remove(), ANNOUNCEMENT_DISMISS_MS);
