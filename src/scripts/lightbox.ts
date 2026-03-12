@@ -149,6 +149,8 @@ function initLightbox() {
   function openLightbox(index: number) {
     // #11(防御): 二重オープン防止
     if (lightbox.open) return;
+    // #10: 上位オーバーレイが開いている場合は抑止
+    if (document.querySelector('dialog[open]:not(#lightbox), .sheet-overlay.is-active')) return;
     triggerEl = document.activeElement as HTMLElement;
     showMedia(index, 'instant');
     lightbox.showModal();
@@ -175,6 +177,8 @@ function initLightbox() {
       _hintTimer = null;
     }
     _isProgramScroll = false;
+    // #13: ヒントのクラスをリセット（再オープン時のフェードイン遷移を保証）
+    lbHint?.classList.remove('is-visible');
     lbVideo.pause();
     lbVideo.src = '';
     lbVideo.oncanplay = null;
@@ -302,6 +306,7 @@ function initLightbox() {
     // スクロール停止時に中央のサムネイルを検出し、対応するメイン画像を表示する
 
     function syncFromThumbScroll() {
+      if (!lightbox.open) return; // #8: 閉じた後の scrollend 発火を無視
       if (_isProgramScroll) return; // プログラム側スクロールは無視
       const containerCenter = lbThumbs.scrollLeft + lbThumbs.clientWidth / 2;
       let closestIndex = current;
