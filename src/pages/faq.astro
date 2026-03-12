@@ -116,6 +116,11 @@ import { animDelay, ANIM_STAGGER } from '../utils/constants';
                 answer.style.gridTemplateRows = '';
               });
             });
+            // 展開アニメーション完了後に回答をビューポート内にスクロール
+            const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+            setTimeout(() => {
+              details.scrollIntoView({ behavior: rm ? 'auto' : 'smooth', block: 'nearest' });
+            }, 300);
           }
         });
       });

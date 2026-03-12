@@ -372,8 +372,16 @@ html.is-client-nav .hero-banner-cover {
   transition: transform var(--dur-slow) var(--easing);
 }
 
-.dual-hero-cover-link:hover .dual-hero-cover {
-  transform: scale(1.04);
+@media (hover: hover) and (pointer: fine) {
+  .dual-hero-cover-link:hover .dual-hero-cover {
+    transform: scale(1.04);
+  }
+}
+@media (hover: none) {
+  .dual-hero-cover-link:active .dual-hero-cover {
+    transform: scale(0.97);
+    transition: transform 0.1s ease;
+  }
 }
 
 /* 未発売: 彩度を落として制作中感を演出 */

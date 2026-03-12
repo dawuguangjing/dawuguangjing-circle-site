@@ -13,7 +13,8 @@
       btn.classList.toggle('is-visible', window.scrollY >= 300);
     }, { passive: true });
     btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: rm ? 'auto' : 'smooth' });
     });
   }
 </script>
