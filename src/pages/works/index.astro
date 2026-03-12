@@ -12,9 +12,9 @@ const works = await getSortedWorks();
 ---
 
 <BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
-  <Breadcrumb crumbs={[{ label: '作品一覧' }]} />
   <div class="page-content" data-list-context="works">
     <section class="section container">
+      <Breadcrumb crumbs={[{ label: '作品一覧' }]} />
       <SectionHeader title="全作品" as="h1">
         <span class="muted" id="work-count" role="status" aria-live="polite" aria-atomic="true"
           >{works.length} タイトル</span

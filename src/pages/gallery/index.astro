@@ -15,9 +15,9 @@ const galleries = await getSortedGallery();
   title={`ギャラリー | ${SITE_NAME}`}
   description="サークルが制作したCG集・イラスト集の一覧です。"
 >
-  <Breadcrumb crumbs={[{ label: 'ギャラリー' }]} />
   <div class="page-content" data-list-context="gallery">
     <section class="section container">
+      <Breadcrumb crumbs={[{ label: 'ギャラリー' }]} />
       <SectionHeader title="ギャラリー" as="h1">
         <span class="section-count muted">{galleries.length}件</span>
       </SectionHeader>

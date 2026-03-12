@@ -16,9 +16,9 @@ const categories = Object.entries(categoryLabels) as [string, string][];
 ---
 
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
-  <Breadcrumb crumbs={[{ label: '開発ログ' }]} />
   <div class="page-content" data-list-context="news">
     <section class="section container">
+      <Breadcrumb crumbs={[{ label: '開発ログ' }]} />
       <SectionHeader title="開発ログ" as="h1" />
 
       <FilterSheet

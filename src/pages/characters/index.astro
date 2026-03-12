@@ -21,9 +21,9 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   title={`キャラクター | ${SITE_NAME}`}
   description="ダウグアングジング作品に登場するキャラクターのプロフィール一覧です。"
 >
-  <Breadcrumb crumbs={[{ label: 'キャラクター' }]} />
   <div class="page-content" data-list-context="characters">
     <div class="container section">
+      <Breadcrumb crumbs={[{ label: 'キャラクター' }]} />
       <SectionHeader title="キャラクター" as="h1" />
 
       <FilterSheet
