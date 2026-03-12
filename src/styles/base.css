@@ -124,10 +124,12 @@ button {
   transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
 }
 
-.card:hover {
-  border-color: var(--accent-alpha-25);
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
+@media (hover: hover) and (pointer: fine) {
+  .card:hover {
+    border-color: var(--accent-alpha-25);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
 }
 
 .card--static,

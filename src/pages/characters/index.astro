@@ -91,14 +91,16 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 <style>
 .char-list-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   gap: 20px;
 }
 
 /* ── Size overrides for full-size list cards ── */
-.char-list-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+@media (hover: hover) and (pointer: fine) {
+  .char-list-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  }
 }
 
 .char-list-view {
@@ -149,7 +151,6 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 
 @media (max-width: 480px) {
   .char-list-grid {
-    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
   }
 }

@@ -161,6 +161,15 @@
   gap: 8px;
   overflow: hidden;
 }
+.gallery-card-cta {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+@media (hover: hover) and (pointer: fine) {
+  .gallery-card-cta { display: none; }
+}
 .gallery-card-badges { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .gallery-card-count {
   font-size: 0.7rem;

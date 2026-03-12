@@ -76,6 +76,9 @@
   transition: opacity var(--dur-normal) ease, transform var(--dur-normal) ease;
   pointer-events: none;
   white-space: nowrap;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
   box-shadow: var(--shadow-toast);
   display: flex;
   align-items: center;
