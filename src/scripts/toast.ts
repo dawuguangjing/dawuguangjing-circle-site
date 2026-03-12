@@ -15,12 +15,14 @@ export function showToast(message: string) {
   close.textContent = '\u00d7';
   toast.appendChild(close);
   document.body.appendChild(toast);
-  let timer: ReturnType<typeof setTimeout>;
   const dismiss = () => {
     toast.classList.remove('is-visible');
     setTimeout(() => toast.remove(), TOAST_FADE_MS);
   };
-  close.addEventListener('click', () => { clearTimeout(timer); dismiss(); });
   requestAnimationFrame(() => toast.classList.add('is-visible'));
-  timer = setTimeout(dismiss, TOAST_DISMISS_MS);
+  const timer = setTimeout(dismiss, TOAST_DISMISS_MS);
+  close.addEventListener('click', () => {
+    clearTimeout(timer);
+    dismiss();
+  });
 }

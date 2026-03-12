@@ -1,15 +1,24 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionKey } from 'astro:content';
+
+/** getCollection をラップし、失敗時にコレクション名を含むエラーメッセージを付与する */
+async function safeGetCollection<T extends CollectionKey>(name: T) {
+  try {
+    return await getCollection(name);
+  } catch (error) {
+    throw new Error(`コレクション "${name}" の取得に失敗しました`, { cause: error });
+  }
+}
 
 /** 作品をリリース日の降順で取得 */
 export async function getSortedWorks() {
-  return (await getCollection('works')).sort(
+  return (await safeGetCollection('works')).sort(
     (a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime()
   );
 }
 
 /** ニュースを日付の降順で取得 */
 export async function getSortedNews() {
-  return (await getCollection('news')).sort(
+  return (await safeGetCollection('news')).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime()
   );
 }
@@ -22,11 +31,11 @@ export function extractFirstImageUrl(body: string): string | undefined {
 
 /** ギャラリーをリリース日の降順で取得。imageCount を解決済みの値として付与する */
 export async function getSortedGallery() {
-  return (await getCollection('gallery'))
+  return (await safeGetCollection('gallery'))
     .sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime())
     .map((entry) => ({
       ...entry,
-      resolvedImageCount: resolveImageCount(entry.data),
+      resolvedImageCount: resolveImageCount(entry.data)
     }));
 }
 
@@ -37,19 +46,19 @@ export function resolveImageCount(data: { imageCount?: number; images: string[] 
 
 /** slug → work の Map を返す */
 export async function getWorkIndex() {
-  const works = await getCollection('works');
+  const works = await safeGetCollection('works');
   return new Map(works.map((w) => [w.slug, w]));
 }
 
 /** slug → gallery の Map を返す */
 export async function getGalleryIndex() {
-  const galleries = await getCollection('gallery');
+  const galleries = await safeGetCollection('gallery');
   return new Map(galleries.map((g) => [g.slug, g]));
 }
 
 /** 作品に属するキャラクター一覧を取得（order 昇順） */
 export async function getCharactersByWork(workSlug: string) {
-  const all = await getCollection('characters');
+  const all = await safeGetCollection('characters');
   return all
     .filter((c) => c.data.workSlug === workSlug)
     .sort((a, b) => a.data.order - b.data.order);
@@ -57,7 +66,7 @@ export async function getCharactersByWork(workSlug: string) {
 
 /** ギャラリーに関連するキャラクター一覧を取得（order 昇順） */
 export async function getCharactersByGallery(gallerySlug: string) {
-  const all = await getCollection('characters');
+  const all = await safeGetCollection('characters');
   return all
     .filter((c) => (c.data.gallerySlugs ?? []).includes(gallerySlug))
     .sort((a, b) => a.data.order - b.data.order);
@@ -72,7 +81,7 @@ export function buildPrevNext<T extends { slug: string }>(
     props: {
       entry,
       prev: entries[i + 1] ?? null,
-      next: entries[i - 1] ?? null,
-    },
+      next: entries[i - 1] ?? null
+    }
   }));
 }

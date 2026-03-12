@@ -2,8 +2,8 @@ import { defineCollection, z } from 'astro:content';
 
 /** FANZA / DLsite のリンクペア（works・gallery 共用） */
 const storeLinks = z.object({
-  fanza:  z.string().url().optional(),
-  dlsite: z.string().url().optional(),
+  fanza: z.string().url().optional(),
+  dlsite: z.string().url().optional()
 });
 
 const works = defineCollection({
@@ -22,7 +22,7 @@ const works = defineCollection({
       browserPc: z.boolean(),
       browserMobileBeta: z.boolean(),
       ios: z.boolean().default(false),
-      android: z.boolean().default(false),
+      android: z.boolean().default(false)
     }),
     volume: z.object({
       playTimeMin: z.number().int().nonnegative(),
@@ -40,16 +40,21 @@ const works = defineCollection({
     }),
     videoUrl: z.string().url().optional(),
     sellingPoints: z.array(z.string()).optional(),
-    earlyAccess: z.object({
-      enabled: z.boolean().default(false),
-      password: z.string(),
-      downloadUrl: z.string(),
-    }).optional(),
+    earlyAccess: z
+      .discriminatedUnion('enabled', [
+        z.object({ enabled: z.literal(false) }),
+        z.object({
+          enabled: z.literal(true),
+          password: z.string(),
+          downloadUrl: z.string()
+        })
+      ])
+      .optional()
   })
 });
 
 export const NEWS_CATEGORIES = ['release', 'update', 'sale', 'devlog', 'futekigo'] as const;
-export type NewsCategory = typeof NEWS_CATEGORIES[number];
+export type NewsCategory = (typeof NEWS_CATEGORIES)[number];
 
 const news = defineCollection({
   type: 'content',
@@ -74,7 +79,7 @@ const gallery = defineCollection({
     videos: z.array(z.string()).optional(),
     imageCount: z.number().int().nonnegative().optional(),
     relatedWorkSlugs: z.array(z.string()).optional(),
-    platformLinks: storeLinks.optional(),
+    platformLinks: storeLinks.optional()
   })
 });
 
@@ -90,7 +95,7 @@ const characters = defineCollection({
     height: z.number().int().nonnegative().optional(),
     personality: z.string(),
     order: z.number().int().default(0),
-    gallerySlugs: z.array(z.string()).optional(),
+    gallerySlugs: z.array(z.string()).optional()
   })
 });
 

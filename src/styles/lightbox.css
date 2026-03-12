@@ -1,5 +1,14 @@
 /* ── Lightbox ── */
 .lightbox-overlay {
+  /* dialog リセット */
+  max-width: none;
+  max-height: none;
+  width: 100vw;
+  height: 100vh;
+  padding: 0;
+  border: none;
+  margin: 0;
+  /* レイアウト */
   position: fixed;
   inset: 0;
   z-index: var(--z-lightbox);
@@ -9,13 +18,15 @@
   justify-content: center;
   cursor: zoom-out;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity var(--dur-medium) ease, visibility var(--dur-medium) ease;
+  transition: opacity var(--dur-medium) ease;
+}
+
+.lightbox-overlay::backdrop {
+  background: transparent;
 }
 
 .lightbox-overlay.is-active {
   opacity: 1;
-  visibility: visible;
 }
 
 .lightbox-media {
@@ -32,7 +43,9 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lightbox);
   transform: scale(0.95);
-  transition: transform var(--dur-medium) var(--easing), opacity var(--dur-quick) ease;
+  transition:
+    transform var(--dur-medium) var(--easing),
+    opacity var(--dur-quick) ease;
   display: block;
 }
 
@@ -93,20 +106,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background var(--dur-quick) ease, border-color var(--dur-quick) ease, transform var(--dur-quick) ease;
+  transition:
+    background var(--dur-quick) ease,
+    border-color var(--dur-quick) ease,
+    transform var(--dur-quick) ease;
   z-index: 1;
   flex-shrink: 0;
   touch-action: manipulation;
 }
-.lightbox-prev { left: max(20px, env(safe-area-inset-left, 20px)); }
-.lightbox-next { right: max(20px, env(safe-area-inset-right, 20px)); }
+.lightbox-prev {
+  left: max(20px, env(safe-area-inset-left, 20px));
+}
+.lightbox-next {
+  right: max(20px, env(safe-area-inset-right, 20px));
+}
 .lightbox-prev:hover,
 .lightbox-next:hover {
   background: var(--lightbox-nav-bg-hover);
   border-color: var(--lightbox-btn-border-hover);
 }
-.lightbox-prev:active { transform: translateY(-50%) translateX(-2px); }
-.lightbox-next:active { transform: translateY(-50%) translateX(2px); }
+.lightbox-prev:active {
+  transform: translateY(-50%) translateX(-2px);
+}
+.lightbox-next:active {
+  transform: translateY(-50%) translateX(2px);
+}
 .lightbox-prev.is-hidden,
 .lightbox-next.is-hidden {
   display: none;
@@ -133,14 +157,20 @@
   align-items: center;
   gap: 6px;
   padding-block: 10px;
-  padding-inline: calc(50% - 26px); /* 端アイテムもスクロールで中央に届くよう余白確保（26px = thumb幅52pxの半分） */
+  padding-inline: calc(
+    50% - 26px
+  ); /* 端アイテムもスクロールで中央に届くよう余白確保（26px = thumb幅52pxの半分） */
   background: var(--lightbox-gradient);
   overflow-x: auto;
   scrollbar-width: none;
   /* scroll-snap は JS 側でスナップを制御するため無効化（mandatory だと1枚ずつしか進めず引っかかる） */
 }
-.lightbox-thumbs:empty { display: none; }
-.lightbox-thumbs::-webkit-scrollbar { display: none; }
+.lightbox-thumbs:empty {
+  display: none;
+}
+.lightbox-thumbs::-webkit-scrollbar {
+  display: none;
+}
 
 .lightbox-thumb {
   flex-shrink: 0;
@@ -157,14 +187,32 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: border-color var(--dur-quick) ease, transform var(--dur-quick) ease;
+  transition:
+    border-color var(--dur-quick) ease,
+    transform var(--dur-quick) ease;
   touch-action: manipulation;
 }
-.lightbox-thumb:hover { border-color: var(--lightbox-thumb-border-hover); transform: scale(1.08); }
-.lightbox-thumb.is-active { border-color: #fff; transform: scale(1.12); }
-.lightbox-thumb img { width: 100%; height: 100%; object-fit: cover; opacity: 0.75; }
-.lightbox-thumb.is-active img { opacity: 1; }
-.lightbox-thumb:focus-visible { outline-color: #fff; border-radius: 3px; }
+.lightbox-thumb:hover {
+  border-color: var(--lightbox-thumb-border-hover);
+  transform: scale(1.08);
+}
+.lightbox-thumb.is-active {
+  border-color: #fff;
+  transform: scale(1.12);
+}
+.lightbox-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.75;
+}
+.lightbox-thumb.is-active img {
+  opacity: 1;
+}
+.lightbox-thumb:focus-visible {
+  outline-color: #fff;
+  border-radius: 3px;
+}
 
 /* ── Lightbox Hint Overlay ── */
 .lightbox-hint {
@@ -183,21 +231,34 @@
   z-index: 2;
   opacity: 0;
   visibility: hidden;
-  transition: opacity var(--dur-medium) ease, visibility var(--dur-medium) ease;
+  transition:
+    opacity var(--dur-medium) ease,
+    visibility var(--dur-medium) ease;
 }
 .lightbox-hint.is-visible {
   opacity: 1;
   visibility: visible;
 }
-.lightbox-hint p { margin: 0; line-height: 1.6; }
+.lightbox-hint p {
+  margin: 0;
+  line-height: 1.6;
+}
 /* デスクトップ: キーボードヒント / モバイル: タッチヒント */
-.lightbox-hint-mobile { display: none; }
+.lightbox-hint-mobile {
+  display: none;
+}
 @media (hover: none) and (pointer: coarse) {
-  .lightbox-hint-desktop { display: none; }
-  .lightbox-hint-mobile { display: block; }
+  .lightbox-hint-desktop {
+    display: none;
+  }
+  .lightbox-hint-mobile {
+    display: block;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .lightbox-hint { transition: none; }
+  .lightbox-hint {
+    transition: none;
+  }
 }
 
 /* サムネイルがある分だけ画像を上方向に制限 */
@@ -213,8 +274,12 @@
     width: 48px;
     height: 48px;
   }
-  .lightbox-prev { left: max(12px, env(safe-area-inset-left, 12px)); }
-  .lightbox-next { right: max(12px, env(safe-area-inset-right, 12px)); }
+  .lightbox-prev {
+    left: max(12px, env(safe-area-inset-left, 12px));
+  }
+  .lightbox-next {
+    right: max(12px, env(safe-area-inset-right, 12px));
+  }
 }
 @media (max-width: 480px) {
   .lightbox-prev,
@@ -222,6 +287,10 @@
     width: 44px;
     height: 44px;
   }
-  .lightbox-prev { left: max(8px, env(safe-area-inset-left, 8px)); }
-  .lightbox-next { right: max(8px, env(safe-area-inset-right, 8px)); }
+  .lightbox-prev {
+    left: max(8px, env(safe-area-inset-left, 8px));
+  }
+  .lightbox-next {
+    right: max(8px, env(safe-area-inset-right, 8px));
+  }
 }

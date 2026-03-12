@@ -3,7 +3,6 @@
 // astro:page-load で毎回再初期化（VT 後も確実にリスナーを付け直す）。
 
 import { lockScroll, unlockScroll } from './scroll-lock';
-import { trapFocus } from './focus-trap';
 import { safeGet, safeSet } from './safe-storage';
 import {
   HINT_DISMISS_MS,
@@ -13,32 +12,32 @@ import {
   LIGHTBOX_MAX_ZOOM,
   LIGHTBOX_MIN_ZOOM,
   LIGHTBOX_ZOOM_RESET_THRESHOLD,
-  LIGHTBOX_SWIPE_THRESHOLD_PX,
+  LIGHTBOX_SWIPE_THRESHOLD_PX
 } from '../utils/constants';
 
 const _initedElements = new WeakSet<HTMLElement>();
 
 function initLightbox() {
-  const lightbox = document.getElementById('lightbox') as HTMLElement | null;
+  const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
   if (!lightbox) return;
   // 同一ページ内での二重初期化を防ぐ
   if (_initedElements.has(lightbox)) return;
   _initedElements.add(lightbox);
 
   const itemSelector = lightbox.dataset.itemSelector!;
-  const lbImg     = lightbox.querySelector<HTMLImageElement>('.lightbox-img')!;
-  const lbVideo   = lightbox.querySelector<HTMLVideoElement>('.lightbox-video')!;
-  const lbClose   = lightbox.querySelector<HTMLButtonElement>('.lightbox-close')!;
-  const lbPrev    = lightbox.querySelector<HTMLButtonElement>('.lightbox-prev')!;
-  const lbNext    = lightbox.querySelector<HTMLButtonElement>('.lightbox-next')!;
+  const lbImg = lightbox.querySelector<HTMLImageElement>('.lightbox-img')!;
+  const lbVideo = lightbox.querySelector<HTMLVideoElement>('.lightbox-video')!;
+  const lbClose = lightbox.querySelector<HTMLButtonElement>('.lightbox-close')!;
+  const lbPrev = lightbox.querySelector<HTMLButtonElement>('.lightbox-prev')!;
+  const lbNext = lightbox.querySelector<HTMLButtonElement>('.lightbox-next')!;
   const lbCounter = lightbox.querySelector<HTMLElement>('.lightbox-counter')!;
-  const lbThumbs  = lightbox.querySelector<HTMLElement>('.lightbox-thumbs')!;
+  const lbThumbs = lightbox.querySelector<HTMLElement>('.lightbox-thumbs')!;
 
   const itemEls = Array.from(document.querySelectorAll<HTMLElement>(itemSelector));
   const items = itemEls.map((el) => ({
-    src:  el.dataset.lightboxSrc  || '',
+    src: el.dataset.lightboxSrc || '',
     type: el.dataset.lightboxType || 'image',
-    alt:  el.dataset.lightboxAlt  || '',
+    alt: el.dataset.lightboxAlt || ''
   }));
   let current = 0;
   let triggerEl: HTMLElement | null = null;
@@ -49,10 +48,16 @@ function initLightbox() {
   function scrollActiveThumb(behavior: ScrollBehavior = 'smooth') {
     _isProgramScroll = true;
     if (_programScrollTimer) clearTimeout(_programScrollTimer);
-    lbThumbs.querySelector<HTMLElement>('.lightbox-thumb.is-active')
+    lbThumbs
+      .querySelector<HTMLElement>('.lightbox-thumb.is-active')
       ?.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
     // smooth アニメーション終了後にフラグをリセット
-    _programScrollTimer = setTimeout(() => { _isProgramScroll = false; }, behavior === 'instant' ? 0 : LIGHTBOX_SCROLL_SYNC_MS);
+    _programScrollTimer = setTimeout(
+      () => {
+        _isProgramScroll = false;
+      },
+      behavior === 'instant' ? 0 : LIGHTBOX_SCROLL_SYNC_MS
+    );
   }
 
   function showMedia(index: number, scrollBehavior: ScrollBehavior = 'smooth', skipScroll = false) {
@@ -69,7 +74,13 @@ function initLightbox() {
       lbVideo.style.opacity = '0';
       lbVideo.src = src;
       lbVideo.play().catch(() => {});
-      lbVideo.addEventListener('canplay', () => { lbVideo.style.opacity = '1'; }, { once: true });
+      lbVideo.addEventListener(
+        'canplay',
+        () => {
+          lbVideo.style.opacity = '1';
+        },
+        { once: true }
+      );
     } else {
       lbVideo.pause();
       lbVideo.src = '';
@@ -78,7 +89,13 @@ function initLightbox() {
       lbImg.style.opacity = '0';
       lbImg.src = src;
       lbImg.alt = alt;
-      lbImg.addEventListener('load', () => { lbImg.style.opacity = '1'; }, { once: true });
+      lbImg.addEventListener(
+        'load',
+        () => {
+          lbImg.style.opacity = '1';
+        },
+        { once: true }
+      );
     }
 
     lbPrev.classList.toggle('is-hidden', items.length <= 1);
@@ -104,16 +121,22 @@ function initLightbox() {
       lbHint.classList.remove('is-visible');
       safeSet(LIGHTBOX_HINT_KEY, '1');
     };
-    lbHint.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); }, { once: true });
+    lbHint.addEventListener(
+      'click',
+      (e) => {
+        e.stopPropagation();
+        dismiss();
+      },
+      { once: true }
+    );
     setTimeout(dismiss, HINT_DISMISS_MS);
   }
 
   function openLightbox(index: number) {
     triggerEl = document.activeElement as HTMLElement;
     showMedia(index, 'instant');
+    lightbox.showModal();
     lightbox.classList.add('is-active');
-    lightbox.setAttribute('aria-hidden', 'false');
-    // visibility:hidden 状態では scrollIntoView が効かないブラウザへの対策
     requestAnimationFrame(() => scrollActiveThumb('instant'));
     lockScroll('lightbox');
     lbClose.focus();
@@ -121,10 +144,11 @@ function initLightbox() {
   }
 
   function closeLightbox() {
+    if (!lightbox.open) return;
     lbVideo.pause();
     lbVideo.src = '';
     lightbox.classList.remove('is-active');
-    lightbox.setAttribute('aria-hidden', 'true');
+    lightbox.close();
     unlockScroll('lightbox');
     if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
   }
@@ -133,7 +157,7 @@ function initLightbox() {
   itemEls.forEach((el, i) => {
     // キーボードアクセシビリティを保証（未設定の要素のみ補完）
     if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
-    if (!el.getAttribute('role'))     el.setAttribute('role', 'button');
+    if (!el.getAttribute('role')) el.setAttribute('role', 'button');
     if (!el.getAttribute('aria-label')) {
       el.setAttribute('aria-label', items[i].alt || `画像 ${i + 1} を拡大する`);
     }
@@ -149,16 +173,32 @@ function initLightbox() {
   // メディア本体クリックは overlay に伝播させない（動画コントロール操作で閉じないよう）
   lightbox.querySelector('.lightbox-media')!.addEventListener('click', (e) => e.stopPropagation());
 
-  lbPrev.addEventListener('click', (e) => { e.stopPropagation(); showMedia(current - 1); });
-  lbNext.addEventListener('click', (e) => { e.stopPropagation(); showMedia(current + 1); });
-  lbClose.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
-  lightbox.addEventListener('click', closeLightbox);
+  lbPrev.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showMedia(current - 1);
+  });
+  lbNext.addEventListener('click', (e) => {
+    e.stopPropagation();
+    showMedia(current + 1);
+  });
+  lbClose.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeLightbox();
+  });
+  lightbox.addEventListener('click', (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
   document.addEventListener('ui:close-overlays', closeLightbox);
   document.addEventListener('astro:before-preparation', closeLightbox, { once: true });
 
+  // native dialog の Escape を制御（クリーンアップ処理を通す）
+  lightbox.addEventListener('cancel', (e) => {
+    e.preventDefault();
+    closeLightbox();
+  });
+
   document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (!lightbox.classList.contains('is-active')) return;
-    if (e.key === 'Escape') closeLightbox();
+    if (!lightbox.open) return;
     if (e.key === 'ArrowLeft') showMedia(current - 1);
     if (e.key === 'ArrowRight') showMedia(current + 1);
     // f / F: フルスクリーン切り替え
@@ -175,11 +215,6 @@ function initLightbox() {
       lbImg.style.transform = '';
       _pinchScale = 1;
     }
-    // Tab フォーカストラップ
-    const focusable = ([lbClose, lbPrev, lbNext] as (HTMLElement | null)[]).filter(
-      (el): el is HTMLElement => !!el && !el.classList.contains('is-hidden')
-    );
-    trapFocus(e, focusable);
   });
 
   // ── サムネイルストリップ生成 ──
@@ -200,7 +235,10 @@ function initLightbox() {
       } else {
         btn.textContent = '▶';
       }
-      btn.addEventListener('click', (e) => { e.stopPropagation(); showMedia(i); });
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showMedia(i);
+      });
       lbThumbs.appendChild(btn);
     });
 
@@ -216,7 +254,10 @@ function initLightbox() {
       lbThumbs.querySelectorAll<HTMLElement>('.lightbox-thumb').forEach((thumb, i) => {
         const thumbCenter = thumb.offsetLeft + thumb.offsetWidth / 2;
         const dist = Math.abs(thumbCenter - containerCenter);
-        if (dist < closestDist) { closestDist = dist; closestIndex = i; }
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIndex = i;
+        }
       });
       // 画像のみ更新。プログラム側スクロールは起こさない（モバイルの引っかかりを防ぐ）
       if (closestIndex !== current) showMedia(closestIndex, 'smooth', true);
@@ -225,10 +266,14 @@ function initLightbox() {
     // scrollend: スナップ完了後に一度だけ発火（モダンブラウザ）
     lbThumbs.addEventListener('scrollend', syncFromThumbScroll, { passive: true });
     // scroll デバウンス: scrollend 未対応ブラウザ（古い Safari 等）向けフォールバック
-    lbThumbs.addEventListener('scroll', () => {
-      if (_thumbScrollTimer) clearTimeout(_thumbScrollTimer);
-      _thumbScrollTimer = setTimeout(syncFromThumbScroll, LIGHTBOX_SCROLL_DEBOUNCE_MS);
-    }, { passive: true });
+    lbThumbs.addEventListener(
+      'scroll',
+      () => {
+        if (_thumbScrollTimer) clearTimeout(_thumbScrollTimer);
+        _thumbScrollTimer = setTimeout(syncFromThumbScroll, LIGHTBOX_SCROLL_DEBOUNCE_MS);
+      },
+      { passive: true }
+    );
   }
 
   // ── ピンチズーム対応（モバイル） ──
@@ -236,54 +281,77 @@ function initLightbox() {
   let _pinchStartDist = 0;
   const lbMediaEl = lightbox.querySelector<HTMLElement>('.lightbox-media')!;
 
-  lbMediaEl.addEventListener('touchstart', function(e) {
-    if (e.touches.length === 2) {
-      _pinchStartDist = Math.hypot(
+  lbMediaEl.addEventListener(
+    'touchstart',
+    function (e) {
+      if (e.touches.length === 2) {
+        _pinchStartDist = Math.hypot(
+          e.touches[1].clientX - e.touches[0].clientX,
+          e.touches[1].clientY - e.touches[0].clientY
+        );
+      }
+    },
+    { passive: true }
+  );
+
+  lbMediaEl.addEventListener(
+    'touchmove',
+    function (e) {
+      if (e.touches.length !== 2 || lbImg.style.display === 'none') return;
+      e.preventDefault();
+      const dist = Math.hypot(
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY
       );
-    }
-  }, { passive: true });
+      const scale = Math.min(
+        LIGHTBOX_MAX_ZOOM,
+        Math.max(LIGHTBOX_MIN_ZOOM, (_pinchScale * dist) / _pinchStartDist)
+      );
+      lbImg.style.transform = `scale(${scale})`;
+    },
+    { passive: false }
+  );
 
-  lbMediaEl.addEventListener('touchmove', function(e) {
-    if (e.touches.length !== 2 || lbImg.style.display === 'none') return;
-    e.preventDefault();
-    const dist = Math.hypot(
-      e.touches[1].clientX - e.touches[0].clientX,
-      e.touches[1].clientY - e.touches[0].clientY
-    );
-    const scale = Math.min(LIGHTBOX_MAX_ZOOM, Math.max(LIGHTBOX_MIN_ZOOM, (_pinchScale * dist) / _pinchStartDist));
-    lbImg.style.transform = `scale(${scale})`;
-  }, { passive: false });
-
-  lbMediaEl.addEventListener('touchend', function(e) {
-    if (e.touches.length < 2) {
-      const m = lbImg.style.transform.match(/scale\(([\d.]+)\)/);
-      _pinchScale = m ? parseFloat(m[1]) : 1;
-      if (_pinchScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
-        _pinchScale = 1;
-        lbImg.style.transform = '';
+  lbMediaEl.addEventListener(
+    'touchend',
+    function (e) {
+      if (e.touches.length < 2) {
+        const m = lbImg.style.transform.match(/scale\(([\d.]+)\)/);
+        _pinchScale = m ? parseFloat(m[1]) : 1;
+        if (_pinchScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
+          _pinchScale = 1;
+          lbImg.style.transform = '';
+        }
       }
-    }
-  }, { passive: true });
+    },
+    { passive: true }
+  );
 
   // ── タッチスワイプ対応（モバイル） ──
   let _touchStartX = 0;
   let _swipeBlocked = false;
-  lightbox.addEventListener('touchstart', function(e) {
-    _touchStartX = e.touches[0].clientX;
-    // サムネイルスクロールとの競合防止 + ピンチズーム中はスワイプ無効
-    const fromThumbs = !!(e.target as HTMLElement).closest('.lightbox-thumbs');
-    _swipeBlocked = fromThumbs || _pinchScale !== 1;
-  }, { passive: true });
-  lightbox.addEventListener('touchend', function(e) {
-    if (!lightbox.classList.contains('is-active') || _swipeBlocked) return;
-    const delta = e.changedTouches[0].clientX - _touchStartX;
-    if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
-      if (delta < 0) showMedia(current + 1);
-      else showMedia(current - 1);
-    }
-  }, { passive: true });
+  lightbox.addEventListener(
+    'touchstart',
+    function (e) {
+      _touchStartX = e.touches[0].clientX;
+      // サムネイルスクロールとの競合防止 + ピンチズーム中はスワイプ無効
+      const fromThumbs = !!(e.target as HTMLElement).closest('.lightbox-thumbs');
+      _swipeBlocked = fromThumbs || _pinchScale !== 1;
+    },
+    { passive: true }
+  );
+  lightbox.addEventListener(
+    'touchend',
+    function (e) {
+      if (!lightbox.open || _swipeBlocked) return;
+      const delta = e.changedTouches[0].clientX - _touchStartX;
+      if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
+        if (delta < 0) showMedia(current + 1);
+        else showMedia(current - 1);
+      }
+    },
+    { passive: true }
+  );
 }
 
 // astro:page-load で毎回再初期化（VT 後も確実にリスナーを付け直す）

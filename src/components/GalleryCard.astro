@@ -13,14 +13,31 @@ interface Props extends ImageLoadProps {
   previewImages?: string[];
 }
 
-const { slug, title, cover, isR18, imageCount, previewImage, previewImages, loading = 'lazy', fetchpriority } = Astro.props;
+const {
+  slug,
+  title,
+  cover,
+  isR18,
+  imageCount,
+  previewImage,
+  previewImages,
+  loading = 'lazy',
+  fetchpriority
+} = Astro.props;
 const thumbs = previewImages?.slice(0, 3) ?? [];
 const { width: gw, height: gh } = IMAGE_DIMENSIONS.galleryCard;
 const gSizes = IMAGE_SIZES.galleryCard;
 ---
 
-<a class="card-interactive gallery-card" href={withBase(`gallery/${slug}/`)} data-astro-prefetch>
-  <div class={`gallery-card-media img-skeleton${thumbs.length > 0 ? ' gallery-card-media--split' : ''}${previewImage ? ' gallery-card-media--has-preview' : ''}`}>
+<a
+  class="card-interactive gallery-card"
+  href={withBase(`gallery/${slug}/`)}
+  data-astro-prefetch
+  aria-label={`${title} の詳細を見る`}
+>
+  <div
+    class={`gallery-card-media img-skeleton${thumbs.length > 0 ? ' gallery-card-media--split' : ''}${previewImage ? ' gallery-card-media--has-preview' : ''}`}
+  >
     <div class="gallery-card-media-cover">
       <img
         class="gallery-card-img"
@@ -32,31 +49,35 @@ const gSizes = IMAGE_SIZES.galleryCard;
         width={gw}
         height={gh}
       />
-      {previewImage && (
-        <img
-          class="gallery-card-img gallery-card-img--preview"
-          src={previewImage}
-          alt=""
-          loading="lazy"
-          sizes={gSizes}
-          width={gw}
-          height={gh}
-          aria-hidden="true"
-        />
-      )}
+      {
+        previewImage && (
+          <img
+            class="gallery-card-img gallery-card-img--preview"
+            src={previewImage}
+            alt=""
+            loading="lazy"
+            sizes={gSizes}
+            width={gw}
+            height={gh}
+            aria-hidden="true"
+          />
+        )
+      }
       <div class="gallery-card-overlay" aria-hidden="true">
         <span class="card-view-label">詳細を見る</span>
       </div>
     </div>
-    {thumbs.length > 0 && (
-      <div class="gallery-card-media-thumbs">
-        {thumbs.map((img) => (
-          <div class="gallery-card-media-thumb">
-            <img src={img} alt="" loading="lazy" width={gw} height={gh} aria-hidden="true" />
-          </div>
-        ))}
-      </div>
-    )}
+    {
+      thumbs.length > 0 && (
+        <div class="gallery-card-media-thumbs">
+          {thumbs.map((img) => (
+            <div class="gallery-card-media-thumb">
+              <img src={img} alt="" loading="lazy" width={gw} height={gh} aria-hidden="true" />
+            </div>
+          ))}
+        </div>
+      )
+    }
   </div>
   <div class="gallery-card-footer">
     <h3 class="gallery-card-title">{title}</h3>
