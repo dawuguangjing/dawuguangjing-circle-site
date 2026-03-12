@@ -1,24 +1,24 @@
 :root {
   color-scheme: light dark;
   /* DLsite-inspired palette */
-  --bg: #F5F5F5;
-  --bg-2: #EBEBEB;
+  --bg: #f5f5f5;
+  --bg-2: #ebebeb;
   --panel: #ffffff;
-  --panel-hover: #F8F8F8;
-  --panel-soft: #E8E8E8;
+  --panel-hover: #f8f8f8;
+  --panel-soft: #e8e8e8;
   --ink: #333333;
   --ink-dim: #888888;
   --ink-bright: #111111;
-  --accent: #0068B7;
-  --accent-2: #0080D6;
-  --accent-dark: #004A82;
-  --cta: #F96532;
-  --cta-hover: #E85525;
+  --accent: #0068b7;
+  --accent-2: #0080d6;
+  --accent-dark: #004a82;
+  --cta: #f96532;
+  --cta-hover: #e85525;
   --cta-rgb: 249, 101, 50;
   --cta-text: #ffffff;
-  --highlight: #0068B7;
-  --sale: #E62E2E;
-  --stroke: rgba(0, 0, 0, 0.10);
+  --highlight: #0068b7;
+  --sale: #e62e2e;
+  --stroke: rgba(0, 0, 0, 0.1);
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   --shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.08);
   --shadow-cta-hover: 0 4px 12px rgba(249, 101, 50, 0.25);
@@ -27,71 +27,71 @@
   --accent-alpha-06: rgba(0, 104, 183, 0.06);
   --accent-alpha-08: rgba(0, 104, 183, 0.08);
   --accent-alpha-25: rgba(0, 104, 183, 0.25);
-  --accent-alpha-30: rgba(0, 104, 183, 0.30);
+  --accent-alpha-30: rgba(0, 104, 183, 0.3);
   /* ── Badge semantic colors ── */
   --color-r18: #dc2626;
   --color-r18-bg: rgba(220, 38, 38, 0.08);
   --color-category: #666666;
   --color-category-bg: rgba(0, 0, 0, 0.06);
   --color-release: #16a34a;
-  --color-release-bg: rgba(22, 163, 74, 0.10);
-  --color-update: #0068B7;
-  --color-update-bg: rgba(0, 104, 183, 0.10);
+  --color-release-bg: rgba(22, 163, 74, 0.1);
+  --color-update: #0068b7;
+  --color-update-bg: rgba(0, 104, 183, 0.1);
   --color-devlog: #7c3aed;
-  --color-devlog-bg: rgba(124, 58, 237, 0.10);
-  --color-futekigo: #C026D3;
-  --color-futekigo-bg: rgba(192, 38, 211, 0.10);
+  --color-devlog-bg: rgba(124, 58, 237, 0.1);
+  --color-futekigo: #c026d3;
+  --color-futekigo-bg: rgba(192, 38, 211, 0.1);
   /* Store brand colors */
-  --color-fanza:        #E83655;
-  --color-fanza-hover:  #EC4060;
-  --color-dlsite:       #2952CC;
-  --color-dlsite-hover: #3560D8;
-  --shadow-fanza-hover:  0 6px 20px rgba(232, 54, 85, 0.35);
-  --shadow-fanza-active: 0 2px 6px  rgba(232, 54, 85, 0.20);
-  --shadow-dlsite-hover:  0 6px 20px rgba(41, 82, 204, 0.35);
-  --shadow-dlsite-active: 0 2px 6px  rgba(41, 82, 204, 0.20);
-  --pulse-fanza:  rgba(232, 54, 85, 0.50);
-  --pulse-dlsite: rgba(41, 82, 204, 0.50);
+  --color-fanza: #e83655;
+  --color-fanza-hover: #ec4060;
+  --color-dlsite: #2952cc;
+  --color-dlsite-hover: #3560d8;
+  --shadow-fanza-hover: 0 6px 20px rgba(232, 54, 85, 0.35);
+  --shadow-fanza-active: 0 2px 6px rgba(232, 54, 85, 0.2);
+  --shadow-dlsite-hover: 0 6px 20px rgba(41, 82, 204, 0.35);
+  --shadow-dlsite-active: 0 2px 6px rgba(41, 82, 204, 0.2);
+  --pulse-fanza: rgba(232, 54, 85, 0.5);
+  --pulse-dlsite: rgba(41, 82, 204, 0.5);
   /* ── Store trial variant colors ── */
-  --color-fanza-trial: #EE2737;
+  --color-fanza-trial: #ee2737;
   --color-fanza-trial-hover: #d42232;
   --color-fanza-trial-bg: rgba(238, 39, 55, 0.05);
   --color-fanza-trial-shadow: rgba(238, 39, 55, 0.12);
-  --color-dlsite-trial: #052A83;
+  --color-dlsite-trial: #052a83;
   --color-dlsite-trial-hover: #041e63;
   --color-dlsite-trial-bg: rgba(5, 42, 131, 0.05);
   --color-dlsite-trial-shadow: rgba(5, 42, 131, 0.12);
   /* ── Logo colors ── */
   --color-logo: var(--accent);
   --color-logo-hover: var(--accent-dark);
-  --color-logo-green: #7CCD40;
-  --color-logo-pink: #E2437F;
-  --news-card-cover-empty-bg: #EBEBEB;
+  --color-logo-green: #7ccd40;
+  --color-logo-pink: #e2437f;
+  --news-card-cover-empty-bg: #ebebeb;
   --radius-lg: 6px;
   --radius-md: 4px;
   --radius-sm: 3px;
   --radius-pill: 20px;
   --easing: cubic-bezier(0.25, 0.8, 0.25, 1);
   /* ── Duration scale ── */
-  --dur-fast: 0.15s;       /* link hover, subtle state changes */
-  --dur-quick: 0.2s;       /* focus rings, small interactive feedback */
-  --dur-normal: 0.25s;     /* standard component transitions */
-  --dur-medium: 0.3s;      /* card hover lifts, transform + easing */
-  --dur-slow: 0.4s;        /* image zoom, gallery transitions */
-  --dur-entrance: 0.5s;    /* scroll-triggered entrance animations */
+  --dur-fast: 0.15s; /* link hover, subtle state changes */
+  --dur-quick: 0.2s; /* focus rings, small interactive feedback */
+  --dur-normal: 0.25s; /* standard component transitions */
+  --dur-medium: 0.3s; /* card hover lifts, transform + easing */
+  --dur-slow: 0.4s; /* image zoom, gallery transitions */
+  --dur-entrance: 0.5s; /* scroll-triggered entrance animations */
   /* ── Font-size scale ── */
-  --fs-xs: 0.75rem;        /* フッター注記、小ラベル */
-  --fs-sm: 0.78rem;        /* UIコントロール、バッジ、日付 */
-  --fs-ui: 0.82rem;        /* ナビゲーション、メタ情報 */
-  --fs-body-sm: 0.88rem;   /* キャッチコピー、仕様表 */
-  --fs-body: 0.9rem;       /* 本文、カードテキスト */
-  --fs-body-lg: 0.95rem;   /* 記事本文、ロゴ */
-  --fs-heading: 1rem;      /* カード見出し、記事h3 */
+  --fs-xs: 0.75rem; /* フッター注記、小ラベル */
+  --fs-sm: 0.78rem; /* UIコントロール、バッジ、日付 */
+  --fs-ui: 0.82rem; /* ナビゲーション、メタ情報 */
+  --fs-body-sm: 0.88rem; /* キャッチコピー、仕様表 */
+  --fs-body: 0.9rem; /* 本文、カードテキスト */
+  --fs-body-lg: 0.95rem; /* 記事本文、ロゴ */
+  --fs-heading: 1rem; /* カード見出し、記事h3 */
   --fs-heading-lg: 1.1rem; /* 記事h2、キャラ名 */
   /* ── Touch target ── */
-  --touch-min: 44px;       /* WCAG 2.5.5 推奨最小タッチターゲット */
-  --font-display: "Inter", "Noto Sans JP", system-ui, sans-serif;
-  --font-body: "Noto Sans JP", "Inter", system-ui, sans-serif;
+  --touch-min: 44px; /* WCAG 2.5.5 推奨最小タッチターゲット */
+  --font-display: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+  --font-body: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
   /* ── Always-dark context colors (footer) ── */
   --footer-bg: #2a2a2a;
   --footer-text: rgba(255, 255, 255, 0.5);
@@ -115,7 +115,7 @@
   --z-sheet-scrim: 299;
   --z-sheet: 300;
   --z-toast: 400;
-  --z-age-gate: 9000;
+  --z-age-gate: 500;
   /* ── Additional shadows ── */
   --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.15);
   --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.14);
@@ -145,11 +145,11 @@
   --shadow-toast: 0 4px 16px rgba(0, 0, 0, 0.18);
   --shadow-age-gate: 0 4px 24px rgba(0, 0, 0, 0.08);
   /* ── Sale badge ── */
-  --color-sale-bg: rgba(230, 46, 46, 0.10);
+  --color-sale-bg: rgba(230, 46, 46, 0.1);
   /* ── Notice ── */
   --notice-bg: rgba(0, 104, 183, 0.04);
   /* ── Cien button shadows ── */
-  --shadow-cien: 0 4px 14px rgba(0, 0, 0, 0.30);
+  --shadow-cien: 0 4px 14px rgba(0, 0, 0, 0.3);
   --shadow-cien-hover: 0 6px 20px rgba(0, 0, 0, 0.45);
   /* ── Section link hover ── */
   --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.1);
@@ -167,7 +167,7 @@
  */
 
 /* ── Dark mode tokens ── */
-html[data-theme="dark"] {
+html[data-theme='dark'] {
   color-scheme: dark;
   --bg: #0d1117;
   --bg-2: #161b22;
@@ -177,40 +177,40 @@ html[data-theme="dark"] {
   --ink: #c9d1d9;
   --ink-dim: #8b949e;
   --ink-bright: #f0f6ff;
-  --stroke: rgba(255, 255, 255, 0.10);
+  --stroke: rgba(255, 255, 255, 0.1);
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   --shadow-hover: 0 6px 20px rgba(0, 0, 0, 0.55);
-  --shadow-cta-hover: 0 4px 14px rgba(249, 101, 50, 0.40);
-  --shadow-accent-hover: 0 4px 14px rgba(0, 104, 183, 0.30);
+  --shadow-cta-hover: 0 4px 14px rgba(249, 101, 50, 0.4);
+  --shadow-accent-hover: 0 4px 14px rgba(0, 104, 183, 0.3);
   --accent-alpha-05: rgba(0, 104, 183, 0.08);
-  --accent-alpha-06: rgba(0, 104, 183, 0.10);
+  --accent-alpha-06: rgba(0, 104, 183, 0.1);
   --accent-alpha-08: rgba(0, 104, 183, 0.14);
   --accent-alpha-25: rgba(0, 104, 183, 0.35);
-  --accent-alpha-30: rgba(0, 104, 183, 0.40);
-  --color-logo: #58A6FF;
-  --color-logo-hover: #79BBFF;
-  --color-logo-green: #A3E635;
-  --color-logo-pink: #F472B6;
+  --accent-alpha-30: rgba(0, 104, 183, 0.4);
+  --color-logo: #58a6ff;
+  --color-logo-hover: #79bbff;
+  --color-logo-green: #a3e635;
+  --color-logo-pink: #f472b6;
   --news-card-cover-empty-bg: #22272e;
   /* Store brand colors (brightened for dark bg contrast) */
-  --color-fanza:        #F04A6A;
-  --color-fanza-hover:  #F5607C;
-  --color-dlsite:       #4A72E8;
-  --color-dlsite-hover: #5B80F0;
-  --shadow-fanza-hover:  0 6px 20px rgba(240, 74, 106, 0.45);
-  --shadow-fanza-active: 0 2px 6px  rgba(240, 74, 106, 0.25);
-  --shadow-dlsite-hover:  0 6px 20px rgba(74, 114, 232, 0.45);
-  --shadow-dlsite-active: 0 2px 6px  rgba(74, 114, 232, 0.25);
-  --pulse-fanza:  rgba(240, 74, 106, 0.55);
+  --color-fanza: #f04a6a;
+  --color-fanza-hover: #f5607c;
+  --color-dlsite: #4a72e8;
+  --color-dlsite-hover: #5b80f0;
+  --shadow-fanza-hover: 0 6px 20px rgba(240, 74, 106, 0.45);
+  --shadow-fanza-active: 0 2px 6px rgba(240, 74, 106, 0.25);
+  --shadow-dlsite-hover: 0 6px 20px rgba(74, 114, 232, 0.45);
+  --shadow-dlsite-active: 0 2px 6px rgba(74, 114, 232, 0.25);
+  --pulse-fanza: rgba(240, 74, 106, 0.55);
   --pulse-dlsite: rgba(74, 114, 232, 0.55);
-  --color-fanza-trial: #F06A82;
-  --color-fanza-trial-hover: #F5849A;
+  --color-fanza-trial: #f06a82;
+  --color-fanza-trial-hover: #f5849a;
   --color-fanza-trial-bg: rgba(240, 106, 130, 0.08);
-  --color-dlsite-trial: #6B8EF0;
-  --color-dlsite-trial-hover: #85A4F5;
+  --color-dlsite-trial: #6b8ef0;
+  --color-dlsite-trial-hover: #85a4f5;
   --color-dlsite-trial-bg: rgba(107, 142, 240, 0.08);
   --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.45);
-  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.40);
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.4);
   --overlay-scrim: rgba(0, 0, 0, 0.92);
   --shadow-lightbox: 0 8px 40px rgba(0, 0, 0, 0.7);
   --shadow-fab: 0 4px 20px rgba(0, 0, 0, 0.55);
@@ -222,6 +222,6 @@ html[data-theme="dark"] {
   --color-sale-bg: rgba(230, 46, 46, 0.14);
   --notice-bg: rgba(0, 104, 183, 0.08);
   --shadow-cien: 0 4px 14px rgba(255, 255, 255, 0.12);
-  --shadow-cien-hover: 0 6px 20px rgba(255, 255, 255, 0.20);
+  --shadow-cien-hover: 0 6px 20px rgba(255, 255, 255, 0.2);
   --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.15);
 }

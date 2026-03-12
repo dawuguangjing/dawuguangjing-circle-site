@@ -5,7 +5,8 @@ export const SITE_NAME = 'ダウグアングジング公式';
 export const CIRCLE_NAME = 'ダウグアングジング';
 
 /** サイトの説明文 */
-export const SITE_DESCRIPTION = 'ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。作品・告知・外部リンクをまとめたハブ。';
+export const SITE_DESCRIPTION =
+  'ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。作品・告知・外部リンクをまとめたハブ。';
 
 /** トップページに表示するニュース件数 */
 export const HOME_NEWS_LIMIT = 5;
@@ -16,13 +17,13 @@ export const HOME_GALLERY_LIMIT = 4;
 /** 外部リンク */
 export const EXTERNAL_LINKS = {
   cien: 'https://ci-en.dlsite.com/creator/35269',
-  x:    'https://x.com/dawuguangjing',
+  x: 'https://x.com/dawuguangjing'
 } as const;
 
-/** スクロールアニメーション: 最初の要素の遅延（秒） */
+/** スクロールアニメーション: 最初の要素の遅延 (s) */
 export const ANIM_BASE_DELAY = 0.08;
 
-/** スクロールアニメーション: 要素ごとのスタガー間隔（秒） */
+/** スクロールアニメーション: 要素ごとのスタガー間隔 (s) */
 export const ANIM_STAGGER = 0.07;
 
 /** スクロールアニメーション: CSS --anim-delay の値を計算する
@@ -32,7 +33,7 @@ export function animDelay(index: number, extraDelay = 0): string {
   return `${ANIM_BASE_DELAY + extraDelay + index * ANIM_STAGGER}s`;
 }
 
-/** フィルター/ソート再適用時のスタガー間隔（秒）
+/** フィルター/ソート再適用時のスタガー間隔 (s)
  *  初期ロードの ANIM_STAGGER より短く、リフロー後の軽快な印象を優先 */
 export const FILTER_STAGGER = 0.05;
 
@@ -46,7 +47,7 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'shinsa2-2026v1',
   message: '🎉従順審査2 制作開始！続報は開発ログ/Ci-enで配信中',
-  href: 'https://ci-en.dlsite.com/creator/35269',
+  href: 'https://ci-en.dlsite.com/creator/35269'
 };
 
 /** ダークモードの localStorage キー */
@@ -155,15 +156,15 @@ export const ANIM_INTERSECTION_THRESHOLD = 0.12;
 /** カード・ヒーロー画像のサイズ定義 */
 export const IMAGE_DIMENSIONS = {
   galleryCard: { width: 400, height: 300 },
-  newsCard:    { width: 480, height: 270 },
-  workCard:    { width: 160, height: 160 },
-  heroBanner:  { width: 480, height: 320 },
-  dualHero:    { width: 480, height: 360 },
+  newsCard: { width: 480, height: 270 },
+  workCard: { width: 160, height: 160 },
+  heroBanner: { width: 480, height: 320 },
+  dualHero: { width: 480, height: 360 }
 } as const;
 
 /** レスポンシブ画像の sizes 属性 */
 export const IMAGE_SIZES = {
   galleryCard: '(max-width: 768px) calc(50vw - 24px), 220px',
-  newsCard:    '(max-width: 768px) calc(100vw - 32px), (max-width: 960px) calc(50vw - 24px), 320px',
-  workCard:    '(max-width: 768px) 120px, 160px',
+  newsCard: '(max-width: 768px) calc(100vw - 32px), (max-width: 960px) calc(50vw - 24px), 320px',
+  workCard: '(max-width: 768px) 120px, 160px'
 } as const;
