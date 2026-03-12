@@ -215,7 +215,8 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 4px 10px;
+    padding: 8px 14px;
+    min-height: 44px;
     background: transparent;
     border: 1px solid var(--stroke);
     border-radius: 12px;
@@ -343,7 +344,10 @@
   font-size: 0.72rem;
   font-weight: 600;
   line-height: 1;
-  padding: 6px 10px;
+  padding: 8px 14px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
   transition: border-color var(--dur-quick) ease, color var(--dur-quick) ease, background var(--dur-quick) ease;
 }

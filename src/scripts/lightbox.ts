@@ -102,7 +102,7 @@ function initLightbox() {
       lbHint.classList.remove('is-visible');
       try { localStorage.setItem(HINT_KEY, '1'); } catch {}
     };
-    lbHint.addEventListener('click', dismiss, { once: true });
+    lbHint.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); }, { once: true });
     setTimeout(dismiss, HINT_DISMISS_MS);
   }
 

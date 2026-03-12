@@ -400,5 +400,5 @@ html.theme-transitioning *::after {
 #gallery-grid,
 #char-list-grid,
 #news-grid {
-  scroll-margin-top: 72px;
+  scroll-margin-top: 104px;
 }

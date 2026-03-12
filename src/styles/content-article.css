@@ -76,7 +76,7 @@
   border: 1px solid var(--stroke);
   border-radius: var(--radius-md);
   padding: 16px 20px;
-  scroll-margin-top: 68px;
+  scroll-margin-top: 104px;
 }
 .toc-heading {
   font-size: 0.78rem;
@@ -178,7 +178,7 @@
   margin: 28px 0 10px;
   padding-bottom: 6px;
   border-bottom: 2px solid var(--accent);
-  scroll-margin-top: 68px;
+  scroll-margin-top: 104px;
 }
 
 .article-body h3 {
@@ -186,7 +186,7 @@
   font-weight: 600;
   color: var(--ink-bright);
   margin: 20px 0 8px;
-  scroll-margin-top: 68px;
+  scroll-margin-top: 104px;
 }
 
 .article-body strong {
@@ -321,8 +321,9 @@
     grid-template-columns: 1fr;
   }
 
-  /* モバイルではサイドバーを通常フローに戻す（sticky が読み中に邪魔になるため） */
+  /* モバイルではサイドバーを通常フローに戻し、コンテンツより上に表示（購入CTAへの導線確保） */
   .store-sidebar {
     position: static;
+    order: -1;
   }
 }
