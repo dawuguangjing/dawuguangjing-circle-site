@@ -142,6 +142,9 @@ export const LIGHTBOX_DOUBLE_TAP_ZOOM = 2;
 /** マウスホイールズーム: 1ステップあたりの倍率変化 */
 export const LIGHTBOX_WHEEL_ZOOM_STEP = 0.25;
 
+/** ライトボックス: パン操作の移動閾値（px）— これ未満はタップ判定 */
+export const LIGHTBOX_PAN_THRESHOLD_PX = 5;
+
 // ── ストレージキー ──────────────────────────────────────────────────────────
 
 /** ライトボックス: 操作ヒント表示済みフラグの localStorage キー */

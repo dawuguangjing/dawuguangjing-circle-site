@@ -59,6 +59,15 @@
   transform: scale(1);
 }
 
+/* ズーム中: ドラッグ可能カーソル & GPU ヒント */
+.lightbox-img.is-zoomed {
+  cursor: grab;
+  will-change: transform;
+}
+.lightbox-img.is-zoomed:active {
+  cursor: grabbing;
+}
+
 /* ── Lightbox Spinner ── */
 .lightbox-spinner {
   position: absolute;
