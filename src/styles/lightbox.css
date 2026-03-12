@@ -59,6 +59,33 @@
   transform: scale(1);
 }
 
+/* ── Lightbox Spinner ── */
+.lightbox-spinner {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: lightbox-spin 0.7s linear infinite;
+  z-index: 0;
+  pointer-events: none;
+}
+.lightbox-spinner.is-hidden {
+  display: none;
+}
+@keyframes lightbox-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lightbox-spinner {
+    animation: none;
+    border-top-color: rgba(255, 255, 255, 0.6);
+  }
+}
+
 /* 動画はライトボックス開封時まで非表示（JS で制御） */
 .lightbox-video {
   display: none;

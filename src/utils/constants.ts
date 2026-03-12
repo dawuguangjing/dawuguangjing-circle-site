@@ -130,6 +130,18 @@ export const LIGHTBOX_ZOOM_RESET_THRESHOLD = 1.1;
 /** タッチスワイプ: 有効判定の最小距離（px） */
 export const LIGHTBOX_SWIPE_THRESHOLD_PX = 50;
 
+/** ライトボックス: フェードアウト完了待ちフォールバック（ms） */
+export const LIGHTBOX_FADE_OUT_MS = 350;
+
+/** ダブルタップ: 有効判定の最大間隔（ms） */
+export const LIGHTBOX_DOUBLE_TAP_MS = 300;
+
+/** ダブルタップ: トグル先のズーム倍率 */
+export const LIGHTBOX_DOUBLE_TAP_ZOOM = 2;
+
+/** マウスホイールズーム: 1ステップあたりの倍率変化 */
+export const LIGHTBOX_WHEEL_ZOOM_STEP = 0.25;
+
 // ── ストレージキー ──────────────────────────────────────────────────────────
 
 /** ライトボックス: 操作ヒント表示済みフラグの localStorage キー */

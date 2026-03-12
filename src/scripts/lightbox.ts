@@ -4,7 +4,7 @@
 
 import { lockScroll, unlockScroll } from './scroll-lock';
 import { safeGet, safeSet } from './safe-storage';
-import { smoothScrollBehavior } from './motion';
+import { prefersReducedMotion, smoothScrollBehavior } from './motion';
 import {
   HINT_DISMISS_MS,
   LIGHTBOX_HINT_KEY,
@@ -13,7 +13,11 @@ import {
   LIGHTBOX_MAX_ZOOM,
   LIGHTBOX_MIN_ZOOM,
   LIGHTBOX_ZOOM_RESET_THRESHOLD,
-  LIGHTBOX_SWIPE_THRESHOLD_PX
+  LIGHTBOX_SWIPE_THRESHOLD_PX,
+  LIGHTBOX_FADE_OUT_MS,
+  LIGHTBOX_DOUBLE_TAP_MS,
+  LIGHTBOX_DOUBLE_TAP_ZOOM,
+  LIGHTBOX_WHEEL_ZOOM_STEP
 } from '../utils/constants';
 
 // #1: AbortController で VT 遷移時に前回のリスナーを一括解除
@@ -37,6 +41,7 @@ function initLightbox() {
   const lbNext = lightbox.querySelector<HTMLButtonElement>('.lightbox-next')!;
   const lbCounter = lightbox.querySelector<HTMLElement>('.lightbox-counter')!;
   const lbThumbs = lightbox.querySelector<HTMLElement>('.lightbox-thumbs')!;
+  const lbSpinner = lightbox.querySelector<HTMLElement>('.lightbox-spinner')!;
 
   const itemEls = Array.from(document.querySelectorAll<HTMLElement>(itemSelector));
   const items = itemEls.map((el) => ({
@@ -52,6 +57,8 @@ function initLightbox() {
   // #5: タイマー参照をクロージャ全体で保持
   let _thumbScrollTimer: ReturnType<typeof setTimeout> | null = null;
   let _hintTimer: ReturnType<typeof setTimeout> | null = null;
+  // [B] フェードアウト: 閉じ中フラグ
+  let _isClosing = false;
 
   // #6: reduced-motion 対応 — デフォルト引数で motion 設定を参照
   function scrollActiveThumb(behavior?: ScrollBehavior) {
@@ -70,6 +77,18 @@ function initLightbox() {
     );
   }
 
+  // [A] 隣接画像プリロード
+  function preloadAdjacent() {
+    for (const offset of [-1, 1]) {
+      const idx = (current + offset + items.length) % items.length;
+      const item = items[idx];
+      if (item.type === 'image') {
+        const img = new Image();
+        img.src = item.src;
+      }
+    }
+  }
+
   function showMedia(index: number, scrollBehavior?: ScrollBehavior, skipScroll = false) {
     current = (index + items.length) % items.length;
     const { src, type, alt } = items[current];
@@ -77,6 +96,9 @@ function initLightbox() {
     // ピンチズームリセット
     lbImg.style.transform = '';
     _pinchScale = 1;
+
+    // [E] スピナー表示
+    lbSpinner.classList.remove('is-hidden');
 
     if (type === 'video') {
       lbImg.style.display = 'none';
@@ -86,10 +108,12 @@ function initLightbox() {
       // #4: oncanplay プロパティで前のハンドラを自動上書き
       lbVideo.oncanplay = () => {
         lbVideo.style.opacity = '1';
+        lbSpinner.classList.add('is-hidden');
       };
       // #3: autoplay 拒否時もコントロール付きで表示する
       lbVideo.play().catch(() => {
         lbVideo.style.opacity = '1';
+        lbSpinner.classList.add('is-hidden');
       });
     } else {
       lbVideo.pause();
@@ -101,6 +125,7 @@ function initLightbox() {
       // #4: onload プロパティで前のハンドラを自動上書き（レース条件解消）
       lbImg.onload = () => {
         lbImg.style.opacity = '1';
+        lbSpinner.classList.add('is-hidden');
       };
       lbImg.src = src;
       lbImg.alt = alt;
@@ -116,6 +141,9 @@ function initLightbox() {
     });
     // アクティブサムネイルを中央にスクロール（skipScroll=true のときは呼ばない）
     if (!skipScroll) scrollActiveThumb(scrollBehavior);
+
+    // [A] 隣接画像プリロード
+    preloadAdjacent();
   }
 
   // ── 操作ヒント（初回のみ） ──
@@ -147,8 +175,8 @@ function initLightbox() {
   }
 
   function openLightbox(index: number) {
-    // #11(防御): 二重オープン防止
-    if (lightbox.open) return;
+    // #11(防御): 二重オープン防止 / [B] フェードアウト中も抑止
+    if (lightbox.open || _isClosing) return;
     // #10: 上位オーバーレイが開いている場合は抑止
     if (document.querySelector('dialog[open]:not(#lightbox), .sheet-overlay.is-active')) return;
     triggerEl = document.activeElement as HTMLElement;
@@ -161,8 +189,23 @@ function initLightbox() {
     showHint();
   }
 
+  // [B] フェードアウト完了後の実際のクリーンアップ
+  function finishClose() {
+    if (!_isClosing) return; // 二重呼び出し防止
+    _isClosing = false;
+    lbVideo.pause();
+    lbVideo.src = '';
+    lbVideo.oncanplay = null;
+    lbImg.onload = null;
+    lbSpinner.classList.add('is-hidden');
+    lightbox.close();
+    unlockScroll('lightbox');
+    if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
+  }
+
   function closeLightbox() {
-    if (!lightbox.open) return;
+    if (!lightbox.open || _isClosing) return;
+    _isClosing = true;
     // #5: 全タイマーをクリア
     if (_programScrollTimer) {
       clearTimeout(_programScrollTimer);
@@ -177,16 +220,26 @@ function initLightbox() {
       _hintTimer = null;
     }
     _isProgramScroll = false;
-    // #13: ヒントのクラスをリセット（再オープン時のフェードイン遷移を保証）
+    // #13: ヒントのクラスをリセット
     lbHint?.classList.remove('is-visible');
-    lbVideo.pause();
-    lbVideo.src = '';
-    lbVideo.oncanplay = null;
-    lbImg.onload = null;
+
+    // [B] フェードアウト開始
     lightbox.classList.remove('is-active');
-    lightbox.close();
-    unlockScroll('lightbox');
-    if (triggerEl && typeof triggerEl.focus === 'function') triggerEl.focus();
+
+    // reduced-motion 時は即座に閉じる
+    if (prefersReducedMotion()) {
+      finishClose();
+      return;
+    }
+
+    // transitionend を待ってから close()（フォールバックタイマー付き）
+    const fallback = setTimeout(finishClose, LIGHTBOX_FADE_OUT_MS);
+    lightbox.addEventListener('transitionend', function onEnd(e: TransitionEvent) {
+      if (e.target !== lightbox) return;
+      clearTimeout(fallback);
+      lightbox.removeEventListener('transitionend', onEnd);
+      finishClose();
+    });
   }
 
   // アイテムへのクリック・キーボードイベント
@@ -389,6 +442,52 @@ function initLightbox() {
       }
     },
     { passive: true }
+  );
+
+  // ── [C] ダブルタップズーム（モバイル） ──
+  let _lastTapTime = 0;
+  lbMediaEl.addEventListener(
+    'touchend',
+    function (e) {
+      // ピンチ中・動画表示中はスキップ
+      if (e.touches.length > 0 || lbImg.style.display === 'none') return;
+      const now = Date.now();
+      if (now - _lastTapTime < LIGHTBOX_DOUBLE_TAP_MS) {
+        e.preventDefault();
+        if (_pinchScale === 1) {
+          _pinchScale = LIGHTBOX_DOUBLE_TAP_ZOOM;
+          lbImg.style.transform = `scale(${_pinchScale})`;
+        } else {
+          _pinchScale = 1;
+          lbImg.style.transform = '';
+        }
+        _lastTapTime = 0; // 3連タップ防止
+      } else {
+        _lastTapTime = now;
+      }
+    },
+    { passive: false }
+  );
+
+  // ── [D] マウスホイールズーム（デスクトップ） ──
+  lbMediaEl.addEventListener(
+    'wheel',
+    function (e) {
+      if (lbImg.style.display === 'none') return; // 動画表示中はスキップ
+      e.preventDefault();
+      const direction = e.deltaY > 0 ? -1 : 1;
+      _pinchScale = Math.min(
+        LIGHTBOX_MAX_ZOOM,
+        Math.max(LIGHTBOX_MIN_ZOOM, _pinchScale + direction * LIGHTBOX_WHEEL_ZOOM_STEP)
+      );
+      if (_pinchScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
+        _pinchScale = 1;
+        lbImg.style.transform = '';
+      } else {
+        lbImg.style.transform = `scale(${_pinchScale})`;
+      }
+    },
+    { passive: false }
   );
 
   // ── タッチスワイプ対応（モバイル） ──
