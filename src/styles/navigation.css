@@ -358,6 +358,7 @@ a.announcement-bar-text:hover {
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
+  min-height: 44px;
   border: 1px solid var(--footer-btn-border);
   border-radius: var(--radius-pill);
   color: var(--footer-btn-color);
