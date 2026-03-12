@@ -129,6 +129,22 @@ export const LIGHTBOX_ZOOM_RESET_THRESHOLD = 1.1;
 /** タッチスワイプ: 有効判定の最小距離（px） */
 export const LIGHTBOX_SWIPE_THRESHOLD_PX = 50;
 
+// ── ストレージキー ──────────────────────────────────────────────────────────
+
+/** ライトボックス: 操作ヒント表示済みフラグの localStorage キー */
+export const LIGHTBOX_HINT_KEY = 'lightbox-hint-shown';
+
+/** コンテキストナビ: 一覧URLの sessionStorage キー接頭辞 */
+export const LIST_CONTEXT_KEY_PREFIX = 'list-context';
+
+/** コンテキストナビ: 復帰ハイライト対象スラッグの sessionStorage キー */
+export const RETURN_HIGHLIGHT_SLUG_KEY = 'return-highlight-slug';
+
+// ── UI タイミング（インラインスクリプト用） ──────────────────────────────────
+
+/** EA入力バリデーション: シェイクアニメーション時間（ms） */
+export const EA_INPUT_SHAKE_MS = 500;
+
 // ── スクロールアニメーション ──────────────────────────────────────────────
 
 /** IntersectionObserver の交差閾値 */

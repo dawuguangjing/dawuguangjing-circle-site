@@ -1,15 +1,8 @@
 ---
-import type { StoreName } from '../utils/types';
-
-interface Link {
-  label: string;
-  href: string;
-  store: StoreName;
-  track?: string;
-}
+import type { StoreLink } from '../utils/types';
 
 interface Props {
-  links: Link[];
+  links: StoreLink[];
   trial?: boolean;
   location?: string;
 }

@@ -44,7 +44,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
 .faq-item .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s var(--easing);
+  transition: grid-template-rows var(--dur-medium) var(--easing);
 }
 
 .faq-item[open] .faq-answer {
@@ -75,7 +75,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
 .faq-item.is-closing .faq-answer-inner > * {
   opacity: 0;
   transform: translateY(-4px);
-  transition: opacity 0.1s ease-in, transform 0.1s ease-in;
+  transition: opacity var(--dur-fast) ease-in, transform var(--dur-fast) ease-in;
 }
 
 @media (prefers-reduced-motion: reduce) {

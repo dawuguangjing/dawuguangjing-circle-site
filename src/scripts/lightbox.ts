@@ -5,6 +5,7 @@
 import { lockScroll, unlockScroll } from './scroll-lock';
 import {
   HINT_DISMISS_MS,
+  LIGHTBOX_HINT_KEY,
   LIGHTBOX_SCROLL_SYNC_MS,
   LIGHTBOX_SCROLL_DEBOUNCE_MS,
   LIGHTBOX_MAX_ZOOM,
@@ -91,16 +92,15 @@ function initLightbox() {
   }
 
   // ── 操作ヒント（初回のみ） ──
-  const HINT_KEY = 'lightbox-hint-shown';
   const lbHint = lightbox.querySelector<HTMLElement>('#lightbox-hint');
 
   function showHint() {
     if (!lbHint) return;
-    try { if (localStorage.getItem(HINT_KEY)) return; } catch {}
+    try { if (localStorage.getItem(LIGHTBOX_HINT_KEY)) return; } catch {}
     lbHint.classList.add('is-visible');
     const dismiss = () => {
       lbHint.classList.remove('is-visible');
-      try { localStorage.setItem(HINT_KEY, '1'); } catch {}
+      try { localStorage.setItem(LIGHTBOX_HINT_KEY, '1'); } catch {}
     };
     lbHint.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); }, { once: true });
     setTimeout(dismiss, HINT_DISMISS_MS);

@@ -1,4 +1,6 @@
 ---
+import { EA_INPUT_SHAKE_MS } from '../utils/constants';
+
 interface Props {
   password: string;
   downloadUrl: string;
@@ -42,7 +44,7 @@ const encodedPw = btoa(encodeURIComponent(password));
   </a>
 </div>
 
-<script define:vars={{ encodedPw, downloadUrl }}>
+<script define:vars={{ encodedPw, downloadUrl, EA_INPUT_SHAKE_MS }}>
   (function () {
     const wrapper = document.currentScript
       ? document.currentScript.previousElementSibling
@@ -79,7 +81,7 @@ const encodedPw = btoa(encodeURIComponent(password));
       } else {
         error.hidden = false;
         input.classList.add('ea-input--shake');
-        setTimeout(() => input.classList.remove('ea-input--shake'), 500);
+        setTimeout(() => input.classList.remove('ea-input--shake'), EA_INPUT_SHAKE_MS);
         input.select();
       }
     });

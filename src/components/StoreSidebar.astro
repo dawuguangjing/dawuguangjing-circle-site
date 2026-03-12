@@ -13,6 +13,7 @@
 import StoreButtonGroup from './StoreButtonGroup.astro';
 import ShareBar from './ShareBar.astro';
 import { withBase } from '../utils/withBase';
+import type { StoreLink } from '../utils/types';
 
 interface CharacterRef {
   slug: string;
@@ -22,8 +23,8 @@ interface CharacterRef {
 
 interface Props {
   isR18: boolean;
-  trialLinks?: { label: string; href: string; store: string }[];
-  purchaseLinks?: { label: string; href: string; store: string }[];
+  trialLinks?: StoreLink[];
+  purchaseLinks?: StoreLink[];
   characters?: CharacterRef[];
   location: string;
   shareUrl?: string;
