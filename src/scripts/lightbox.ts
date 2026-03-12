@@ -4,6 +4,7 @@
 
 import { lockScroll, unlockScroll } from './scroll-lock';
 import { safeGet, safeSet } from './safe-storage';
+import { smoothScrollBehavior } from './motion';
 import {
   HINT_DISMISS_MS,
   LIGHTBOX_HINT_KEY,
@@ -15,14 +16,18 @@ import {
   LIGHTBOX_SWIPE_THRESHOLD_PX
 } from '../utils/constants';
 
-const _initedElements = new WeakSet<HTMLElement>();
+// #1: AbortController で VT 遷移時に前回のリスナーを一括解除
+let _ac: AbortController | null = null;
 
 function initLightbox() {
-  const lightbox = document.getElementById('lightbox') as HTMLDialogElement | null;
-  if (!lightbox) return;
-  // 同一ページ内での二重初期化を防ぐ
-  if (_initedElements.has(lightbox)) return;
-  _initedElements.add(lightbox);
+  const el = document.getElementById('lightbox');
+  if (!el) return;
+  const lightbox = el as HTMLDialogElement;
+
+  // 前回の初期化で登録した document リスナーを一括解除
+  _ac?.abort();
+  _ac = new AbortController();
+  const { signal } = _ac;
 
   const itemSelector = lightbox.dataset.itemSelector!;
   const lbImg = lightbox.querySelector<HTMLImageElement>('.lightbox-img')!;
@@ -44,23 +49,28 @@ function initLightbox() {
   // プログラム側スクロール中はサムネイル scroll イベントを無視するフラグ
   let _isProgramScroll = false;
   let _programScrollTimer: ReturnType<typeof setTimeout> | null = null;
+  // #5: タイマー参照をクロージャ全体で保持
+  let _thumbScrollTimer: ReturnType<typeof setTimeout> | null = null;
+  let _hintTimer: ReturnType<typeof setTimeout> | null = null;
 
-  function scrollActiveThumb(behavior: ScrollBehavior = 'smooth') {
+  // #6: reduced-motion 対応 — デフォルト引数で motion 設定を参照
+  function scrollActiveThumb(behavior?: ScrollBehavior) {
+    const b = behavior ?? smoothScrollBehavior();
     _isProgramScroll = true;
     if (_programScrollTimer) clearTimeout(_programScrollTimer);
     lbThumbs
       .querySelector<HTMLElement>('.lightbox-thumb.is-active')
-      ?.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
+      ?.scrollIntoView({ behavior: b, block: 'nearest', inline: 'center' });
     // smooth アニメーション終了後にフラグをリセット
     _programScrollTimer = setTimeout(
       () => {
         _isProgramScroll = false;
       },
-      behavior === 'instant' ? 0 : LIGHTBOX_SCROLL_SYNC_MS
+      b === 'instant' || b === 'auto' ? 0 : LIGHTBOX_SCROLL_SYNC_MS
     );
   }
 
-  function showMedia(index: number, scrollBehavior: ScrollBehavior = 'smooth', skipScroll = false) {
+  function showMedia(index: number, scrollBehavior?: ScrollBehavior, skipScroll = false) {
     current = (index + items.length) % items.length;
     const { src, type, alt } = items[current];
 
@@ -73,29 +83,27 @@ function initLightbox() {
       lbVideo.style.display = 'block';
       lbVideo.style.opacity = '0';
       lbVideo.src = src;
-      lbVideo.play().catch(() => {});
-      lbVideo.addEventListener(
-        'canplay',
-        () => {
-          lbVideo.style.opacity = '1';
-        },
-        { once: true }
-      );
+      // #4: oncanplay プロパティで前のハンドラを自動上書き
+      lbVideo.oncanplay = () => {
+        lbVideo.style.opacity = '1';
+      };
+      // #3: autoplay 拒否時もコントロール付きで表示する
+      lbVideo.play().catch(() => {
+        lbVideo.style.opacity = '1';
+      });
     } else {
       lbVideo.pause();
       lbVideo.src = '';
+      lbVideo.oncanplay = null;
       lbVideo.style.display = 'none';
       lbImg.style.display = '';
       lbImg.style.opacity = '0';
+      // #4: onload プロパティで前のハンドラを自動上書き（レース条件解消）
+      lbImg.onload = () => {
+        lbImg.style.opacity = '1';
+      };
       lbImg.src = src;
       lbImg.alt = alt;
-      lbImg.addEventListener(
-        'load',
-        () => {
-          lbImg.style.opacity = '1';
-        },
-        { once: true }
-      );
     }
 
     lbPrev.classList.toggle('is-hidden', items.length <= 1);
@@ -120,19 +128,27 @@ function initLightbox() {
     const dismiss = () => {
       lbHint.classList.remove('is-visible');
       safeSet(LIGHTBOX_HINT_KEY, '1');
+      _hintTimer = null;
     };
     lbHint.addEventListener(
       'click',
       (e) => {
         e.stopPropagation();
+        if (_hintTimer) {
+          clearTimeout(_hintTimer);
+          _hintTimer = null;
+        }
         dismiss();
       },
       { once: true }
     );
-    setTimeout(dismiss, HINT_DISMISS_MS);
+    // #5: タイマー参照を保持
+    _hintTimer = setTimeout(dismiss, HINT_DISMISS_MS);
   }
 
   function openLightbox(index: number) {
+    // #11(防御): 二重オープン防止
+    if (lightbox.open) return;
     triggerEl = document.activeElement as HTMLElement;
     showMedia(index, 'instant');
     lightbox.showModal();
@@ -145,8 +161,24 @@ function initLightbox() {
 
   function closeLightbox() {
     if (!lightbox.open) return;
+    // #5: 全タイマーをクリア
+    if (_programScrollTimer) {
+      clearTimeout(_programScrollTimer);
+      _programScrollTimer = null;
+    }
+    if (_thumbScrollTimer) {
+      clearTimeout(_thumbScrollTimer);
+      _thumbScrollTimer = null;
+    }
+    if (_hintTimer) {
+      clearTimeout(_hintTimer);
+      _hintTimer = null;
+    }
+    _isProgramScroll = false;
     lbVideo.pause();
     lbVideo.src = '';
+    lbVideo.oncanplay = null;
+    lbImg.onload = null;
     lightbox.classList.remove('is-active');
     lightbox.close();
     unlockScroll('lightbox');
@@ -188,8 +220,9 @@ function initLightbox() {
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();
   });
-  document.addEventListener('ui:close-overlays', closeLightbox);
-  document.addEventListener('astro:before-preparation', closeLightbox, { once: true });
+  // #1: signal 付きで document リスナーを登録（VT 遷移時に自動解除）
+  document.addEventListener('ui:close-overlays', closeLightbox, { signal });
+  document.addEventListener('astro:before-preparation', closeLightbox, { once: true, signal });
 
   // native dialog の Escape を制御（クリーンアップ処理を通す）
   lightbox.addEventListener('cancel', (e) => {
@@ -197,8 +230,28 @@ function initLightbox() {
     closeLightbox();
   });
 
-  document.addEventListener('keydown', (e: KeyboardEvent) => {
+  // #2: フォーカストラップ + 既存キーボード操作を統合した keydown ハンドラ
+  function handleKeydown(e: KeyboardEvent) {
     if (!lightbox.open) return;
+
+    // フォーカストラップ: Tab / Shift+Tab で dialog 内をループ
+    if (e.key === 'Tab') {
+      const focusable = lightbox.querySelectorAll<HTMLElement>(
+        'button:not([disabled]):not(.is-hidden), video[controls]'
+      );
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+      return;
+    }
+
     if (e.key === 'ArrowLeft') showMedia(current - 1);
     if (e.key === 'ArrowRight') showMedia(current + 1);
     // f / F: フルスクリーン切り替え
@@ -215,7 +268,10 @@ function initLightbox() {
       lbImg.style.transform = '';
       _pinchScale = 1;
     }
-  });
+  }
+
+  // #1: signal 付きで keydown を登録
+  document.addEventListener('keydown', handleKeydown, { signal });
 
   // ── サムネイルストリップ生成 ──
   if (items.length > 1) {
@@ -244,7 +300,6 @@ function initLightbox() {
 
     // ── サムネイル横スクロールでメイン画像を自動切り替え ──
     // スクロール停止時に中央のサムネイルを検出し、対応するメイン画像を表示する
-    let _thumbScrollTimer: ReturnType<typeof setTimeout> | null = null;
 
     function syncFromThumbScroll() {
       if (_isProgramScroll) return; // プログラム側スクロールは無視
@@ -260,7 +315,7 @@ function initLightbox() {
         }
       });
       // 画像のみ更新。プログラム側スクロールは起こさない（モバイルの引っかかりを防ぐ）
-      if (closestIndex !== current) showMedia(closestIndex, 'smooth', true);
+      if (closestIndex !== current) showMedia(closestIndex, undefined, true);
     }
 
     // scrollend: スナップ完了後に一度だけ発火（モダンブラウザ）
@@ -279,6 +334,8 @@ function initLightbox() {
   // ── ピンチズーム対応（モバイル） ──
   let _pinchScale = 1;
   let _pinchStartDist = 0;
+  // #7: touchstart 時点のスケールを保存し、CSS パースを排除
+  let _pinchBaseScale = 1;
   const lbMediaEl = lightbox.querySelector<HTMLElement>('.lightbox-media')!;
 
   lbMediaEl.addEventListener(
@@ -289,6 +346,8 @@ function initLightbox() {
           e.touches[1].clientX - e.touches[0].clientX,
           e.touches[1].clientY - e.touches[0].clientY
         );
+        // #7: 現在のスケールを基準として保存
+        _pinchBaseScale = _pinchScale;
       }
     },
     { passive: true }
@@ -303,11 +362,12 @@ function initLightbox() {
         e.touches[1].clientX - e.touches[0].clientX,
         e.touches[1].clientY - e.touches[0].clientY
       );
-      const scale = Math.min(
+      // #7: _pinchBaseScale を基準にスケール計算し、_pinchScale を直接更新
+      _pinchScale = Math.min(
         LIGHTBOX_MAX_ZOOM,
-        Math.max(LIGHTBOX_MIN_ZOOM, (_pinchScale * dist) / _pinchStartDist)
+        Math.max(LIGHTBOX_MIN_ZOOM, (_pinchBaseScale * dist) / _pinchStartDist)
       );
-      lbImg.style.transform = `scale(${scale})`;
+      lbImg.style.transform = `scale(${_pinchScale})`;
     },
     { passive: false }
   );
@@ -316,8 +376,7 @@ function initLightbox() {
     'touchend',
     function (e) {
       if (e.touches.length < 2) {
-        const m = lbImg.style.transform.match(/scale\(([\d.]+)\)/);
-        _pinchScale = m ? parseFloat(m[1]) : 1;
+        // #7: CSS パース不要 — _pinchScale が常に正しい値を持つ
         if (_pinchScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
           _pinchScale = 1;
           lbImg.style.transform = '';
