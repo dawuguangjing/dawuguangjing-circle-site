@@ -96,7 +96,12 @@
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  padding: 2px 4px;
+  padding: 10px 8px;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   opacity: 0.6;
   transition: opacity var(--dur-fast) ease;
 }
@@ -122,6 +127,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  padding: 10px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 .char-pagination-link:hover { opacity: 0.75; }
 

@@ -238,6 +238,10 @@
   text-overflow: ellipsis;
   max-width: 46%;
   transition: color var(--dur-quick) ease;
+  padding: 8px 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .work-top-nav-link:hover { color: var(--accent); }

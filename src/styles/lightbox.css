@@ -55,8 +55,8 @@
   border: none;
   color: #fff;
   font-size: 1.5rem;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -98,8 +98,8 @@
   flex-shrink: 0;
   touch-action: manipulation;
 }
-.lightbox-prev { left: 20px; }
-.lightbox-next { right: 20px; }
+.lightbox-prev { left: max(20px, env(safe-area-inset-left, 20px)); }
+.lightbox-next { right: max(20px, env(safe-area-inset-right, 20px)); }
 .lightbox-prev:hover,
 .lightbox-next:hover {
   background: var(--lightbox-nav-bg-hover);
@@ -213,8 +213,8 @@
     width: 48px;
     height: 48px;
   }
-  .lightbox-prev { left: 12px; }
-  .lightbox-next { right: 12px; }
+  .lightbox-prev { left: max(12px, env(safe-area-inset-left, 12px)); }
+  .lightbox-next { right: max(12px, env(safe-area-inset-right, 12px)); }
 }
 @media (max-width: 480px) {
   .lightbox-prev,
@@ -222,6 +222,6 @@
     width: 44px;
     height: 44px;
   }
-  .lightbox-prev { left: 8px; }
-  .lightbox-next { right: 8px; }
+  .lightbox-prev { left: max(8px, env(safe-area-inset-left, 8px)); }
+  .lightbox-next { right: max(8px, env(safe-area-inset-right, 8px)); }
 }
