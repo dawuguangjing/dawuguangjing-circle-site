@@ -126,7 +126,7 @@
 }
 
 /* FAB が表示されている画面幅では back-to-top を上に逃がして重なりを防ぐ */
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .back-to-top { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
 }
 

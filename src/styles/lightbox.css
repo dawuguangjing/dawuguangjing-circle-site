@@ -207,6 +207,15 @@
   max-height: min(80vh, calc(100vh - 120px));
 }
 
+@media (max-width: 640px) {
+  .lightbox-prev,
+  .lightbox-next {
+    width: 48px;
+    height: 48px;
+  }
+  .lightbox-prev { left: 12px; }
+  .lightbox-next { right: 12px; }
+}
 @media (max-width: 480px) {
   .lightbox-prev,
   .lightbox-next {

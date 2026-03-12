@@ -177,8 +177,10 @@
     transform: translateY(100%);
     transition: transform 0.32s var(--easing);
     margin-bottom: 0;
-    /* ソフトキーボード表示時もシートが画面外に出ないよう高さ制限 */
+    /* ソフトキーボード表示時もシートが画面外に出ないよう高さ制限
+       dvh はキーボード表示時のビューポートを反映する（vh のフォールバック付き） */
     max-height: calc(80vh - env(safe-area-inset-bottom, 0px));
+    max-height: calc(80dvh - env(safe-area-inset-bottom, 0px));
     overflow-y: auto;
     /* 横スクロール無効化 */
     overflow-x: visible;
