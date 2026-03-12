@@ -651,6 +651,7 @@ function initLightbox() {
   // ── タッチスワイプ & パン対応（モバイル） ──
   let _touchStartX = 0;
   let _swipeBlocked = false;
+  let _wasPinching = false;
   lightbox.addEventListener(
     'touchstart',
     function (e) {
@@ -659,6 +660,9 @@ function initLightbox() {
       _touchStartX = x;
       const fromThumbs = !!(e.target as HTMLElement).closest('.lightbox-thumbs');
       _swipeBlocked = fromThumbs || _pinchScale !== 1;
+      // ピンチ操作の追跡: 2本指以上ならマーク、1本指の新規タッチでリセット
+      if (e.touches.length >= 2) _wasPinching = true;
+      else if (e.touches.length === 1) _wasPinching = false;
       // ズーム中 + 1指 + 画像上 → パン開始
       if (_pinchScale > 1 && e.touches.length === 1 && !fromThumbs) {
         _touchPanning = true;
@@ -696,7 +700,7 @@ function initLightbox() {
         _touchPanning = false;
         if (_didPan) return; // パンした場合はスワイプナビを抑制
       }
-      if (!lightbox.open || _swipeBlocked) return;
+      if (!lightbox.open || _swipeBlocked || _wasPinching) return;
       const delta = e.changedTouches[0].clientX - _touchStartX;
       if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
         if (delta < 0) showMedia(current + 1);
