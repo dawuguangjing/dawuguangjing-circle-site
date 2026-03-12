@@ -4,6 +4,7 @@ import NewsCard from '../../components/NewsCard.astro';
 import RelatedWorks from '../../components/RelatedWorks.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getSortedNews, getWorkIndex, extractFirstImageUrl } from '../../utils/collections';
 import { animDelay } from '../../utils/constants';
 import { categoryLabels } from '../../utils/labels';
@@ -15,6 +16,7 @@ const categories = Object.entries(categoryLabels) as [string, string][];
 ---
 
 <BaseLayout title="開発ログ" description="告知、更新、セール情報。">
+  <Breadcrumb crumbs={[{ label: '開発ログ' }]} />
   <div class="page-content" data-list-context="news">
     <section class="section container">
       <SectionHeader title="開発ログ" as="h1" />
@@ -26,29 +28,39 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         stateId="news"
       >
         <button class="filter-chip is-active" data-category="all">すべて</button>
-        {categories.map(([key, label]) => (
-          <button class="filter-chip" data-category={key}>{label}</button>
-        ))}
+        {
+          categories.map(([key, label]) => (
+            <button class="filter-chip" data-category={key}>
+              {label}
+            </button>
+          ))
+        }
       </FilterSheet>
 
       <div class="news-grid grid-stretch-items" id="news-grid">
-        {news.map((entry, i) => (
-          <div data-anim data-category={entry.data.category} style={`--anim-delay: ${animDelay(i)}`}>
-            <NewsCard
-              slug={entry.slug}
-              title={entry.data.title}
-              date={entry.data.date}
-              category={entry.data.category}
-              thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
-              excerpt={extractExcerpt(entry.body)}
-              {...imageLoadingProps(i)}
+        {
+          news.map((entry, i) => (
+            <div
+              data-anim
+              data-category={entry.data.category}
+              style={`--anim-delay: ${animDelay(i)}`}
             >
-              {entry.data.relatedWorkSlugs && (
-                <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
-              )}
-            </NewsCard>
-          </div>
-        ))}
+              <NewsCard
+                slug={entry.slug}
+                title={entry.data.title}
+                date={entry.data.date}
+                category={entry.data.category}
+                thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
+                excerpt={extractExcerpt(entry.body)}
+                {...imageLoadingProps(i)}
+              >
+                {entry.data.relatedWorkSlugs && (
+                  <RelatedWorks slugs={entry.data.relatedWorkSlugs} workIndex={workIndex} />
+                )}
+              </NewsCard>
+            </div>
+          ))
+        }
       </div>
 
       <div class="news-empty-state" id="news-empty" aria-live="polite">
@@ -79,12 +91,12 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         defaultValue: 'all',
         chipSelector: '#news-filter .filter-chip[data-category]',
         chipDataKey: 'category',
-        itemDataKey: 'category',
-      },
+        itemDataKey: 'category'
+      }
     ],
     resetButtonId: 'news-filter-reset',
     onUpdate: (visibleCount) => {
       emptyEl?.classList.toggle('is-visible', visibleCount === 0);
-    },
+    }
   });
 </script>

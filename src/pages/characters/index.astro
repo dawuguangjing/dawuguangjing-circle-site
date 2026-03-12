@@ -4,19 +4,16 @@ import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { SITE_NAME, animDelay } from '../../utils/constants';
 import { imageLoadingProps } from '../../utils/format';
 
-const characters = (await getCollection('characters')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const characters = (await getCollection('characters')).sort((a, b) => a.data.order - b.data.order);
 
 // 登場作品フィルター用: キャラに紐づく作品のスラッグ→タイトルマップを構築
 const works = await getCollection('works');
 const workMap = new Map(works.map((w) => [w.slug, w.data.title]));
-const uniqueWorkSlugs = [...new Set(
-  characters.map((c) => c.data.workSlug).filter(Boolean)
-)];
+const uniqueWorkSlugs = [...new Set(characters.map((c) => c.data.workSlug).filter(Boolean))];
 const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(slug) ?? slug }));
 ---
 
@@ -24,6 +21,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   title={`キャラクター | ${SITE_NAME}`}
   description="ダウグアングジング作品に登場するキャラクターのプロフィール一覧です。"
 >
+  <Breadcrumb crumbs={[{ label: 'キャラクター' }]} />
   <div class="page-content" data-list-context="characters">
     <div class="container section">
       <SectionHeader title="キャラクター" as="h1" />
@@ -34,14 +32,20 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         ariaLabel="登場作品でフィルター"
         stateId="characters"
       >
-        {filterWorks.length > 1 && (
-          <>
-            <button class="filter-chip is-active" data-work="all" aria-pressed="true">すべて</button>
-            {filterWorks.map((w) => (
-              <button class="filter-chip" data-work={w.slug} aria-pressed="false">{w.title}</button>
-            ))}
-          </>
-        )}
+        {
+          filterWorks.length > 1 && (
+            <>
+              <button class="filter-chip is-active" data-work="all" aria-pressed="true">
+                すべて
+              </button>
+              {filterWorks.map((w) => (
+                <button class="filter-chip" data-work={w.slug} aria-pressed="false">
+                  {w.title}
+                </button>
+              ))}
+            </>
+          )
+        }
 
         <div class="gallery-sort" slot="sort" role="group" aria-label="並び替え">
           <button class="filter-chip is-active" data-char-sort="order">登場順</button>
@@ -50,110 +54,114 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
       </FilterSheet>
 
       <div class="char-list-grid" id="char-list-grid">
-        {characters.map((char, i) => (
-          <a
-            class="card-interactive char-card char-list-card"
-            href={withBase(`characters/${char.slug}/`)}
-            data-anim
-            data-work={char.data.workSlug}
-            data-order={String(char.data.order)}
-            data-name={char.data.name}
-            style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
-          >
-            <div class="char-card-img-wrap img-skeleton">
-              <img
-                src={char.data.cover}
-                alt={char.data.name}
-                sizes="(max-width: 480px) calc(50vw - 18px), (max-width: 1100px) calc(33vw - 28px), 260px"
-                width="300"
-                height="400"
-                {...imageLoadingProps(i)}
-              />
-              <div class="char-card-overlay">
-                <span class="char-card-view char-list-view">プロフィールを見る</span>
+        {
+          characters.map((char, i) => (
+            <a
+              class="card-interactive char-card char-list-card"
+              href={withBase(`characters/${char.slug}/`)}
+              data-anim
+              data-work={char.data.workSlug}
+              data-order={String(char.data.order)}
+              data-name={char.data.name}
+              style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
+            >
+              <div class="char-card-img-wrap img-skeleton">
+                <img
+                  src={char.data.cover}
+                  alt={char.data.name}
+                  sizes="(max-width: 480px) calc(50vw - 18px), (max-width: 1100px) calc(33vw - 28px), 260px"
+                  width="300"
+                  height="400"
+                  {...imageLoadingProps(i)}
+                />
+                <div class="char-card-overlay">
+                  <span class="char-card-view char-list-view">プロフィールを見る</span>
+                </div>
               </div>
-            </div>
-            <div class="char-card-body char-list-body">
-              <p class="char-card-reading">{char.data.nameReading}</p>
-              <h2 class="char-card-name">{char.data.name}</h2>
-              <p class="char-list-personality">{char.data.personality}</p>
-              <!-- タッチデバイスでも CTA を認識できるよう常時表示 -->
-              <span class="char-list-cta" aria-hidden="true">プロフィールを見る →</span>
-            </div>
-            <div class="char-card-accent" aria-hidden="true"></div>
-          </a>
-        ))}
+              <div class="char-card-body char-list-body">
+                <p class="char-card-reading">{char.data.nameReading}</p>
+                <h2 class="char-card-name">{char.data.name}</h2>
+                <p class="char-list-personality">{char.data.personality}</p>
+                {/* タッチデバイスでも CTA を認識できるよう常時表示 */}
+                <span class="char-list-cta" aria-hidden="true">
+                  プロフィールを見る →
+                </span>
+              </div>
+              <div class="char-card-accent" aria-hidden="true" />
+            </a>
+          ))
+        }
       </div>
     </div>
   </div>
 </BaseLayout>
 
 <style>
-.char-list-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 20px;
-}
-
-/* ── Size overrides for full-size list cards ── */
-@media (hover: hover) and (pointer: fine) {
-  .char-list-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
-  }
-}
-
-.char-list-view {
-  font-size: var(--fs-ui);
-  padding: 6px 16px;
-}
-
-.char-list-body {
-  padding: 16px;
-  gap: 4px;
-  flex: 1;
-}
-
-.char-card-reading {
-  font-size: 0.72rem;
-}
-
-.char-card-name {
-  font-size: var(--fs-heading-lg);
-  letter-spacing: 0.03em;
-}
-
-.char-card-overlay {
-  padding-bottom: 20px;
-}
-
-.char-list-personality {
-  font-size: var(--fs-sm);
-  color: var(--ink-dim);
-  margin: 4px 0 0;
-  line-height: 1.6;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* タッチデバイス向け常時表示 CTA */
-.char-list-cta {
-  font-size: var(--fs-xs);
-  color: var(--char-color, var(--accent));
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  margin-top: auto;
-  padding-top: 10px;
-}
-
-@media (max-width: 480px) {
   .char-list-grid {
-    gap: 12px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 20px;
   }
-}
+
+  /* ── Size overrides for full-size list cards ── */
+  @media (hover: hover) and (pointer: fine) {
+    .char-list-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  .char-list-view {
+    font-size: var(--fs-ui);
+    padding: 6px 16px;
+  }
+
+  .char-list-body {
+    padding: 16px;
+    gap: 4px;
+    flex: 1;
+  }
+
+  .char-card-reading {
+    font-size: 0.72rem;
+  }
+
+  .char-card-name {
+    font-size: var(--fs-heading-lg);
+    letter-spacing: 0.03em;
+  }
+
+  .char-card-overlay {
+    padding-bottom: 20px;
+  }
+
+  .char-list-personality {
+    font-size: var(--fs-sm);
+    color: var(--ink-dim);
+    margin: 4px 0 0;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* タッチデバイス向け常時表示 CTA */
+  .char-list-cta {
+    font-size: var(--fs-xs);
+    color: var(--char-color, var(--accent));
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    margin-top: auto;
+    padding-top: 10px;
+  }
+
+  @media (max-width: 480px) {
+    .char-list-grid {
+      gap: 12px;
+    }
+  }
 </style>
 
 <script>
@@ -175,7 +183,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         chipSelector: '#char-filter .filter-chip[data-work]',
         chipDataKey: 'work',
         itemDataKey: 'work',
-        summaryPrefix: '作品',
+        summaryPrefix: '作品'
       },
       {
         type: 'sort',
@@ -183,8 +191,8 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         defaultValue: 'order',
         chipSelector: '[data-char-sort]',
         chipDataKey: 'charSort',
-        sortFn: orderNameSort(),
-      },
-    ],
+        sortFn: orderNameSort()
+      }
+    ]
   });
 </script>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getSortedWorks } from '../../utils/collections';
 import { animDelay } from '../../utils/constants';
 import { imageLoadingProps } from '../../utils/format';
@@ -11,10 +12,13 @@ const works = await getSortedWorks();
 ---
 
 <BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
+  <Breadcrumb crumbs={[{ label: '作品一覧' }]} />
   <div class="page-content" data-list-context="works">
     <section class="section container">
       <SectionHeader title="全作品" as="h1">
-        <span class="muted" id="work-count" role="status" aria-live="polite" aria-atomic="true">{works.length} タイトル</span>
+        <span class="muted" id="work-count" role="status" aria-live="polite" aria-atomic="true"
+          >{works.length} タイトル</span
+        >
       </SectionHeader>
 
       <FilterSheet
@@ -43,34 +47,36 @@ const works = await getSortedWorks();
       </FilterSheet>
 
       <div class="works-grid grid-stretch-items" id="works-grid">
-        {works.map((entry, i) => (
-          <div
-            class="work-filter-item"
-            data-anim
-            style={`--anim-delay: ${animDelay(i, 0.04)}`}
-            data-r18={String(entry.data.isR18)}
-            data-windows={String(entry.data.environments.windows)}
-            data-mac={String(entry.data.environments.mac)}
-            data-browser={String(entry.data.environments.browserPc)}
-            data-ios={String(entry.data.environments.ios)}
-            data-android={String(entry.data.environments.android)}
-            data-release-date={String(entry.data.releaseDate.getTime())}
-            data-title={entry.data.title}
-          >
-            <WorkCard
-              slug={entry.slug}
-              title={entry.data.title}
-              cover={entry.data.images.cover}
-              description={entry.data.shortDescription}
-              releaseDate={entry.data.releaseDate}
-              isR18={entry.data.isR18}
-              hasTrial={!!(entry.data.trialLinks?.fanza || entry.data.trialLinks?.dlsite)}
-              showEnvironments
-              environments={entry.data.environments}
-              {...imageLoadingProps(i)}
-            />
-          </div>
-        ))}
+        {
+          works.map((entry, i) => (
+            <div
+              class="work-filter-item"
+              data-anim
+              style={`--anim-delay: ${animDelay(i, 0.04)}`}
+              data-r18={String(entry.data.isR18)}
+              data-windows={String(entry.data.environments.windows)}
+              data-mac={String(entry.data.environments.mac)}
+              data-browser={String(entry.data.environments.browserPc)}
+              data-ios={String(entry.data.environments.ios)}
+              data-android={String(entry.data.environments.android)}
+              data-release-date={String(entry.data.releaseDate.getTime())}
+              data-title={entry.data.title}
+            >
+              <WorkCard
+                slug={entry.slug}
+                title={entry.data.title}
+                cover={entry.data.images.cover}
+                description={entry.data.shortDescription}
+                releaseDate={entry.data.releaseDate}
+                isR18={entry.data.isR18}
+                hasTrial={!!(entry.data.trialLinks?.fanza || entry.data.trialLinks?.dlsite)}
+                showEnvironments
+                environments={entry.data.environments}
+                {...imageLoadingProps(i)}
+              />
+            </div>
+          ))
+        }
       </div>
 
       <div class="works-empty-state" id="works-empty" aria-live="polite">
@@ -104,14 +110,14 @@ const works = await getSortedWorks();
           chipSelector: '.filter-chip[data-filter]',
           chipDataKey: 'filter',
           filterTest: {
-            'r18':      el => el.dataset.r18      === 'true',
-            'all-ages': el => el.dataset.r18      === 'false',
-            'windows':  el => el.dataset.windows  === 'true',
-            'mac':      el => el.dataset.mac      === 'true',
-            'browser':  el => el.dataset.browser  === 'true',
-            'ios':      el => el.dataset.ios      === 'true',
-            'android':  el => el.dataset.android  === 'true',
-          },
+            r18: (el) => el.dataset.r18 === 'true',
+            'all-ages': (el) => el.dataset.r18 === 'false',
+            windows: (el) => el.dataset.windows === 'true',
+            mac: (el) => el.dataset.mac === 'true',
+            browser: (el) => el.dataset.browser === 'true',
+            ios: (el) => el.dataset.ios === 'true',
+            android: (el) => el.dataset.android === 'true'
+          }
         },
         {
           type: 'sort',
@@ -119,18 +125,17 @@ const works = await getSortedWorks();
           defaultValue: 'newest',
           chipSelector: '.sort-btn[data-sort]',
           chipDataKey: 'sort',
-          sortFn: dateTitleSort(),
-        },
+          sortFn: dateTitleSort()
+        }
       ],
       resetButtonId: 'works-filter-reset',
       onUpdate: (visibleCount) => {
         emptyEl?.classList.toggle('is-visible', visibleCount === 0);
         if (countEl) {
-          countEl.textContent = visibleCount < totalCount
-            ? `${visibleCount} 件表示中`
-            : `${totalCount} タイトル`;
+          countEl.textContent =
+            visibleCount < totalCount ? `${visibleCount} 件表示中` : `${totalCount} タイトル`;
         }
-      },
+      }
     });
 
     // ── ソートバー横スクロールフェードヒント ──
