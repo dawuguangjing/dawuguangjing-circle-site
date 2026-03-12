@@ -300,6 +300,24 @@ export function setupListFilter(config: ListFilterConfig) {
     });
   }
 
+  // ── 空状態リセットボタン ──
+
+  if (config.resetButtonId) {
+    document.getElementById(config.resetButtonId)?.addEventListener('click', () => {
+      const firstDim = dimensions[0];
+      if (firstDim) {
+        const chips = dimChips.get(firstDim)!;
+        chips.forEach(c => {
+          const isDefault = chipValue(c, firstDim.chipDataKey) === firstDim.defaultValue;
+          c.classList.toggle('is-active', isDefault);
+          c.setAttribute('aria-pressed', String(isDefault));
+        });
+      }
+      applyAll(true);
+      document.getElementById('filter-sheet-trigger')?.focus();
+    });
+  }
+
   // ── 初期化実行 ──
 
   restoreFilterFromUrl(filterDims, sortDims, dimChips);

@@ -68,7 +68,7 @@
 .announcement-bar {
   background: var(--accent-dark);
   color: #fff;
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   padding: 8px 0;
   max-height: 48px;
   transition: max-height var(--dur-medium) ease, padding var(--dur-medium) ease;
@@ -148,7 +148,7 @@ a.announcement-bar-text:hover {
 
 .logo {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: var(--fs-body-lg);
   letter-spacing: 0.02em;
   color: var(--color-logo);
   font-weight: 700;
@@ -188,7 +188,7 @@ a.announcement-bar-text:hover {
 .nav-links {
   display: flex;
   gap: 0;
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   letter-spacing: 0.02em;
   height: 100%;
   align-items: stretch;
@@ -331,7 +331,7 @@ a.announcement-bar-text:hover {
 }
 
 .footer-logo {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--footer-text-bright);
   display: inline-block;
@@ -343,7 +343,7 @@ a.announcement-bar-text:hover {
 }
 
 .footer-desc {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   color: var(--footer-text);
   margin: 0 0 12px;
 }
@@ -358,11 +358,11 @@ a.announcement-bar-text:hover {
   align-items: center;
   gap: 6px;
   padding: 7px 14px;
-  min-height: 44px;
+  min-height: var(--touch-min);
   border: 1px solid var(--footer-btn-border);
   border-radius: var(--radius-pill);
   color: var(--footer-btn-color);
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   font-weight: 500;
   text-decoration: none;
   transition: border-color var(--dur-quick), color var(--dur-quick), background var(--dur-quick);
@@ -381,7 +381,7 @@ a.announcement-bar-text:hover {
 }
 
 .footer-nav h4 {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   font-weight: 600;
   color: var(--footer-text-strong);
   margin: 0 0 10px;
@@ -398,7 +398,7 @@ a.announcement-bar-text:hover {
 }
 
 .footer-nav a {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   color: var(--footer-text);
   transition: color var(--dur-fast) ease;
   white-space: nowrap;
@@ -419,14 +419,14 @@ a.announcement-bar-text:hover {
 }
 
 .footer-copy {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   color: var(--footer-text-dim);
   margin: 0;
   white-space: nowrap;
 }
 
 .footer-notice {
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   color: var(--footer-text-muted);
   margin: 0;
   text-align: right;
@@ -484,7 +484,7 @@ a.announcement-bar-text:hover {
   .nav-links a {
     padding: 0 20px;
     min-height: 52px;
-    font-size: 1rem;
+    font-size: var(--fs-heading);
     border-radius: 0;
     border-left: 3px solid transparent;
   }

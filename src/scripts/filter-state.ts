@@ -45,4 +45,6 @@ export interface ListFilterConfig {
   onUpdate?: (visibleCount: number, totalCount: number) => void;
   /** 0件時にスクロールする空状態要素の CSS セレクタ */
   emptySelector?: string;
+  /** 空状態リセットボタンの ID。指定すると最初の dimension をデフォルトに戻すハンドラを自動登録 */
+  resetButtonId?: string;
 }

@@ -96,14 +96,14 @@ const encodedPw = btoa(encodeURIComponent(password));
   }
 
   .ea-hint {
-    font-size: 0.78rem;
+    font-size: var(--fs-sm);
     color: var(--ink-dim);
     margin: 0;
     line-height: 1.5;
   }
 
   .ea-cien-link {
-    font-size: 0.78rem;
+    font-size: var(--fs-sm);
     color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -123,9 +123,9 @@ const encodedPw = btoa(encodeURIComponent(password));
     flex: 1;
     min-width: 0;
     padding: 7px 10px;
-    min-height: 44px;
+    min-height: var(--touch-min);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: var(--fs-body-sm);
     background: var(--bg);
     color: var(--ink);
     border: 1px solid var(--stroke);
@@ -147,7 +147,7 @@ const encodedPw = btoa(encodeURIComponent(password));
   .ea-submit {
     flex-shrink: 0;
     padding: 7px 14px;
-    min-height: 44px;
+    min-height: var(--touch-min);
     background: var(--accent);
     color: #fff;
     border: none;
@@ -170,7 +170,7 @@ const encodedPw = btoa(encodeURIComponent(password));
   }
 
   .ea-error {
-    font-size: 0.78rem;
+    font-size: var(--fs-sm);
     color: #d93025;
     margin: 0;
   }
@@ -187,7 +187,7 @@ const encodedPw = btoa(encodeURIComponent(password));
     border: 1px dashed var(--stroke);
     border-radius: var(--radius-md);
     font-family: inherit;
-    font-size: 0.88rem;
+    font-size: var(--fs-body-sm);
     font-weight: 600;
     text-align: center;
     cursor: not-allowed;

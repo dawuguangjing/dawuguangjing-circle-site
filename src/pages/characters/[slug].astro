@@ -260,7 +260,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   opacity: 0;
   transition: opacity var(--dur-normal) ease;
   filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
@@ -282,7 +282,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 }
 
 .char-hero-reading {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   color: var(--ink-dim);
   margin: 0;
   letter-spacing: 0.1em;
@@ -298,7 +298,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 }
 
 .char-hero-personality {
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   color: var(--ink-dim);
   margin: 0;
   line-height: 1.8;
@@ -318,7 +318,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   display: flex;
   align-items: baseline;
   gap: 16px;
-  font-size: 0.88rem;
+  font-size: var(--fs-body-sm);
 }
 
 .char-stat-label {
@@ -329,7 +329,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
 .char-stat-value {
   font-weight: 700;
-  font-size: 1rem;
+  font-size: var(--fs-heading);
 }
 
 .char-stat-link {
@@ -353,7 +353,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 }
 
 .char-detail-block h2 {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   font-weight: 600;
   color: var(--ink-bright);
   margin: 0 0 16px;
@@ -405,7 +405,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   line-height: 1.4;
 }
 .char-work-desc {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   color: var(--ink-dim);
   margin: 0;
   line-height: 1.5;
@@ -413,7 +413,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
 /* ── CTA sub-heading ── */
 .char-cta-sub {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   color: var(--ink-dim);
   margin: 0 0 6px;
 }
@@ -530,7 +530,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   padding: 8px 10px 4px;
 }
 .char-gallery-preview-title {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   font-weight: 600;
   color: var(--ink-bright);
   line-height: 1.4;
@@ -541,7 +541,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
 .char-gallery-preview-link {
   display: block;
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   color: var(--accent);
   padding: 4px 10px 8px;
 }

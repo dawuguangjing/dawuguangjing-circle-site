@@ -120,6 +120,7 @@ const works = await getSortedWorks();
           sortFn: dateTitleSort('releaseDate'),
         },
       ],
+      resetButtonId: 'works-filter-reset',
       onUpdate: (visibleCount) => {
         emptyEl?.classList.toggle('is-visible', visibleCount === 0);
         if (countEl) {
@@ -128,12 +129,6 @@ const works = await getSortedWorks();
             : `${totalCount} タイトル`;
         }
       },
-    });
-
-    // 空状態リセットボタン（リセット後フォーカスをフィルタートリガーに移動）
-    document.getElementById('works-filter-reset')?.addEventListener('click', () => {
-      document.querySelector<HTMLElement>('.filter-chip[data-filter="all"]')?.click();
-      document.getElementById('filter-sheet-trigger')?.focus();
     });
   </script>
 </BaseLayout>

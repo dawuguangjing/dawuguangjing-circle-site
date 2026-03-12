@@ -141,14 +141,14 @@ button {
 
 .card h2,
 .card h3 {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   margin: 0 0 8px;
   color: var(--ink-bright);
   font-weight: 600;
 }
 
 .card p {
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   color: var(--ink-dim);
   margin: 0 0 12px;
   line-height: 1.6;
@@ -229,7 +229,7 @@ button {
   justify-content: center;
   gap: 8px;
   padding: 10px 24px;
-  min-height: 44px;
+  min-height: var(--touch-min);
   border-radius: var(--radius-md);
   border: none;
   font-weight: 600;
@@ -261,7 +261,7 @@ button {
 
 .button--sm {
   padding: 6px 14px;
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
 }
 
 .button--block {

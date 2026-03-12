@@ -125,7 +125,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
 }
 
 .faq-item summary h3 {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   margin: 0;
   color: var(--ink-bright);
   font-weight: 600;
@@ -140,7 +140,7 @@ html[data-theme="dark"] .about-page .external-link-desc {
 }
 
 .faq-answer p {
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   color: var(--ink-dim);
   line-height: 1.6;
   margin: 0 0 12px;
@@ -289,7 +289,7 @@ html.is-client-nav [data-anim] {
   background: var(--panel);
 }
 .article-pagination-arrow {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   color: var(--ink-dim);
   flex-shrink: 0;
 }
@@ -306,7 +306,7 @@ html.is-client-nav [data-anim] {
   letter-spacing: 0.06em;
 }
 .article-pagination-title {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   font-weight: 600;
   color: var(--ink-bright);
   white-space: nowrap;
@@ -325,7 +325,7 @@ html.is-client-nav [data-anim] {
 
 /* ── News card excerpt ── */
 .news-card-excerpt {
-  font-size: 0.82rem;
+  font-size: var(--fs-ui);
   color: var(--ink-dim);
   margin: 0 0 8px;
   line-height: 1.5;

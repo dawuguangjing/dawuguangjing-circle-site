@@ -79,6 +79,17 @@
   --dur-medium: 0.3s;      /* card hover lifts, transform + easing */
   --dur-slow: 0.4s;        /* image zoom, gallery transitions */
   --dur-entrance: 0.5s;    /* scroll-triggered entrance animations */
+  /* ── Font-size scale ── */
+  --fs-xs: 0.75rem;        /* フッター注記、小ラベル */
+  --fs-sm: 0.78rem;        /* UIコントロール、バッジ、日付 */
+  --fs-ui: 0.82rem;        /* ナビゲーション、メタ情報 */
+  --fs-body-sm: 0.88rem;   /* キャッチコピー、仕様表 */
+  --fs-body: 0.9rem;       /* 本文、カードテキスト */
+  --fs-body-lg: 0.95rem;   /* 記事本文、ロゴ */
+  --fs-heading: 1rem;      /* カード見出し、記事h3 */
+  --fs-heading-lg: 1.1rem; /* 記事h2、キャラ名 */
+  /* ── Touch target ── */
+  --touch-min: 44px;       /* WCAG 2.5.5 推奨最小タッチターゲット */
   --font-display: "Inter", "Noto Sans JP", system-ui, sans-serif;
   --font-body: "Noto Sans JP", "Inter", system-ui, sans-serif;
   /* ── Always-dark context colors (footer) ── */

@@ -83,14 +83,9 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         itemDataKey: 'category',
       },
     ],
+    resetButtonId: 'news-filter-reset',
     onUpdate: (visibleCount) => {
       emptyEl?.classList.toggle('is-visible', visibleCount === 0);
     },
-  });
-
-  // 空状態リセットボタン
-  document.getElementById('news-filter-reset')?.addEventListener('click', () => {
-    document.querySelector<HTMLElement>('#news-filter .filter-chip[data-category="all"]')?.click();
-    document.getElementById('filter-sheet-trigger')?.focus();
   });
 </script>

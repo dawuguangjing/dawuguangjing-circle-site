@@ -81,12 +81,12 @@
 }
 
 .news-card-date {
-  font-size: 0.78rem;
+  font-size: var(--fs-sm);
   color: var(--ink-dim);
 }
 
 .news-card-title {
-  font-size: 0.95rem;
+  font-size: var(--fs-body-lg);
   margin: 0;
   color: var(--ink-bright);
   line-height: 1.5;
@@ -160,7 +160,7 @@
   transform: scale(1.1);
 }
 .news-card-more-label {
-  font-size: 0.95rem;
+  font-size: var(--fs-body-lg);
   font-weight: 700;
 }
 .news-card-more-cta {
