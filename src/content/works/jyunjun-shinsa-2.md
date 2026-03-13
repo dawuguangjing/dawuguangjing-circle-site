@@ -1,7 +1,8 @@
 ---
 title: "従順審査2"
-catch: "従順審査シリーズ最新作。近日公開予定。"
-shortDescription: "従順審査シリーズ第2弾。"
+catch: "従順審査シリーズ最新作。新キャラクター・新シナリオで再び審査員の座に。"
+shortDescription: "従順審査シリーズ第2弾。新ルート・新キャラクターを追加した最新作。"
+metaDescription: "「従順審査2」は同人ゲーム「従順審査」シリーズ最新作。新キャラクター・新シナリオで再び審査員として美女を審査。Windows・Android対応予定。開発進捗を公開中。"
 releaseDate: 2099-01-01
 isR18: true
 platformLinks: {}
@@ -34,6 +35,16 @@ earlyAccess:
   password: "なかむらりお"
   downloadUrl: "https://drive.google.com/uc?id=xxxx&export=download"
 ---
+
+## 概要
+
+「従順審査」シリーズ第2弾。前作で描かれた従順審査制度のその後を舞台に、新たなキャラクターと新シナリオで再び審査員としてプレイできます。Windows・Android に対応予定。
+
+## 前作からの進化ポイント
+
+- 新キャラクター・新ルートを追加
+- マルチエンドのシナリオ分岐をさらに拡充
+- Android 対応で外出先でもプレイ可能に
 
 ## 制作進捗
 

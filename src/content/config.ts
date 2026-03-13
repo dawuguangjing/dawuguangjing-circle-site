@@ -12,6 +12,7 @@ const works = defineCollection({
     title: z.string(),
     catch: z.string(),
     shortDescription: z.string(),
+    metaDescription: z.string().optional(),
     releaseDate: z.date(),
     isR18: z.boolean(),
     platformLinks: storeLinks,

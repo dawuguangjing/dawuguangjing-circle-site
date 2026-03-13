@@ -32,6 +32,11 @@ export function buildProductSchema(opts: {
   description: string;
   os: string;
   datePublished: Date;
+  image?: string;
+  url?: string;
+  contentRating?: string;
+  screenshots?: string[];
+  offerUrl?: string;
 }) {
   return {
     '@context': 'https://schema.org',
@@ -41,7 +46,20 @@ export function buildProductSchema(opts: {
     applicationCategory: 'GameApplication',
     operatingSystem: opts.os,
     author,
-    datePublished: toISODate(opts.datePublished)
+    datePublished: toISODate(opts.datePublished),
+    ...(opts.image ? { image: opts.image } : {}),
+    ...(opts.url ? { url: opts.url } : {}),
+    ...(opts.contentRating ? { contentRating: opts.contentRating } : {}),
+    ...(opts.screenshots?.length ? { screenshot: opts.screenshots } : {}),
+    ...(opts.offerUrl
+      ? {
+          offers: {
+            '@type': 'Offer',
+            url: opts.offerUrl,
+            availability: 'https://schema.org/InStock'
+          }
+        }
+      : {})
   };
 }
 

@@ -5,13 +5,16 @@ import SectionHeader from '../../components/SectionHeader.astro';
 import FilterSheet from '../../components/FilterSheet.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import { getSortedWorks } from '../../utils/collections';
-import { animDelay } from '../../utils/constants';
+import { animDelay, SITE_NAME } from '../../utils/constants';
 import { imageLoadingProps } from '../../utils/format';
 
 const works = await getSortedWorks();
 ---
 
-<BaseLayout title="作品一覧" description="公開中の作品と外部リンク。">
+<BaseLayout
+  title={`作品一覧 | ${SITE_NAME}`}
+  description="ダウグアングジングの同人ゲーム作品一覧。「従順審査」「従順審査2」の作品情報・購入リンク・体験版ダウンロードを掲載。"
+>
   <div class="page-content" data-list-context="works">
     <section class="section container">
       <Breadcrumb crumbs={[{ label: '作品一覧' }]} />

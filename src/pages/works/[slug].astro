@@ -26,14 +26,23 @@ const workCharacters = await getCharactersByWork(entry.slug);
 const sidebarChars = workCharacters.map((c) => ({
   slug: c.slug,
   name: c.data.name,
-  cover: c.data.cover,
+  cover: c.data.cover
 }));
+
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : Astro.url.href;
+
+const seoDescription = data.metaDescription ?? data.shortDescription;
 
 const productJsonLd = buildProductSchema({
   title: data.title,
-  description: data.shortDescription,
+  description: seoDescription,
   os: data.environments.windows ? 'Windows' : 'Web Browser',
   datePublished: data.releaseDate,
+  image: data.images.cover,
+  url: canonical,
+  contentRating: data.isR18 ? 'MATURE 18+' : undefined,
+  screenshots: data.images.screenshots,
+  offerUrl: data.platformLinks?.dlsite ?? data.platformLinks?.fanza
 });
 
 const isComingSoon = data.releaseDate.getFullYear() >= COMING_SOON_YEAR;
@@ -43,29 +52,36 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
 ---
 
 <BaseLayout
-  title={`${data.title} — ${data.shortDescription} | ${SITE_NAME}`}
-  description={data.shortDescription}
+  title={`${data.title} | 同人ゲーム — ${SITE_NAME}`}
+  description={seoDescription}
   image={data.images.cover}
   jsonLd={productJsonLd}
 >
   <div class="page-content">
     <div class="container">
-      <Breadcrumb crumbs={[
-        { label: '作品', href: withBase('works/') },
-        { label: data.title },
-      ]} />
+      <Breadcrumb crumbs={[{ label: '作品', href: withBase('works/') }, { label: data.title }]} />
       <!-- 上部コンパクトナビ（ページ末尾まで戻らずに前後作品へ移動できる） -->
-      {(prev || next) && (
-        <nav class="work-top-nav" aria-label="前後の作品へ">
-          {prev
-            ? <a class="work-top-nav-link" href={withBase(`works/${prev.slug}/`)}>← {prev.data.title}</a>
-            : <span></span>
-          }
-          {next && (
-            <a class="work-top-nav-link work-top-nav-link--next" href={withBase(`works/${next.slug}/`)}>{next.data.title} →</a>
-          )}
-        </nav>
-      )}
+      {
+        (prev || next) && (
+          <nav class="work-top-nav" aria-label="前後の作品へ">
+            {prev ? (
+              <a class="work-top-nav-link" href={withBase(`works/${prev.slug}/`)}>
+                ← {prev.data.title}
+              </a>
+            ) : (
+              <span />
+            )}
+            {next && (
+              <a
+                class="work-top-nav-link work-top-nav-link--next"
+                href={withBase(`works/${next.slug}/`)}
+              >
+                {next.data.title} →
+              </a>
+            )}
+          </nav>
+        )
+      }
     </div>
     <!-- Hero Banner -->
     <section class="section container">
@@ -90,46 +106,65 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
             aria-label={`${data.title}の画像を拡大する`}
             title="クリックで拡大"
           >
-            <img src={withBase(data.images.cover)} alt={`${data.title} cover`} width="720" height="480" fetchpriority="high" loading="eager" />
+            <img
+              src={withBase(data.images.cover)}
+              alt={`${data.title} cover`}
+              width="720"
+              height="480"
+              fetchpriority="high"
+              loading="eager"
+            />
             <div class="work-cover-zoom-hint" aria-hidden="true">🔍</div>
           </div>
 
           <!-- Video -->
-          {data.videoUrl && (
-            <div class="work-video">
-              <video controls preload="metadata" width="1280" height="720">
-                <source src={data.videoUrl} type="video/mp4" />
-              </video>
-            </div>
-          )}
+          {
+            data.videoUrl && (
+              <div class="work-video">
+                <video controls preload="metadata" width="1280" height="720">
+                  <source src={data.videoUrl} type="video/mp4" />
+                </video>
+              </div>
+            )
+          }
 
           <!-- Screenshots -->
-          {data.images.screenshots.length > 0 && (
-            <div class="gallery-grid">
-              {data.images.screenshots.map((image, j) => (
-                <div
-                  class="gallery-item"
-                  data-lightbox-src={withBase(image)}
-                  data-lightbox-type="image"
-                  data-lightbox-alt={`${data.title} スクリーンショット ${j + 1}`}
-                >
-                  <img src={withBase(image)} alt={`${data.title} スクリーンショット ${j + 1}`} loading="lazy" width="400" height="225" />
-                </div>
-              ))}
-            </div>
-          )}
+          {
+            data.images.screenshots.length > 0 && (
+              <div class="gallery-grid">
+                {data.images.screenshots.map((image, j) => (
+                  <div
+                    class="gallery-item"
+                    data-lightbox-src={withBase(image)}
+                    data-lightbox-type="image"
+                    data-lightbox-alt={`${data.title} スクリーンショット ${j + 1}`}
+                  >
+                    <img
+                      src={withBase(image)}
+                      alt={`${data.title} スクリーンショット ${j + 1}`}
+                      loading="lazy"
+                      width="400"
+                      height="225"
+                    />
+                  </div>
+                ))}
+              </div>
+            )
+          }
 
           <!-- Description Block -->
           <div class="detail-block" data-anim style="--anim-delay: 0.15s">
             <h2>概要</h2>
             <p>{data.shortDescription}</p>
-            {data.sellingPoints && data.sellingPoints.length > 0 && (
-              <ul class="selling-points">
-                {data.sellingPoints.map((point) => (
-                  <li>{point}</li>
-                ))}
-              </ul>
-            )}
+            {
+              data.sellingPoints && data.sellingPoints.length > 0 && (
+                <ul class="selling-points">
+                  {data.sellingPoints.map((point) => (
+                    <li>{point}</li>
+                  ))}
+                </ul>
+              )
+            }
             <Content />
           </div>
         </div>
@@ -145,31 +180,39 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
           shareTitle={data.title}
         >
           <Fragment slot="before-purchase">
-            {data.earlyAccess?.enabled && (
-              <>
-                <h3>先行体験版</h3>
-                <EarlyAccessDownload
-                  password={data.earlyAccess.password}
-                  downloadUrl={data.earlyAccess.downloadUrl}
-                  cienUrl={EXTERNAL_LINKS.cien}
-                />
-              </>
-            )}
+            {
+              data.earlyAccess?.enabled && (
+                <>
+                  <h3>先行体験版</h3>
+                  <EarlyAccessDownload
+                    password={data.earlyAccess.password}
+                    downloadUrl={data.earlyAccess.downloadUrl}
+                    cienUrl={EXTERNAL_LINKS.cien}
+                  />
+                </>
+              )
+            }
           </Fragment>
 
           <Fragment slot="after-purchase">
-            {platformLinks.length === 0 && (
-              <div class="sidebar-coming-soon">
-                <p class="sidebar-small">販売情報は後日公開予定</p>
-                <a class="button button--cien button--block" href={EXTERNAL_LINKS.cien}
-                   target="_blank" rel="noopener noreferrer">
-                  Ci-en で進捗を見る →
-                </a>
-                <a class="button button--cien button--block" href={withBase('news/')}>
-                  開発ログを見る →
-                </a>
-              </div>
-            )}
+            {
+              platformLinks.length === 0 && (
+                <div class="sidebar-coming-soon">
+                  <p class="sidebar-small">販売情報は後日公開予定</p>
+                  <a
+                    class="button button--cien button--block"
+                    href={EXTERNAL_LINKS.cien}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ci-en で進捗を見る →
+                  </a>
+                  <a class="button button--cien button--block" href={withBase('news/')}>
+                    開発ログを見る →
+                  </a>
+                </div>
+              )
+            }
 
             <h3>仕様</h3>
             <table class="spec-table">
@@ -188,7 +231,13 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
                 </tr>
                 <tr>
                   <td>Hシーン</td>
-                  <td>{data.volume.hSceneCount === 0 ? '後日公開' : `${data.volume.hSceneCount} シーン`}</td>
+                  <td
+                    >{
+                      data.volume.hSceneCount === 0
+                        ? '後日公開'
+                        : `${data.volume.hSceneCount} シーン`
+                    }</td
+                  >
                 </tr>
                 <tr>
                   <td>分岐</td>
@@ -205,10 +254,14 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
               <span class={`env-tag ${data.environments.mac ? 'env-tag--yes' : 'env-tag--no'}`}>
                 Mac
               </span>
-              <span class={`env-tag ${data.environments.browserPc ? 'env-tag--yes' : 'env-tag--no'}`}>
+              <span
+                class={`env-tag ${data.environments.browserPc ? 'env-tag--yes' : 'env-tag--no'}`}
+              >
                 ブラウザ PC
               </span>
-              <span class={`env-tag ${data.environments.browserMobileBeta ? 'env-tag--yes' : 'env-tag--no'}`}>
+              <span
+                class={`env-tag ${data.environments.browserMobileBeta ? 'env-tag--yes' : 'env-tag--no'}`}
+              >
                 モバイル β
               </span>
             </div>
@@ -231,9 +284,7 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
     <Lightbox itemSelector=".work-cover, .gallery-item" />
 
     <section class="container section--compact">
-      <div class="notice">
-        販売・決済・納品は外部ストアが担当します。
-      </div>
+      <div class="notice">販売・決済・納品は外部ストアが担当します。</div>
       <ArticlePagination
         prev={prev}
         next={next}

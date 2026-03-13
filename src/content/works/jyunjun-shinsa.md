@@ -2,6 +2,7 @@
 title: "従順審査"
 catch: "あなたは男尊女卑常識時代における、従順審査の審査員です。従順審査の名のもと、美女を好き放題しましょう。"
 shortDescription: "従順審査シミュレーションゲーム。"
+metaDescription: "「従順審査」は男尊女卑が常識化した世界で審査員として美女を審査する同人シミュレーションゲーム。CG70枚超・マルチエンド収録。DLsite・FANZAで販売中。体験版あり。"
 releaseDate: 2026-02-03
 isR18: true
 platformLinks:
