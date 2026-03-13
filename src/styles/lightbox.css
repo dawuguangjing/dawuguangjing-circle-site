@@ -52,6 +52,7 @@
     transform var(--dur-medium) var(--easing),
     opacity var(--dur-quick) ease;
   display: block;
+  cursor: zoom-in;
 }
 
 .lightbox-overlay.is-active .lightbox-img,
