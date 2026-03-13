@@ -39,9 +39,11 @@ const works = await getSortedWorks();
         <div class="sort-bar-wrap" slot="sort">
           <div class="sort-bar">
             <span class="sort-label">並び順:</span>
-            <button class="sort-btn is-active" data-sort="newest">新しい順</button>
-            <button class="sort-btn" data-sort="oldest">古い順</button>
-            <button class="sort-btn" data-sort="title">タイトル順</button>
+            <button class="sort-btn is-active" data-sort="newest" aria-pressed="true"
+              >新しい順</button
+            >
+            <button class="sort-btn" data-sort="oldest" aria-pressed="false">古い順</button>
+            <button class="sort-btn" data-sort="title" aria-pressed="false">タイトル順</button>
           </div>
         </div>
       </FilterSheet>

@@ -28,9 +28,9 @@ const galleries = await getSortedGallery();
         stateId="gallery"
         clearText="並び順をリセット"
       >
-        <button class="filter-chip is-active" data-sort="newest">新着順</button>
-        <button class="filter-chip" data-sort="oldest">古い順</button>
-        <button class="filter-chip" data-sort="title">タイトル順</button>
+        <button class="filter-chip is-active" data-sort="newest" aria-pressed="true">新着順</button>
+        <button class="filter-chip" data-sort="oldest" aria-pressed="false">古い順</button>
+        <button class="filter-chip" data-sort="title" aria-pressed="false">タイトル順</button>
       </FilterSheet>
       {
         galleries.length > 0 ? (

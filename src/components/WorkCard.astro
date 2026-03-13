@@ -13,7 +13,13 @@ interface Props extends ImageLoadProps {
   isR18: boolean;
   hasTrial?: boolean;
   showEnvironments?: boolean;
-  environments?: { windows?: boolean; mac?: boolean; browserPc?: boolean; ios?: boolean; android?: boolean };
+  environments?: {
+    windows?: boolean;
+    mac?: boolean;
+    browserPc?: boolean;
+    ios?: boolean;
+    android?: boolean;
+  };
 }
 
 const {
@@ -27,7 +33,7 @@ const {
   showEnvironments = false,
   environments,
   loading = 'lazy',
-  fetchpriority,
+  fetchpriority
 } = Astro.props;
 
 const isComingSoon = releaseDate.getFullYear() >= COMING_SOON_YEAR;
@@ -38,7 +44,7 @@ const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
   <div class="work-row-cover img-skeleton">
     <img
       src={withBase(cover)}
-      alt={`${title} cover`}
+      alt=""
       loading={loading}
       fetchpriority={fetchpriority}
       sizes={IMAGE_SIZES.workCard}

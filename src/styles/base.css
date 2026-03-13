@@ -7,6 +7,13 @@
    - body: overflow-x: clip は scroll container を作らず position:sticky を壊さない */
 html {
   overflow-x: hidden;
+  scroll-padding-top: var(--scroll-offset);
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {

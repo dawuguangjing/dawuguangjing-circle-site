@@ -113,6 +113,10 @@ a.announcement-bar-text:hover {
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
   padding: 12px;
+  min-width: var(--touch-min);
+  min-height: var(--touch-min);
+  display: grid;
+  place-items: center;
   line-height: 0;
   transition: color var(--dur-quick);
 }
@@ -273,18 +277,21 @@ a.announcement-bar-text:hover {
   display: inline-block;
 }
 
-.nav-links a.is-active {
+.nav-links a.is-active,
+.nav-links a[aria-current='page'] {
   color: var(--cta);
   font-weight: 600;
 }
 
-.nav-links a.is-active::after {
+.nav-links a.is-active::after,
+.nav-links a[aria-current='page']::after {
   width: 100%;
   left: 0;
   background: var(--cta);
 }
 
-.nav-links a.is-active .nav-char {
+.nav-links a.is-active .nav-char,
+.nav-links a[aria-current='page'] .nav-char {
   animation: logo-wave 2s ease calc(var(--i) * 0.07s) infinite;
 }
 

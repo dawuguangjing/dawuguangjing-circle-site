@@ -17,7 +17,16 @@ interface Props {
   sellingPoints?: string[];
 }
 
-const { slug, title, catch: catchPhrase, cover, isR18, platformLinks, trialLinks, sellingPoints } = Astro.props;
+const {
+  slug,
+  title,
+  catch: catchPhrase,
+  cover,
+  isR18,
+  platformLinks,
+  trialLinks,
+  sellingPoints
+} = Astro.props;
 const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
 ---
 
@@ -27,17 +36,16 @@ const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
     triggerSelector=".store-button, .hero-banner-detail-link"
     goldSpawnRate={0.5}
     fishes={[
-      { dir: 'r', top: '15%', dur: '18s', delay: '0s',   size: 36 },
-      { dir: 'l', top: '55%', dur: '24s', delay: '-7s',  size: 52 },
-      { dir: 'r', top: '75%', dur: '14s', delay: '-4s',  size: 28 },
+      { dir: 'r', top: '15%', dur: '18s', delay: '0s', size: 36 },
+      { dir: 'l', top: '55%', dur: '24s', delay: '-7s', size: 52 },
+      { dir: 'r', top: '75%', dur: '14s', delay: '-4s', size: 28 },
       { dir: 'l', top: '35%', dur: '30s', delay: '-12s', size: 60 },
-      { dir: 'r', top: '88%', dur: '20s', delay: '-9s',  size: 44 },
-      { dir: 'l', top: '62%', dur: '26s', delay: '-5s',  size: 54, gold: true },
+      { dir: 'r', top: '88%', dur: '20s', delay: '-9s', size: 44 },
+      { dir: 'l', top: '62%', dur: '26s', delay: '-5s', size: 54, gold: true }
     ]}
   />
 
   <div class="hero-banner-inner container">
-
     <!-- 左: テキスト -->
     <div class="hero-banner-text">
       <div class="hero-banner-eyebrow">
@@ -47,11 +55,15 @@ const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
       <h2 class="hero-banner-title">{title}</h2>
       <p class="hero-banner-catch">{catchPhrase}</p>
 
-      {sellingPoints && sellingPoints.length > 0 && (
-        <ul class="selling-points">
-          {sellingPoints.map((point) => <li>{point}</li>)}
-        </ul>
-      )}
+      {
+        sellingPoints && sellingPoints.length > 0 && (
+          <ul class="selling-points">
+            {sellingPoints.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        )
+      }
 
       <div class="hero-banner-cta">
         <StoreButtonGroup links={purchaseLinks} location="hero_banner" />
@@ -59,14 +71,22 @@ const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
 
       <div class="hero-banner-sub">
         <TrialLinks trialLinks={trialLinks} location="hero_banner" />
-        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
+        <a class="hero-banner-detail-link" href={withBase(`works/${slug}/`)}
+          >詳細を見る <span class="hero-detail-arrow">→</span></a
+        >
       </div>
     </div>
 
     <!-- 右: カバー画像 -->
     <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
-      <img src={cover} alt={`${title} cover`} width={IMAGE_DIMENSIONS.heroBanner.width} height={IMAGE_DIMENSIONS.heroBanner.height} fetchpriority="high" loading="eager" />
+      <img
+        src={cover}
+        alt=""
+        width={IMAGE_DIMENSIONS.heroBanner.width}
+        height={IMAGE_DIMENSIONS.heroBanner.height}
+        fetchpriority="high"
+        loading="eager"
+      />
     </a>
-
   </div>
 </section>

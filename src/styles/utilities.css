@@ -146,7 +146,7 @@ html[data-theme='dark'] .about-page .external-link-desc {
 }
 
 .faq-item summary:hover {
-  background: var(--accent-alpha-5);
+  background: var(--accent-alpha-05);
 }
 
 .faq-answer-inner {

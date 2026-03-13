@@ -27,10 +27,11 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         ariaLabel="記事フィルター"
         stateId="news"
       >
-        <button class="filter-chip is-active" data-category="all">すべて</button>
+        <button class="filter-chip is-active" data-category="all" aria-pressed="true">すべて</button
+        >
         {
           categories.map(([key, label]) => (
-            <button class="filter-chip" data-category={key}>
+            <button class="filter-chip" data-category={key} aria-pressed="false">
               {label}
             </button>
           ))
