@@ -9,15 +9,24 @@ interface Props {
 const { ageKey, ageTtl } = Astro.props;
 ---
 
-<div class="age-overlay" role="dialog" aria-modal="true" aria-labelledby="age-overlay-title" aria-describedby="age-overlay-desc" data-nosnippet>
+<div
+  class="age-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="age-overlay-title"
+  aria-describedby="age-overlay-desc"
+  data-nosnippet
+  data-age-key={ageKey}
+  data-age-ttl={ageTtl}
+>
   <TunaTank
     triggerSelector="#age-confirm-overlay"
     fishes={[
-      { dir: 'r', top: '12%', dur: '14s', delay: '0s',   size: 40 },
-      { dir: 'l', top: '35%', dur: '20s', delay: '-6s',  size: 56 },
+      { dir: 'r', top: '12%', dur: '14s', delay: '0s', size: 40 },
+      { dir: 'l', top: '35%', dur: '20s', delay: '-6s', size: 56 },
       { dir: 'r', top: '60%', dur: '25s', delay: '-11s', size: 64 },
-      { dir: 'l', top: '80%', dur: '11s', delay: '-3s',  size: 30 },
-      { dir: 'r', top: '48%', dur: '18s', delay: '-8s',  size: 48 },
+      { dir: 'l', top: '80%', dur: '11s', delay: '-3s', size: 30 },
+      { dir: 'r', top: '48%', dur: '18s', delay: '-8s', size: 48 }
     ]}
   />
   <div class="age-gate-card">
@@ -36,45 +45,51 @@ const { ageKey, ageTtl } = Astro.props;
   </div>
 </div>
 
-<script is:inline define:vars={{ ageKey, ageTtl }}>
-  (function() {
-    var btn    = document.getElementById('age-confirm-overlay');
-    var deny   = document.getElementById('age-deny-overlay');
-    var denied = document.getElementById('age-denied-overlay');
+<script>
+  import { safeSet, safeRemove } from '../scripts/safe-storage';
+  import { onTransitionEnd } from '../scripts/transition-end';
 
-    if (btn) {
-      btn.addEventListener('click', function() {
-        try {
-          localStorage.setItem(ageKey, String(Date.now() + ageTtl));
-        } catch(e) {
-          try { sessionStorage.setItem(ageKey, String(Date.now() + ageTtl)); } catch(e2) {}
-        }
-        var overlay = document.querySelector('.age-overlay');
-        var rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (!overlay || rm) {
+  const overlay = document.querySelector<HTMLElement>('.age-overlay');
+  if (overlay) {
+    const ageKey = overlay.dataset.ageKey!;
+    const ageTtl = Number(overlay.dataset.ageTtl);
+    const btn = document.getElementById('age-confirm-overlay');
+    const deny = document.getElementById('age-deny-overlay');
+    const denied = document.getElementById('age-denied-overlay');
+
+    btn?.addEventListener('click', () => {
+      const expiry = String(Date.now() + ageTtl);
+      safeSet(ageKey, expiry);
+      safeSet(ageKey, expiry, 'session');
+      const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (rm) {
+        document.documentElement.classList.add('age-verified');
+        return;
+      }
+      overlay.style.opacity = '0';
+      onTransitionEnd(
+        overlay,
+        () => {
           document.documentElement.classList.add('age-verified');
-          return;
-        }
-        overlay.style.opacity = '0';
-        var done = false;
-        function finish() {
-          if (done) return;
-          done = true;
-          document.documentElement.classList.add('age-verified');
-        }
-        overlay.addEventListener('transitionend', finish, { once: true });
-        setTimeout(finish, 400);
-      });
-    }
-    if (deny) {
-      deny.addEventListener('click', function() {
-        try { localStorage.removeItem(ageKey); } catch(e) {}
-        try { sessionStorage.removeItem(ageKey); } catch(e) {}
-        if (denied) denied.removeAttribute('hidden');
-        if (btn) { btn.setAttribute('disabled', ''); btn.setAttribute('aria-disabled', 'true'); }
+        },
+        400
+      );
+    });
+
+    deny?.addEventListener('click', () => {
+      safeRemove(ageKey);
+      safeRemove(ageKey, 'session');
+      if (denied) denied.removeAttribute('hidden');
+      if (btn) {
+        btn.setAttribute('disabled', '');
+        btn.setAttribute('aria-disabled', 'true');
+      }
+      if (deny) {
         deny.setAttribute('disabled', '');
-      });
-    }
-    if (btn) btn.focus();
-  })();
+        deny.setAttribute('aria-disabled', 'true');
+      }
+    });
+
+    btn?.focus();
+  }
 </script>

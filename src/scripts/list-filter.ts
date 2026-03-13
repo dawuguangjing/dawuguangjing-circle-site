@@ -4,39 +4,38 @@
 import { FILTER_STAGGER, FILTER_DEBOUNCE_MS } from '../utils/constants';
 import { prefersReducedMotion, smoothScrollBehavior } from './motion';
 import type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
-import { getActiveFilterValues, getActiveSortValue, restoreFilterFromUrl, syncFilterStateToUrl } from './filter-url';
+import {
+  chipValue,
+  setChipActive,
+  getActiveFilterValues,
+  getActiveSortValue,
+  restoreFilterFromUrl,
+  syncFilterStateToUrl
+} from './filter-url';
 
 // Re-export types for public API
 export type { FilterDimension, SortDimension, Dimension, ListFilterConfig } from './filter-state';
 
 // ── ヘルパー ──
 
-/** チップから値を取得 */
-function chipValue(chip: HTMLElement, dataKey: string): string {
-  return chip.dataset[dataKey] ?? '';
-}
-
 /** チップ配列からラベルマップを構築 */
-function buildLabelMap(chips: HTMLElement[], dataKey: string, excludeValues: string[] = []): Map<string, string> {
+function buildLabelMap(
+  chips: HTMLElement[],
+  dataKey: string,
+  excludeValues: string[] = []
+): Map<string, string> {
   const exclude = new Set(excludeValues);
   return new Map(
     chips
-      .filter(c => !exclude.has(chipValue(c, dataKey)))
-      .map(c => [chipValue(c, dataKey), (c.textContent ?? '').trim() || chipValue(c, dataKey)])
+      .filter((c) => !exclude.has(chipValue(c, dataKey)))
+      .map((c) => [chipValue(c, dataKey), (c.textContent ?? '').trim() || chipValue(c, dataKey)])
   );
 }
 
 // ── メインセットアップ ──
 
 export function setupListFilter(config: ListFilterConfig) {
-  const {
-    stateId,
-    gridSelector,
-    itemSelector,
-    dimensions,
-    animateDelay = true,
-    onUpdate,
-  } = config;
+  const { stateId, gridSelector, itemSelector, dimensions, animateDelay = true, onUpdate } = config;
 
   const grid = document.querySelector<HTMLElement>(gridSelector);
   if (!grid) return;
@@ -57,7 +56,9 @@ export function setupListFilter(config: ListFilterConfig) {
     dimLabels.set(dim, buildLabelMap(chips, dim.chipDataKey, excludes));
   }
 
-  const filterDims = dimensions.filter((d): d is FilterDimension => d.type === 'filter-single' || d.type === 'filter-multi');
+  const filterDims = dimensions.filter(
+    (d): d is FilterDimension => d.type === 'filter-single' || d.type === 'filter-multi'
+  );
   const sortDims = dimensions.filter((d): d is SortDimension => d.type === 'sort');
 
   // ── 状態取得ラッパー ──
@@ -77,7 +78,7 @@ export function setupListFilter(config: ListFilterConfig) {
     let count = 0;
     for (const dim of filterDims) {
       const vals = getActiveValues(dim);
-      count += dim.type === 'filter-multi' ? vals.length : (vals.length > 0 ? 1 : 0);
+      count += dim.type === 'filter-multi' ? vals.length : vals.length > 0 ? 1 : 0;
     }
     for (const dim of sortDims) {
       if (getSortValue(dim) !== dim.defaultValue) count++;
@@ -100,7 +101,7 @@ export function setupListFilter(config: ListFilterConfig) {
     for (const dim of filterDims) {
       const vals = getActiveValues(dim);
       if (vals.length > 0) {
-        const labels = vals.map(v => dimLabels.get(dim)!.get(v) ?? v);
+        const labels = vals.map((v) => dimLabels.get(dim)!.get(v) ?? v);
         const prefix = dim.summaryPrefix ?? '絞り込み';
         parts.push(`${prefix}: ${labels.join(' / ')}`);
       }
@@ -130,17 +131,23 @@ export function setupListFilter(config: ListFilterConfig) {
     // 1) 表示判定
     let visibleCount = 0;
     const toHide: HTMLElement[] = [];
-    items.forEach(el => {
+    items.forEach((el) => {
       let show = true;
       for (const dim of filterDims) {
         const vals = getActiveValues(dim);
         if (vals.length === 0) continue;
         if (dim.filterTest) {
           // カスタム述語 AND
-          if (!vals.every(v => dim.filterTest![v]?.(el))) { show = false; break; }
+          if (!vals.every((v) => dim.filterTest![v]?.(el))) {
+            show = false;
+            break;
+          }
         } else if (dim.itemDataKey) {
           const itemVal = el.dataset[dim.itemDataKey] ?? '';
-          if (!vals.includes(itemVal)) { show = false; break; }
+          if (!vals.includes(itemVal)) {
+            show = false;
+            break;
+          }
         }
       }
       if (show) {
@@ -156,10 +163,12 @@ export function setupListFilter(config: ListFilterConfig) {
 
     // 退出アニメーション完了後に非表示化
     if (toHide.length > 0) {
-      const dur = reducedMotion ? 0
-        : (parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-fast')) * 1000 || 150);
+      const dur = reducedMotion
+        ? 0
+        : parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--dur-fast')) *
+            1000 || 150;
       setTimeout(() => {
-        toHide.forEach(el => {
+        toHide.forEach((el) => {
           el.style.display = 'none';
           el.classList.remove('is-exiting');
         });
@@ -173,12 +182,12 @@ export function setupListFilter(config: ListFilterConfig) {
         const val = getSortValue(dim);
         allItems.sort((a, b) => dim.sortFn(a, b, val));
       }
-      allItems.forEach(el => grid!.appendChild(el));
+      allItems.forEach((el) => grid!.appendChild(el));
     }
 
     // 3) アニメーションとリフロー
     let animIdx = 0;
-    items.forEach(el => {
+    items.forEach((el) => {
       if (el.style.display === 'none') return;
       if (animateDelay) {
         el.style.setProperty('--anim-delay', `${animIdx * FILTER_STAGGER}s`);
@@ -197,9 +206,10 @@ export function setupListFilter(config: ListFilterConfig) {
 
     // 5) スクロール（0件時は空状態要素にスクロール）
     if (scroll) {
-      const scrollTarget = (visibleCount === 0 && config.emptySelector)
-        ? document.querySelector<HTMLElement>(config.emptySelector) ?? grid!
-        : grid!;
+      const scrollTarget =
+        visibleCount === 0 && config.emptySelector
+          ? (document.querySelector<HTMLElement>(config.emptySelector) ?? grid!)
+          : grid!;
       scrollTarget.scrollIntoView({ behavior: smoothScrollBehavior(), block: 'start' });
     }
   }
@@ -218,24 +228,20 @@ export function setupListFilter(config: ListFilterConfig) {
   for (const dim of filterDims) {
     const chips = dimChips.get(dim)!;
     if (dim.type === 'filter-multi') {
-      const allChip = chips.find(c => chipValue(c, dim.chipDataKey) === dim.defaultValue);
-      chips.forEach(chip => {
+      const allChip = chips.find((c) => chipValue(c, dim.chipDataKey) === dim.defaultValue);
+      chips.forEach((chip) => {
         chip.addEventListener('click', () => {
           const val = chipValue(chip, dim.chipDataKey);
           if (val === dim.defaultValue) {
             // "all" → 他チップをリセット
-            chips.forEach(c => { c.classList.remove('is-active'); c.setAttribute('aria-pressed', 'false'); });
-            chip.classList.add('is-active');
-            chip.setAttribute('aria-pressed', 'true');
+            chips.forEach((c) => setChipActive(c, false));
+            setChipActive(chip, true);
           } else {
-            allChip?.classList.remove('is-active');
-            allChip?.setAttribute('aria-pressed', 'false');
+            if (allChip) setChipActive(allChip, false);
             const next = !chip.classList.contains('is-active');
-            chip.classList.toggle('is-active', next);
-            chip.setAttribute('aria-pressed', String(next));
-            if (getActiveValues(dim).length === 0) {
-              allChip?.classList.add('is-active');
-              allChip?.setAttribute('aria-pressed', 'true');
+            setChipActive(chip, next);
+            if (getActiveValues(dim).length === 0 && allChip) {
+              setChipActive(allChip, true);
             }
           }
           applyAllDebounced(true);
@@ -243,13 +249,9 @@ export function setupListFilter(config: ListFilterConfig) {
       });
     } else {
       // filter-single
-      chips.forEach(chip => {
+      chips.forEach((chip) => {
         chip.addEventListener('click', () => {
-          chips.forEach(c => {
-            const isActive = c === chip;
-            c.classList.toggle('is-active', isActive);
-            c.setAttribute('aria-pressed', String(isActive));
-          });
+          chips.forEach((c) => setChipActive(c, c === chip));
           applyAllDebounced(true);
         });
       });
@@ -258,9 +260,9 @@ export function setupListFilter(config: ListFilterConfig) {
 
   for (const dim of sortDims) {
     const chips = dimChips.get(dim)!;
-    chips.forEach(chip => {
+    chips.forEach((chip) => {
       chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.toggle('is-active', c === chip));
+        chips.forEach((c) => c.classList.toggle('is-active', c === chip));
         applyAllDebounced(true);
       });
     });
@@ -272,11 +274,7 @@ export function setupListFilter(config: ListFilterConfig) {
     // 全次元をデフォルトに戻す
     for (const dim of dimensions) {
       const chips = dimChips.get(dim)!;
-      chips.forEach(c => {
-        const isDefault = chipValue(c, dim.chipDataKey) === dim.defaultValue;
-        c.classList.toggle('is-active', isDefault);
-        c.setAttribute('aria-pressed', String(isDefault));
-      });
+      chips.forEach((c) => setChipActive(c, chipValue(c, dim.chipDataKey) === dim.defaultValue));
     }
     applyAll(true);
     document.getElementById('filter-sheet-trigger')?.focus();
@@ -308,11 +306,9 @@ export function setupListFilter(config: ListFilterConfig) {
       const firstDim = dimensions[0];
       if (firstDim) {
         const chips = dimChips.get(firstDim)!;
-        chips.forEach(c => {
-          const isDefault = chipValue(c, firstDim.chipDataKey) === firstDim.defaultValue;
-          c.classList.toggle('is-active', isDefault);
-          c.setAttribute('aria-pressed', String(isDefault));
-        });
+        chips.forEach((c) =>
+          setChipActive(c, chipValue(c, firstDim.chipDataKey) === firstDim.defaultValue)
+        );
       }
       applyAll(true);
       document.getElementById('filter-sheet-trigger')?.focus();

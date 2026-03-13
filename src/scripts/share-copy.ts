@@ -30,7 +30,9 @@ export function initShareCopy() {
 const _initedShareBtns = new WeakSet<Element>();
 
 export function initNativeShare() {
-  if (typeof navigator.share !== 'function') return;
+  // モバイルのみ表示（PCではnavigator.shareが存在してもUXが悪い）
+  const isMobile = 'ontouchstart' in window && navigator.maxTouchPoints > 0;
+  if (!isMobile || typeof navigator.share !== 'function') return;
 
   document.querySelectorAll<HTMLElement>('[data-share-native]').forEach((btn) => {
     if (_initedShareBtns.has(btn)) return;

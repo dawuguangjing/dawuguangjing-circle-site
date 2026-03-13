@@ -25,9 +25,9 @@ export interface FilterSheetControls {
 
 export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls {
   const filterBar = document.getElementById(config.filterBarId);
-  const overlay   = document.getElementById(config.overlayId);
-  const trigger   = document.getElementById(config.triggerId);
-  const closeBtn  = document.getElementById(config.closeBtnId);
+  const overlay = document.getElementById(config.overlayId);
+  const trigger = document.getElementById(config.triggerId);
+  const closeBtn = document.getElementById(config.closeBtnId);
 
   let prevFocus: HTMLElement | null = null;
 
@@ -56,11 +56,13 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
   overlay?.addEventListener('click', close);
   closeBtn?.addEventListener('click', close);
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') close();
+    // ESC は overlay-close.ts → ui:close-overlays で一元管理
     // フォーカストラップ: シートが開いている間、Tab をシート内に閉じ込める
     if (filterBar?.classList.contains('is-open') && filterBar) {
       const focusable = Array.from(
-        filterBar.querySelectorAll<HTMLElement>('button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled])')
+        filterBar.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled])'
+        )
       ).filter((el) => el.offsetParent !== null);
       trapFocus(e, focusable);
     }
@@ -75,15 +77,12 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
  * ページ固有パラメータだけを渡す簡易ラッパー。
  * overlayId / triggerId / closeBtnId は全ページ共通のため省略。
  */
-export function initPageFilterSheet(
-  filterBarId: string,
-  lockKey: string,
-): FilterSheetControls {
+export function initPageFilterSheet(filterBarId: string, lockKey: string): FilterSheetControls {
   return initFilterSheet({
     filterBarId,
     overlayId: 'filter-sheet-overlay',
     triggerId: 'filter-sheet-trigger',
     closeBtnId: 'filter-sheet-close',
-    lockKey,
+    lockKey
   });
 }

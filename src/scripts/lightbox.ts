@@ -5,6 +5,7 @@
 import { lockScroll, unlockScroll } from './scroll-lock';
 import { safeGet, safeSet } from './safe-storage';
 import { prefersReducedMotion, smoothScrollBehavior } from './motion';
+import { onTransitionEnd } from './transition-end';
 import {
   HINT_DISMISS_MS,
   LIGHTBOX_HINT_KEY,
@@ -257,13 +258,7 @@ function initLightbox() {
     }
 
     // transitionend を待ってから close()（フォールバックタイマー付き）
-    const fallback = setTimeout(finishClose, LIGHTBOX_FADE_OUT_MS);
-    lightbox.addEventListener('transitionend', function onEnd(e: TransitionEvent) {
-      if (e.target !== lightbox) return;
-      clearTimeout(fallback);
-      lightbox.removeEventListener('transitionend', onEnd);
-      finishClose();
-    });
+    onTransitionEnd(lightbox, finishClose, LIGHTBOX_FADE_OUT_MS);
   }
 
   // アイテムへのクリック・キーボードイベント
