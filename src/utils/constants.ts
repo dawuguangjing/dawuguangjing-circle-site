@@ -12,7 +12,7 @@ export const SITE_DESCRIPTION =
 export const HOME_NEWS_LIMIT = 5;
 
 /** トップページに表示するギャラリー件数 */
-export const HOME_GALLERY_LIMIT = 4;
+export const HOME_GALLERY_LIMIT = 8;
 
 /** 外部リンク */
 export const EXTERNAL_LINKS = {
