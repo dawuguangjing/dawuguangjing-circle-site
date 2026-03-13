@@ -1,37 +1,63 @@
 ---
 import { withBase } from '../utils/withBase';
 ---
+
 <div class="scroll-progress" id="scroll-progress" aria-hidden="true">
-  <img class="scroll-progress-tuna" src={withBase('images/tuna.png')} alt="" width="22" height="22" />
+  <img
+    class="scroll-progress-tuna"
+    src={withBase('images/tuna.png')}
+    alt=""
+    width="22"
+    height="22"
+  />
 </div>
 
 <script>
   let prevScrollY = 0;
+  let ticking = false;
+  let vw = window.innerWidth;
 
-  function onScroll() {
+  function update() {
+    ticking = false;
     const bar = document.getElementById('scroll-progress');
     if (!bar) return;
+
     const scrolled = window.scrollY;
     const total = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+    const ratio = total > 0 ? scrolled / total : 0;
 
-    // 下スクロール → 右向き(scaleX(-1))、上スクロール → 左向き(scaleX(1))
+    // バー: scaleX で幅制御（GPU 合成のみ）
+    bar.style.setProperty('--sp', String(ratio));
+
+    // マグロ: translateX で移動 + scaleX で向き（GPU 合成のみ）
     const tuna = bar.querySelector<HTMLElement>('.scroll-progress-tuna');
     if (tuna) {
-      tuna.style.transform = scrolled >= prevScrollY ? 'scaleX(-1)' : 'scaleX(1)';
+      const dir = scrolled >= prevScrollY ? -1 : 1;
+      const x = ratio * (vw - 22);
+      tuna.style.transform = `translateX(${x}px) scaleX(${dir})`;
     }
     prevScrollY = scrolled;
   }
 
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener(
+    'resize',
+    () => {
+      vw = window.innerWidth;
+    },
+    { passive: true }
+  );
 
   document.addEventListener('astro:page-load', () => {
     prevScrollY = 0;
-    const bar = document.getElementById('scroll-progress');
-    if (!bar) return;
-    bar.style.width = '0%';
-    const tuna = bar.querySelector<HTMLElement>('.scroll-progress-tuna');
-    if (tuna) tuna.style.transform = 'scaleX(-1)'; // 初期は右向き
-    onScroll();
+    vw = window.innerWidth;
+    update();
   });
 </script>
