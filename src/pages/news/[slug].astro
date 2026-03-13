@@ -23,28 +23,38 @@ const workIndex = await getWorkIndex();
 const articleJsonLd = buildArticleSchema({
   headline: data.title,
   datePublished: data.date,
-  image: data.eyecatch,
+  image: data.eyecatch
 });
 
 // 読了時間（日本語 約500字/分）
 const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 500));
 ---
 
-<BaseLayout title={`${data.title} | 開発ログ`} description={data.title} image={data.eyecatch} type="article" publishedTime={data.date} jsonLd={articleJsonLd}>
+<BaseLayout
+  title={`${data.title} | 開発ログ`}
+  description={data.title}
+  image={data.eyecatch}
+  type="article"
+  publishedTime={data.date}
+  jsonLd={articleJsonLd}
+>
   <ScrollProgress />
   <div class="page-content">
     <div class="container">
-      <Breadcrumb crumbs={[
-        { label: '開発ログ', href: withBase('news/') },
-        { label: data.title },
-      ]} />
+      <Breadcrumb
+        crumbs={[{ label: '開発ログ', href: withBase('news/') }, { label: data.title }]}
+      />
     </div>
     <section class="section container">
       <div class="article-layout">
         <div class="article-layout-main">
           <article class="article">
             <div class="article-header" data-anim>
-              <a href={withBase(`news/?category=${data.category}`)} class={`badge badge--${data.category}`} title="このカテゴリの記事を見る">{categoryLabels[data.category] ?? data.category}</a>
+              <a
+                href={withBase(`news/?category=${data.category}`)}
+                class={`badge badge--${data.category}`}
+                title="このカテゴリの記事を見る">{categoryLabels[data.category] ?? data.category}</a
+              >
               <time class="article-date">{formatDate(data.date)}</time>
               <span class="article-read-time">約 {readMin} 分</span>
             </div>
@@ -54,16 +64,27 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
             <div class="article-body">
               <Content />
             </div>
-            {data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (
-              <div class="article-related">
-                <h3>関連作品</h3>
-                <RelatedWorks slugs={data.relatedWorkSlugs} workIndex={workIndex} justifyEnd={true} />
-              </div>
-            )}
+            {
+              data.relatedWorkSlugs && data.relatedWorkSlugs.length > 0 && (
+                <div class="article-related">
+                  <h3>関連作品</h3>
+                  <RelatedWorks
+                    slugs={data.relatedWorkSlugs}
+                    workIndex={workIndex}
+                    justifyEnd={true}
+                  />
+                </div>
+              )
+            }
           </article>
           <ShareBar url={Astro.url.href} title={data.title} />
           <div class="back-link">
-            <a class="section-link" href={withBase(`news/?category=${data.category}`)} data-back-context data-back-context-key="news">← 開発ログへ戻る</a>
+            <a
+              class="section-link"
+              href={withBase(`news/?category=${data.category}`)}
+              data-back-context
+              data-back-context-key="news">← 開発ログへ戻る</a
+            >
           </div>
 
           <ArticlePagination
@@ -83,7 +104,24 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
         </aside>
       </div>
       <button class="fab-toc" id="fab-toc" aria-label="目次へジャンプ" hidden>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          ><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"
+          ></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"
+          ></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line
+            x1="3"
+            y1="18"
+            x2="3.01"
+            y2="18"></line></svg
+        >
         <span>目次</span>
       </button>
     </section>
@@ -93,13 +131,26 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
 <script>
   import { smoothScrollBehavior } from '../../scripts/motion';
 
-  const toc = document.getElementById('toc');
-  const tocList = document.getElementById('toc-list');
-  const headings = Array.from(
-    document.querySelectorAll<HTMLHeadingElement>('.article-body h2, .article-body h3')
-  );
+  function initToc() {
+    const toc = document.getElementById('toc');
+    const tocList = document.getElementById('toc-list');
+    const tocJump = document.getElementById('toc-jump');
+    const fabToc = document.getElementById('fab-toc');
 
-  if (toc && tocList && headings.length >= 2) {
+    if (!toc || !tocList) return;
+
+    const headings = Array.from(
+      document.querySelectorAll<HTMLHeadingElement>('.article-body h2, .article-body h3')
+    );
+
+    if (headings.length < 2) {
+      toc.setAttribute('hidden', '');
+      tocJump?.setAttribute('hidden', '');
+      fabToc?.setAttribute('hidden', '');
+      return;
+    }
+
+    tocList.innerHTML = '';
     headings.forEach((h, i) => {
       if (!h.id) h.id = `heading-${i}`;
       const li = document.createElement('li');
@@ -111,8 +162,7 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
       tocList.appendChild(li);
     });
     toc.removeAttribute('hidden');
-    // モバイル向けジャンプリンクも表示
-    document.getElementById('toc-jump')?.removeAttribute('hidden');
+    tocJump?.removeAttribute('hidden');
 
     // ── TOCスクロールスパイ ──
     const tocLinks = Array.from(document.querySelectorAll<HTMLAnchorElement>('#toc-list a'));
@@ -132,7 +182,6 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
     headings.forEach((h) => spy.observe(h));
 
     // ── フローティング目次ボタン（モバイル） ──
-    const fabToc = document.getElementById('fab-toc');
     if (fabToc) {
       fabToc.removeAttribute('hidden');
       const tocObs = new IntersectionObserver(
@@ -145,4 +194,6 @@ const readMin = Math.max(1, Math.round(entry.body.replace(/\s+/g, '').length / 5
       });
     }
   }
+
+  document.addEventListener('astro:page-load', initToc);
 </script>
