@@ -4,7 +4,13 @@ import Lightbox from '../../components/Lightbox.astro';
 import { withBase } from '../../utils/withBase';
 import { formatDate } from '../../utils/format';
 import { SITE_NAME } from '../../utils/constants';
-import { getWorkIndex, resolveImageCount, getSortedGallery, buildPrevNext, getCharactersByGallery } from '../../utils/collections';
+import {
+  getWorkIndex,
+  resolveImageCount,
+  getSortedGallery,
+  buildPrevNext,
+  getCharactersByGallery
+} from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
 import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
@@ -32,9 +38,9 @@ const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
 });
 
 // ギャラリー自身にリンクがない場合、関連作品のリンクを fallback として使用
-const relatedWorkLinks = hasStoreLinks ? [] : relatedWorks.flatMap((w) =>
-  buildLinks(w.data.platformLinks, PURCHASE_LINK_ENTRIES)
-);
+const relatedWorkLinks = hasStoreLinks
+  ? []
+  : relatedWorks.flatMap((w) => buildLinks(w.data.platformLinks, PURCHASE_LINK_ENTRIES));
 
 // 関連作品の体験版リンク
 const relatedWorkTrialLinks = relatedWorks.flatMap((w) =>
@@ -47,7 +53,7 @@ const relatedCharacters = await getCharactersByGallery(entry.slug);
 const sidebarChars = relatedCharacters.map((c) => ({
   slug: c.slug,
   name: c.data.name,
-  cover: c.data.cover,
+  cover: c.data.cover
 }));
 
 const galleryPurchaseLinks = hasStoreLinks
@@ -62,20 +68,23 @@ const galleryPurchaseLinks = hasStoreLinks
 >
   <div class="page-content">
     <div class="container">
-      <Breadcrumb crumbs={[
-        { label: 'ギャラリー', href: withBase('gallery/') },
-        { label: data.title },
-      ]} />
+      <Breadcrumb
+        crumbs={[{ label: 'ギャラリー', href: withBase('gallery/') }, { label: data.title }]}
+      />
     </div>
     <section class="section container">
       <div class="section-header" data-anim>
         <h1 class="section-title detail-title">{data.title}</h1>
         <div class="gallery-header-meta">
-          {hasMedia && (
-            <span class="gallery-count-badge">
-              {imageCount > 0 && `${imageCount}枚`}{imageCount > 0 && videoCount > 0 && ' · '}{videoCount > 0 && `動画${videoCount}本`}
-            </span>
-          )}
+          {
+            hasMedia && (
+              <span class="gallery-count-badge">
+                {imageCount > 0 && `${imageCount}枚`}
+                {imageCount > 0 && videoCount > 0 && ' · '}
+                {videoCount > 0 && `動画${videoCount}本`}
+              </span>
+            )
+          }
         </div>
       </div>
 
@@ -83,58 +92,68 @@ const galleryPurchaseLinks = hasStoreLinks
         <!-- Main Column -->
         <div class="detail-main">
           <!-- Description -->
-          {entry.body?.trim() && (
-            <div class="detail-block" data-anim>
-              <Content />
-            </div>
-          )}
+          {
+            entry.body?.trim() && (
+              <div class="detail-block" data-anim>
+                <Content />
+              </div>
+            )
+          }
 
           <!-- Media Grid (images + videos) -->
-          {hasMedia && (
-            <div class="gallery-detail-grid" data-anim style="--anim-delay: 0.1s">
-              {data.images.map((img, i) => (
-                <div
-                  class="gallery-detail-item"
-                  data-lightbox-src={img}
-                  data-lightbox-type="image"
-                  data-lightbox-alt={`${data.title} ${i + 1}`}
-                >
-                  <img
-                    src={img}
-                    alt={`${data.title} ${i + 1}`}
-                    loading="lazy"
-                    width="400"
-                    height="300"
-                  />
-                </div>
-              ))}
-              {(data.videos ?? []).map((videoUrl, vi) => (
-                <div
-                  class="gallery-detail-item gallery-detail-item--video"
-                  data-lightbox-src={videoUrl}
-                  data-lightbox-type="video"
-                  tabindex="0"
-                  role="button"
-                  aria-label={`${data.title} 動画 ${vi + 1} を開く`}
-                >
-                  <video
-                    src={videoUrl}
-                    muted
-                    loop
-                    playsinline
-                    preload="metadata"
-                    poster={data.cover}
-                    class="gallery-detail-video"
-                  ></video>
-                  <div class="gallery-detail-play-icon" aria-hidden="true">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+          {
+            hasMedia && (
+              <div class="gallery-detail-grid" data-anim style="--anim-delay: 0.1s">
+                {data.images.map((img, i) => (
+                  <div
+                    class="gallery-detail-item"
+                    data-lightbox-src={img}
+                    data-lightbox-type="image"
+                    data-lightbox-alt={`${data.title} ${i + 1}`}
+                  >
+                    <img
+                      src={img}
+                      alt={`${data.title} ${i + 1}`}
+                      loading="lazy"
+                      width="400"
+                      height="300"
+                    />
                   </div>
-                </div>
-              ))}
-            </div>
-          )}
+                ))}
+                {(data.videos ?? []).map((videoUrl, vi) => (
+                  <div
+                    class="gallery-detail-item gallery-detail-item--video"
+                    data-lightbox-src={videoUrl}
+                    data-lightbox-type="video"
+                    tabindex="0"
+                    role="button"
+                    aria-label={`${data.title} 動画 ${vi + 1} を開く`}
+                  >
+                    <video
+                      src={videoUrl}
+                      muted
+                      loop
+                      playsinline
+                      preload="metadata"
+                      poster={data.cover}
+                      class="gallery-detail-video"
+                    />
+                    <div class="gallery-detail-play-icon" aria-hidden="true">
+                      <svg
+                        width="40"
+                        height="40"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )
+          }
         </div>
 
         <!-- Sidebar -->
@@ -145,6 +164,8 @@ const galleryPurchaseLinks = hasStoreLinks
           characters={sidebarChars}
           location="gallery_detail"
           animDelay="0.15s"
+          shareUrl={Astro.url.href}
+          shareTitle={data.title}
         >
           <Fragment slot="before-trial">
             <h3>情報</h3>
@@ -158,56 +179,73 @@ const galleryPurchaseLinks = hasStoreLinks
                   <td>収録枚数</td>
                   <td>{imageCount}枚</td>
                 </tr>
-                {videoCount > 0 && (
-                  <tr>
-                    <td>動画本数</td>
-                    <td>{videoCount}本</td>
-                  </tr>
-                )}
+                {
+                  videoCount > 0 && (
+                    <tr>
+                      <td>動画本数</td>
+                      <td>{videoCount}本</td>
+                    </tr>
+                  )
+                }
               </tbody>
             </table>
           </Fragment>
 
           <Fragment slot="after-chars">
-            {relatedWorks.length > 0 && (
-              <div class="sidebar-divider">
-                <h3>関連作品</h3>
-                {relatedWorks.map((work) => {
-                  const wPurchaseLinks = buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES);
-                  const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
-                  return (
-                    <div class="related-work-card">
-                      <a class="related-work-card-link-wrap" href={withBase(`works/${work.slug}/`)}>
-                        <img
-                          src={withBase(work.data.images.cover)}
-                          alt={`${work.data.title} cover`}
-                          width="240"
-                          height="160"
-                          loading="lazy"
-                        />
-                        <div class="related-work-card-body">
-                          <p class="related-work-card-title">{work.data.title}</p>
-                          {work.data.shortDescription && (
-                            <p class="related-work-card-desc">{work.data.shortDescription}</p>
-                          )}
-                          <span class="section-link related-work-card-detail">詳細を見る →</span>
-                        </div>
-                      </a>
-                      {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
-                        <div class="related-work-card-cta">
-                          {wTrialLinks.length > 0 && (
-                            <StoreButtonGroup links={wTrialLinks} trial location="gallery_related_work" />
-                          )}
-                          {wPurchaseLinks.length > 0 && (
-                            <StoreButtonGroup links={wPurchaseLinks} location="gallery_related_work" />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+            {
+              relatedWorks.length > 0 && (
+                <div class="sidebar-divider">
+                  <h3>関連作品</h3>
+                  {relatedWorks.map((work) => {
+                    const wPurchaseLinks = buildLinks(
+                      work.data.platformLinks,
+                      PURCHASE_LINK_ENTRIES
+                    );
+                    const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
+                    return (
+                      <div class="related-work-card">
+                        <a
+                          class="related-work-card-link-wrap"
+                          href={withBase(`works/${work.slug}/`)}
+                        >
+                          <img
+                            src={withBase(work.data.images.cover)}
+                            alt={`${work.data.title} cover`}
+                            width="240"
+                            height="160"
+                            loading="lazy"
+                          />
+                          <div class="related-work-card-body">
+                            <p class="related-work-card-title">{work.data.title}</p>
+                            {work.data.shortDescription && (
+                              <p class="related-work-card-desc">{work.data.shortDescription}</p>
+                            )}
+                            <span class="section-link related-work-card-detail">詳細を見る →</span>
+                          </div>
+                        </a>
+                        {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
+                          <div class="related-work-card-cta">
+                            {wTrialLinks.length > 0 && (
+                              <StoreButtonGroup
+                                links={wTrialLinks}
+                                trial
+                                location="gallery_related_work"
+                              />
+                            )}
+                            {wPurchaseLinks.length > 0 && (
+                              <StoreButtonGroup
+                                links={wPurchaseLinks}
+                                location="gallery_related_work"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )
+            }
           </Fragment>
         </StoreSidebar>
       </div>
@@ -217,7 +255,12 @@ const galleryPurchaseLinks = hasStoreLinks
 
     <section class="container section--compact">
       <div class="back-link">
-        <a class="section-link" href={withBase('gallery/')} data-back-context data-back-context-key="gallery">← ギャラリー一覧へ戻る</a>
+        <a
+          class="section-link"
+          href={withBase('gallery/')}
+          data-back-context
+          data-back-context-key="gallery">← ギャラリー一覧へ戻る</a
+        >
       </div>
 
       <ArticlePagination
@@ -241,24 +284,29 @@ const galleryPurchaseLinks = hasStoreLinks
       document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
         const video = item.querySelector('video');
         if (!video) return;
-        const play  = () => video.play().catch(() => {});
-        const reset = () => { video.pause(); video.currentTime = 0; };
+        const play = () => video.play().catch(() => {});
+        const reset = () => {
+          video.pause();
+          video.currentTime = 0;
+        };
 
         if (isTouch) {
-          const io = new IntersectionObserver(([e]) => {
-            e.isIntersecting ? play() : reset();
-          }, { threshold: 0.5 });
+          const io = new IntersectionObserver(
+            ([e]) => {
+              e.isIntersecting ? play() : reset();
+            },
+            { threshold: 0.5 }
+          );
           io.observe(item);
         } else {
           item.addEventListener('mouseenter', play);
           item.addEventListener('mouseleave', reset);
         }
 
-        item.addEventListener('focusin',  play);
+        item.addEventListener('focusin', play);
         item.addEventListener('focusout', reset);
       });
     }
   </script>
   {hasAnyCta && <FabPurchase targetId="purchase-section" />}
-
 </BaseLayout>

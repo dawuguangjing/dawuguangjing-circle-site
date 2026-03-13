@@ -36,16 +36,24 @@ a:hover {
   color: var(--accent);
 }
 
+a:active {
+  opacity: 0.7;
+}
+
 /* ── Focus Styles ── */
 /* マウス/タッチ操作ではアウトラインを非表示、キーボード操作時のみ表示 */
-:focus:not(:focus-visible) { outline: none; }
+:focus:not(:focus-visible) {
+  outline: none;
+}
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: var(--radius-sm);
 }
 /* 円形ボタン（back-to-topなど）はアウトラインも丸める */
-.back-to-top:focus-visible { border-radius: 50%; }
+.back-to-top:focus-visible {
+  border-radius: 50%;
+}
 
 /* ── Skip Navigation ── */
 .skip-link {
@@ -121,7 +129,10 @@ button {
   border-radius: var(--radius-lg);
   padding: 20px;
   box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
+  transition:
+    border-color var(--dur-normal) ease,
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -166,9 +177,10 @@ button {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow);
-  transition: border-color var(--dur-normal) ease,
-              transform var(--dur-medium) var(--easing),
-              box-shadow var(--dur-medium) ease;
+  transition:
+    border-color var(--dur-normal) ease,
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
 }
 
 /* ── Badges / Tags ── */
@@ -237,7 +249,10 @@ button {
   letter-spacing: 0.02em;
   background: var(--cta);
   color: #fff;
-  transition: background var(--dur-normal) ease, transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
+  transition:
+    background var(--dur-normal) ease,
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
   cursor: pointer;
 }
 

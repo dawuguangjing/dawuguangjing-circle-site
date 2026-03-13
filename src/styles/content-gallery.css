@@ -10,7 +10,9 @@
   overflow: hidden;
   min-width: 0;
   cursor: pointer;
-  transition: transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
+  transition:
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
 }
 
 .gallery-item:hover {
@@ -61,7 +63,9 @@
   object-fit: cover;
   object-position: center top;
   display: block;
-  transition: transform var(--dur-slow) var(--easing), opacity var(--dur-slow) ease;
+  transition:
+    transform var(--dur-slow) var(--easing),
+    opacity var(--dur-slow) ease;
 }
 .gallery-card-img--preview {
   opacity: 0;
@@ -110,7 +114,9 @@
   .gallery-card:hover .gallery-card-img:not(.gallery-card-img--preview) {
     transform: scale(1.06);
   }
-  .gallery-card:hover .gallery-card-media--has-preview .gallery-card-img:not(.gallery-card-img--preview) {
+  .gallery-card:hover
+    .gallery-card-media--has-preview
+    .gallery-card-img:not(.gallery-card-img--preview) {
     opacity: 0;
   }
   .gallery-card:hover .gallery-card-img--preview {
@@ -132,7 +138,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 8px 16px;
-  border: 1.5px solid rgba(255,255,255,0.7);
+  border: 1.5px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-md);
 }
 
@@ -168,9 +174,16 @@
   letter-spacing: 0.03em;
 }
 @media (hover: hover) and (pointer: fine) {
-  .gallery-card-cta { display: none; }
+  .gallery-card-cta {
+    display: none;
+  }
 }
-.gallery-card-badges { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.gallery-card-badges {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
 .gallery-card-count {
   font-size: 0.7rem;
   color: var(--accent);
@@ -191,7 +204,9 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   cursor: pointer;
-  transition: transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
+  transition:
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
 }
 .gallery-detail-item:hover,
 .gallery-detail-item:focus-visible {
@@ -201,18 +216,21 @@
   outline-offset: 2px;
 }
 .gallery-detail-item img {
-  width: 100%; height: 100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center 30%;
   display: block;
   transition: transform var(--dur-medium) var(--easing);
 }
-.gallery-detail-item:hover img { transform: scale(1.04); }
+.gallery-detail-item:hover img {
+  transform: scale(1.04);
+}
 
 /* ---- 動画グリッドアイテム ---- */
 .gallery-detail-item--video {
   position: relative;
-  background: #0d0d16; /* メタデータ読み込み前のプレースホルダー */
+  background: var(--color-video-placeholder); /* メタデータ読み込み前のプレースホルダー */
 }
 
 .gallery-detail-video {
@@ -237,7 +255,9 @@
   background: rgba(0, 0, 0, 0.38);
   color: #fff;
   pointer-events: none;
-  transition: background var(--dur-medium) ease, opacity var(--dur-medium) ease;
+  transition:
+    background var(--dur-medium) ease,
+    opacity var(--dur-medium) ease;
 }
 
 .gallery-detail-play-icon svg {
@@ -262,7 +282,9 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: var(--panel);
-  transition: border-color var(--dur-normal) ease, box-shadow var(--dur-normal) ease;
+  transition:
+    border-color var(--dur-normal) ease,
+    box-shadow var(--dur-normal) ease;
 }
 .related-work-card:hover {
   border-color: var(--accent-alpha-25);
@@ -322,8 +344,15 @@
     grid-template-columns: 1fr;
   }
 
-  .gallery-album-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .gallery-detail-grid { grid-template-columns: repeat(2, 1fr); }
+  .gallery-album-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .gallery-detail-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   /* モバイルではサムネイルを正方形にし視認性を向上 */
-  .gallery-detail-item { aspect-ratio: 1 / 1; }
+  .gallery-detail-item {
+    aspect-ratio: 1 / 1;
+  }
 }

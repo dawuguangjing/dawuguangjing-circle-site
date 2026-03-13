@@ -8,20 +8,30 @@ import DualHero from '../components/DualHero.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../utils/withBase';
-import { HOME_NEWS_LIMIT, HOME_GALLERY_LIMIT, SITE_NAME, animDelay, COMING_SOON_YEAR } from '../utils/constants';
+import {
+  HOME_NEWS_LIMIT,
+  HOME_GALLERY_LIMIT,
+  SITE_NAME,
+  animDelay,
+  COMING_SOON_YEAR
+} from '../utils/constants';
 import { imageLoadingProps } from '../utils/format';
-import { getSortedWorks, getSortedNews, getSortedGallery, extractFirstImageUrl } from '../utils/collections';
+import {
+  getSortedWorks,
+  getSortedNews,
+  getSortedGallery,
+  extractFirstImageUrl
+} from '../utils/collections';
 import { buildWebSiteSchema } from '../utils/schema';
 
 const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
 const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
-const characters = (await getCollection('characters')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const characters = (await getCollection('characters')).sort((a, b) => a.data.order - b.data.order);
 const now = new Date();
-const heroWork   = allWorks.find(w => w.data.releaseDate <= now) ?? null;
-const comingWork = allWorks.find(w => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ?? null;
+const heroWork = allWorks.find((w) => w.data.releaseDate <= now) ?? null;
+const comingWork =
+  allWorks.find((w) => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ?? null;
 const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 ---
 
@@ -31,9 +41,11 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   jsonLd={websiteSchema}
 >
   <div class="page-content">
-    {heroWork && comingWork
-      ? <DualHero releasedWork={heroWork} comingWork={comingWork} />
-      : heroWork && (
+    {
+      heroWork && comingWork ? (
+        <DualHero releasedWork={heroWork} comingWork={comingWork} />
+      ) : (
+        heroWork && (
           <HeroBanner
             slug={heroWork.slug}
             title={heroWork.data.title}
@@ -45,108 +57,138 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
             sellingPoints={heroWork.data.sellingPoints}
           />
         )
+      )
     }
 
     <section class="section container">
       <SectionHeader title="作品" href={withBase('works/')} />
       <div class="works-grid grid-stretch-items">
-        {allWorks.map((entry, i) => (
-          <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
-            <WorkCard
-              slug={entry.slug}
-              title={entry.data.title}
-              cover={entry.data.images.cover}
-              description={entry.data.shortDescription}
-              releaseDate={entry.data.releaseDate}
-              isR18={entry.data.isR18}
-              {...imageLoadingProps(i)}
-            />
-          </div>
-        ))}
+        {
+          allWorks.map((entry, i) => (
+            <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
+              <WorkCard
+                slug={entry.slug}
+                title={entry.data.title}
+                cover={entry.data.images.cover}
+                description={entry.data.shortDescription}
+                releaseDate={entry.data.releaseDate}
+                isR18={entry.data.isR18}
+                {...imageLoadingProps(i)}
+              />
+            </div>
+          ))
+        }
       </div>
     </section>
 
-    {characters.length > 0 && (
-      <section class="section container">
-        <SectionHeader title="キャラクター" href={withBase('characters/')} />
-        <div class="home-char-grid">
-          {characters.map((char, i) => (
-            <a
-              class="card-interactive char-card home-char-card"
-              href={withBase(`characters/${char.slug}/`)}
-              data-anim
-              style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
-            >
-              <div class="char-card-img-wrap img-skeleton">
-                <img
-                  src={char.data.cover}
-                  alt={char.data.name}
-                  width="160"
-                  height="213"
-                  loading="lazy"
-                />
-                <div class="char-card-overlay" aria-hidden="true">
-                  <span class="char-card-view home-char-view">プロフィールを見る</span>
+    {
+      characters.length > 0 && (
+        <section class="section container">
+          <SectionHeader title="キャラクター" href={withBase('characters/')} />
+          <div class="home-char-grid">
+            {characters.map((char, i) => (
+              <a
+                class="card-interactive char-card home-char-card"
+                href={withBase(`characters/${char.slug}/`)}
+                data-anim
+                style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
+              >
+                <div class="char-card-img-wrap img-skeleton">
+                  <img
+                    src={char.data.cover}
+                    alt={char.data.name}
+                    width="160"
+                    height="213"
+                    loading="lazy"
+                  />
+                  <div class="char-card-overlay" aria-hidden="true">
+                    <span class="char-card-view home-char-view">プロフィールを見る</span>
+                  </div>
                 </div>
-              </div>
-              <div class="char-card-body home-char-body">
-                <p class="char-card-reading">{char.data.nameReading}</p>
-                <h3 class="char-card-name">{char.data.name}</h3>
-              </div>
-              <div class="char-card-accent" aria-hidden="true"></div>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+                <div class="char-card-body home-char-body">
+                  <p class="char-card-reading">{char.data.nameReading}</p>
+                  <h3 class="char-card-name">{char.data.name}</h3>
+                </div>
+                <div class="char-card-accent" aria-hidden="true" />
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
-    {galleries.length > 0 && (
-      <section class="section container">
-        <SectionHeader title="ギャラリー" href={withBase('gallery/')} />
-        <div class="gallery-album-grid grid-stretch-items">
-          {galleries.map((entry, i) => (
-            <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
-              <GalleryCard
-                slug={entry.slug}
-                title={entry.data.title}
-                cover={entry.data.cover}
-                isR18={entry.data.isR18}
-                imageCount={entry.resolvedImageCount}
-                previewImages={entry.data.images}
-              />
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
+    {
+      galleries.length > 0 && (
+        <section class="section container">
+          <SectionHeader title="ギャラリー" href={withBase('gallery/')} />
+          <div class="gallery-album-grid grid-stretch-items">
+            {galleries.map((entry, i) => (
+              <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
+                <GalleryCard
+                  slug={entry.slug}
+                  title={entry.data.title}
+                  cover={entry.data.cover}
+                  isR18={entry.data.isR18}
+                  imageCount={entry.resolvedImageCount}
+                  previewImages={entry.data.images}
+                />
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
 
     <section class="section container">
       <SectionHeader title="開発ログ" href={withBase('news/')} />
       <div class="news-grid grid-stretch-items">
-        {news.map((entry, i) => (
-          <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
-            <NewsCard
-              slug={entry.slug}
-              title={entry.data.title}
-              date={entry.data.date}
-              category={entry.data.category}
-              thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
-            />
-          </div>
-        ))}
+        {
+          news.map((entry, i) => (
+            <div data-anim style={`--anim-delay: ${animDelay(i)}`}>
+              <NewsCard
+                slug={entry.slug}
+                title={entry.data.title}
+                date={entry.data.date}
+                category={entry.data.category}
+                thumbnail={entry.data.eyecatch ?? extractFirstImageUrl(entry.body)}
+              />
+            </div>
+          ))
+        }
         <div data-anim style={`--anim-delay: ${animDelay(news.length)}`}>
           <a class="news-card-more" href={withBase('news/')}>
-            <svg class="news-card-more-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-              <polyline points="14 2 14 8 20 8"/>
-              <line x1="16" y1="13" x2="8" y2="13"/>
-              <line x1="16" y1="17" x2="8" y2="17"/>
-              <line x1="10" y1="9" x2="8" y2="9"/>
+            <svg
+              class="news-card-more-icon"
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <line x1="10" y1="9" x2="8" y2="9"></line>
             </svg>
             <span class="news-card-more-label">過去の記事をすべて見る</span>
             <span class="news-card-more-cta">
               一覧ページへ
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"></path></svg
+              >
             </span>
           </a>
         </div>
@@ -156,56 +198,56 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 </BaseLayout>
 
 <style>
-.home-char-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 160px));
-  gap: 14px;
-}
-
-/* ── Size overrides for compact home cards ── */
-.home-char-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-}
-
-.home-char-view {
-  font-size: 0.72rem;
-  padding: 4px 12px;
-}
-
-.home-char-body {
-  padding: 10px 12px;
-  gap: 2px;
-}
-
-.char-card-reading {
-  font-size: 0.65rem;
-}
-
-.char-card-name {
-  font-size: var(--fs-body-sm);
-  letter-spacing: 0.02em;
-}
-
-.char-card-overlay {
-  padding-bottom: 14px;
-}
-
-@media (max-width: 480px) {
   .home-char-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 160px));
+    gap: 14px;
+  }
+
+  /* ── Size overrides for compact home cards ── */
+  .home-char-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+  }
+
+  .home-char-view {
+    font-size: 0.72rem;
+    padding: 4px 12px;
   }
 
   .home-char-body {
-    padding: 8px 10px;
+    padding: 10px 12px;
+    gap: 2px;
   }
-}
 
-@media (hover: none) {
-  .home-char-card:active {
-    transform: scale(0.97);
-    transition: transform 0.1s ease;
+  .char-card-reading {
+    font-size: 0.65rem;
   }
-}
+
+  .char-card-name {
+    font-size: var(--fs-body-sm);
+    letter-spacing: 0.02em;
+  }
+
+  .char-card-overlay {
+    padding-bottom: 14px;
+  }
+
+  @media (max-width: 480px) {
+    .home-char-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+    }
+
+    .home-char-body {
+      padding: 8px 10px;
+    }
+  }
+
+  @media (hover: none) {
+    .home-char-card:active {
+      transform: scale(var(--scale-pressed));
+      transition: transform 0.1s ease;
+    }
+  }
 </style>

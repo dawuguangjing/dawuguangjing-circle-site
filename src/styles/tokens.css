@@ -156,6 +156,18 @@
   /* ── Character card overlay ── */
   --overlay-char: rgba(0, 0, 0, 0.3);
   --char-view-border: rgba(255, 255, 255, 0.7);
+  /* ── Scale (active / pressed states) ── */
+  --scale-pressed: 0.97;
+  --scale-pressed-sm: 0.98;
+  /* ── Layout offsets ── */
+  --scroll-offset: 104px;
+  --sticky-offset: 80px;
+  /* ── Semantic colors (additional) ── */
+  --color-upcoming: #e09c00;
+  --color-upcoming-bg: rgba(224, 156, 0, 0.12);
+  --color-upcoming-border: rgba(224, 156, 0, 0.35);
+  --color-new: #e5484d;
+  --color-video-placeholder: #0d0d16;
 }
 
 /* ── Breakpoints (reference only; not usable in @media queries) ──

@@ -8,7 +8,7 @@
   z-index: var(--z-progress-top);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.18s ease;
+  transition: opacity var(--dur-quick) ease;
 }
 
 .route-progress.is-active {
@@ -24,7 +24,7 @@
   transform: scaleX(var(--route-progress));
   background: linear-gradient(90deg, var(--accent), var(--cta));
   box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 45%, transparent);
-  transition: transform 0.18s ease-out;
+  transition: transform var(--dur-quick) ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -532,7 +532,7 @@ a.announcement-bar-text:hover {
 
   .nav-links.is-open {
     display: flex;
-    animation: menu-slide-down 0.18s ease;
+    animation: menu-slide-down var(--dur-quick) ease;
   }
 
   .nav-links.is-closing {

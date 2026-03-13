@@ -40,26 +40,41 @@
 }
 
 @keyframes tuna-swim-r {
-  from { transform: translateX(-120px); }
-  to   { transform: translateX(calc(100vw + 120px)); }
+  from {
+    transform: translateX(-120px);
+  }
+  to {
+    transform: translateX(calc(100vw + 120px));
+  }
 }
 
 @keyframes tuna-swim-l {
-  from { transform: translateX(calc(100vw + 120px)); }
-  to   { transform: translateX(-120px); }
+  from {
+    transform: translateX(calc(100vw + 120px));
+  }
+  to {
+    transform: translateX(-120px);
+  }
 }
 
 /* パニック用：CSS変数 --tx で現在地から開始（アニメーション名を変えることで確実に新規開始） */
 @keyframes tuna-panic-r {
-  from { transform: translateX(var(--tx)); }
-  to   { transform: translateX(calc(100vw + 120px)); }
+  from {
+    transform: translateX(var(--tx));
+  }
+  to {
+    transform: translateX(calc(100vw + 120px));
+  }
 }
 
 @keyframes tuna-panic-l {
-  from { transform: translateX(var(--tx)); }
-  to   { transform: translateX(-120px); }
+  from {
+    transform: translateX(var(--tx));
+  }
+  to {
+    transform: translateX(-120px);
+  }
 }
-
 
 .age-gate-card {
   background: var(--panel);
@@ -114,7 +129,7 @@
   background: rgba(220, 38, 38, 0.06);
   border: 1px solid rgba(220, 38, 38, 0.15);
   border-radius: var(--radius-md);
-  color: #dc2626;
+  color: var(--color-r18);
   font-size: var(--fs-body-sm);
 }
 
@@ -129,7 +144,9 @@
   justify-content: center;
   opacity: 1;
   visibility: visible;
-  transition: opacity var(--dur-medium) ease, visibility var(--dur-medium) ease;
+  transition:
+    opacity var(--dur-medium) ease,
+    visibility var(--dur-medium) ease;
 }
 
 html.age-verified .age-overlay {

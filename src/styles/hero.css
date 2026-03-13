@@ -16,7 +16,7 @@
 /* レアキャラ: 金のマグロ */
 .tuna--gold {
   filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(1.5)
-          drop-shadow(0 0 6px rgba(255, 200, 0, 0.7));
+    drop-shadow(0 0 6px rgba(255, 200, 0, 0.7));
   opacity: 0.55 !important;
 }
 
@@ -110,15 +110,21 @@
   font-size: var(--fs-sm);
   color: var(--ink-dim);
 }
-.hero-trial-label { white-space: nowrap; }
+.hero-trial-label {
+  white-space: nowrap;
+}
 .hero-trial-link {
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color var(--dur-quick) ease;
 }
-.hero-trial-link:hover { color: var(--accent-dark); }
-.hero-sub-sep { color: var(--ink-dim); }
+.hero-trial-link:hover {
+  color: var(--accent-dark);
+}
+.hero-sub-sep {
+  color: var(--ink-dim);
+}
 
 .hero-banner-detail-link {
   font-size: 0.84rem;
@@ -144,7 +150,9 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-  transition: transform var(--dur-medium) var(--easing), box-shadow var(--dur-medium) ease;
+  transition:
+    transform var(--dur-medium) var(--easing),
+    box-shadow var(--dur-medium) ease;
 }
 .hero-banner-cover img {
   width: 100%;
@@ -170,7 +178,9 @@
 
 /* ── Hero Banner: モバイル最適化 ── */
 @media (max-width: 480px) {
-  .hero-banner { padding: 20px 0; }
+  .hero-banner {
+    padding: 20px 0;
+  }
 
   /* カバー(左130px) + テキスト(右) の横並びコンパクトレイアウト */
   .hero-banner-inner {
@@ -187,21 +197,31 @@
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
   }
 
-  .hero-banner-text { gap: 8px; }
+  .hero-banner-text {
+    gap: 8px;
+  }
 
   /* eyebrow（最新作・R18）とタイトルを中央揃え */
-  .hero-banner-eyebrow { justify-content: center; }
-  .hero-banner-title { text-align: center; }
+  .hero-banner-eyebrow {
+    justify-content: center;
+  }
+  .hero-banner-title {
+    text-align: center;
+  }
 
   /* スマホでは縦幅節約のためキャッチを非表示、セリングポイントはコンパクトに表示 */
-  .hero-banner-catch { display: none; }
+  .hero-banner-catch {
+    display: none;
+  }
   .hero-banner .selling-points {
     font-size: 0.72rem;
     gap: 2px;
   }
 
   /* 380px→0.9rem / 480px→1.05rem の線形補間 */
-  .hero-banner-title { font-size: clamp(0.9rem, calc(5.28px + 2.4vw), 1.05rem); }
+  .hero-banner-title {
+    font-size: clamp(0.9rem, calc(5.28px + 2.4vw), 1.05rem);
+  }
 
   .hero-banner-cta,
   .hero-banner-sub {
@@ -229,22 +249,55 @@
 
 /* 1. 入場: テキスト要素が下からフェードイン（順番にずらす） */
 @keyframes hero-fade-up {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 /* 入場: カバー画像は右からスライドイン */
 @keyframes hero-slide-left {
-  from { opacity: 0; transform: translateX(24px); }
-  to   { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.hero-banner-eyebrow  { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.05s; }
-.hero-banner-title    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.15s; }
-.hero-banner-catch    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.25s; }
-.hero-banner .selling-points { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.35s; }
-.hero-banner-cta      { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.45s; }
-.hero-banner-sub    { animation: hero-fade-up 0.45s var(--easing) both; animation-delay: 0.55s; }
-.hero-banner-cover    { animation: hero-slide-left 0.5s var(--easing) both; animation-delay: 0.1s; }
+.hero-banner-eyebrow {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.05s;
+}
+.hero-banner-title {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.15s;
+}
+.hero-banner-catch {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.25s;
+}
+.hero-banner .selling-points {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.35s;
+}
+.hero-banner-cta {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.45s;
+}
+.hero-banner-sub {
+  animation: hero-fade-up 0.45s var(--easing) both;
+  animation-delay: 0.55s;
+}
+.hero-banner-cover {
+  animation: hero-slide-left 0.5s var(--easing) both;
+  animation-delay: 0.1s;
+}
 
 /* ページ遷移直後はヒーロー入場アニメを無効化し、二段階更新感を抑える */
 html.is-client-nav .hero-banner-eyebrow,
@@ -269,33 +322,38 @@ html.is-client-nav .hero-banner-cover {
 
 /* 3. 「最新作」タグ: シマー */
 @keyframes hero-shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 .hero-banner-tag {
-  background: linear-gradient(90deg,
-    var(--sale) 25%,
-    #f05555 50%,
-    var(--sale) 75%
-  );
+  background: linear-gradient(90deg, var(--sale) 25%, #f05555 50%, var(--sale) 75%);
   background-size: 200% auto;
   animation: hero-shimmer 3s linear infinite;
 }
 
 /* 4. CTAボタン: パルスグロー（購入を促す） */
 @keyframes cta-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--pulse-color); }
-  55%       { box-shadow: 0 0 0 8px transparent; }
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--pulse-color);
+  }
+  55% {
+    box-shadow: 0 0 0 8px transparent;
+  }
 }
 .hero-banner .store-button {
   --pulse-color: rgba(249, 101, 50, 0.45);
   animation: cta-pulse 2.4s ease-in-out infinite;
   animation-delay: 0.8s;
 }
-.hero-banner .store-button[data-store="fanza"] {
+.hero-banner .store-button[data-store='fanza'] {
   --pulse-color: var(--pulse-fanza);
 }
-.hero-banner .store-button[data-store="dlsite"] {
+.hero-banner .store-button[data-store='dlsite'] {
   --pulse-color: var(--pulse-dlsite);
 }
 .hero-banner .store-button:hover {
@@ -304,8 +362,13 @@ html.is-client-nav .hero-banner-cover {
 
 /* 5. ボタン内 矢印: ホバーで右バウンス */
 @keyframes arrow-bounce-right {
-  0%, 100% { transform: translateX(0); }
-  50%       { transform: translateX(5px); }
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
 }
 .hero-banner .store-button:hover .arrow {
   display: inline-block;
@@ -379,7 +442,7 @@ html.is-client-nav .hero-banner-cover {
 }
 @media (hover: none) {
   .dual-hero-cover-link:active .dual-hero-cover {
-    transform: scale(0.97);
+    transform: scale(var(--scale-pressed));
     transition: transform 0.1s ease;
   }
 }
@@ -409,16 +472,16 @@ html.is-client-nav .hero-banner-cover {
 
 /* 次回作パネルのタグ: amber 系で差別化 */
 .dual-hero-tag--upcoming {
-  background: #e09c00;
+  background: var(--color-upcoming);
 }
 
 /* 近日公開バッジ */
 .dual-hero-status-badge {
   display: inline-block;
   width: fit-content;
-  background: rgba(224, 156, 0, 0.12);
-  color: #e09c00;
-  border: 1px solid rgba(224, 156, 0, 0.35);
+  background: var(--color-upcoming-bg);
+  color: var(--color-upcoming);
+  border: 1px solid var(--color-upcoming-border);
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;

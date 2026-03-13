@@ -14,16 +14,20 @@ const encodedPw = btoa(encodeURIComponent(password));
 
 <div class="ea-wrapper">
   <p class="ea-hint">Ci-en で配布した合言葉を入力してください</p>
-  {cienUrl && (
-    <a href={cienUrl} class="ea-cien-link" target="_blank" rel="noopener noreferrer">
-      合言葉を入手する →
-    </a>
-  )}
+  {
+    cienUrl && (
+      <a href={cienUrl} class="ea-cien-link" target="_blank" rel="noopener noreferrer">
+        合言葉を入手する →
+      </a>
+    )
+  }
   <div class="ea-row">
     <input
       type="text"
       class="ea-input"
       placeholder="合言葉を入力"
+      aria-label="合言葉"
+      aria-describedby="ea-error"
       autocomplete="off"
       autocorrect="off"
       autocapitalize="off"
@@ -31,14 +35,29 @@ const encodedPw = btoa(encodeURIComponent(password));
     />
     <button class="ea-submit" type="button">確認</button>
   </div>
-  <p class="ea-error" hidden>合言葉が違います</p>
+  <p class="ea-error" id="ea-error" role="alert" hidden>合言葉が違います</p>
 
   <!-- ダウンロードボタン: 合言葉が正解するまで非活性 -->
-  <a class="ea-download" aria-disabled="true" tabindex="-1" aria-label="先行体験版をダウンロード（合言葉を入力してください）">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
+  <a
+    class="ea-download"
+    aria-disabled="true"
+    tabindex="-1"
+    aria-label="先行体験版をダウンロード（合言葉を入力してください）"
+  >
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+      <polyline points="7 10 12 15 17 10"></polyline>
+      <line x1="12" y1="15" x2="12" y2="3"></line>
     </svg>
     <span>先行体験版をダウンロード</span>
   </a>
@@ -51,10 +70,10 @@ const encodedPw = btoa(encodeURIComponent(password));
       : document.querySelector('.ea-wrapper');
     if (!wrapper) return;
 
-    const input  = wrapper.querySelector('.ea-input');
+    const input = wrapper.querySelector('.ea-input');
     const submit = wrapper.querySelector('.ea-submit');
-    const error  = wrapper.querySelector('.ea-error');
-    const dlBtn  = wrapper.querySelector('.ea-download');
+    const error = wrapper.querySelector('.ea-error');
+    const dlBtn = wrapper.querySelector('.ea-download');
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submit.click();
@@ -65,10 +84,13 @@ const encodedPw = btoa(encodeURIComponent(password));
 
       const val = input.value.trim().replace(/[\u3000\s]/g, '');
       let match = false;
-      try { match = btoa(encodeURIComponent(val)) === encodedPw; } catch (_) {}
+      try {
+        match = btoa(encodeURIComponent(val)) === encodedPw;
+      } catch (_) {}
 
       if (match) {
         // 正解: ダウンロードボタンを活性化
+        input.removeAttribute('aria-invalid');
         dlBtn.setAttribute('href', downloadUrl);
         dlBtn.setAttribute('aria-disabled', 'false');
         dlBtn.removeAttribute('tabindex');
@@ -79,6 +101,7 @@ const encodedPw = btoa(encodeURIComponent(password));
         submit.disabled = true;
         dlBtn.focus();
       } else {
+        input.setAttribute('aria-invalid', 'true');
         error.hidden = false;
         input.classList.add('ea-input--shake');
         setTimeout(() => input.classList.remove('ea-input--shake'), EA_INPUT_SHAKE_MS);
@@ -131,7 +154,9 @@ const encodedPw = btoa(encodeURIComponent(password));
     border: 1px solid var(--stroke);
     border-radius: var(--radius-sm);
     outline: none;
-    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+    transition:
+      border-color var(--dur-fast) ease,
+      box-shadow var(--dur-fast) ease;
   }
 
   .ea-input:focus {
@@ -157,7 +182,9 @@ const encodedPw = btoa(encodeURIComponent(password));
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
-    transition: background var(--dur-fast) ease, opacity var(--dur-fast) ease;
+    transition:
+      background var(--dur-fast) ease,
+      opacity var(--dur-fast) ease;
   }
 
   .ea-submit:hover {
@@ -192,8 +219,12 @@ const encodedPw = btoa(encodeURIComponent(password));
     text-align: center;
     cursor: not-allowed;
     pointer-events: none;
-    transition: background var(--dur-quick) ease, color var(--dur-quick) ease, border var(--dur-quick) ease,
-                transform var(--dur-normal) var(--easing), box-shadow var(--dur-normal) ease;
+    transition:
+      background var(--dur-quick) ease,
+      color var(--dur-quick) ease,
+      border var(--dur-quick) ease,
+      transform var(--dur-normal) var(--easing),
+      box-shadow var(--dur-normal) ease;
   }
 
   .ea-download--active {
@@ -216,11 +247,22 @@ const encodedPw = btoa(encodeURIComponent(password));
   }
 
   @keyframes ea-shake {
-    0%, 100% { transform: translateX(0); }
-    20%       { transform: translateX(-6px); }
-    40%       { transform: translateX(6px); }
-    60%       { transform: translateX(-4px); }
-    80%       { transform: translateX(4px); }
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    20% {
+      transform: translateX(-6px);
+    }
+    40% {
+      transform: translateX(6px);
+    }
+    60% {
+      transform: translateX(-4px);
+    }
+    80% {
+      transform: translateX(4px);
+    }
   }
 
   .ea-input--shake {

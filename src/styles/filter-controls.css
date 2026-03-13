@@ -22,8 +22,16 @@
   transition: all var(--dur-quick) ease;
   font-family: inherit;
 }
-.sort-btn:hover { border-color: var(--accent); color: var(--accent); }
-.sort-btn.is-active { background: var(--accent-alpha-08); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.sort-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.sort-btn.is-active {
+  background: var(--accent-alpha-08);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
 
 /* ── Share Buttons ── */
 .share-bar {
@@ -54,11 +62,24 @@
   color: var(--ink);
   cursor: pointer;
   text-decoration: none;
-  transition: border-color var(--dur-quick), color var(--dur-quick), background var(--dur-quick);
+  transition:
+    border-color var(--dur-quick),
+    color var(--dur-quick),
+    background var(--dur-quick);
 }
-.share-btn:hover { border-color: var(--accent); color: var(--accent); }
-.share-btn--copied { border-color: #16a34a !important; color: #16a34a !important; }
-.share-btn--native { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.share-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.share-btn--copied {
+  border-color: var(--color-release) !important;
+  color: var(--color-release) !important;
+}
+.share-btn--native {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
 
 /* ── Toast Notification ── */
 .toast {
@@ -74,7 +95,9 @@
   z-index: var(--z-toast);
   font-weight: 500;
   opacity: 0;
-  transition: opacity var(--dur-normal) ease, transform var(--dur-normal) ease;
+  transition:
+    opacity var(--dur-normal) ease,
+    transform var(--dur-normal) ease;
   pointer-events: none;
   white-space: nowrap;
   max-width: calc(100vw - 32px);
@@ -106,7 +129,9 @@
   opacity: 0.6;
   transition: opacity var(--dur-fast) ease;
 }
-.toast-close:hover { opacity: 1; }
+.toast-close:hover {
+  opacity: 1;
+}
 
 /* ── Character Pagination ── */
 .char-pagination {
@@ -123,7 +148,9 @@
   font-size: var(--fs-ui);
   color: var(--accent);
   text-decoration: none;
-  transition: color var(--dur-quick) ease, opacity var(--dur-quick) ease;
+  transition:
+    color var(--dur-quick) ease,
+    opacity var(--dur-quick) ease;
   max-width: 45%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -133,7 +160,9 @@
   display: inline-flex;
   align-items: center;
 }
-.char-pagination-link:hover { opacity: 0.75; }
+.char-pagination-link:hover {
+  opacity: 0.75;
+}
 
 /* ── Environment tags ── */
 .env-tags {
@@ -204,7 +233,9 @@
   .filter-bar.is-open {
     transform: translateY(0);
   }
-  .filter-bar .filter-chip { flex-shrink: 0; }
+  .filter-bar .filter-chip {
+    flex-shrink: 0;
+  }
 
   /* モバイル時のみ表示するシートのヘッダー */
   .filter-sheet-header {
@@ -255,7 +286,9 @@
     font-family: inherit;
     margin-bottom: 16px;
     touch-action: manipulation;
-    transition: border-color var(--dur-quick) ease, color var(--dur-quick) ease;
+    transition:
+      border-color var(--dur-quick) ease,
+      color var(--dur-quick) ease;
   }
   .filter-sheet-trigger.has-active {
     border-color: var(--accent);
@@ -284,7 +317,9 @@
     scrollbar-width: none;
     padding-bottom: 4px;
   }
-  .sort-bar::-webkit-scrollbar { display: none; }
+  .sort-bar::-webkit-scrollbar {
+    display: none;
+  }
   .sort-btn {
     flex-shrink: 0;
     scroll-snap-align: start;
@@ -318,11 +353,17 @@
     background: var(--overlay-dark);
     animation: filter-overlay-in var(--dur-normal) ease forwards;
   }
-  .filter-sheet-overlay.is-visible { display: block; }
+  .filter-sheet-overlay.is-visible {
+    display: block;
+  }
 }
 @keyframes filter-overlay-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* デスクトップではトリガー・ヘッダー・オーバーレイを非表示 */
@@ -330,7 +371,9 @@
   .filter-sheet-trigger,
   .filter-sheet-overlay,
   .filter-sheet-close,
-  .filter-sheet-header { display: none !important; }
+  .filter-sheet-header {
+    display: none !important;
+  }
 }
 
 .filter-chips {
@@ -378,7 +421,10 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
-  transition: border-color var(--dur-quick) ease, color var(--dur-quick) ease, background var(--dur-quick) ease;
+  transition:
+    border-color var(--dur-quick) ease,
+    color var(--dur-quick) ease,
+    background var(--dur-quick) ease;
 }
 
 .list-state-summary-clear:hover {
