@@ -15,26 +15,48 @@ interface Props extends ImageLoadProps {
   excerpt?: string;
 }
 
-const { slug, title, date, category, thumbnail, excerpt, loading = 'lazy', fetchpriority } = Astro.props;
+const {
+  slug,
+  title,
+  date,
+  category,
+  thumbnail,
+  excerpt,
+  loading = 'lazy',
+  fetchpriority
+} = Astro.props;
 const href = withBase(`news/${slug}/`);
 ---
 
 <article class="card-interactive news-card">
   <div class="news-card-cover img-skeleton">
-    {thumbnail
-      ? <img src={thumbnail} alt="" loading={loading} fetchpriority={fetchpriority} sizes={IMAGE_SIZES.newsCard} width={IMAGE_DIMENSIONS.newsCard.width} height={IMAGE_DIMENSIONS.newsCard.height} />
-      : <div class="news-card-cover-empty"></div>
+    {
+      thumbnail ? (
+        <img
+          src={thumbnail}
+          alt=""
+          loading={loading}
+          fetchpriority={fetchpriority}
+          sizes={IMAGE_SIZES.newsCard}
+          width={IMAGE_DIMENSIONS.newsCard.width}
+          height={IMAGE_DIMENSIONS.newsCard.height}
+        />
+      ) : (
+        <div class="news-card-cover-empty" />
+      )
     }
   </div>
   <div class="news-card-body">
     <div class="news-card-meta">
       <span class={`badge badge--${category}`}>{categoryLabels[category] ?? category}</span>
-      <time class="news-card-date" datetime={date.toISOString().slice(0, 10)}>{formatDate(date)}</time>
+      <time class="news-card-date" datetime={date.toISOString().slice(0, 10)}
+        >{formatDate(date)}</time
+      >
     </div>
     <h3 class="news-card-title">
       <a class="news-card-link" href={href} data-astro-prefetch>{title}</a>
     </h3>
-    {excerpt && <p class="news-card-excerpt">{excerpt}</p>}
+    {excerpt && <p class="news-card-excerpt line-clamp-2">{excerpt}</p>}
     <slot />
   </div>
 </article>

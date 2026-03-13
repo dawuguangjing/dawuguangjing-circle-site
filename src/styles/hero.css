@@ -16,7 +16,7 @@
 /* レアキャラ: 金のマグロ */
 .tuna--gold {
   filter: sepia(1) saturate(5) hue-rotate(10deg) brightness(1.5)
-    drop-shadow(0 0 6px rgba(255, 200, 0, 0.7));
+    drop-shadow(0 0 6px var(--color-tuna-gold-glow));
   opacity: 0.55 !important;
 }
 
@@ -24,7 +24,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr var(--hero-sidebar);
   gap: 48px;
   align-items: center;
 }
@@ -43,7 +43,7 @@
 }
 .hero-banner-tag {
   display: inline-block;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 0.06em;
   color: var(--text-on-dark);
@@ -67,11 +67,6 @@
   color: var(--ink-dim);
   margin: 0;
   line-height: 1.7;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .hero-banner .selling-points {
@@ -80,7 +75,7 @@
 }
 .hero-banner .selling-points li {
   color: var(--ink);
-  font-size: 0.84rem;
+  font-size: var(--fs-ui);
 }
 .hero-banner .selling-points li::before {
   color: var(--color-logo-green);
@@ -127,7 +122,7 @@
 }
 
 .hero-banner-detail-link {
-  font-size: 0.84rem;
+  font-size: var(--fs-ui);
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -171,7 +166,7 @@
     grid-template-columns: 1fr;
   }
   .hero-banner-cover {
-    max-width: 360px;
+    max-width: var(--hero-cover-max);
     margin: 0 auto;
   }
 }
@@ -184,7 +179,7 @@
 
   /* カバー(左130px) + テキスト(右) の横並びコンパクトレイアウト */
   .hero-banner-inner {
-    grid-template-columns: 130px 1fr;
+    grid-template-columns: var(--hero-sidebar-sm) 1fr;
     gap: 12px;
     align-items: center;
   }
@@ -214,7 +209,7 @@
     display: none;
   }
   .hero-banner .selling-points {
-    font-size: 0.72rem;
+    font-size: var(--fs-xs);
     gap: 2px;
   }
 
@@ -346,7 +341,7 @@ html.is-client-nav .hero-banner-cover {
   }
 }
 .hero-banner .store-button {
-  --pulse-color: rgba(249, 101, 50, 0.45);
+  --pulse-color: var(--pulse-cta);
   animation: cta-pulse 2.4s ease-in-out infinite;
   animation-delay: 0.8s;
 }
@@ -483,7 +478,7 @@ html.is-client-nav .hero-banner-cover {
   background: var(--color-upcoming-bg);
   color: var(--color-upcoming);
   border: 1px solid var(--color-upcoming-border);
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   letter-spacing: 0.06em;
   padding: 3px 10px;

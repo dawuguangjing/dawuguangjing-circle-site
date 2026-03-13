@@ -9,7 +9,7 @@ import TrialLinks from './TrialLinks.astro';
 
 interface Props {
   releasedWork: CollectionEntry<'works'>;
-  comingWork:   CollectionEntry<'works'>;
+  comingWork: CollectionEntry<'works'>;
 }
 
 const { releasedWork: rw, comingWork: cw } = Astro.props;
@@ -22,17 +22,16 @@ const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
     triggerSelector=".dual-hero-panel a"
     goldSpawnRate={0.4}
     fishes={[
-      { dir: 'r', top: '12%', dur: '20s', delay: '0s',   size: 32 },
-      { dir: 'l', top: '50%', dur: '26s', delay: '-8s',  size: 48 },
-      { dir: 'r', top: '78%', dur: '16s', delay: '-3s',  size: 28 },
+      { dir: 'r', top: '12%', dur: '20s', delay: '0s', size: 32 },
+      { dir: 'l', top: '50%', dur: '26s', delay: '-8s', size: 48 },
+      { dir: 'r', top: '78%', dur: '16s', delay: '-3s', size: 28 },
       { dir: 'l', top: '30%', dur: '32s', delay: '-14s', size: 56 },
       { dir: 'r', top: '88%', dur: '22s', delay: '-10s', size: 40 },
-      { dir: 'l', top: '65%', dur: '28s', delay: '-5s',  size: 52, gold: true },
+      { dir: 'l', top: '65%', dur: '28s', delay: '-5s', size: 52, gold: true }
     ]}
   />
 
   <div class="dual-hero-inner container">
-
     <!-- 左: 今すぐ遊ぶ -->
     <div class="dual-hero-panel">
       <div class="hero-banner-eyebrow">
@@ -53,23 +52,31 @@ const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
       </a>
 
       <h2 class="dual-hero-title">{rw.data.title}</h2>
-      <p class="hero-banner-catch">{rw.data.catch}</p>
+      <p class="hero-banner-catch line-clamp-3">{rw.data.catch}</p>
 
-      {rw.data.sellingPoints && rw.data.sellingPoints.length > 0 && (
-        <ul class="selling-points">
-          {rw.data.sellingPoints.map((point) => <li>{point}</li>)}
-        </ul>
-      )}
+      {
+        rw.data.sellingPoints && rw.data.sellingPoints.length > 0 && (
+          <ul class="selling-points">
+            {rw.data.sellingPoints.map((point) => (
+              <li>{point}</li>
+            ))}
+          </ul>
+        )
+      }
 
-      {rwLinks.length > 0 && (
-        <div class="hero-banner-cta">
-          <StoreButtonGroup links={rwLinks} location="dual_hero_released" />
-        </div>
-      )}
+      {
+        rwLinks.length > 0 && (
+          <div class="hero-banner-cta">
+            <StoreButtonGroup links={rwLinks} location="dual_hero_released" />
+          </div>
+        )
+      }
 
       <div class="hero-banner-sub">
         <TrialLinks trialLinks={rw.data.trialLinks} location="dual_hero_released" />
-        <a class="hero-banner-detail-link" href={withBase(`works/${rw.slug}/`)}>詳細を見る <span class="hero-detail-arrow">→</span></a>
+        <a class="hero-banner-detail-link" href={withBase(`works/${rw.slug}/`)}
+          >詳細を見る <span class="hero-detail-arrow">→</span></a
+        >
       </div>
     </div>
 
@@ -95,17 +102,27 @@ const rwLinks = buildLinks(rw.data.platformLinks, PURCHASE_LINK_ENTRIES);
       </a>
 
       <h2 class="dual-hero-title">{cw.data.title}</h2>
-      <p class="hero-banner-catch">{cw.data.catch}</p>
+      <p class="hero-banner-catch line-clamp-3">{cw.data.catch}</p>
 
       <span class="dual-hero-status-badge">近日公開</span>
 
       <div class="dual-hero-cta-group">
-        <a class="button" href={withBase(`works/${cw.slug}/`)} data-astro-prefetch>詳細・進捗を見る</a>
-        <a class="button button--cien" href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer" data-ga-event="cien_click" data-ga-location="dual_hero_upcoming">Ci-en でフォロー ↗</a>
+        <a class="button" href={withBase(`works/${cw.slug}/`)} data-astro-prefetch
+          >詳細・進捗を見る</a
+        >
+        <a
+          class="button button--cien"
+          href={EXTERNAL_LINKS.cien}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-ga-event="cien_click"
+          data-ga-location="dual_hero_upcoming">Ci-en でフォロー ↗</a
+        >
       </div>
 
-      <a class="hero-banner-detail-link" href={withBase('news/')}>開発ログを見る <span class="hero-detail-arrow">→</span></a>
+      <a class="hero-banner-detail-link" href={withBase('news/')}
+        >開発ログを見る <span class="hero-detail-arrow">→</span></a
+      >
     </div>
-
   </div>
 </section>

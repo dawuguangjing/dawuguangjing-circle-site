@@ -21,19 +21,38 @@
 <script>
   import { smoothScrollBehavior } from '../scripts/motion';
 
+  let _bttCleanup: (() => void) | null = null;
+
   function init() {
+    _bttCleanup?.();
+
     const btn = document.getElementById('back-to-top');
     if (!btn) return;
+
+    const ac = new AbortController();
+    const signal = ac.signal;
+
     window.addEventListener(
       'scroll',
       () => {
         btn.classList.toggle('is-visible', window.scrollY >= 300);
       },
-      { passive: true }
+      { passive: true, signal }
     );
-    btn.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: smoothScrollBehavior() });
-    });
+    btn.addEventListener(
+      'click',
+      () => {
+        window.scrollTo({ top: 0, behavior: smoothScrollBehavior() });
+      },
+      { signal }
+    );
+
+    _bttCleanup = () => {
+      ac.abort();
+      _bttCleanup = null;
+    };
   }
+
   document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => _bttCleanup?.());
 </script>

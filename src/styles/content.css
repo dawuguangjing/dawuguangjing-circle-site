@@ -85,7 +85,7 @@
 }
 
 .related-work-label {
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   font-weight: 600;
   color: var(--panel);
   background: var(--accent);
@@ -331,7 +331,7 @@
 }
 
 .noscript-block h1 {
-  font-size: 1.3rem;
+  font-size: var(--fs-heading-xl);
 }
 
 /* ── Selling Points ── */

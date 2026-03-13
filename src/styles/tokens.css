@@ -33,6 +33,8 @@
   /* ── Badge semantic colors ── */
   --color-r18: #dc2626;
   --color-r18-bg: rgba(220, 38, 38, 0.08);
+  --color-r18-bg-subtle: rgba(220, 38, 38, 0.06);
+  --color-r18-border-subtle: rgba(220, 38, 38, 0.15);
   --color-category: #666666;
   --color-category-bg: rgba(0, 0, 0, 0.06);
   --color-release: #16a34a;
@@ -91,6 +93,9 @@
   --fs-body-lg: 0.95rem; /* 記事本文、ロゴ */
   --fs-heading: 1rem; /* カード見出し、記事h3 */
   --fs-heading-lg: 1.1rem; /* 記事h2、キャラ名 */
+  --fs-2xs: 0.7rem; /* 極小ラベル、バッジ内文字 */
+  --fs-heading-xl: 1.3rem; /* セクション大見出し */
+  --fs-heading-2xl: 1.5rem; /* ライトボックス閉じボタン等 */
   /* ── Touch target ── */
   --touch-min: 44px; /* WCAG 2.5.5 推奨最小タッチターゲット */
   --font-display: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
@@ -119,11 +124,14 @@
   --z-sheet: 300;
   --z-toast: 400;
   --z-age-gate: 500;
+  /* z-index: 0/1/2 はコンポーネント内ローカルスタッキング用。上記スケール対象外 */
   /* ── Overlay / Lightbox tokens ── */
   --overlay-scrim: rgba(0, 0, 0, 0.85);
   --overlay-dark: rgba(0, 0, 0, 0.4);
   --overlay-dark-deep: rgba(0, 0, 0, 0.75);
   --overlay-card: rgba(0, 0, 0, 0.35);
+  --overlay-video: rgba(0, 0, 0, 0.38);
+  --overlay-video-hover: rgba(0, 0, 0, 0.12);
   --lightbox-btn-bg: rgba(255, 255, 255, 0.15);
   --lightbox-btn-bg-hover: rgba(255, 255, 255, 0.3);
   --lightbox-nav-bg: rgba(255, 255, 255, 0.18);
@@ -175,12 +183,26 @@
   /* ── Layout offsets ── */
   --scroll-offset: 104px;
   --sticky-offset: 80px;
+  /* ── Layout widths ── */
+  --container-max: 1060px;
+  --container-gutter: 32px;
+  --hero-sidebar: 380px;
+  --hero-cover-max: 360px;
+  --hero-sidebar-sm: 130px;
   /* ── Semantic colors (additional) ── */
   --color-upcoming: #e09c00;
   --color-upcoming-bg: rgba(224, 156, 0, 0.12);
   --color-upcoming-border: rgba(224, 156, 0, 0.35);
   --color-new: #e5484d;
   --color-video-placeholder: #0d0d16;
+  /* ── Toggle / Announcement / Nav ── */
+  --color-toggle-hover: rgba(249, 115, 22, 0.12);
+  --announce-glow: rgba(255, 255, 255, 0.7);
+  --announce-glow-dim: rgba(255, 255, 255, 0.35);
+  --nav-hover-bg: rgba(0, 0, 0, 0.04);
+  --nav-active-bg: rgba(0, 0, 0, 0.08);
+  --pulse-cta: rgba(249, 101, 50, 0.45);
+  --color-tuna-gold-glow: rgba(255, 200, 0, 0.7);
 }
 
 /* ── Breakpoints (reference only; not usable in @media queries) ──
@@ -261,4 +283,8 @@ html[data-theme='dark'] {
   /* ── Dark-only semantic colors ── */
   --color-world-label: rgba(167, 139, 250, 0.95);
   --color-toggle-hover-dark: rgba(251, 192, 45, 0.14);
+  --nav-hover-bg: rgba(255, 255, 255, 0.06);
+  --nav-active-bg: rgba(255, 255, 255, 0.12);
+  --color-r18-bg-subtle: rgba(220, 38, 38, 0.1);
+  --color-r18-border-subtle: rgba(220, 38, 38, 0.25);
 }

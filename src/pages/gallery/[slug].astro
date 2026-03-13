@@ -218,7 +218,9 @@ const galleryPurchaseLinks = hasStoreLinks
                           <div class="related-work-card-body">
                             <p class="related-work-card-title">{work.data.title}</p>
                             {work.data.shortDescription && (
-                              <p class="related-work-card-desc">{work.data.shortDescription}</p>
+                              <p class="related-work-card-desc line-clamp-3">
+                                {work.data.shortDescription}
+                              </p>
                             )}
                             <span class="section-link related-work-card-detail">詳細を見る →</span>
                           </div>

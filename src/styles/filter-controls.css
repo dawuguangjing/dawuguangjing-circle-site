@@ -95,7 +95,7 @@
   color: var(--bg);
   padding: 9px 12px 9px 20px;
   border-radius: var(--radius-md);
-  font-size: 0.85rem;
+  font-size: var(--fs-ui);
   z-index: var(--z-toast);
   font-weight: 500;
   opacity: 0;
@@ -251,7 +251,7 @@
     border-bottom: 1px solid var(--stroke);
   }
   .filter-sheet-header-title {
-    font-size: 0.875rem;
+    font-size: var(--fs-body-sm);
     font-weight: 600;
     color: var(--ink);
   }
@@ -282,7 +282,7 @@
     background: var(--panel);
     border: 1px solid var(--stroke);
     border-radius: var(--radius-pill);
-    font-size: 0.8rem;
+    font-size: var(--fs-ui);
     font-weight: 500;
     color: var(--ink-dim);
     cursor: pointer;
@@ -307,7 +307,7 @@
     background: var(--accent);
     color: var(--text-on-dark);
     border-radius: 9px;
-    font-size: 0.7rem;
+    font-size: var(--fs-2xs);
     font-weight: 700;
     line-height: 1;
   }
@@ -416,7 +416,7 @@
   background: var(--panel);
   color: var(--ink-dim);
   font: inherit;
-  font-size: 0.72rem;
+  font-size: var(--fs-xs);
   font-weight: 600;
   line-height: 1;
   padding: 8px 14px;
@@ -442,7 +442,7 @@
     margin-top: -6px;
   }
   .list-state-summary-text {
-    font-size: 0.74rem;
+    font-size: var(--fs-xs);
   }
 }
 

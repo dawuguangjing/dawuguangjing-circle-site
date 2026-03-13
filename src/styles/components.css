@@ -101,7 +101,7 @@
   color: var(--text-on-dark);
   border: none;
   border-radius: 99px;
-  font-size: 0.875rem;
+  font-size: var(--fs-body-sm);
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;

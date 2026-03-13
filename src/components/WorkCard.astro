@@ -57,7 +57,7 @@ const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
   </div>
   <div class="work-row-body">
     <h3>{title}</h3>
-    <p class="work-row-desc">{description}</p>
+    <p class="work-row-desc line-clamp-2">{description}</p>
     <div class="work-row-meta">
       <span class="work-row-date">{isComingSoon ? '発売日未定' : formatDate(releaseDate)}</span>
       <div class="work-row-tags">

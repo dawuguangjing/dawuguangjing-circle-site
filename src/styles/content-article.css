@@ -95,12 +95,12 @@
   gap: 4px;
 }
 .toc-item {
-  font-size: 0.85rem;
+  font-size: var(--fs-ui);
 }
 .toc-item--sub {
   padding-left: 12px;
   list-style-type: circle;
-  font-size: 0.8rem;
+  font-size: var(--fs-ui);
 }
 .toc-item a {
   color: var(--ink);
@@ -258,7 +258,7 @@
 
 .article-figure figcaption {
   margin-top: 8px;
-  font-size: 0.8rem;
+  font-size: var(--fs-ui);
   color: var(--ink-dim);
 }
 

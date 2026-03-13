@@ -21,7 +21,9 @@ const work = char.data.workSlug
   : null;
 
 const workPlatformLinks = work ? buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES) : [];
-const workTrialLinks = work?.data.trialLinks ? buildLinks(work.data.trialLinks, TRIAL_LINK_ENTRIES) : [];
+const workTrialLinks = work?.data.trialLinks
+  ? buildLinks(work.data.trialLinks, TRIAL_LINK_ENTRIES)
+  : [];
 
 // 関連ギャラリーを取得
 const galleryIndex = await getGalleryIndex();
@@ -37,10 +39,18 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   image={char.data.cover}
 >
   <style define:vars={{ charColor: char.data.color }}>
-    .char-accent { color: var(--charColor); }
-    .char-accent-bg { background: var(--charColor); }
-    .char-accent-border { border-color: var(--charColor); }
-    .char-detail-block h2 { border-bottom-color: var(--charColor); }
+    .char-accent {
+      color: var(--charColor);
+    }
+    .char-accent-bg {
+      background: var(--charColor);
+    }
+    .char-accent-border {
+      border-color: var(--charColor);
+    }
+    .char-detail-block h2 {
+      border-bottom-color: var(--charColor);
+    }
   </style>
 
   <div class="page-content">
@@ -73,26 +83,35 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
           <p class="char-hero-personality">{char.data.personality}</p>
 
           <div class="char-stats">
-            {char.data.age != null && (
-              <div class="char-stat">
-                <span class="char-stat-label">年齢</span>
-                <span class="char-stat-value char-accent">{char.data.age}歳</span>
-              </div>
-            )}
-            {char.data.height != null && (
-              <div class="char-stat">
-                <span class="char-stat-label">身長</span>
-                <span class="char-stat-value char-accent">{char.data.height}cm</span>
-              </div>
-            )}
-            {work && (
-              <div class="char-stat">
-                <span class="char-stat-label">登場作品</span>
-                <a class="char-stat-value char-stat-link char-accent" href={withBase(`works/${work.slug}/`)}>
-                  {work.data.title}
-                </a>
-              </div>
-            )}
+            {
+              char.data.age != null && (
+                <div class="char-stat">
+                  <span class="char-stat-label">年齢</span>
+                  <span class="char-stat-value char-accent">{char.data.age}歳</span>
+                </div>
+              )
+            }
+            {
+              char.data.height != null && (
+                <div class="char-stat">
+                  <span class="char-stat-label">身長</span>
+                  <span class="char-stat-value char-accent">{char.data.height}cm</span>
+                </div>
+              )
+            }
+            {
+              work && (
+                <div class="char-stat">
+                  <span class="char-stat-label">登場作品</span>
+                  <a
+                    class="char-stat-value char-stat-link char-accent"
+                    href={withBase(`works/${work.slug}/`)}
+                  >
+                    {work.data.title}
+                  </a>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
@@ -106,96 +125,122 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
         </div>
       </div>
 
-      {relatedGalleries.length > 0 && (
-        <div class="char-detail-block" data-anim>
-          <h2>関連ギャラリー</h2>
-          <div class="char-gallery-list">
-            {relatedGalleries.map((gallery) => {
-              const previewImages = gallery.data.images.slice(0, 3);
-              const totalCount = gallery.data.imageCount ?? gallery.data.images.length;
-              return (
-                <a class={`char-gallery-preview-card${previewImages.length > 0 ? ' char-gallery-preview-card--split' : ''}`} href={withBase(`gallery/${gallery.slug}/`)}>
-                  <div class="char-gallery-preview-media">
-                    <div class="char-gallery-preview-cover-wrap">
-                      <img class="char-gallery-preview-cover" src={gallery.data.cover} alt={gallery.data.title} loading="lazy" />
-                    </div>
-                    {previewImages.length > 0 && (
-                      <div class="char-gallery-preview-thumbs">
-                        {previewImages.map((img) => (
-                          <div class="char-gallery-preview-thumb">
-                            <img src={img} alt="" loading="lazy" aria-hidden="true" />
-                          </div>
-                        ))}
+      {
+        relatedGalleries.length > 0 && (
+          <div class="char-detail-block" data-anim>
+            <h2>関連ギャラリー</h2>
+            <div class="char-gallery-list">
+              {relatedGalleries.map((gallery) => {
+                const previewImages = gallery.data.images.slice(0, 3);
+                const totalCount = gallery.data.imageCount ?? gallery.data.images.length;
+                return (
+                  <a
+                    class={`char-gallery-preview-card${previewImages.length > 0 ? ' char-gallery-preview-card--split' : ''}`}
+                    href={withBase(`gallery/${gallery.slug}/`)}
+                  >
+                    <div class="char-gallery-preview-media">
+                      <div class="char-gallery-preview-cover-wrap">
+                        <img
+                          class="char-gallery-preview-cover"
+                          src={gallery.data.cover}
+                          alt={gallery.data.title}
+                          loading="lazy"
+                        />
                       </div>
-                    )}
-                  </div>
-                  <div class="char-gallery-preview-footer">
-                    <span class="char-gallery-preview-title">{gallery.data.title}</span>
-                    <span class="gallery-card-count">{totalCount}枚</span>
-                  </div>
-                  <span class="char-gallery-preview-link">ギャラリーを見る →</span>
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {(prevChar || nextChar) && (
-        <nav class="char-pagination" data-anim aria-label="前後のキャラクターへ">
-          {prevChar
-            ? <a class="char-pagination-link" href={withBase(`characters/${prevChar.slug}/`)}>← {prevChar.data.name}</a>
-            : <span></span>
-          }
-          {nextChar && (
-            <a class="char-pagination-link" href={withBase(`characters/${nextChar.slug}/`)}>{nextChar.data.name} →</a>
-          )}
-        </nav>
-      )}
-
-      {work && (workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
-        <div class="char-detail-block" data-anim>
-          <h2>この作品を入手する</h2>
-          <div class="char-work-info">
-            <img
-              class="char-work-thumb"
-              src={work.data.images.cover}
-              alt={work.data.title}
-              width="120"
-              height="80"
-              loading="lazy"
-            />
-            <div class="char-work-meta">
-              <p class="char-work-title">{work.data.title}</p>
-              {work.data.shortDescription && (
-                <p class="char-work-desc">{work.data.shortDescription}</p>
-              )}
+                      {previewImages.length > 0 && (
+                        <div class="char-gallery-preview-thumbs">
+                          {previewImages.map((img) => (
+                            <div class="char-gallery-preview-thumb">
+                              <img src={img} alt="" loading="lazy" aria-hidden="true" />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div class="char-gallery-preview-footer">
+                      <span class="char-gallery-preview-title">{gallery.data.title}</span>
+                      <span class="gallery-card-count">{totalCount}枚</span>
+                    </div>
+                    <span class="char-gallery-preview-link">ギャラリーを見る →</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
-          {workTrialLinks.length > 0 && (
-            <>
-              <p class="char-cta-sub">体験版を試す</p>
-              <StoreButtonGroup links={workTrialLinks} trial location="char_detail" />
-            </>
-          )}
-          {workPlatformLinks.length > 0 && (
-            <>
-              <p class="char-cta-sub">購入する</p>
-              <StoreButtonGroup links={workPlatformLinks} location="char_detail" />
-            </>
-          )}
-        </div>
-      )}
+        )
+      }
+
+      {
+        (prevChar || nextChar) && (
+          <nav class="char-pagination" data-anim aria-label="前後のキャラクターへ">
+            {prevChar ? (
+              <a class="char-pagination-link" href={withBase(`characters/${prevChar.slug}/`)}>
+                ← {prevChar.data.name}
+              </a>
+            ) : (
+              <span />
+            )}
+            {nextChar && (
+              <a class="char-pagination-link" href={withBase(`characters/${nextChar.slug}/`)}>
+                {nextChar.data.name} →
+              </a>
+            )}
+          </nav>
+        )
+      }
+
+      {
+        work && (workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
+          <div class="char-detail-block" data-anim>
+            <h2>この作品を入手する</h2>
+            <div class="char-work-info">
+              <img
+                class="char-work-thumb"
+                src={work.data.images.cover}
+                alt={work.data.title}
+                width="120"
+                height="80"
+                loading="lazy"
+              />
+              <div class="char-work-meta">
+                <p class="char-work-title">{work.data.title}</p>
+                {work.data.shortDescription && (
+                  <p class="char-work-desc">{work.data.shortDescription}</p>
+                )}
+              </div>
+            </div>
+            {workTrialLinks.length > 0 && (
+              <>
+                <p class="char-cta-sub">体験版を試す</p>
+                <StoreButtonGroup links={workTrialLinks} trial location="char_detail" />
+              </>
+            )}
+            {workPlatformLinks.length > 0 && (
+              <>
+                <p class="char-cta-sub">購入する</p>
+                <StoreButtonGroup links={workPlatformLinks} location="char_detail" />
+              </>
+            )}
+          </div>
+        )
+      }
 
       <div class="char-nav" data-anim>
-        <a class="char-nav-back" href={withBase('characters/')} data-back-context data-back-context-key="characters">
+        <a
+          class="char-nav-back"
+          href={withBase('characters/')}
+          data-back-context
+          data-back-context-key="characters"
+        >
           ← キャラクター一覧へ
         </a>
-        {work && (
-          <a class="button" href={withBase(`works/${work.slug}/`)}>
-            {work.data.title} の詳細を見る →
-          </a>
-        )}
+        {
+          work && (
+            <a class="button" href={withBase(`works/${work.slug}/`)}>
+              {work.data.title} の詳細を見る →
+            </a>
+          )
+        }
       </div>
     </div>
   </div>
@@ -204,362 +249,374 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 </BaseLayout>
 
 <style>
-/* ── Hero ── */
-.char-hero {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--char-color) 8%, transparent) 0%, var(--panel) 60%);
-  border-top: 3px solid var(--char-color);
-  border-bottom: 1px solid var(--stroke);
-  padding: 48px 0;
-}
+  /* ── Hero ── */
+  .char-hero {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--char-color) 8%, transparent) 0%,
+      var(--panel) 60%
+    );
+    border-top: 3px solid var(--char-color);
+    border-bottom: 1px solid var(--stroke);
+    padding: 48px 0;
+  }
 
-.char-hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 80% 50%, color-mix(in srgb, var(--char-color) 6%, transparent), transparent 60%);
-  pointer-events: none;
-}
+  .char-hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at 80% 50%,
+      color-mix(in srgb, var(--char-color) 6%, transparent),
+      transparent 60%
+    );
+    pointer-events: none;
+  }
 
-.char-hero-inner {
-  position: relative;
-  z-index: 1;
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 48px;
-  align-items: center;
-}
-
-.char-hero-img-wrap {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
-  cursor: zoom-in;
-}
-
-.char-hero-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 0.35s var(--easing);
-}
-
-.char-hero-img-wrap:hover .char-hero-img {
-  transform: scale(1.03);
-}
-
-.char-hero-img-wrap:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: var(--radius-lg);
-}
-
-.char-cover-zoom-hint {
-  position: absolute;
-  bottom: 10px;
-  right: 10px;
-  font-size: var(--fs-heading);
-  opacity: 0;
-  transition: opacity var(--dur-normal) ease;
-  filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
-}
-
-.char-hero-img-wrap:hover .char-cover-zoom-hint,
-.char-hero-img-wrap:focus-visible .char-cover-zoom-hint {
-  opacity: 1;
-}
-
-@media (hover: none) and (pointer: coarse) {
-  .char-cover-zoom-hint { opacity: 0.7; }
-}
-
-.char-hero-text {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.char-hero-reading {
-  font-size: var(--fs-ui);
-  color: var(--ink-dim);
-  margin: 0;
-  letter-spacing: 0.1em;
-}
-
-.char-hero-name {
-  font-family: var(--font-display);
-  font-size: clamp(1.8rem, 4vw, 2.6rem);
-  font-weight: 700;
-  margin: 0;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-}
-
-.char-hero-personality {
-  font-size: var(--fs-body);
-  color: var(--ink-dim);
-  margin: 0;
-  line-height: 1.8;
-  max-width: 480px;
-}
-
-/* ── Stats ── */
-.char-stats {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 16px 0;
-  border-top: 1px solid var(--stroke);
-}
-
-.char-stat {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  font-size: var(--fs-body-sm);
-}
-
-.char-stat-label {
-  color: var(--ink-dim);
-  min-width: 72px;
-  flex-shrink: 0;
-}
-
-.char-stat-value {
-  font-weight: 700;
-  font-size: var(--fs-heading);
-}
-
-.char-stat-link {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity var(--dur-quick) ease;
-}
-
-.char-stat-link:hover {
-  opacity: 0.75;
-}
-
-/* ── Detail Block ── */
-.char-detail-block {
-  background: var(--panel);
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow);
-  margin-bottom: 20px;
-}
-
-.char-detail-block h2 {
-  font-size: var(--fs-heading);
-  font-weight: 600;
-  color: var(--ink-bright);
-  margin: 0 0 16px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--accent);
-}
-
-.char-body {
-  font-size: 0.92rem;
-  color: var(--ink);
-  line-height: 1.85;
-}
-
-.char-body p {
-  margin: 0 0 12px;
-}
-
-.char-body p:last-child {
-  margin-bottom: 0;
-}
-
-/* ── Work Info in CTA block ── */
-.char-work-info {
-  display: flex;
-  gap: 12px;
-  align-items: flex-start;
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--stroke);
-}
-.char-work-thumb {
-  width: 120px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: var(--radius);
-  flex-shrink: 0;
-}
-.char-work-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-}
-.char-work-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--ink-bright);
-  margin: 0;
-  line-height: 1.4;
-}
-.char-work-desc {
-  font-size: var(--fs-sm);
-  color: var(--ink-dim);
-  margin: 0;
-  line-height: 1.5;
-}
-
-/* ── CTA sub-heading ── */
-.char-cta-sub {
-  font-size: var(--fs-ui);
-  color: var(--ink-dim);
-  margin: 0 0 6px;
-}
-.char-detail-block .char-cta-sub + .char-cta-sub {
-  margin-top: 8px;
-}
-
-/* ── Nav ── */
-.char-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.char-nav-back {
-  font-size: 0.85rem;
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color var(--dur-quick) ease;
-}
-
-.char-nav-back:hover {
-  color: var(--accent-dark);
-}
-
-/* ── Related Gallery ── */
-.char-gallery-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(480px, 100%), 1fr));
-  gap: 12px;
-}
-
-.char-gallery-preview-card {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-  border: 1px solid var(--stroke);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--panel);
-  transition: border-color var(--dur-normal) ease, box-shadow var(--dur-normal) ease, transform var(--dur-normal) var(--easing);
-}
-.char-gallery-preview-card:hover {
-  border-color: var(--accent-alpha-25);
-  box-shadow: var(--shadow-hover);
-  transform: translateY(-3px);
-}
-
-.char-gallery-preview-media {
-  display: grid;
-  grid-template-columns: 1fr;
-  aspect-ratio: 4 / 3;
-  overflow: hidden;
-  background: #fff;
-  gap: 2px;
-}
-.char-gallery-preview-card--split .char-gallery-preview-media {
-  grid-template-columns: 3fr 1fr;
-}
-
-.char-gallery-preview-cover-wrap {
-  position: relative;
-  overflow: hidden;
-}
-
-.char-gallery-preview-cover {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  transition: transform var(--dur-medium) var(--easing);
-}
-.char-gallery-preview-card:hover .char-gallery-preview-cover {
-  transform: scale(1.03);
-}
-
-.char-gallery-preview-thumbs {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  background: #fff;
-  overflow: hidden;
-}
-.char-gallery-preview-thumb {
-  flex: 1 1 0;
-  min-height: 0;
-  position: relative;
-  overflow: hidden;
-}
-.char-gallery-preview-thumb img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 30%;
-  display: block;
-  transition: transform var(--dur-medium) var(--easing);
-}
-.char-gallery-preview-card:hover .char-gallery-preview-thumb img {
-  transform: scale(1.05);
-}
-
-.char-gallery-preview-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 10px 4px;
-}
-.char-gallery-preview-title {
-  font-size: var(--fs-ui);
-  font-weight: 600;
-  color: var(--ink-bright);
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.char-gallery-preview-link {
-  display: block;
-  font-size: var(--fs-xs);
-  color: var(--accent);
-  padding: 4px 10px 8px;
-}
-
-/* ── Responsive ── */
-@media (max-width: 768px) {
   .char-hero-inner {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 48px;
+    align-items: center;
   }
 
   .char-hero-img-wrap {
-    max-width: 280px;
-    margin: 0 auto;
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+    cursor: zoom-in;
   }
 
-  .char-hero {
-    padding: 32px 0;
+  .char-hero-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.35s var(--easing);
   }
-}
+
+  .char-hero-img-wrap:hover .char-hero-img {
+    transform: scale(1.03);
+  }
+
+  .char-hero-img-wrap:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-lg);
+  }
+
+  .char-cover-zoom-hint {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: var(--fs-heading);
+    opacity: 0;
+    transition: opacity var(--dur-normal) ease;
+    filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+  }
+
+  .char-hero-img-wrap:hover .char-cover-zoom-hint,
+  .char-hero-img-wrap:focus-visible .char-cover-zoom-hint {
+    opacity: 1;
+  }
+
+  @media (hover: none) and (pointer: coarse) {
+    .char-cover-zoom-hint {
+      opacity: 0.7;
+    }
+  }
+
+  .char-hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .char-hero-reading {
+    font-size: var(--fs-ui);
+    color: var(--ink-dim);
+    margin: 0;
+    letter-spacing: 0.1em;
+  }
+
+  .char-hero-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+  }
+
+  .char-hero-personality {
+    font-size: var(--fs-body);
+    color: var(--ink-dim);
+    margin: 0;
+    line-height: 1.8;
+    max-width: 480px;
+  }
+
+  /* ── Stats ── */
+  .char-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 0;
+    border-top: 1px solid var(--stroke);
+  }
+
+  .char-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    font-size: var(--fs-body-sm);
+  }
+
+  .char-stat-label {
+    color: var(--ink-dim);
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+
+  .char-stat-value {
+    font-weight: 700;
+    font-size: var(--fs-heading);
+  }
+
+  .char-stat-link {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity var(--dur-quick) ease;
+  }
+
+  .char-stat-link:hover {
+    opacity: 0.75;
+  }
+
+  /* ── Detail Block ── */
+  .char-detail-block {
+    background: var(--panel);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+
+  .char-detail-block h2 {
+    font-size: var(--fs-heading);
+    font-weight: 600;
+    color: var(--ink-bright);
+    margin: 0 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--accent);
+  }
+
+  .char-body {
+    font-size: var(--fs-body);
+    color: var(--ink);
+    line-height: 1.85;
+  }
+
+  .char-body p {
+    margin: 0 0 12px;
+  }
+
+  .char-body p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* ── Work Info in CTA block ── */
+  .char-work-info {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--stroke);
+  }
+  .char-work-thumb {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--radius);
+    flex-shrink: 0;
+  }
+  .char-work-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .char-work-title {
+    font-size: var(--fs-body);
+    font-weight: 600;
+    color: var(--ink-bright);
+    margin: 0;
+    line-height: 1.4;
+  }
+  .char-work-desc {
+    font-size: var(--fs-sm);
+    color: var(--ink-dim);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* ── CTA sub-heading ── */
+  .char-cta-sub {
+    font-size: var(--fs-ui);
+    color: var(--ink-dim);
+    margin: 0 0 6px;
+  }
+  .char-detail-block .char-cta-sub + .char-cta-sub {
+    margin-top: 8px;
+  }
+
+  /* ── Nav ── */
+  .char-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .char-nav-back {
+    font-size: var(--fs-ui);
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--dur-quick) ease;
+  }
+
+  .char-nav-back:hover {
+    color: var(--accent-dark);
+  }
+
+  /* ── Related Gallery ── */
+  .char-gallery-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(480px, 100%), 1fr));
+    gap: 12px;
+  }
+
+  .char-gallery-preview-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--panel);
+    transition:
+      border-color var(--dur-normal) ease,
+      box-shadow var(--dur-normal) ease,
+      transform var(--dur-normal) var(--easing);
+  }
+  .char-gallery-preview-card:hover {
+    border-color: var(--accent-alpha-25);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+
+  .char-gallery-preview-media {
+    display: grid;
+    grid-template-columns: 1fr;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #fff;
+    gap: 2px;
+  }
+  .char-gallery-preview-card--split .char-gallery-preview-media {
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .char-gallery-preview-cover-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .char-gallery-preview-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    transition: transform var(--dur-medium) var(--easing);
+  }
+  .char-gallery-preview-card:hover .char-gallery-preview-cover {
+    transform: scale(1.03);
+  }
+
+  .char-gallery-preview-thumbs {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    background: #fff;
+    overflow: hidden;
+  }
+  .char-gallery-preview-thumb {
+    flex: 1 1 0;
+    min-height: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .char-gallery-preview-thumb img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    display: block;
+    transition: transform var(--dur-medium) var(--easing);
+  }
+  .char-gallery-preview-card:hover .char-gallery-preview-thumb img {
+    transform: scale(1.05);
+  }
+
+  .char-gallery-preview-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px 4px;
+  }
+  .char-gallery-preview-title {
+    font-size: var(--fs-ui);
+    font-weight: 600;
+    color: var(--ink-bright);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .char-gallery-preview-link {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--accent);
+    padding: 4px 10px 8px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .char-hero-inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .char-hero-img-wrap {
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .char-hero {
+      padding: 32px 0;
+    }
+  }
 </style>

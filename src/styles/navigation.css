@@ -112,15 +112,15 @@ a.announcement-bar-text:hover {
   color: var(--text-on-dark);
   text-decoration: none;
   text-shadow:
-    0 0 8px rgba(255, 255, 255, 0.7),
-    0 0 20px rgba(255, 255, 255, 0.35);
+    0 0 8px var(--announce-glow),
+    0 0 20px var(--announce-glow-dim);
 }
 .announcement-bar-close {
   position: absolute;
   right: 0;
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--announce-glow);
   cursor: pointer;
   padding: 12px;
   min-width: var(--touch-min);
@@ -532,7 +532,7 @@ a.announcement-bar-text:hover {
     content: '';
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--overlay-dark);
     z-index: 0;
   }
 
@@ -577,7 +577,7 @@ a.announcement-bar-text:hover {
 
   .nav-links a:hover {
     transform: none;
-    background: rgba(0, 0, 0, 0.04);
+    background: var(--nav-hover-bg);
   }
 
   .nav-links a:hover .nav-char {
@@ -586,7 +586,7 @@ a.announcement-bar-text:hover {
 
   .nav-links a:active {
     transform: none;
-    background: rgba(0, 0, 0, 0.08);
+    background: var(--nav-active-bg);
     transition-duration: 0.05s;
   }
 

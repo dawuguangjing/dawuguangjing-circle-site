@@ -98,7 +98,7 @@
 }
 
 .news-card-link::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
 }
@@ -120,8 +120,13 @@
   padding: 48px 20px;
   color: var(--ink-dim);
 }
-.news-empty-state.is-visible { display: block; }
-.news-empty-state p { margin: 0 0 16px; font-size: 0.92rem; }
+.news-empty-state.is-visible {
+  display: block;
+}
+.news-empty-state p {
+  margin: 0 0 16px;
+  font-size: var(--fs-body);
+}
 
 /* ── News "See All" Card ── */
 .news-card-more {
@@ -140,9 +145,12 @@
   color: var(--accent);
   text-decoration: none;
   text-align: center;
-  transition: border-color var(--dur-normal) ease, border-style var(--dur-normal) ease,
-              background var(--dur-normal) ease, box-shadow var(--dur-medium) ease,
-              transform var(--dur-medium) var(--easing);
+  transition:
+    border-color var(--dur-normal) ease,
+    border-style var(--dur-normal) ease,
+    background var(--dur-normal) ease,
+    box-shadow var(--dur-medium) ease,
+    transform var(--dur-medium) var(--easing);
 }
 .news-card-more:hover {
   border-color: var(--accent);
@@ -153,7 +161,9 @@
 }
 .news-card-more-icon {
   opacity: 0.7;
-  transition: opacity var(--dur-normal) ease, transform var(--dur-medium) var(--easing);
+  transition:
+    opacity var(--dur-normal) ease,
+    transform var(--dur-medium) var(--easing);
 }
 .news-card-more:hover .news-card-more-icon {
   opacity: 1;
@@ -168,7 +178,7 @@
   align-items: center;
   gap: 4px;
   margin-top: 4px;
-  font-size: 0.8rem;
+  font-size: var(--fs-ui);
   font-weight: 600;
 }
 

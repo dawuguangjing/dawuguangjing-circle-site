@@ -46,7 +46,7 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
   }
 
   .dark-mode-toggle:hover {
-    background: rgba(249, 115, 22, 0.12);
+    background: var(--color-toggle-hover);
   }
 
   /* JS が opacity を制御するため、初期値は 0 に設定してちらつきを防ぐ */
@@ -72,6 +72,8 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
     DARK_MODE_TRANSITION_MS
   } from '../utils/constants';
   import { safeGet, safeSet } from '../scripts/safe-storage';
+  let _dmCleanup: (() => void) | null = null;
+
   const STORAGE_KEY = THEME_STORAGE_KEY;
   const SLIDE_PX = 24;
   const ANIM_OPTS: KeyframeAnimationOptions = {
@@ -144,11 +146,16 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
   }
 
   function init() {
+    _dmCleanup?.();
+
     const btn = document.getElementById('dark-mode-toggle');
     if (!btn) return;
     const sunEl = btn.querySelector<HTMLElement>('.icon-sun');
     const moonEl = btn.querySelector<HTMLElement>('.icon-moon');
     if (!sunEl || !moonEl) return;
+
+    const ac = new AbortController();
+    const signal = ac.signal;
 
     const theme = getPreferred();
     btn.setAttribute(
@@ -161,21 +168,30 @@ import { THEME_STORAGE_KEY } from '../utils/constants';
       setInstant(sunEl, moonEl);
     }
 
-    btn.addEventListener('click', () => {
-      const current =
-        document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      const next = current === 'dark' ? 'light' : 'dark';
-      safeSet(STORAGE_KEY, next);
-      applyTheme(next);
-      btn.setAttribute(
-        'aria-label',
-        next === 'dark' ? 'ライトモードに切り替える' : 'ダークモードに切り替える'
-      );
-      const [outEl, inEl] = next === 'dark' ? [sunEl, moonEl] : [moonEl, sunEl];
-      animateSwitch(outEl, inEl);
-    });
+    btn.addEventListener(
+      'click',
+      () => {
+        const current =
+          document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        safeSet(STORAGE_KEY, next);
+        applyTheme(next);
+        btn.setAttribute(
+          'aria-label',
+          next === 'dark' ? 'ライトモードに切り替える' : 'ダークモードに切り替える'
+        );
+        const [outEl, inEl] = next === 'dark' ? [sunEl, moonEl] : [moonEl, sunEl];
+        animateSwitch(outEl, inEl);
+      },
+      { signal }
+    );
+
+    _dmCleanup = () => {
+      ac.abort();
+      _dmCleanup = null;
+    };
   }
 
-  // View Transitions 後もイベントを再バインド
   document.addEventListener('astro:page-load', init);
+  document.addEventListener('astro:before-swap', () => _dmCleanup?.());
 </script>
