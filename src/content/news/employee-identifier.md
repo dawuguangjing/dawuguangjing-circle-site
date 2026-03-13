@@ -24,7 +24,7 @@ AVだと、[松永あかり](https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dm
 <div style="margin:0;padding:5px;font-size:12px;word-break: break-all;"><a href="https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3D1sdjs00304v&af_id=dawuguangjin-001&ch=search_link&ch_id=package_text" rel="sponsored" style="display:block;text-align:center;" target="_blank"><img src="https://pics.dmm.co.jp/digital/video/1sdjs00304v/1sdjs00304vps.jpg" style="margin:0;padding:0;border:0;max-width:100%" /><span style="display:block;margin:5px 0 0 0;padding:0;text-align:left;">【特典版】宣伝部 松永あかり 初AV出演</span></a><p style="margin:5px 0 0 0;padding:0;color:#8c8c8c;font-size:10px;">松永あかり</p><p style="margin:5px 0 0 0;padding:0;color:#c00;font-weight:bold;">500円</p></div>
 <div style="margin:0;padding:5px;font-size:12px;word-break: break-all;"><a href="https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3D1sdjs00338&af_id=dawuguangjin-001&ch=search_link&ch_id=package_text" rel="sponsored" style="display:block;text-align:center;" target="_blank"><img src="https://pics.dmm.co.jp/digital/video/1sdjs00338/1sdjs00338ps.jpg" style="margin:0;padding:0;border:0;max-width:100%" /><span style="display:block;margin:5px 0 0 0;padding:0;text-align:left;">【ご報告】ただのOLで大変恐縮ですが、清楚系ビッチへ転身いたしました！育ちが良いOLがドM男性をイジメてマ×コを濡らした記録。宣伝部 松永あかり</span></a><p style="margin:5px 0 0 0;padding:0;color:#8c8c8c;font-size:10px;">松永あかり</p><p style="margin:5px 0 0 0;padding:0;color:#c00;font-weight:bold;">500円</p></div>
 
-# 1. 社員証がもたらす「過剰なリアリティ」の効果
+## 1. 社員証がもたらす「過剰なリアリティ」の効果
 社員証の最大の特徴は、極めて具体的な個人情報が可視化されている点にあります。
 
 * 実名（またはフルネームに近いもの）
@@ -39,7 +39,7 @@ AVだと、[松永あかり](https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dm
 社員証は「社会人」「責任」「日常の労働」という、より生々しく大人びた文脈を伴います。
 そのギャップが、性的対象としてのリアリティを一層強めていると感じます。（学生証も良きです！）
 
-# 2. 制服と社員証——面積の違いが生む視覚的インパクト
+## 2. 制服と社員証——面積の違いが生む視覚的インパクト
 フォーマルな効果を生むという点では、制服も似たような効果を生むと思います。ただ、制服は面積が広く、視覚的に「衣装」として強く主張します。
 一方、社員証は極めて小さな物体です。
 名刺サイズ程度のカードが、ストラップ1本で胸元〜腹部あたりにぶら下がっているだけ。
@@ -50,7 +50,7 @@ AVだと、[松永あかり](https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dm
 控えめながらも確実に揺れ、視線を誘導する。
 この「小ささゆえの執拗な主張」が、制服とは異なる独特のエロティシズムを生み出していると考えます。
 
-# 3. 揺れる小物が男性の視覚本能に与える影響
+## 3. 揺れる小物が男性の視覚本能に与える影響
 上の話にも関連するのですが、生物学的な観点から見ると、男性は動くもの、特に「ゆらゆらと規則的に揺れる対象」に強い視覚的注意を向けやすい傾向があると言われています。
 これは狩猟本能の名残とも、単なる運動視の特性とも説明されますが、いずれにせよ、
 ネックレス、ピアス、社員証のような「首から下げられた小物」は、

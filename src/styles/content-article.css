@@ -132,6 +132,9 @@
   color: var(--text-on-dark);
   text-decoration: none;
 }
+.toc-jump-link[hidden] {
+  display: none;
+}
 @media (min-width: 769px) {
   .toc-jump-link {
     display: none;
@@ -384,6 +387,9 @@
 .fab-toc:active {
   transform: translateY(0) scale(var(--scale-pressed));
   transition-duration: var(--dur-fast);
+}
+.fab-toc[hidden] {
+  display: none;
 }
 @media (min-width: 769px) {
   .fab-toc {
