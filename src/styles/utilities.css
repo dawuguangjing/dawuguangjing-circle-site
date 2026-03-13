@@ -1,10 +1,10 @@
 /* ── Dark mode: ヒーローバナー ── */
-[data-theme='dark'] .hero-banner {
+html[data-theme='dark'] .hero-banner {
   background: var(--panel);
 }
-[data-theme='dark'] .hero-banner-catch,
-[data-theme='dark'] .hero-banner-sub,
-[data-theme='dark'] .hero-banner .selling-points li {
+html[data-theme='dark'] .hero-banner-catch,
+html[data-theme='dark'] .hero-banner-sub,
+html[data-theme='dark'] .hero-banner .selling-points li {
   color: var(--ink-bright);
 }
 
@@ -30,7 +30,7 @@ html[data-theme='dark'] .world-subtitle {
   color: var(--ink-bright);
 }
 html[data-theme='dark'] .world-label {
-  color: rgba(167, 139, 250, 0.95);
+  color: var(--color-world-label);
 }
 
 /* ── Dark mode: サークル情報ページのカード本文 ── */
@@ -181,29 +181,29 @@ html[data-theme='dark'] .contact-page .card p {
 }
 
 /* ── Dark mode: ストア（作品一覧）テキスト ── */
-[data-theme='dark'] .work-row-desc {
+html[data-theme='dark'] .work-row-desc {
   color: var(--ink-bright);
 }
-[data-theme='dark'] .work-row-date {
+html[data-theme='dark'] .work-row-date {
   color: var(--ink);
 }
-[data-theme='dark'] .muted {
+html[data-theme='dark'] .muted {
   color: var(--ink);
 }
 
 /* ── Dark mode: 作品詳細ページ テキスト ── */
-[data-theme='dark'] .detail-block p,
-[data-theme='dark'] .detail-block li {
+html[data-theme='dark'] .detail-block p,
+html[data-theme='dark'] .detail-block li {
   color: var(--ink-bright);
 }
-[data-theme='dark'] .detail-catch {
+html[data-theme='dark'] .detail-catch {
   color: var(--ink-bright);
 }
-[data-theme='dark'] .spec-table td:first-child {
+html[data-theme='dark'] .spec-table td:first-child {
   color: var(--ink);
 }
-[data-theme='dark'] .sidebar-small,
-[data-theme='dark'] .sidebar-xsmall {
+html[data-theme='dark'] .sidebar-small,
+html[data-theme='dark'] .sidebar-xsmall {
   color: var(--ink);
 }
 
@@ -224,7 +224,7 @@ html[data-theme='dark'] .home-char-reading {
 
 /* ── Dark mode: トグルボタン ホバー色 ── */
 html[data-theme='dark'] .dark-mode-toggle:hover {
-  background: rgba(251, 192, 45, 0.14);
+  background: var(--color-toggle-hover-dark);
 }
 
 /* ── Dark mode: nav リンク通常時を白色に ── */

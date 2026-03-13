@@ -72,7 +72,15 @@ const gSizes = IMAGE_SIZES.galleryCard;
         <div class="gallery-card-media-thumbs">
           {thumbs.map((img) => (
             <div class="gallery-card-media-thumb">
-              <img src={img} alt="" loading="lazy" width={gw} height={gh} aria-hidden="true" />
+              <img
+                src={img}
+                alt=""
+                loading="lazy"
+                sizes={gSizes}
+                width={gw}
+                height={gh}
+                aria-hidden="true"
+              />
             </div>
           ))}
         </div>

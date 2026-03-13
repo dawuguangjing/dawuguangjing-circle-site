@@ -79,6 +79,7 @@
   --dur-quick: 0.2s; /* focus rings, small interactive feedback */
   --dur-normal: 0.25s; /* standard component transitions */
   --dur-medium: 0.3s; /* card hover lifts, transform + easing */
+  --dur-img-zoom: 0.35s; /* cover image zoom on hover */
   --dur-slow: 0.4s; /* image zoom, gallery transitions */
   --dur-entrance: 0.5s; /* scroll-triggered entrance animations */
   /* ── Font-size scale ── */
@@ -118,15 +119,11 @@
   --z-sheet: 300;
   --z-toast: 400;
   --z-age-gate: 500;
-  /* ── Additional shadows ── */
-  --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.15);
-  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.14);
   /* ── Overlay / Lightbox tokens ── */
   --overlay-scrim: rgba(0, 0, 0, 0.85);
   --overlay-dark: rgba(0, 0, 0, 0.4);
   --overlay-dark-deep: rgba(0, 0, 0, 0.75);
   --overlay-card: rgba(0, 0, 0, 0.35);
-  --shadow-lightbox: 0 8px 40px rgba(0, 0, 0, 0.4);
   --lightbox-btn-bg: rgba(255, 255, 255, 0.15);
   --lightbox-btn-bg-hover: rgba(255, 255, 255, 0.3);
   --lightbox-nav-bg: rgba(255, 255, 255, 0.18);
@@ -145,6 +142,9 @@
   --lightbox-thumb-bg: rgba(0, 0, 0, 0.5);
   --lightbox-gradient: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
   /* ── Component shadows ── */
+  --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.15);
+  --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.14);
+  --shadow-lightbox: 0 8px 40px rgba(0, 0, 0, 0.4);
   --shadow-fab: 0 4px 20px rgba(0, 0, 0, 0.28);
   --shadow-fab-hover: 0 6px 28px rgba(0, 0, 0, 0.34);
   --shadow-card-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -156,6 +156,9 @@
   --shadow-hero-cover: 0 8px 28px rgba(0, 0, 0, 0.18);
   --shadow-hero-cover-hover: 0 16px 40px rgba(0, 0, 0, 0.22);
   --shadow-hero-cover-sm: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-cien: 0 4px 14px rgba(0, 0, 0, 0.3);
+  --shadow-cien-hover: 0 6px 20px rgba(0, 0, 0, 0.45);
+  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.1);
   --shadow-ring-active: 0 0 0 4px rgba(249, 101, 50, 0.18);
   --drop-shadow-icon: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
   --drop-shadow-hint: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
@@ -163,11 +166,6 @@
   --color-sale-bg: rgba(230, 46, 46, 0.1);
   /* ── Notice ── */
   --notice-bg: rgba(0, 104, 183, 0.04);
-  /* ── Cien button shadows ── */
-  --shadow-cien: 0 4px 14px rgba(0, 0, 0, 0.3);
-  --shadow-cien-hover: 0 6px 20px rgba(0, 0, 0, 0.45);
-  /* ── Section link hover ── */
-  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.1);
   /* ── Character card overlay ── */
   --overlay-char: rgba(0, 0, 0, 0.3);
   --char-view-border: rgba(255, 255, 255, 0.7);
@@ -236,9 +234,10 @@ html[data-theme='dark'] {
   --color-dlsite-trial: #6b8ef0;
   --color-dlsite-trial-hover: #85a4f5;
   --color-dlsite-trial-bg: rgba(107, 142, 240, 0.08);
+  --overlay-scrim: rgba(0, 0, 0, 0.92);
+  /* ── Component shadows ── */
   --shadow-float: 0 2px 12px rgba(0, 0, 0, 0.45);
   --shadow-sheet: 0 -8px 32px rgba(0, 0, 0, 0.4);
-  --overlay-scrim: rgba(0, 0, 0, 0.92);
   --shadow-lightbox: 0 8px 40px rgba(0, 0, 0, 0.7);
   --shadow-fab: 0 4px 20px rgba(0, 0, 0, 0.55);
   --shadow-fab-hover: 0 6px 28px rgba(0, 0, 0, 0.65);
@@ -251,12 +250,15 @@ html[data-theme='dark'] {
   --shadow-hero-cover: 0 8px 28px rgba(0, 0, 0, 0.45);
   --shadow-hero-cover-hover: 0 16px 40px rgba(0, 0, 0, 0.55);
   --shadow-hero-cover-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-cien: 0 4px 14px rgba(255, 255, 255, 0.12);
+  --shadow-cien-hover: 0 6px 20px rgba(255, 255, 255, 0.2);
+  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.15);
   --shadow-ring-active: 0 0 0 4px rgba(249, 101, 50, 0.25);
   --drop-shadow-icon: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
   --drop-shadow-hint: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.7));
   --color-sale-bg: rgba(230, 46, 46, 0.14);
   --notice-bg: rgba(0, 104, 183, 0.08);
-  --shadow-cien: 0 4px 14px rgba(255, 255, 255, 0.12);
-  --shadow-cien-hover: 0 6px 20px rgba(255, 255, 255, 0.2);
-  --shadow-section-link: 0 2px 8px rgba(0, 104, 183, 0.15);
+  /* ── Dark-only semantic colors ── */
+  --color-world-label: rgba(167, 139, 250, 0.95);
+  --color-toggle-hover-dark: rgba(251, 192, 45, 0.14);
 }

@@ -1,4 +1,11 @@
 ---
+/**
+ * TrialLinks — ヒーローバナー用のインライン体験版リンク。
+ *
+ * StoreButtonGroup（ボタングループ）とは別の UI パターン。
+ * ヒーロー内で軽量なテキストリンクとして表示するため、
+ * StoreLink[] ではなく個別 URL を受け取る簡易インターフェースを採用。
+ */
 interface Props {
   trialLinks?: { fanza?: string; dlsite?: string };
   location: string;
@@ -6,17 +13,37 @@ interface Props {
 const { trialLinks, location } = Astro.props;
 ---
 
-{(trialLinks?.fanza || trialLinks?.dlsite) && (
-  <span class="hero-trial-group">
-    <span class="hero-trial-label">無料体験版：</span>
-    {trialLinks.fanza && (
-      <a class="hero-trial-link" href={trialLinks.fanza} target="_blank" rel="noopener noreferrer"
-         data-ga-event="trial_click" data-store="fanza" data-ga-location={location}>FANZA</a>
-    )}
-    {trialLinks.fanza && trialLinks.dlsite && <span class="hero-sub-sep">·</span>}
-    {trialLinks.dlsite && (
-      <a class="hero-trial-link" href={trialLinks.dlsite} target="_blank" rel="noopener noreferrer"
-         data-ga-event="trial_click" data-store="dlsite" data-ga-location={location}>DLsite</a>
-    )}
-  </span>
-)}
+{
+  (trialLinks?.fanza || trialLinks?.dlsite) && (
+    <span class="hero-trial-group">
+      <span class="hero-trial-label">無料体験版：</span>
+      {trialLinks.fanza && (
+        <a
+          class="hero-trial-link"
+          href={trialLinks.fanza}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-ga-event="trial_click"
+          data-store="fanza"
+          data-ga-location={location}
+        >
+          FANZA
+        </a>
+      )}
+      {trialLinks.fanza && trialLinks.dlsite && <span class="hero-sub-sep">·</span>}
+      {trialLinks.dlsite && (
+        <a
+          class="hero-trial-link"
+          href={trialLinks.dlsite}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-ga-event="trial_click"
+          data-store="dlsite"
+          data-ga-location={location}
+        >
+          DLsite
+        </a>
+      )}
+    </span>
+  )
+}
