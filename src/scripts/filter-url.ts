@@ -114,5 +114,5 @@ export function syncFilterStateToUrl(
       url.searchParams.set(dim.paramName, val);
     }
   }
-  history.replaceState(null, '', url.toString());
+  history.replaceState(history.state, '', url.toString());
 }

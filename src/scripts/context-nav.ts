@@ -6,7 +6,7 @@ import {
   RETURN_HIGHLIGHT_MS,
   BACK_NAV_TIMEOUT_MS,
   LIST_CONTEXT_KEY_PREFIX,
-  RETURN_HIGHLIGHT_SLUG_KEY,
+  RETURN_HIGHLIGHT_SLUG_KEY
 } from '../utils/constants';
 import { safeGet, safeSet, safeRemove } from './safe-storage';
 
@@ -29,7 +29,8 @@ function initContextBackLinks() {
 
       let sameOriginRef = false;
       try {
-        sameOriginRef = !!document.referrer && new URL(document.referrer).origin === window.location.origin;
+        sameOriginRef =
+          !!document.referrer && new URL(document.referrer).origin === window.location.origin;
       } catch {
         sameOriginRef = false;
       }
@@ -43,11 +44,17 @@ function initContextBackLinks() {
 
       e.preventDefault();
       let navigated = false;
-      const markNavigated = () => { navigated = true; };
+      const markNavigated = () => {
+        navigated = true;
+      };
+      // pagehide: フルリロードナビゲーション検知
+      // astro:before-swap: View Transitions クライアント側ナビゲーション検知
       window.addEventListener('pagehide', markNavigated, { once: true });
+      document.addEventListener('astro:before-swap', markNavigated, { once: true });
       history.back();
       window.setTimeout(() => {
         window.removeEventListener('pagehide', markNavigated);
+        document.removeEventListener('astro:before-swap', markNavigated);
         if (!navigated) window.location.href = fallbackHref;
       }, BACK_NAV_TIMEOUT_MS);
     });
@@ -61,7 +68,11 @@ function persistListContext() {
   const listRoot = document.querySelector<HTMLElement>('[data-list-context]');
   const contextKey = (listRoot?.dataset.listContext ?? '').trim();
   if (!contextKey) return;
-  safeSet(`${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`, `${window.location.pathname}${window.location.search}`, 'session');
+  safeSet(
+    `${LIST_CONTEXT_KEY_PREFIX}:${contextKey}`,
+    `${window.location.pathname}${window.location.search}`,
+    'session'
+  );
 }
 
 // ── Return Highlight ────────────────────────────────────────────────────────
