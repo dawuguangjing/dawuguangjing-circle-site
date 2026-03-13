@@ -94,10 +94,21 @@
   flex-direction: column;
   gap: 4px;
 }
-.toc-item { font-size: 0.85rem; }
-.toc-item--sub { padding-left: 12px; list-style-type: circle; font-size: 0.8rem; }
-.toc-item a { color: var(--ink); text-decoration: none; }
-.toc-item a:hover { color: var(--accent); }
+.toc-item {
+  font-size: 0.85rem;
+}
+.toc-item--sub {
+  padding-left: 12px;
+  list-style-type: circle;
+  font-size: 0.8rem;
+}
+.toc-item a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.toc-item a:hover {
+  color: var(--accent);
+}
 
 /* モバイル向け TOC ジャンプリンク（デスクトップでは aside に表示されるため非表示） */
 .toc-jump-link {
@@ -112,7 +123,9 @@
   padding: 6px 14px;
   border: 1px solid var(--accent);
   border-radius: var(--radius-pill);
-  transition: background var(--dur-quick) ease, color var(--dur-quick) ease;
+  transition:
+    background var(--dur-quick) ease,
+    color var(--dur-quick) ease;
 }
 .toc-jump-link:hover {
   background: var(--accent);
@@ -120,7 +133,9 @@
   text-decoration: none;
 }
 @media (min-width: 769px) {
-  .toc-jump-link { display: none; }
+  .toc-jump-link {
+    display: none;
+  }
 }
 
 /* ── Article Page ── */
@@ -150,7 +165,9 @@
   color: var(--ink-dim);
   margin-left: auto;
 }
-.article-read-time::before { content: '⏱ '; }
+.article-read-time::before {
+  content: '⏱ ';
+}
 
 .article-title {
   font-size: clamp(1.2rem, 3vw, 1.6rem);
@@ -316,15 +333,13 @@
     font-size: var(--fs-heading);
   }
 
-
   .detail-layout {
     grid-template-columns: 1fr;
   }
 
-  /* モバイルではサイドバーを通常フローに戻し、コンテンツより上に表示（購入CTAへの導線確保） */
+  /* モバイルではサイドバーを通常フローに戻し、紹介画像の下に表示 */
   .store-sidebar {
     position: static;
-    order: -1;
   }
 }
 
@@ -350,7 +365,10 @@
   box-shadow: var(--shadow-float);
   opacity: 0;
   pointer-events: none;
-  transition: opacity var(--dur-medium) ease, transform var(--dur-normal) ease, border-color var(--dur-quick);
+  transition:
+    opacity var(--dur-medium) ease,
+    transform var(--dur-normal) ease,
+    border-color var(--dur-quick);
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   white-space: nowrap;
@@ -368,11 +386,17 @@
   transition-duration: var(--dur-fast);
 }
 @media (min-width: 769px) {
-  .fab-toc { display: none; }
+  .fab-toc {
+    display: none;
+  }
 }
 @media (max-width: 640px) {
-  .fab-toc { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+  .fab-toc {
+    bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fab-toc { transition: none; }
+  .fab-toc {
+    transition: none;
+  }
 }
