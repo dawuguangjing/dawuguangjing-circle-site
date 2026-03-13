@@ -114,5 +114,9 @@ export function syncFilterStateToUrl(
       url.searchParams.set(dim.paramName, val);
     }
   }
-  history.replaceState(history.state, '', url.toString());
+  // URL が変わっていない場合は replaceState を呼ばない（VT の history state を守る）
+  const newUrl = url.toString();
+  if (newUrl !== window.location.href) {
+    history.replaceState(history.state, '', newUrl);
+  }
 }

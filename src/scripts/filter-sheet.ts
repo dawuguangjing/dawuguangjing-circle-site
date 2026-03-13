@@ -23,7 +23,15 @@ export interface FilterSheetControls {
   close: () => void;
 }
 
+// 前回の初期化で登録した document リスナーを AbortController で一括解除
+let _sheetAbort: AbortController | null = null;
+
 export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls {
+  // 前回のリスナーをクリーンアップ（VT ページ遷移で蓄積するのを防止）
+  _sheetAbort?.abort();
+  _sheetAbort = new AbortController();
+  const signal = _sheetAbort.signal;
+
   const filterBar = document.getElementById(config.filterBarId);
   const overlay = document.getElementById(config.overlayId);
   const trigger = document.getElementById(config.triggerId);
@@ -55,20 +63,24 @@ export function initFilterSheet(config: FilterSheetConfig): FilterSheetControls 
   });
   overlay?.addEventListener('click', close);
   closeBtn?.addEventListener('click', close);
-  document.addEventListener('keydown', (e) => {
-    // ESC は overlay-close.ts → ui:close-overlays で一元管理
-    // フォーカストラップ: シートが開いている間、Tab をシート内に閉じ込める
-    if (filterBar?.classList.contains('is-open') && filterBar) {
-      const focusable = Array.from(
-        filterBar.querySelectorAll<HTMLElement>(
-          'button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled])'
-        )
-      ).filter((el) => el.offsetParent !== null);
-      trapFocus(e, focusable);
-    }
-  });
-  document.addEventListener('ui:close-overlays', close);
-  document.addEventListener('astro:before-preparation', close);
+  document.addEventListener(
+    'keydown',
+    (e) => {
+      // ESC は overlay-close.ts → ui:close-overlays で一元管理
+      // フォーカストラップ: シートが開いている間、Tab をシート内に閉じ込める
+      if (filterBar?.classList.contains('is-open') && filterBar) {
+        const focusable = Array.from(
+          filterBar.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), [tabindex]:not([tabindex="-1"]), input:not([disabled])'
+          )
+        ).filter((el) => el.offsetParent !== null);
+        trapFocus(e, focusable);
+      }
+    },
+    { signal }
+  );
+  document.addEventListener('ui:close-overlays', close, { signal });
+  document.addEventListener('astro:before-preparation', close, { signal });
 
   return { open, close };
 }
