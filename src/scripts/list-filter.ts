@@ -218,11 +218,20 @@ export function setupListFilter(config: ListFilterConfig) {
   // ── デバウンス付き applyAll ──
 
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
+  function clearDebounce() {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+      debounceTimer = null;
+    }
+  }
   function applyAllDebounced(scroll: boolean) {
-    if (debounceTimer) clearTimeout(debounceTimer);
+    clearDebounce();
     grid.classList.add('is-filtering');
     debounceTimer = setTimeout(() => applyAll(scroll), FILTER_DEBOUNCE_MS);
   }
+
+  // VT ナビゲーション開始時にデバウンスタイマーをキャンセル
+  document.addEventListener('astro:before-preparation', clearDebounce, { once: true });
 
   // ── チップイベント ──
 

@@ -8,6 +8,7 @@ import {
   LIST_CONTEXT_KEY_PREFIX,
   RETURN_HIGHLIGHT_SLUG_KEY
 } from '../utils/constants';
+import { navigate } from 'astro:transitions/client';
 import { safeGet, safeSet, safeRemove } from './safe-storage';
 
 function initContextBackLinks() {
@@ -37,7 +38,7 @@ function initContextBackLinks() {
       if (!sameOriginRef || history.length <= 1) {
         if (savedContextUrl) {
           e.preventDefault();
-          window.location.href = fallbackHref;
+          navigate(fallbackHref);
         }
         return;
       }
@@ -55,7 +56,7 @@ function initContextBackLinks() {
       window.setTimeout(() => {
         window.removeEventListener('pagehide', markNavigated);
         document.removeEventListener('astro:before-swap', markNavigated);
-        if (!navigated) window.location.href = fallbackHref;
+        if (!navigated) navigate(fallbackHref);
       }, BACK_NAV_TIMEOUT_MS);
     });
   });
