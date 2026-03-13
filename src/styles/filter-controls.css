@@ -302,7 +302,7 @@
     height: 18px;
     padding: 0 4px;
     background: var(--accent);
-    color: #fff;
+    color: var(--text-on-dark);
     border-radius: 9px;
     font-size: 0.7rem;
     font-weight: 700;
@@ -465,7 +465,7 @@
 .filter-chip.is-active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--text-on-dark);
 }
 
 /* フィルターチップは pill 形状に合わせて丸いフォーカスリング */

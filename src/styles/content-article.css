@@ -129,7 +129,7 @@
 }
 .toc-jump-link:hover {
   background: var(--accent);
-  color: #fff;
+  color: var(--text-on-dark);
   text-decoration: none;
 }
 @media (min-width: 769px) {

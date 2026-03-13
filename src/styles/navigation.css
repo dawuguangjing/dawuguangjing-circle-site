@@ -69,7 +69,7 @@
 /* ── Announcement Bar ── */
 .announcement-bar {
   background: var(--accent-dark);
-  color: #fff;
+  color: var(--text-on-dark);
   font-size: var(--fs-ui);
   padding: 8px 0;
   max-height: 48px;
@@ -91,7 +91,7 @@
   position: relative;
 }
 .announcement-bar-text {
-  color: #fff;
+  color: var(--text-on-dark);
   text-decoration: none;
   font-weight: 500;
   text-align: center;
@@ -99,7 +99,7 @@
   transition: text-shadow var(--dur-medium) ease;
 }
 a.announcement-bar-text:hover {
-  color: #fff;
+  color: var(--text-on-dark);
   text-decoration: none;
   text-shadow:
     0 0 8px rgba(255, 255, 255, 0.7),
@@ -121,7 +121,7 @@ a.announcement-bar-text:hover {
   transition: color var(--dur-quick);
 }
 .announcement-bar-close:hover {
-  color: #fff;
+  color: var(--text-on-dark);
 }
 
 @keyframes bar-hint {
@@ -152,7 +152,7 @@ a.announcement-bar-text:hover {
   z-index: var(--z-header);
   background: var(--panel);
   border-bottom: 1px solid var(--stroke);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--shadow-header);
   transition: transform var(--dur-medium) ease;
 }
 
@@ -415,7 +415,7 @@ a.announcement-bar-text:hover {
 }
 .footer-follow-btn:hover {
   border-color: var(--footer-btn-hover-border);
-  color: #fff;
+  color: var(--footer-text-bright);
   background: var(--footer-btn-hover-bg);
 }
 .footer-follow-btn--cien:hover {
@@ -510,9 +510,9 @@ a.announcement-bar-text:hover {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     flex-direction: column;
-    background: var(--panel, #ffffff);
+    background: var(--panel);
     border-top: 1px solid var(--stroke);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-dropdown);
     padding: 8px 0 calc(20px + env(safe-area-inset-bottom));
     z-index: 1;
   }

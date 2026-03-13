@@ -135,12 +135,12 @@
   }
 }
 .card-view-label {
-  color: #fff;
+  color: var(--text-on-dark);
   font-size: var(--fs-body-sm);
   font-weight: 600;
   letter-spacing: 0.04em;
   padding: 8px 16px;
-  border: 1.5px solid rgba(255, 255, 255, 0.7);
+  border: 1.5px solid var(--char-view-border);
   border-radius: var(--radius-md);
 }
 
@@ -255,7 +255,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.38);
-  color: #fff;
+  color: var(--text-on-dark);
   pointer-events: none;
   transition:
     background var(--dur-medium) ease,
@@ -263,7 +263,7 @@
 }
 
 .gallery-detail-play-icon svg {
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  filter: var(--drop-shadow-icon);
   transition: transform var(--dur-normal) var(--easing);
 }
 

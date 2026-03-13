@@ -73,8 +73,8 @@
   position: absolute;
   width: 36px;
   height: 36px;
-  border: 3px solid rgba(255, 255, 255, 0.2);
-  border-top-color: rgba(255, 255, 255, 0.8);
+  border: 3px solid var(--lightbox-spinner-track);
+  border-top-color: var(--lightbox-spinner-head);
   border-radius: 50%;
   animation: lightbox-spin 0.7s linear infinite;
   z-index: 0;
@@ -91,7 +91,7 @@
 @media (prefers-reduced-motion: reduce) {
   .lightbox-spinner {
     animation: none;
-    border-top-color: rgba(255, 255, 255, 0.6);
+    border-top-color: var(--lightbox-spinner-static);
   }
 }
 
@@ -107,7 +107,7 @@
   right: 16px;
   background: var(--lightbox-btn-bg);
   border: none;
-  color: #fff;
+  color: var(--text-on-dark);
   font-size: 1.5rem;
   width: var(--touch-min);
   height: var(--touch-min);
@@ -127,7 +127,7 @@
 .lightbox-close:focus-visible,
 .lightbox-prev:focus-visible,
 .lightbox-next:focus-visible {
-  outline-color: #fff;
+  outline-color: var(--lightbox-focus-ring);
 }
 
 .lightbox-prev,
@@ -139,7 +139,7 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   border: 1.5px solid var(--lightbox-btn-border);
-  color: #fff;
+  color: var(--text-on-dark);
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -238,7 +238,7 @@
   transform: scale(1.08);
 }
 .lightbox-thumb.is-active {
-  border-color: #fff;
+  border-color: var(--lightbox-thumb-border-active);
   transform: scale(1.12);
 }
 .lightbox-thumb img {
@@ -251,7 +251,7 @@
   opacity: 1;
 }
 .lightbox-thumb:focus-visible {
-  outline-color: #fff;
+  outline-color: var(--lightbox-focus-ring);
   border-radius: 3px;
 }
 

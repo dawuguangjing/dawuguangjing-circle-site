@@ -1,13 +1,13 @@
 /* ── Store Sidebar (for detail pages) ── */
 .store-sidebar {
-  background: var(--panel, #ffffff);
-  border: 1px solid var(--stroke, rgba(0, 0, 0, 0.1));
-  border-radius: var(--radius-lg, 12px);
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius-lg);
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: var(--shadow, 0 1px 4px rgba(0, 0, 0, 0.06));
+  box-shadow: var(--shadow);
   scroll-margin-top: 100px;
   position: sticky;
   top: var(--sticky-offset);
@@ -57,18 +57,18 @@
   position: fixed;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   left: 24px;
-  z-index: var(--z-float, 40);
-  width: var(--touch-min, 44px);
-  height: var(--touch-min, 44px);
+  z-index: var(--z-float);
+  width: var(--touch-min);
+  height: var(--touch-min);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--panel, #ffffff);
-  border: 1px solid var(--stroke, rgba(0, 0, 0, 0.1));
+  background: var(--panel);
+  border: 1px solid var(--stroke);
   border-radius: 50%;
-  color: var(--ink-dim, #888888);
+  color: var(--ink-dim);
   cursor: pointer;
-  box-shadow: var(--shadow-float, 0 2px 12px rgba(0, 0, 0, 0.15));
+  box-shadow: var(--shadow-float);
   opacity: 0;
   pointer-events: none;
   transition:
@@ -92,20 +92,20 @@
   position: fixed;
   bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   right: 24px;
-  z-index: var(--z-float, 40);
+  z-index: var(--z-float);
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: var(--cta, #f96532);
-  color: #fff;
+  background: var(--cta);
+  color: var(--text-on-dark);
   border: none;
   border-radius: 99px;
   font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
-  box-shadow: var(--shadow-fab, 0 4px 16px rgba(249, 101, 50, 0.35));
+  box-shadow: var(--shadow-fab);
   transition:
     opacity var(--dur-normal) ease,
     transform var(--dur-normal) ease,
@@ -171,12 +171,7 @@
 
 /* ローディング中はシマーアニメーションを表示 */
 .img-skeleton:not(.is-loaded) {
-  background: linear-gradient(
-    90deg,
-    var(--stroke, rgba(0, 0, 0, 0.1)) 25%,
-    var(--bg, #f5f5f5) 50%,
-    var(--stroke, rgba(0, 0, 0, 0.1)) 75%
-  );
+  background: linear-gradient(90deg, var(--stroke) 25%, var(--bg) 50%, var(--stroke) 75%);
   background-size: 800px 100%;
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
@@ -259,7 +254,7 @@
   padding: 12px 16px;
   border-radius: var(--radius-md);
   background: var(--cta);
-  color: #fff;
+  color: var(--text-on-dark);
   font-weight: 600;
   font-size: var(--fs-body-sm);
   transition:
@@ -270,7 +265,7 @@
 
 .store-button:hover {
   background: var(--cta-hover);
-  color: #fff;
+  color: var(--text-on-dark);
   transform: translateY(-2px);
   box-shadow: var(--shadow-cta-hover);
 }
@@ -519,7 +514,7 @@
 }
 
 .char-card-view {
-  color: #fff;
+  color: var(--text-on-dark);
   font-weight: 600;
   border: 1.5px solid var(--char-view-border);
   border-radius: 4px;

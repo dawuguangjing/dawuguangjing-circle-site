@@ -2,7 +2,7 @@
 .hero-banner {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--accent-alpha-08) 0%, #fff 55%);
+  background: linear-gradient(135deg, var(--accent-alpha-08) 0%, var(--panel) 55%);
   border-top: 3px solid var(--accent);
   border-bottom: 3px solid var(--accent);
   padding: 48px 0;
@@ -46,7 +46,7 @@
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #fff;
+  color: var(--text-on-dark);
   background: var(--sale);
   padding: 3px 10px;
   border-radius: 2px;
@@ -149,7 +149,7 @@
   display: block;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-hero-cover);
   transition:
     transform var(--dur-medium) var(--easing),
     box-shadow var(--dur-medium) ease;
@@ -162,7 +162,7 @@
 @media (hover: hover) and (pointer: fine) {
   .hero-banner-cover:hover {
     transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+    box-shadow: var(--shadow-hero-cover-hover);
   }
 }
 
@@ -194,7 +194,7 @@
     order: -1;
     max-width: none;
     margin: 0;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    box-shadow: var(--shadow-hero-cover-sm);
   }
 
   .hero-banner-text {

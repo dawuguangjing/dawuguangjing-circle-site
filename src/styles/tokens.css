@@ -16,6 +16,7 @@
   --cta-hover: #e85525;
   --cta-rgb: 249, 101, 50;
   --cta-text: #ffffff;
+  --text-on-dark: #ffffff;
   --highlight: #0068b7;
   --sale: #e62e2e;
   --stroke: rgba(0, 0, 0, 0.1);
@@ -135,6 +136,11 @@
   --lightbox-text-bright: rgba(255, 255, 255, 0.9);
   --lightbox-thumb-border: rgba(255, 255, 255, 0.3);
   --lightbox-thumb-border-hover: rgba(255, 255, 255, 0.75);
+  --lightbox-thumb-border-active: #ffffff;
+  --lightbox-focus-ring: #ffffff;
+  --lightbox-spinner-track: rgba(255, 255, 255, 0.2);
+  --lightbox-spinner-head: rgba(255, 255, 255, 0.8);
+  --lightbox-spinner-static: rgba(255, 255, 255, 0.6);
   --lightbox-thumb-bg: rgba(0, 0, 0, 0.5);
   --lightbox-gradient: linear-gradient(transparent, rgba(0, 0, 0, 0.65));
   /* ── Component shadows ── */
@@ -144,6 +150,14 @@
   --shadow-card-md: 0 8px 20px rgba(0, 0, 0, 0.1);
   --shadow-toast: 0 4px 16px rgba(0, 0, 0, 0.18);
   --shadow-age-gate: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-header: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-hero-cover: 0 8px 28px rgba(0, 0, 0, 0.18);
+  --shadow-hero-cover-hover: 0 16px 40px rgba(0, 0, 0, 0.22);
+  --shadow-hero-cover-sm: 0 4px 16px rgba(0, 0, 0, 0.16);
+  --shadow-ring-active: 0 0 0 4px rgba(249, 101, 50, 0.18);
+  --drop-shadow-icon: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+  --drop-shadow-hint: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
   /* ── Sale badge ── */
   --color-sale-bg: rgba(230, 46, 46, 0.1);
   /* ── Notice ── */
@@ -231,6 +245,14 @@ html[data-theme='dark'] {
   --shadow-card-md: 0 8px 20px rgba(0, 0, 0, 0.4);
   --shadow-toast: 0 4px 16px rgba(0, 0, 0, 0.5);
   --shadow-age-gate: 0 4px 24px rgba(0, 0, 0, 0.45);
+  --shadow-header: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --shadow-dropdown: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-hero-cover: 0 8px 28px rgba(0, 0, 0, 0.45);
+  --shadow-hero-cover-hover: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-hero-cover-sm: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-ring-active: 0 0 0 4px rgba(249, 101, 50, 0.25);
+  --drop-shadow-icon: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
+  --drop-shadow-hint: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.7));
   --color-sale-bg: rgba(230, 46, 46, 0.14);
   --notice-bg: rgba(0, 104, 183, 0.08);
   --shadow-cien: 0 4px 14px rgba(255, 255, 255, 0.12);

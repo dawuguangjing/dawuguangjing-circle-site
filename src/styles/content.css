@@ -42,7 +42,7 @@
 .timeline-item.is-active .timeline-dot {
   background: var(--cta);
   border-color: var(--cta);
-  box-shadow: 0 0 0 4px rgba(249, 101, 50, 0.18);
+  box-shadow: var(--shadow-ring-active);
 }
 .timeline-body {
   flex: 1;
@@ -155,7 +155,7 @@
 /* ── Badge: NEW ── */
 .badge--new {
   background: var(--color-new);
-  color: #fff;
+  color: var(--text-on-dark);
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -163,7 +163,7 @@
 /* ── Badge: 体験版あり ── */
 .badge--trial {
   background: var(--color-release);
-  color: #fff;
+  color: var(--text-on-dark);
   font-weight: 600;
 }
 
