@@ -3,7 +3,7 @@
   border-radius: var(--radius-md);
   overflow: hidden;
   border: 1px solid var(--stroke);
-  background: #000;
+  background: var(--color-video-placeholder);
 }
 
 .work-video video {

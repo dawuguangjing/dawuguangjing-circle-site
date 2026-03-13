@@ -116,6 +116,13 @@ export const DARK_MODE_TRANSITION_MS = 320;
 /** フィルター操作: デバウンス間隔（ms） */
 export const FILTER_DEBOUNCE_MS = 150;
 
+/** サイトヘッダー: メニュー閉じアニメーション完了フォールバック（ms） */
+export const HEADER_MENU_CLOSE_MS = 200;
+/** サイトヘッダー: スクロール非表示しきい値（この位置より上では常に表示、px） */
+export const HEADER_HIDE_THRESHOLD_PX = 80;
+/** サイトヘッダー: スクロール方向検知の最小差分（px） */
+export const HEADER_SCROLL_DELTA_PX = 4;
+
 // ── ライトボックス: タッチ操作 ─────────────────────────────────────────────
 
 /** ピンチズーム最大倍率 */

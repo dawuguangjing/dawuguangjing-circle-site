@@ -269,6 +269,10 @@
   transform: translateY(-2px);
   box-shadow: var(--shadow-cta-hover);
 }
+.store-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 .store-button--trial {
   background: var(--panel);

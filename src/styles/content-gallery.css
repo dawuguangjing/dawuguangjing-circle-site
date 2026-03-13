@@ -21,6 +21,10 @@
     box-shadow: var(--shadow-card-sm);
   }
 }
+.gallery-item:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 
 .gallery-item img {
   width: 100%;

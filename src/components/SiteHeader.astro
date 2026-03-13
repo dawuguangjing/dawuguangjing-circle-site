@@ -60,6 +60,11 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
 <script>
   import { lockScroll, unlockScroll } from '../scripts/scroll-lock';
   import { trapFocus } from '../scripts/focus-trap';
+  import {
+    HEADER_MENU_CLOSE_MS,
+    HEADER_HIDE_THRESHOLD_PX,
+    HEADER_SCROLL_DELTA_PX
+  } from '../utils/constants';
 
   function getMenuElements() {
     return {
@@ -85,7 +90,7 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
     };
     nav.addEventListener('animationend', finalizeClose, { once: true });
     // フォールバック
-    setTimeout(finalizeClose, 200);
+    setTimeout(finalizeClose, HEADER_MENU_CLOSE_MS);
   }
 
   function openMenu() {
@@ -186,11 +191,11 @@ const isTop = currentPath === basePath || currentPath + '/' === basePath;
       'scroll',
       () => {
         const y = window.scrollY;
-        if (y < 80) {
+        if (y < HEADER_HIDE_THRESHOLD_PX) {
           header.classList.remove('is-hidden');
-        } else if (y > lastY + 4) {
+        } else if (y > lastY + HEADER_SCROLL_DELTA_PX) {
           header.classList.add('is-hidden');
-        } else if (y < lastY - 4) {
+        } else if (y < lastY - HEADER_SCROLL_DELTA_PX) {
           header.classList.remove('is-hidden');
         }
         lastY = y;

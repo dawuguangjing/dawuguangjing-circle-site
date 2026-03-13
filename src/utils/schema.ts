@@ -1,6 +1,7 @@
 import { CIRCLE_NAME, SITE_NAME } from './constants';
 
 const author = { '@type': 'Organization' as const, name: CIRCLE_NAME };
+const toISODate = (d: Date) => d.toISOString().split('T')[0];
 
 /** Organization JSON-LD（全ページ共通） */
 export function buildOrgSchema(siteUrl?: string) {
@@ -10,7 +11,7 @@ export function buildOrgSchema(siteUrl?: string) {
     name: CIRCLE_NAME,
     alternateName: 'だうぐあんぐじんぐ',
     url: siteUrl,
-    description: '同人ゲームサークル公式サイト',
+    description: '同人ゲームサークル公式サイト'
   };
 }
 
@@ -21,7 +22,7 @@ export function buildWebSiteSchema(siteUrl?: string) {
     '@type': 'WebSite',
     name: SITE_NAME,
     alternateName: ['だうぐあんぐじんぐ公式', 'だうぐあんぐじんぐ'],
-    url: siteUrl,
+    url: siteUrl
   };
 }
 
@@ -40,7 +41,7 @@ export function buildProductSchema(opts: {
     applicationCategory: 'GameApplication',
     operatingSystem: opts.os,
     author,
-    datePublished: opts.datePublished.toISOString().split('T')[0],
+    datePublished: toISODate(opts.datePublished)
   };
 }
 
@@ -51,17 +52,15 @@ export function buildArticleSchema(opts: {
   dateModified?: Date;
   image?: string;
 }) {
-  const published = opts.datePublished.toISOString().split('T')[0];
+  const published = toISODate(opts.datePublished);
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: opts.headline,
     datePublished: published,
-    dateModified: opts.dateModified
-      ? opts.dateModified.toISOString().split('T')[0]
-      : published,
+    dateModified: opts.dateModified ? toISODate(opts.dateModified) : published,
     author,
     publisher: author,
-    ...(opts.image ? { image: opts.image } : {}),
+    ...(opts.image ? { image: opts.image } : {})
   };
 }

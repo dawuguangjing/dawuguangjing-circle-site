@@ -98,7 +98,7 @@
 /* 動画はライトボックス開封時まで非表示（JS で制御） */
 .lightbox-video {
   display: none;
-  background: #000;
+  background: var(--color-video-placeholder);
 }
 
 .lightbox-close {

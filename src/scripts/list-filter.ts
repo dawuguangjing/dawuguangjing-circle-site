@@ -37,8 +37,9 @@ function buildLabelMap(
 export function setupListFilter(config: ListFilterConfig) {
   const { stateId, gridSelector, itemSelector, dimensions, animateDelay = true, onUpdate } = config;
 
-  const grid = document.querySelector<HTMLElement>(gridSelector);
-  if (!grid) return;
+  const gridOrNull = document.querySelector<HTMLElement>(gridSelector);
+  if (!gridOrNull) return;
+  const grid = gridOrNull;
 
   const items = Array.from(document.querySelectorAll<HTMLElement>(itemSelector));
   const stateText = document.getElementById(`${stateId}-state-text`);
@@ -127,7 +128,7 @@ export function setupListFilter(config: ListFilterConfig) {
   const reducedMotion = prefersReducedMotion();
 
   function applyAll(scroll: boolean) {
-    grid!.classList.remove('is-filtering');
+    grid.classList.remove('is-filtering');
     // 1) 表示判定
     let visibleCount = 0;
     const toHide: HTMLElement[] = [];
@@ -138,7 +139,7 @@ export function setupListFilter(config: ListFilterConfig) {
         if (vals.length === 0) continue;
         if (dim.filterTest) {
           // カスタム述語 AND
-          if (!vals.every((v) => dim.filterTest![v]?.(el))) {
+          if (!vals.every((v) => dim.filterTest?.[v]?.(el))) {
             show = false;
             break;
           }
@@ -182,7 +183,7 @@ export function setupListFilter(config: ListFilterConfig) {
         const val = getSortValue(dim);
         allItems.sort((a, b) => dim.sortFn(a, b, val));
       }
-      allItems.forEach((el) => grid!.appendChild(el));
+      allItems.forEach((el) => grid.appendChild(el));
     }
 
     // 3) アニメーションとリフロー
@@ -208,8 +209,8 @@ export function setupListFilter(config: ListFilterConfig) {
     if (scroll) {
       const scrollTarget =
         visibleCount === 0 && config.emptySelector
-          ? (document.querySelector<HTMLElement>(config.emptySelector) ?? grid!)
-          : grid!;
+          ? (document.querySelector<HTMLElement>(config.emptySelector) ?? grid)
+          : grid;
       scrollTarget.scrollIntoView({ behavior: smoothScrollBehavior(), block: 'start' });
     }
   }
@@ -219,7 +220,7 @@ export function setupListFilter(config: ListFilterConfig) {
   let debounceTimer: ReturnType<typeof setTimeout> | null = null;
   function applyAllDebounced(scroll: boolean) {
     if (debounceTimer) clearTimeout(debounceTimer);
-    grid!.classList.add('is-filtering');
+    grid.classList.add('is-filtering');
     debounceTimer = setTimeout(() => applyAll(scroll), FILTER_DEBOUNCE_MS);
   }
 

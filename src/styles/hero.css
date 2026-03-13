@@ -330,7 +330,7 @@ html.is-client-nav .hero-banner-cover {
   }
 }
 .hero-banner-tag {
-  background: linear-gradient(90deg, var(--sale) 25%, #f05555 50%, var(--sale) 75%);
+  background: linear-gradient(90deg, var(--sale) 25%, var(--sale-light) 50%, var(--sale) 75%);
   background-size: 200% auto;
   animation: hero-shimmer 3s linear infinite;
 }
@@ -386,6 +386,7 @@ html.is-client-nav .hero-banner-cover {
   .hero-banner-cover,
   .hero-banner-tag,
   .hero-banner .store-button,
+  .hero-banner .store-button:hover .arrow,
   .hero-detail-arrow {
     animation: none;
   }

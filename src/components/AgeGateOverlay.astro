@@ -48,6 +48,7 @@ const { ageKey, ageTtl } = Astro.props;
 <script>
   import { safeSet, safeRemove } from '../scripts/safe-storage';
   import { onTransitionEnd } from '../scripts/transition-end';
+  import { trapFocus } from '../scripts/focus-trap';
 
   const overlay = document.querySelector<HTMLElement>('.age-overlay');
   if (overlay) {
@@ -90,6 +91,8 @@ const { ageKey, ageTtl } = Astro.props;
       }
     });
 
+    const focusable = [btn, deny].filter((el): el is HTMLElement => !!el);
+    overlay.addEventListener('keydown', (e) => trapFocus(e, focusable));
     btn?.focus();
   }
 </script>
