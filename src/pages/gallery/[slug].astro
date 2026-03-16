@@ -29,25 +29,20 @@ const data = entry.data;
 const imageCount = resolveImageCount(data);
 const videoCount = data.videos?.length ?? 0;
 const hasMedia = data.images.length > 0 || videoCount > 0;
-const hasStoreLinks = !!(data.platformLinks?.fanza || data.platformLinks?.dlsite);
-
 const workIndex = await getWorkIndex();
 const relatedWorks = (data.relatedWorkSlugs ?? []).flatMap((slug) => {
   const w = workIndex.get(slug);
   return w ? [w] : [];
 });
 
-// ギャラリー自身にリンクがない場合、関連作品のリンクを fallback として使用
-const relatedWorkLinks = hasStoreLinks
-  ? []
-  : relatedWorks.flatMap((w) => buildLinks(w.data.platformLinks, PURCHASE_LINK_ENTRIES));
-
-// 関連作品の体験版リンク
-const relatedWorkTrialLinks = relatedWorks.flatMap((w) =>
-  buildLinks(w.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES)
+// 関連作品カードに購入/体験版ボタンがあるか（FAB 表示用）
+const hasAnyCta = relatedWorks.some(
+  (w) =>
+    w.data.platformLinks?.fanza ||
+    w.data.platformLinks?.dlsite ||
+    w.data.trialLinks?.fanza ||
+    w.data.trialLinks?.dlsite
 );
-
-const hasAnyCta = hasStoreLinks || relatedWorkLinks.length > 0 || relatedWorkTrialLinks.length > 0;
 
 const relatedCharacters = await getCharactersByGallery(entry.slug);
 const sidebarChars = relatedCharacters.map((c) => ({
@@ -55,10 +50,6 @@ const sidebarChars = relatedCharacters.map((c) => ({
   name: c.data.name,
   cover: c.data.cover
 }));
-
-const galleryPurchaseLinks = hasStoreLinks
-  ? buildLinks(data.platformLinks!, PURCHASE_LINK_ENTRIES)
-  : relatedWorkLinks;
 ---
 
 <BaseLayout
@@ -159,8 +150,6 @@ const galleryPurchaseLinks = hasStoreLinks
         <!-- Sidebar -->
         <StoreSidebar
           isR18={data.isR18}
-          trialLinks={relatedWorkTrialLinks}
-          purchaseLinks={galleryPurchaseLinks}
           characters={sidebarChars}
           location="gallery_detail"
           animDelay="0.15s"
