@@ -15,7 +15,8 @@ environments:
   android: false
 volume:
   playTimeMin: 100
-  cgCount: 0
+  cgCount: 113
+  standingPoseCount: 21
   hSceneCount: 0
   branching: "multi"
 aiUsage:
@@ -33,7 +34,8 @@ images:
 earlyAccess:
   enabled: true
   password: "なかむらりお"
-  downloadUrl: "https://drive.google.com/uc?id=xxxx&export=download"
+  downloadUrlWin: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-trial-win64.zip"
+  downloadUrlMac: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-trial-darwin-x64.zip"
 ---
 
 ## 概要

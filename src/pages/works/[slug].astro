@@ -186,7 +186,8 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
                   <h3>先行体験版</h3>
                   <EarlyAccessDownload
                     password={data.earlyAccess.password}
-                    downloadUrl={data.earlyAccess.downloadUrl}
+                    downloadUrlWin={data.earlyAccess.downloadUrlWin}
+                    downloadUrlMac={data.earlyAccess.downloadUrlMac}
                     cienUrl={EXTERNAL_LINKS.cien}
                   />
                 </>
@@ -229,6 +230,14 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
                   <td>CG枚数</td>
                   <td>{data.volume.cgCount === 0 ? '後日公開' : `${data.volume.cgCount} 枚`}</td>
                 </tr>
+                {
+                  data.volume.standingPoseCount !== undefined && (
+                    <tr>
+                      <td>立ち絵数</td>
+                      <td>{data.volume.standingPoseCount} 枚</td>
+                    </tr>
+                  )
+                }
                 <tr>
                   <td>Hシーン</td>
                   <td

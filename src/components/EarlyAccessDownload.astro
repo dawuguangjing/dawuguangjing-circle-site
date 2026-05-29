@@ -3,11 +3,12 @@ import { EA_INPUT_SHAKE_MS } from '../utils/constants';
 
 interface Props {
   password: string;
-  downloadUrl: string;
+  downloadUrlWin: string;
+  downloadUrlMac: string;
   cienUrl?: string;
 }
 
-const { password, downloadUrl, cienUrl } = Astro.props;
+const { password, downloadUrlWin, downloadUrlMac, cienUrl } = Astro.props;
 // 軽度の難読化: パスワードは HTML ソースに平文で露出させない
 const encodedPw = btoa(encodeURIComponent(password));
 ---
@@ -38,32 +39,59 @@ const encodedPw = btoa(encodeURIComponent(password));
   <p class="ea-error" id="ea-error" role="alert" hidden>合言葉が違います</p>
 
   <!-- ダウンロードボタン: 合言葉が正解するまで非活性 -->
-  <a
-    class="ea-download"
-    aria-disabled="true"
-    tabindex="-1"
-    aria-label="先行体験版をダウンロード（合言葉を入力してください）"
-  >
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"
+  <div class="ea-downloads">
+    <a
+      class="ea-download"
+      data-os="win"
+      aria-disabled="true"
+      tabindex="-1"
+      aria-label="先行体験版（Windows版）をダウンロード（合言葉を入力してください）"
     >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-      <polyline points="7 10 12 15 17 10"></polyline>
-      <line x1="12" y1="15" x2="12" y2="3"></line>
-    </svg>
-    <span>先行体験版をダウンロード</span>
-  </a>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Windows版をダウンロード</span>
+    </a>
+    <a
+      class="ea-download"
+      data-os="mac"
+      aria-disabled="true"
+      tabindex="-1"
+      aria-label="先行体験版（Mac版）をダウンロード（合言葉を入力してください）"
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Mac版をダウンロード</span>
+    </a>
+  </div>
 </div>
 
-<script define:vars={{ encodedPw, downloadUrl, EA_INPUT_SHAKE_MS }}>
+<script define:vars={{ encodedPw, downloadUrlWin, downloadUrlMac, EA_INPUT_SHAKE_MS }}>
   (function () {
     const wrapper = document.currentScript
       ? document.currentScript.previousElementSibling
@@ -73,7 +101,13 @@ const encodedPw = btoa(encodeURIComponent(password));
     const input = wrapper.querySelector('.ea-input');
     const submit = wrapper.querySelector('.ea-submit');
     const error = wrapper.querySelector('.ea-error');
-    const dlBtn = wrapper.querySelector('.ea-download');
+    const winBtn = wrapper.querySelector('.ea-download[data-os="win"]');
+    const macBtn = wrapper.querySelector('.ea-download[data-os="mac"]');
+    const downloadUrls = { win: downloadUrlWin, mac: downloadUrlMac };
+    const labels = {
+      win: '先行体験版（Windows版）をダウンロード',
+      mac: '先行体験版（Mac版）をダウンロード'
+    };
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submit.click();
@@ -91,15 +125,18 @@ const encodedPw = btoa(encodeURIComponent(password));
       if (match) {
         // 正解: ダウンロードボタンを活性化
         input.removeAttribute('aria-invalid');
-        dlBtn.setAttribute('href', downloadUrl);
-        dlBtn.setAttribute('aria-disabled', 'false');
-        dlBtn.removeAttribute('tabindex');
-        dlBtn.setAttribute('aria-label', '先行体験版をダウンロード');
-        dlBtn.classList.add('ea-download--active');
+        [winBtn, macBtn].forEach((btn) => {
+          const os = btn.getAttribute('data-os');
+          btn.setAttribute('href', downloadUrls[os]);
+          btn.setAttribute('aria-disabled', 'false');
+          btn.removeAttribute('tabindex');
+          btn.setAttribute('aria-label', labels[os]);
+          btn.classList.add('ea-download--active');
+        });
         // 入力欄・確認ボタンを無効化
         input.disabled = true;
         submit.disabled = true;
-        dlBtn.focus();
+        winBtn.focus();
       } else {
         input.setAttribute('aria-invalid', 'true');
         error.hidden = false;
@@ -203,6 +240,12 @@ const encodedPw = btoa(encodeURIComponent(password));
   }
 
   /* ダウンロードボタン */
+  .ea-downloads {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .ea-download {
     display: flex;
     align-items: center;

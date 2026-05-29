@@ -28,6 +28,7 @@ const works = defineCollection({
     volume: z.object({
       playTimeMin: z.number().int().nonnegative(),
       cgCount: z.number().int().nonnegative(),
+      standingPoseCount: z.number().int().nonnegative().optional(),
       hSceneCount: z.number().int().nonnegative(),
       branching: z.enum(['none', 'light', 'multi'])
     }),
@@ -47,7 +48,8 @@ const works = defineCollection({
         z.object({
           enabled: z.literal(true),
           password: z.string(),
-          downloadUrl: z.string()
+          downloadUrlWin: z.string(),
+          downloadUrlMac: z.string()
         })
       ])
       .optional()
