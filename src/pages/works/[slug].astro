@@ -239,16 +239,6 @@ const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTR
                   )
                 }
                 <tr>
-                  <td>Hシーン</td>
-                  <td
-                    >{
-                      data.volume.hSceneCount === 0
-                        ? '後日公開'
-                        : `${data.volume.hSceneCount} シーン`
-                    }</td
-                  >
-                </tr>
-                <tr>
                   <td>分岐</td>
                   <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
                 </tr>

@@ -17,7 +17,6 @@ volume:
   playTimeMin: 100
   cgCount: 113
   standingPoseCount: 21
-  hSceneCount: 0
   branching: "multi"
 aiUsage:
   level: "partial"

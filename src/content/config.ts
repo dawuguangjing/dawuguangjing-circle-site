@@ -29,7 +29,6 @@ const works = defineCollection({
       playTimeMin: z.number().int().nonnegative(),
       cgCount: z.number().int().nonnegative(),
       standingPoseCount: z.number().int().nonnegative().optional(),
-      hSceneCount: z.number().int().nonnegative(),
       branching: z.enum(['none', 'light', 'multi'])
     }),
     aiUsage: z.object({
