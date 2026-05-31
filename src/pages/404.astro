@@ -1,30 +1,60 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import TunaTank from '../components/TunaTank.astro';
 import { withBase } from '../utils/withBase';
 ---
 
-<BaseLayout title="ページが見つかりません" description="404 Not Found" noIndex={true} disableAgeGate={true}>
+<BaseLayout
+  title="ページが見つかりません"
+  description="404 Not Found"
+  noIndex={true}
+  disableAgeGate={true}
+>
   <div class="page-content">
     <section class="section container">
-      <div class="not-found">
-        <svg class="not-found-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-          <line x1="8" y1="11" x2="14" y2="11" />
-        </svg>
-        <h1 class="not-found-code">404</h1>
-        <p class="not-found-message">お探しのページは見つかりませんでした。</p>
-        <p class="not-found-sub">URLが変更されたか、ページが削除された可能性があります。</p>
-        <p class="not-found-path" id="requested-path" hidden></p>
-        <a class="button" href={withBase('')}>トップページへ戻る</a>
+      <div class="not-found-stage">
+        <TunaTank
+          triggerSelector=".button"
+          goldSpawnRate={0.3}
+          fishes={[
+            { dir: 'r', top: '12%', dur: '16s', delay: '0s', size: 30 },
+            { dir: 'l', top: '40%', dur: '22s', delay: '-6s', size: 46 },
+            { dir: 'r', top: '70%', dur: '13s', delay: '-3s', size: 26 },
+            { dir: 'l', top: '85%', dur: '26s', delay: '-10s', size: 52 },
+            { dir: 'l', top: '55%', dur: '20s', delay: '-4s', size: 48, gold: true }
+          ]}
+        />
+        <div class="not-found">
+          <svg
+            class="not-found-icon"
+            width="64"
+            height="64"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+          <h1 class="not-found-code">404</h1>
+          <p class="not-found-message">お探しのページは見つかりませんでした。</p>
+          <p class="not-found-sub">URLが変更されたか、ページが削除された可能性があります。</p>
+          <p class="not-found-path" id="requested-path" hidden></p>
+          <a class="button" href={withBase('')}>トップページへ戻る</a>
 
-        <nav class="not-found-links" aria-label="主要ページ">
-          <span class="not-found-links-label">主なページ:</span>
-          <a href={withBase('works/')}>作品</a>
-          <a href={withBase('gallery/')}>ギャラリー</a>
-          <a href={withBase('characters/')}>キャラクター</a>
-          <a href={withBase('news/')}>開発ログ</a>
-        </nav>
+          <nav class="not-found-links" aria-label="主要ページ">
+            <span class="not-found-links-label">主なページ:</span>
+            <a href={withBase('works/')}>作品</a>
+            <a href={withBase('gallery/')}>ギャラリー</a>
+            <a href={withBase('characters/')}>キャラクター</a>
+            <a href={withBase('news/')}>開発ログ</a>
+          </nav>
+        </div>
       </div>
     </section>
   </div>

@@ -248,7 +248,15 @@
 }
 
 /* ── 404 Page ── */
+/* マグロが泳ぐ舞台。戻るボタンに触れると魚が逃げ出す（TunaTank） */
+.not-found-stage {
+  position: relative;
+  overflow: hidden;
+}
+
 .not-found {
+  position: relative;
+  z-index: 1;
   text-align: center;
   padding: 60px 0;
 }

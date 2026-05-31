@@ -50,6 +50,7 @@ const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
       sizes={IMAGE_SIZES.workCard}
       width={IMAGE_DIMENSIONS.workCard.width}
       height={IMAGE_DIMENSIONS.workCard.height}
+      transition:name={`work-cover-${slug}`}
     />
     <div class="work-row-overlay" aria-hidden="true">
       <span class="card-view-label">詳細を見る</span>

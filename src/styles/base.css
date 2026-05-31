@@ -270,6 +270,13 @@ button {
   box-shadow: var(--shadow-cta-hover);
 }
 
+/* クリックの押し込み感: hover で浮いたボタンを resting より沈めて触感を出す */
+.button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+  transition-duration: var(--dur-fast);
+}
+
 .button.secondary {
   background: var(--panel);
   color: var(--ink);
