@@ -10,28 +10,65 @@ const { message, href, storageKey } = Astro.props;
 
 <div class="announcement-bar" id="announcement-bar" data-storage-key={storageKey}>
   <div class="container announcement-bar-inner">
-    {href
-      ? <a class="announcement-bar-text" href={href} target="_blank" rel="noopener noreferrer" title="別タブで開きます">
-          {message}<svg class="announcement-ext-icon" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+    {
+      href ? (
+        <a
+          class="announcement-bar-text"
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="別タブで開きます"
+        >
+          {message}
+          <svg
+            class="announcement-ext-icon"
+            width="11"
+            height="11"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <>
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </>
+          </svg>
         </a>
-      : <span class="announcement-bar-text">{message}</span>
+      ) : (
+        <span class="announcement-bar-text">{message}</span>
+      )
     }
     <button class="announcement-bar-close" aria-label="閉じる">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
       </svg>
     </button>
   </div>
 </div>
 
 <style>
-.announcement-ext-icon {
-  display: inline;
-  vertical-align: -1px;
-  margin-left: 4px;
-  opacity: 0.75;
-  flex-shrink: 0;
-}
+  .announcement-ext-icon {
+    display: inline;
+    vertical-align: -1px;
+    margin-left: 4px;
+    opacity: 0.75;
+    flex-shrink: 0;
+  }
 </style>
 
 <script>
@@ -45,26 +82,39 @@ const { message, href, storageKey } = Astro.props;
 
     const key = bar.dataset.storageKey!;
 
-    if (safeGet(key, 'session')) { bar.remove(); return; }
+    if (safeGet(key, 'session')) {
+      bar.remove();
+      return;
+    }
 
+    // ガード済みの非null参照をクロージャ用に確定（TSはネスト関数内で絞り込みを保持しないため）
+    const barEl = bar;
     function dismiss() {
       safeSet(key, '1', 'session');
-      bar.classList.add('is-hiding');
+      barEl.classList.add('is-hiding');
       // transitionend の代わりに setTimeout で確実に除去
-      setTimeout(() => bar.remove(), ANNOUNCEMENT_DISMISS_MS);
+      setTimeout(() => barEl.remove(), ANNOUNCEMENT_DISMISS_MS);
     }
 
     bar.querySelector('.announcement-bar-close')?.addEventListener('click', dismiss);
 
     // スワイプ上方向で閉じる
     let _swipeTouchStartY = 0;
-    bar.addEventListener('touchstart', (e) => {
-      _swipeTouchStartY = e.touches[0].clientY;
-    }, { passive: true });
-    bar.addEventListener('touchend', (e) => {
-      const dy = _swipeTouchStartY - e.changedTouches[0].clientY;
-      if (dy > 40) dismiss();
-    }, { passive: true });
+    bar.addEventListener(
+      'touchstart',
+      (e) => {
+        _swipeTouchStartY = e.touches[0].clientY;
+      },
+      { passive: true }
+    );
+    bar.addEventListener(
+      'touchend',
+      (e) => {
+        const dy = _swipeTouchStartY - e.changedTouches[0].clientY;
+        if (dy > 40) dismiss();
+      },
+      { passive: true }
+    );
   }
 
   document.addEventListener('astro:page-load', initAnnouncementBar);

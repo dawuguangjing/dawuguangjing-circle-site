@@ -17,7 +17,7 @@ const { Content } = await char.render();
 
 // 関連作品を取得
 const work = char.data.workSlug
-  ? await getEntry('works', char.data.workSlug).catch(() => null)
+  ? ((await getEntry('works', char.data.workSlug)?.catch(() => null)) ?? null)
   : null;
 
 const workPlatformLinks = work ? buildLinks(work.data.platformLinks, PURCHASE_LINK_ENTRIES) : [];
