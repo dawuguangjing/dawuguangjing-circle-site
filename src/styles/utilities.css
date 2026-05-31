@@ -89,17 +89,10 @@ html[data-theme='dark'] .about-page .external-link-desc {
   transform: translateY(0);
 }
 
-/* 閉じるとき: テキスト消去＋スライドを同時・素早く */
-.faq-item.is-closing .faq-answer {
-  transition: grid-template-rows var(--dur-quick) ease-in;
-}
-
+/* 閉じるとき: アニメーションなしで即座に収納（矢印の回転のみ動く） */
+.faq-item.is-closing .faq-answer,
 .faq-item.is-closing .faq-answer-inner > * {
-  opacity: 0;
-  transform: translateY(-4px);
-  transition:
-    opacity var(--dur-fast) ease-in,
-    transform var(--dur-fast) ease-in;
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

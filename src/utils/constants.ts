@@ -79,9 +79,6 @@ export const TOAST_FADE_MS = 300;
 /** URLコピー: 完了フィードバック表示時間（ms） */
 export const COPY_FEEDBACK_MS = 2000;
 
-/** FAQ アコーディオン: transitionend 未発火時のフォールバック（ms） */
-export const FAQ_CLEANUP_MS = 250;
-
 /** お問い合わせフォーム: iframe 読み込みタイムアウト（ms） */
 export const FORM_LOAD_TIMEOUT_MS = 20000;
 /** お問い合わせフォーム: 遅延読み込みの IntersectionObserver rootMargin */
