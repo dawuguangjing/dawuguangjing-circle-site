@@ -19,7 +19,10 @@
   font-size: var(--fs-sm);
   color: var(--ink-dim);
   cursor: pointer;
-  transition: all var(--dur-quick) ease;
+  transition:
+    border-color var(--dur-quick) ease,
+    color var(--dur-quick) ease,
+    background var(--dur-quick) ease;
   font-family: inherit;
 }
 .sort-btn:hover {
@@ -456,7 +459,10 @@
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: all var(--dur-quick) ease;
+  transition:
+    border-color var(--dur-quick) ease,
+    color var(--dur-quick) ease,
+    background var(--dur-quick) ease;
   touch-action: manipulation;
 }
 

@@ -65,7 +65,7 @@ a:active {
 /* ── Skip Navigation ── */
 .skip-link {
   position: absolute;
-  top: -100%;
+  top: 8px;
   left: 16px;
   z-index: var(--z-tooltip);
   padding: 8px 16px;
@@ -74,11 +74,12 @@ a:active {
   font-size: var(--fs-ui);
   font-weight: 600;
   border-radius: var(--radius-md);
-  transition: top var(--dur-quick) ease;
+  transform: translateY(-250%);
+  transition: transform var(--dur-quick) var(--easing);
 }
 
 .skip-link:focus {
-  top: 8px;
+  transform: translateY(0);
   color: var(--text-on-dark);
 }
 
