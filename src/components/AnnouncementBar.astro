@@ -6,6 +6,8 @@ interface Props {
 }
 
 const { message, href, storageKey } = Astro.props;
+// \n をスマホ専用の改行（<br>）に変換するためセグメント分割
+const messageSegments = message.split('\n');
 ---
 
 <div class="announcement-bar" id="announcement-bar" data-storage-key={storageKey}>
@@ -19,7 +21,12 @@ const { message, href, storageKey } = Astro.props;
           rel="noopener noreferrer"
           title="別タブで開きます"
         >
-          {message}
+          {messageSegments.map((seg, i) => (
+            <>
+              {i > 0 && <br class="announcement-bar-break" />}
+              {seg}
+            </>
+          ))}
           <svg
             class="announcement-ext-icon"
             width="11"
@@ -40,7 +47,14 @@ const { message, href, storageKey } = Astro.props;
           </svg>
         </a>
       ) : (
-        <span class="announcement-bar-text">{message}</span>
+        <span class="announcement-bar-text">
+          {messageSegments.map((seg, i) => (
+            <>
+              {i > 0 && <br class="announcement-bar-break" />}
+              {seg}
+            </>
+          ))}
+        </span>
       )
     }
     <button class="announcement-bar-close" aria-label="閉じる">

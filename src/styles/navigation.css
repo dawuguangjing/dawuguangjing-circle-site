@@ -93,6 +93,19 @@
   padding-top: 0;
   padding-bottom: 0;
 }
+/* 文中の \n 由来の改行: PCでは無効、スマホ幅でのみ改行する */
+.announcement-bar-break {
+  display: none;
+}
+@media (max-width: 480px) {
+  .announcement-bar-break {
+    display: inline;
+  }
+  /* 2行ぶんの高さを確保（max-height: 48px のままだと2行目がクリップされる） */
+  .announcement-bar {
+    max-height: 72px;
+  }
+}
 .announcement-bar-inner {
   display: flex;
   align-items: center;

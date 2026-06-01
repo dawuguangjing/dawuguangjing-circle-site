@@ -46,7 +46,8 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'shinsa2-release-soon',
-  message: '🎉従順審査2 近日リリース！続報は開発ログ/Ci-enで配信中',
+  // \n はスマホ幅でのみ改行される位置マーカー（PCでは1行のまま）
+  message: '🎉従順審査2 近日リリース！\n続報は開発ログ/Ci-enで配信中',
   href: 'https://ci-en.dlsite.com/creator/35269'
 };
 
