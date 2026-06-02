@@ -12,6 +12,7 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-5.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-6.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-7.jpg"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-8.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---
