@@ -1,0 +1,108 @@
+---
+# ──────────────────────────────────────────────────────────────────────
+# 「制作中（近日公開）」作品ページ テンプレート
+#
+# 新作を “制作中ステータス” で公開するときの雛形です。
+# 使い方:
+#   1. このファイルを同じフォルダにコピーする
+#   2. 拡張子を「.md」に変更し、ファイル名を作品スラッグにする
+#      （例: my-next-work.md → /works/my-next-work/ で公開）
+#      ※ .md.sample のままではコンテンツとして読み込まれません
+#   3. 下記の値を作品ごとに書き換える
+#
+# “制作中” として描画される仕組み（src/pages/works/[slug].astro 参照）:
+#   - releaseDate を COMING_SOON_YEAR(=2099) 以降にする
+#       → 一覧/詳細で「発売日未定」、トップで「次回作を追う（近日公開）」に
+#   - platformLinks を空 {} にする
+#       → サイドバーが「販売情報は後日公開予定」＋Ci-en/開発ログ導線に
+#   - volume.cgCount を 0 にする → 仕様表の CG 枚数が「後日公開」に
+#   - earlyAccess.enabled: true → サイドバーに「先行体験版」DLを表示
+#
+# 正式リリース時は上記（releaseDate / platformLinks / cgCount など）を
+# 実値へ更新し、earlyAccess を削除、本文の「制作進捗」を作品紹介に差し替える。
+# ──────────────────────────────────────────────────────────────────────
+title: "（作品タイトル）"
+catch: "（キャッチコピー：トップ/詳細のリード文）"
+shortDescription: "（一覧カード・詳細の「概要」に出る短い説明）"
+metaDescription: "（SEO 用メタ説明。例: 〇〇シリーズ最新作。近日リリース予定。）"
+releaseDate: 2099-01-01
+isR18: true
+platformLinks: {}
+environments:
+  windows: true
+  mac: true
+  browserPc: false
+  browserMobileBeta: false
+  ios: false
+  android: false
+volume:
+  playTimeMin: 0
+  cgCount: 0
+  standingPoseCount: 0
+  branching: "multi"
+aiUsage:
+  level: "partial"
+  noteShort: "一部のグラフィック素材にAIを使用しています。"
+images:
+  cover: "https://storage.googleapis.com/dawuguangjing-assets/REPLACE-cover.jpg"
+  screenshots:
+    - "https://storage.googleapis.com/dawuguangjing-assets/REPLACE-sample-1.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/REPLACE-sample-2.jpg"
+# 先行体験版を配布しない場合は earlyAccess ブロックごと削除してください
+earlyAccess:
+  enabled: true
+  password: "（先行体験版のパスワード）"
+  downloadUrlWin: "https://storage.googleapis.com/dawuguangjing-assets/REPLACE-trial-win64.zip"
+  downloadUrlMac: "https://storage.googleapis.com/dawuguangjing-assets/REPLACE-trial-darwin-x64.zip"
+---
+
+## 概要
+
+（作品の概要をここに記載。詳細ページではこの上に shortDescription が「概要」として表示されます）
+
+## 制作進捗
+
+<ul class="timeline">
+  <li class="timeline-item is-done">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">シナリオ執筆</p>
+      <p class="timeline-status">完了</p>
+    </div>
+  </li>
+  <li class="timeline-item is-done">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">キャラクターデザイン</p>
+      <p class="timeline-status">完了</p>
+    </div>
+  </li>
+  <li class="timeline-item is-active">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">CG 制作</p>
+      <p class="timeline-status">進行中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">プログラミング・実装</p>
+      <p class="timeline-status">準備中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">テスト・デバッグ</p>
+      <p class="timeline-status">準備中</p>
+    </div>
+  </li>
+  <li class="timeline-item">
+    <div class="timeline-dot"></div>
+    <div class="timeline-body">
+      <p class="timeline-phase">リリース</p>
+      <p class="timeline-status">未定</p>
+    </div>
+  </li>
+</ul>

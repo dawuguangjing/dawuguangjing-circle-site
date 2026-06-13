@@ -28,8 +28,13 @@ const allWorks = await getSortedWorks();
 const news = (await getSortedNews()).slice(0, HOME_NEWS_LIMIT);
 const galleries = (await getSortedGallery()).slice(0, HOME_GALLERY_LIMIT);
 const characters = (await getCollection('characters')).sort((a, b) => a.data.order - b.data.order);
-const now = new Date();
-const heroWork = allWorks.find((w) => w.data.releaseDate <= now) ?? null;
+// releaseDate（frontmatter の日付）は UTC 午前0時としてパースされる。日本のサークルのため
+// 「その日付の JST 午前0時（= UTC 前日15時）」を公開開始とみなす。こうすることで、UTC で走る
+// 本番ビルドでも公開日当日のデプロイで最新作がヒーローへ確実に反映される。
+const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
+const nowMs = Date.now();
+const heroWork =
+  allWorks.find((w) => w.data.releaseDate.getTime() - JST_OFFSET_MS <= nowMs) ?? null;
 const comingWork =
   allWorks.find((w) => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ?? null;
 const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
