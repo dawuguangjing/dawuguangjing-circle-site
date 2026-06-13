@@ -13,10 +13,10 @@ import {
 } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
-import StoreButtonGroup from '../../components/StoreButtonGroup.astro';
+import StoreCtaPair from '../../components/StoreCtaPair.astro';
 import ArticlePagination from '../../components/ArticlePagination.astro';
 import FabPurchase from '../../components/FabPurchase.astro';
-import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
+import { getStoreLinks } from '../../utils/types';
 
 export async function getStaticPaths() {
   return buildPrevNext(await getSortedGallery());
@@ -186,11 +186,9 @@ const sidebarChars = relatedCharacters.map((c) => ({
                 <div class="sidebar-divider">
                   <h3>関連作品</h3>
                   {relatedWorks.map((work) => {
-                    const wPurchaseLinks = buildLinks(
-                      work.data.platformLinks,
-                      PURCHASE_LINK_ENTRIES
+                    const { purchase: wPurchaseLinks, trial: wTrialLinks } = getStoreLinks(
+                      work.data
                     );
-                    const wTrialLinks = buildLinks(work.data.trialLinks ?? {}, TRIAL_LINK_ENTRIES);
                     return (
                       <div class="related-work-card">
                         <a
@@ -216,19 +214,11 @@ const sidebarChars = relatedCharacters.map((c) => ({
                         </a>
                         {(wTrialLinks.length > 0 || wPurchaseLinks.length > 0) && (
                           <div class="related-work-card-cta">
-                            {wTrialLinks.length > 0 && (
-                              <StoreButtonGroup
-                                links={wTrialLinks}
-                                trial
-                                location="gallery_related_work"
-                              />
-                            )}
-                            {wPurchaseLinks.length > 0 && (
-                              <StoreButtonGroup
-                                links={wPurchaseLinks}
-                                location="gallery_related_work"
-                              />
-                            )}
+                            <StoreCtaPair
+                              trialLinks={wTrialLinks}
+                              purchaseLinks={wPurchaseLinks}
+                              location="gallery_related_work"
+                            />
                           </div>
                         )}
                       </div>

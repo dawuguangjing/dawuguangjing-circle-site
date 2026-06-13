@@ -1,7 +1,7 @@
 ---
 import { withBase } from '../utils/withBase';
 import { IMAGE_DIMENSIONS } from '../utils/constants';
-import { buildLinks, PURCHASE_LINK_ENTRIES } from '../utils/types';
+import { getStoreLinks } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
 import TrialLinks from './TrialLinks.astro';
@@ -27,7 +27,7 @@ const {
   trialLinks,
   sellingPoints
 } = Astro.props;
-const purchaseLinks = buildLinks(platformLinks, PURCHASE_LINK_ENTRIES);
+const purchaseLinks = getStoreLinks({ platformLinks }).purchase;
 ---
 
 <section class="hero-banner">

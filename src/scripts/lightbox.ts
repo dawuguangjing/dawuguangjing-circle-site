@@ -21,6 +21,7 @@ import {
   LIGHTBOX_WHEEL_ZOOM_STEP,
   LIGHTBOX_PAN_THRESHOLD_PX
 } from '../utils/constants';
+import { wrapIndex, clampZoom, clampPan, zoomToPoint, swipeDirection } from './lightbox-math';
 
 // #1: AbortController で VT 遷移時に前回のリスナーを一括解除
 let _ac: AbortController | null = null;
@@ -82,7 +83,7 @@ function initLightbox() {
   // [A] 隣接画像プリロード
   function preloadAdjacent() {
     for (const offset of [-1, 1]) {
-      const idx = (current + offset + items.length) % items.length;
+      const idx = wrapIndex(current + offset, items.length);
       const item = items[idx];
       if (item.type === 'image') {
         const img = new Image();
@@ -92,7 +93,7 @@ function initLightbox() {
   }
 
   function showMedia(index: number, scrollBehavior?: ScrollBehavior, skipScroll = false) {
-    current = (index + items.length) % items.length;
+    current = wrapIndex(index, items.length);
     const { src, type, alt } = items[current];
 
     // ズーム/パンリセット
@@ -472,24 +473,32 @@ function initLightbox() {
   function clampTranslate() {
     const scaledW = _imgBaseW * _pinchScale;
     const scaledH = _imgBaseH * _pinchScale;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const maxTx = Math.max(0, (scaledW - vw) / 2);
-    const maxTy = Math.max(0, (scaledH - vh) / 2);
-    _translateX = Math.min(maxTx, Math.max(-maxTx, _translateX));
-    _translateY = Math.min(maxTy, Math.max(-maxTy, _translateY));
+    const { x, y } = clampPan(
+      _translateX,
+      _translateY,
+      scaledW,
+      scaledH,
+      window.innerWidth,
+      window.innerHeight
+    );
+    _translateX = x;
+    _translateY = y;
   }
 
   function zoomAtPoint(newScale: number, px: number, py: number) {
-    const oldScale = _pinchScale;
-    newScale = Math.min(LIGHTBOX_MAX_ZOOM, Math.max(LIGHTBOX_MIN_ZOOM, newScale));
-    const vcx = window.innerWidth / 2;
-    const vcy = window.innerHeight / 2;
-    const relX = (px - vcx - _translateX) / oldScale;
-    const relY = (py - vcy - _translateY) / oldScale;
-    _pinchScale = newScale;
-    _translateX = px - vcx - relX * newScale;
-    _translateY = py - vcy - relY * newScale;
+    const r = zoomToPoint({
+      px,
+      py,
+      vcx: window.innerWidth / 2,
+      vcy: window.innerHeight / 2,
+      oldScale: _pinchScale,
+      newScale: clampZoom(newScale, LIGHTBOX_MIN_ZOOM, LIGHTBOX_MAX_ZOOM),
+      tx: _translateX,
+      ty: _translateY
+    });
+    _pinchScale = r.scale;
+    _translateX = r.tx;
+    _translateY = r.ty;
     clampTranslate();
   }
 
@@ -528,9 +537,10 @@ function initLightbox() {
       );
       const newMidX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
       const newMidY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-      const newScale = Math.min(
-        LIGHTBOX_MAX_ZOOM,
-        Math.max(LIGHTBOX_MIN_ZOOM, (_pinchBaseScale * dist) / _pinchStartDist)
+      const newScale = clampZoom(
+        (_pinchBaseScale * dist) / _pinchStartDist,
+        LIGHTBOX_MIN_ZOOM,
+        LIGHTBOX_MAX_ZOOM
       );
       // ポイントズーム: 初回中間点を基準に拡大
       zoomAtPoint(newScale, _pinchMidX, _pinchMidY);
@@ -591,9 +601,10 @@ function initLightbox() {
       if (lbImg.style.display === 'none') return; // 動画表示中はスキップ
       e.preventDefault();
       const direction = e.deltaY > 0 ? -1 : 1;
-      const newScale = Math.min(
-        LIGHTBOX_MAX_ZOOM,
-        Math.max(LIGHTBOX_MIN_ZOOM, _pinchScale + direction * LIGHTBOX_WHEEL_ZOOM_STEP)
+      const newScale = clampZoom(
+        _pinchScale + direction * LIGHTBOX_WHEEL_ZOOM_STEP,
+        LIGHTBOX_MIN_ZOOM,
+        LIGHTBOX_MAX_ZOOM
       );
       if (newScale < LIGHTBOX_ZOOM_RESET_THRESHOLD) {
         resetZoom();
@@ -697,10 +708,8 @@ function initLightbox() {
       }
       if (!lightbox.open || _swipeBlocked || _wasPinching) return;
       const delta = e.changedTouches[0].clientX - _touchStartX;
-      if (Math.abs(delta) > LIGHTBOX_SWIPE_THRESHOLD_PX) {
-        if (delta < 0) showMedia(current + 1);
-        else showMedia(current - 1);
-      }
+      const dir = swipeDirection(delta, LIGHTBOX_SWIPE_THRESHOLD_PX);
+      if (dir !== 0) showMedia(current + dir);
     },
     { passive: true }
   );

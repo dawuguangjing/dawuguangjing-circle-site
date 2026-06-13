@@ -2,8 +2,10 @@
 @import './base.css';
 @import './components.css';
 @import './navigation.css';
-@import './lightbox.css';
 @import './filter-controls.css';
+/* lightbox.css は Lightbox.astro でルート単位 import（詳細ページのみ読み込む）。
+   filter-controls.css は filter UI に加え env-tag / char-pagination / share-bar も
+   含む混在ファイルのため、現状はグローバル維持（要・関心ごと分割）。 */
 @import './age-gate.css';
 @import './content-works.css';
 @import './content-news.css';

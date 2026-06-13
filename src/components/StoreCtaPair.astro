@@ -1,0 +1,46 @@
+---
+/**
+ * StoreCtaPair — 体験版(trial) + 購入(purchase) ボタンのペア。
+ *
+ * 詳細ページ（キャラクター詳細・ギャラリーの関連作品カード）で重複していた
+ * 「trial があれば体験版ボタン / purchase があれば購入ボタン」の条件分岐を共通化する。
+ * labels=true でサブ見出し（体験版を試す / 購入する）を表示する。
+ */
+import StoreButtonGroup from './StoreButtonGroup.astro';
+import type { StoreLink } from '../utils/types';
+
+interface Props {
+  trialLinks?: StoreLink[];
+  purchaseLinks?: StoreLink[];
+  location: string;
+  /** サブ見出し（体験版を試す / 購入する）を表示するか */
+  labels?: boolean;
+}
+
+const { trialLinks = [], purchaseLinks = [], location, labels = false } = Astro.props;
+---
+
+{
+  trialLinks.length > 0 && (
+    <>
+      {labels && <p class="cta-sub-label">体験版を試す</p>}
+      <StoreButtonGroup links={trialLinks} trial location={location} />
+    </>
+  )
+}
+{
+  purchaseLinks.length > 0 && (
+    <>
+      {labels && <p class="cta-sub-label">購入する</p>}
+      <StoreButtonGroup links={purchaseLinks} location={location} />
+    </>
+  )
+}
+
+<style>
+  .cta-sub-label {
+    font-size: var(--fs-ui);
+    color: var(--ink-dim);
+    margin: 0 0 6px;
+  }
+</style>

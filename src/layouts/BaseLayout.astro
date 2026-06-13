@@ -53,26 +53,25 @@ const ga4Id = GA4_ID;
         // スクロール位置の復元を有効化（back/forward で一覧ページの位置を保持）
         if ('scrollRestoration' in history) history.scrollRestoration = 'auto';
 
-        try {
-          var saved = localStorage.getItem(themeKey);
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (saved === 'dark' || (!saved && prefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-          }
-        } catch(e) {}
+        // 保存値 or OS設定からテーマを解決して <html> に反映する
+        // （DarkModeToggle の getPreferred と同一仕様。is:inline のため共有不可で意図的にミラー）
+        function applyTheme() {
+          try {
+            var saved = localStorage.getItem(themeKey);
+            var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (saved === 'dark' || (!saved && prefersDark)) {
+              document.documentElement.setAttribute('data-theme', 'dark');
+            } else {
+              document.documentElement.removeAttribute('data-theme');
+            }
+          } catch(e) {}
+        }
+
+        // 初回レンダリング前に同期実行（フラッシュ防止）
+        applyTheme();
+        // View Transitions 後にも再適用（Astro が遷移時に class/attr をリセットするため）
+        document.addEventListener('astro:after-swap', applyTheme);
       })();
-      // View Transitions 後にも再適用
-      document.addEventListener('astro:after-swap', function() {
-        try {
-          var saved = localStorage.getItem(themeKey);
-          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          if (saved === 'dark' || (!saved && prefersDark)) {
-            document.documentElement.setAttribute('data-theme', 'dark');
-          } else {
-            document.documentElement.removeAttribute('data-theme');
-          }
-        } catch(e) {}
-      });
     </script>
     {!disableAgeGate && (
       <script is:inline define:vars={{ ageKey }}>

@@ -6,7 +6,7 @@ import { formatDate } from '../../utils/format';
 import { aiLevelLabels, branchingLabels } from '../../utils/labels';
 import { SITE_NAME, EXTERNAL_LINKS, COMING_SOON_YEAR } from '../../utils/constants';
 import { buildProductSchema } from '../../utils/schema';
-import { buildLinks, PURCHASE_LINK_ENTRIES, TRIAL_LINK_ENTRIES } from '../../utils/types';
+import { getStoreLinks } from '../../utils/types';
 import { getSortedWorks, buildPrevNext, getCharactersByWork } from '../../utils/collections';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import StoreSidebar from '../../components/StoreSidebar.astro';
@@ -47,8 +47,7 @@ const productJsonLd = buildProductSchema({
 
 const isComingSoon = data.releaseDate.getFullYear() >= COMING_SOON_YEAR;
 
-const platformLinks = buildLinks(data.platformLinks, PURCHASE_LINK_ENTRIES);
-const trialLinks = data.trialLinks ? buildLinks(data.trialLinks, TRIAL_LINK_ENTRIES) : [];
+const { purchase: platformLinks, trial: trialLinks } = getStoreLinks(data);
 ---
 
 <BaseLayout

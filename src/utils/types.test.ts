@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { buildLinks } from './types';
+import { buildLinks, getStoreLinks } from './types';
 
 const entries = [
   { key: 'fanza', label: 'FANZA で購入', track: 'click_fanza', store: 'fanza' as const },
@@ -35,5 +35,28 @@ describe('buildLinks', () => {
   test('キーが存在しない場合も空配列', () => {
     const result = buildLinks({}, entries);
     expect(result).toEqual([]);
+  });
+});
+
+describe('getStoreLinks', () => {
+  test('platformLinks/trialLinks から購入・体験版リンクを構築', () => {
+    const { purchase, trial } = getStoreLinks({
+      platformLinks: { fanza: 'https://buy.fanza', dlsite: 'https://buy.dlsite' },
+      trialLinks: { dlsite: 'https://trial.dlsite' }
+    });
+    expect(purchase.map((l) => l.store)).toEqual(['fanza', 'dlsite']);
+    expect(purchase[0].label).toBe('FANZA で購入');
+    expect(trial).toHaveLength(1);
+    expect(trial[0]).toMatchObject({ store: 'dlsite', label: 'DLsite 体験版' });
+  });
+
+  test('platformLinks/trialLinks 未指定なら両方空配列', () => {
+    expect(getStoreLinks({})).toEqual({ purchase: [], trial: [] });
+  });
+
+  test('platformLinks のみ指定なら trial は空', () => {
+    const { purchase, trial } = getStoreLinks({ platformLinks: { fanza: 'https://buy.fanza' } });
+    expect(purchase).toHaveLength(1);
+    expect(trial).toEqual([]);
   });
 });

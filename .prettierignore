@@ -2,3 +2,6 @@ dist
 .astro
 node_modules
 package-lock.json
+# prettier-plugin-astro が is:inline スクリプト（年齢確認）を解析できず SyntaxError になるため除外。
+# CI は prettier を実行しないため整形対象外でも問題なし。
+src/layouts/BaseLayout.astro
