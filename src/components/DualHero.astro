@@ -1,7 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../utils/withBase';
-import { EXTERNAL_LINKS, IMAGE_DIMENSIONS } from '../utils/constants';
+import { Image } from 'astro:assets';
+import { EXTERNAL_LINKS } from '../utils/constants';
 import { getStoreLinks } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
@@ -40,12 +41,13 @@ const rwLinks = getStoreLinks(rw.data).purchase;
       </div>
 
       <a class="dual-hero-cover-link" href={withBase(`works/${rw.slug}/`)} data-astro-prefetch>
-        <img
+        <Image
           class="dual-hero-cover"
           src={rw.data.images.cover}
           alt={`${rw.data.title} cover`}
-          width={IMAGE_DIMENSIONS.dualHero.width}
-          height={IMAGE_DIMENSIONS.dualHero.height}
+          inferSize
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 100vw, 480px"
           fetchpriority="high"
           loading="eager"
         />
@@ -91,12 +93,13 @@ const rwLinks = getStoreLinks(rw.data).purchase;
       </div>
 
       <a class="dual-hero-cover-link" href={withBase(`works/${cw.slug}/`)} data-astro-prefetch>
-        <img
+        <Image
           class="dual-hero-cover dual-hero-cover--upcoming"
           src={cw.data.images.cover}
           alt={`${cw.data.title} cover`}
-          width={IMAGE_DIMENSIONS.dualHero.width}
-          height={IMAGE_DIMENSIONS.dualHero.height}
+          inferSize
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 100vw, 480px"
           loading="lazy"
         />
       </a>

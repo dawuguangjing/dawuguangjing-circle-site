@@ -64,6 +64,10 @@ const categories = Object.entries(categoryLabels) as [string, string][];
         }
       </div>
 
+      <div class="load-more-wrap">
+        <button class="button" id="news-load-more" type="button" hidden>もっと見る</button>
+      </div>
+
       <div class="news-empty-state" id="news-empty" aria-live="polite">
         <p>該当する記事がありません</p>
         <button class="button" id="news-filter-reset">フィルターをリセット</button>
@@ -96,6 +100,8 @@ const categories = Object.entries(categoryLabels) as [string, string][];
       }
     ],
     resetButtonId: 'news-filter-reset',
+    pageSize: 6,
+    loadMoreId: 'news-load-more',
     onUpdate: (visibleCount) => {
       emptyEl?.classList.toggle('is-visible', visibleCount === 0);
     }

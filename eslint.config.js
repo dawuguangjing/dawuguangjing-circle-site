@@ -15,7 +15,8 @@ export default [
     }
   },
   {
-    files: ['scripts/**/*.mjs'],
+    // scripts と ルート設定ファイル（astro.config.mjs 等）は Node 環境のグローバルを許可
+    files: ['scripts/**/*.mjs', '*.config.{js,mjs,ts}'],
     languageOptions: {
       globals: {
         console: 'readonly',

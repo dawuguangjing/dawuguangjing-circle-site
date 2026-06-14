@@ -17,6 +17,8 @@ const works = defineCollection({
     isR18: z.boolean(),
     platformLinks: storeLinks,
     trialLinks: storeLinks.optional(),
+    /** 体験版で遊べる内容の補足（収録ルート・分量など）。体験版ボタン付近に表示 */
+    trialNote: z.string().optional(),
     environments: z.object({
       windows: z.boolean(),
       mac: z.boolean(),

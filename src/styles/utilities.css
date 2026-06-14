@@ -288,6 +288,13 @@ html.is-client-nav [data-anim] {
   font-weight: 600;
 }
 
+/* ── Load more (一覧の段階表示) ── */
+.load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+}
+
 /* ── Article Pagination ── */
 .article-pagination {
   display: grid;

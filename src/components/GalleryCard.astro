@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { withBase } from '../utils/withBase';
 import { IMAGE_DIMENSIONS, IMAGE_SIZES } from '../utils/constants';
 import type { ImageLoadProps } from '../utils/types';
@@ -39,15 +40,15 @@ const gSizes = IMAGE_SIZES.galleryCard;
     class={`gallery-card-media img-skeleton${thumbs.length > 0 ? ' gallery-card-media--split' : ''}${previewImage ? ' gallery-card-media--has-preview' : ''}`}
   >
     <div class="gallery-card-media-cover">
-      <img
+      <Image
         class="gallery-card-img"
         src={cover}
         alt={`${title} cover`}
+        inferSize
+        widths={[220, 400, 600]}
+        sizes={gSizes}
         loading={loading}
         fetchpriority={fetchpriority}
-        sizes={gSizes}
-        width={gw}
-        height={gh}
       />
       {
         previewImage && (

@@ -24,6 +24,7 @@ interface CharacterRef {
 interface Props {
   isR18: boolean;
   trialLinks?: StoreLink[];
+  trialNote?: string;
   purchaseLinks?: StoreLink[];
   characters?: CharacterRef[];
   location: string;
@@ -35,61 +36,85 @@ interface Props {
 const {
   isR18,
   trialLinks = [],
+  trialNote,
   purchaseLinks = [],
   characters = [],
   location,
   shareUrl,
   shareTitle,
-  animDelay = '0.2s',
+  animDelay = '0.2s'
 } = Astro.props;
 ---
 
-<div class="store-sidebar" id="purchase-section" data-anim="slide-right" style={`--anim-delay: ${animDelay}`}>
+<div
+  class="store-sidebar"
+  id="purchase-section"
+  data-anim="slide-right"
+  style={`--anim-delay: ${animDelay}`}
+>
   <!-- Age Rating -->
   <div>
-    {isR18
-      ? <span class="badge badge--r18">R18 作品</span>
-      : <span class="badge">全年齢</span>
-    }
+    {isR18 ? <span class="badge badge--r18">R18 作品</span> : <span class="badge">全年齢</span>}
   </div>
 
   <slot name="before-trial" />
 
-  {trialLinks.length > 0 && (
-    <>
-      <h3>体験版を試す</h3>
-      <StoreButtonGroup links={trialLinks} trial location={location} />
-    </>
-  )}
+  {
+    trialLinks.length > 0 && (
+      <>
+        <h3>無料体験版を試す</h3>
+        <StoreButtonGroup links={trialLinks} trial location={location} />
+        {trialNote && <p class="trial-note">{trialNote}</p>}
+      </>
+    )
+  }
 
   <slot name="before-purchase" />
 
-  {purchaseLinks.length > 0 && (
-    <>
-      <h3>購入する</h3>
-      <StoreButtonGroup links={purchaseLinks} location={location} />
-    </>
-  )}
+  {
+    purchaseLinks.length > 0 && (
+      <>
+        <h3>購入する</h3>
+        <StoreButtonGroup links={purchaseLinks} location={location} />
+      </>
+    )
+  }
 
   <slot name="after-purchase" />
 
-  {characters.length > 0 && (
-    <div class="sidebar-chars">
-      <h3>登場キャラクター</h3>
-      <div class="sidebar-char-list">
-        {characters.map((c) => (
-          <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.name}>
-            <img class="sidebar-char-img" src={withBase(c.cover)} alt={c.name} width="60" height="60" loading="lazy" />
-            <span class="sidebar-char-name">{c.name}</span>
-          </a>
-        ))}
+  {
+    characters.length > 0 && (
+      <div class="sidebar-chars">
+        <h3>登場キャラクター</h3>
+        <div class="sidebar-char-list">
+          {characters.map((c) => (
+            <a class="sidebar-char" href={withBase(`characters/${c.slug}/`)} title={c.name}>
+              <img
+                class="sidebar-char-img"
+                src={withBase(c.cover)}
+                alt={c.name}
+                width="60"
+                height="60"
+                loading="lazy"
+              />
+              <span class="sidebar-char-name">{c.name}</span>
+            </a>
+          ))}
+        </div>
       </div>
-    </div>
-  )}
+    )
+  }
 
   <slot name="after-chars" />
 
-  {shareUrl && shareTitle && (
-    <ShareBar url={shareUrl} title={shareTitle} />
-  )}
+  {shareUrl && shareTitle && <ShareBar url={shareUrl} title={shareTitle} />}
 </div>
+
+<style>
+  .trial-note {
+    margin: 6px 0 0;
+    font-size: var(--fs-sm);
+    color: var(--ink-dim);
+    line-height: 1.5;
+  }
+</style>

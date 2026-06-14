@@ -76,6 +76,13 @@
   }
 }
 
+/* reduced-motion: 装飾の泳ぐマグロを完全に無効化（前庭障害への配慮。元々 aria-hidden 済み） */
+@media (prefers-reduced-motion: reduce) {
+  .tuna-tank {
+    display: none;
+  }
+}
+
 .age-gate-card {
   background: var(--panel);
   border: 1px solid var(--stroke);

@@ -46,6 +46,9 @@ export function setupListFilter(config: ListFilterConfig) {
   const stateClear = document.getElementById(`${stateId}-state-clear`) as HTMLButtonElement | null;
   const activeBadge = document.getElementById('filter-active-badge');
   const sheetTrigger = document.getElementById('filter-sheet-trigger');
+  const loadMoreBtn = config.loadMoreId ? document.getElementById(config.loadMoreId) : null;
+  // フィルタ結果に対する表示上限（pageSize 未指定なら無制限）
+  let pageLimit = config.pageSize ?? Infinity;
 
   // 各次元のチップとラベルマップ
   const dimChips = new Map<Dimension, HTMLElement[]>();
@@ -127,8 +130,10 @@ export function setupListFilter(config: ListFilterConfig) {
 
   const reducedMotion = prefersReducedMotion();
 
-  function applyAll(scroll: boolean) {
+  function applyAll(scroll: boolean, keepPage = false) {
     grid.classList.remove('is-filtering');
+    // フィルタ/ソート変更時はページを先頭に戻す（「もっと見る」時は維持）
+    if (!keepPage) pageLimit = config.pageSize ?? Infinity;
     // 1) 表示判定
     let visibleCount = 0;
     const toHide: HTMLElement[] = [];
@@ -186,10 +191,30 @@ export function setupListFilter(config: ListFilterConfig) {
       allItems.forEach((el) => grid.appendChild(el));
     }
 
+    // 2.5) ページ制限: フィルタ結果（DOM=ソート順）のうち先頭 pageLimit 件のみ表示
+    if (config.pageSize != null) {
+      const shownInOrder = (Array.from(grid.children) as HTMLElement[]).filter(
+        (el) => el.style.display !== 'none' && !el.classList.contains('is-exiting')
+      );
+      shownInOrder.forEach((el, i) => {
+        if (i >= pageLimit) el.style.display = 'none';
+      });
+      if (loadMoreBtn) {
+        const remaining = shownInOrder.length - pageLimit;
+        loadMoreBtn.hidden = remaining <= 0;
+        if (remaining > 0) loadMoreBtn.textContent = `もっと見る（残り ${remaining} 件）`;
+      }
+    }
+
     // 3) アニメーションとリフロー
     let animIdx = 0;
     items.forEach((el) => {
       if (el.style.display === 'none') return;
+      // 「もっと見る」時は既存表示分を再アニメーションせず、新規表示分のみ動かす
+      if (keepPage && el.classList.contains('is-visible')) {
+        animIdx++;
+        return;
+      }
       if (animateDelay) {
         el.style.setProperty('--anim-delay', `${animIdx * FILTER_STAGGER}s`);
       }
@@ -324,6 +349,13 @@ export function setupListFilter(config: ListFilterConfig) {
       document.getElementById('filter-sheet-trigger')?.focus();
     });
   }
+
+  // ── もっと見る ──
+
+  loadMoreBtn?.addEventListener('click', () => {
+    pageLimit += config.pageSize ?? 0;
+    applyAll(false, true);
+  });
 
   // ── 初期化実行 ──
 

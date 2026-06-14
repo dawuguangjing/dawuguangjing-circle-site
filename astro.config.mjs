@@ -22,8 +22,12 @@ export default defineConfig({
   base,
   trailingSlash: 'always',
   output: 'static',
+  image: {
+    // リモート（GCS）画像をビルド時に最適化（WebP化・srcset生成）するため許可
+    domains: ['storage.googleapis.com']
+  },
   markdown: {
-    rehypePlugins: [rehypeImgFigure],
+    rehypePlugins: [rehypeImgFigure]
   },
   integrations: [
     sitemap({

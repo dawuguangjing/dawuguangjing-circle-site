@@ -1,6 +1,6 @@
 ---
+import { Image } from 'astro:assets';
 import { withBase } from '../utils/withBase';
-import { IMAGE_DIMENSIONS } from '../utils/constants';
 import { getStoreLinks } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
@@ -79,11 +79,12 @@ const purchaseLinks = getStoreLinks({ platformLinks }).purchase;
 
     <!-- 右: カバー画像 -->
     <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
-      <img
+      <Image
         src={cover}
         alt=""
-        width={IMAGE_DIMENSIONS.heroBanner.width}
-        height={IMAGE_DIMENSIONS.heroBanner.height}
+        inferSize
+        widths={[480, 720, 960]}
+        sizes="(max-width: 768px) 100vw, 480px"
         fetchpriority="high"
         loading="eager"
       />

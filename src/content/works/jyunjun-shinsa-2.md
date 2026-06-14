@@ -11,6 +11,7 @@ platformLinks:
 trialLinks:
   fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_774496/d_774496t.zip"
   dlsite: "https://trial.dlsite.com/doujin/RJ01643000/RJ01642373_trial.zip"
+trialNote: "体験版では中村莉緒ルートを最後までお試しいただけます。"
 environments:
   windows: true
   mac: true

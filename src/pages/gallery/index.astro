@@ -34,26 +34,33 @@ const galleries = await getSortedGallery();
       </FilterSheet>
       {
         galleries.length > 0 ? (
-          <div class="gallery-album-grid grid-stretch-items" id="gallery-grid">
-            {galleries.map((entry, i) => (
-              <div
-                data-anim
-                style={`--anim-delay: ${animDelay(i)}`}
-                data-release-date={entry.data.releaseDate.getTime().toString()}
-                data-title={entry.data.title}
-              >
-                <GalleryCard
-                  slug={entry.slug}
-                  title={entry.data.title}
-                  cover={entry.data.cover}
-                  isR18={entry.data.isR18}
-                  imageCount={entry.resolvedImageCount}
-                  previewImages={entry.data.images}
-                  {...imageLoadingProps(i)}
-                />
-              </div>
-            ))}
-          </div>
+          <>
+            <div class="gallery-album-grid grid-stretch-items" id="gallery-grid">
+              {galleries.map((entry, i) => (
+                <div
+                  data-anim
+                  style={`--anim-delay: ${animDelay(i)}`}
+                  data-release-date={entry.data.releaseDate.getTime().toString()}
+                  data-title={entry.data.title}
+                >
+                  <GalleryCard
+                    slug={entry.slug}
+                    title={entry.data.title}
+                    cover={entry.data.cover}
+                    isR18={entry.data.isR18}
+                    imageCount={entry.resolvedImageCount}
+                    previewImages={entry.data.images}
+                    {...imageLoadingProps(i)}
+                  />
+                </div>
+              ))}
+            </div>
+            <div class="load-more-wrap">
+              <button class="button" id="gallery-load-more" type="button" hidden>
+                もっと見る
+              </button>
+            </div>
+          </>
         ) : (
           <p class="muted">現在公開中のギャラリーはありません。</p>
         )
@@ -83,6 +90,8 @@ const galleries = await getSortedGallery();
         chipDataKey: 'sort',
         sortFn: dateTitleSort()
       }
-    ]
+    ],
+    pageSize: 12,
+    loadMoreId: 'gallery-load-more'
   });
 </script>

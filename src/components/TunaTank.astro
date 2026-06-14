@@ -48,11 +48,19 @@ const { fishes, triggerSelector, goldSpawnRate } = Astro.props;
 </div>
 
 <script>
+  import { prefersReducedMotion } from '../scripts/motion';
+
   let _tunaCleanup: (() => void) | null = null;
 
   function initTunaTanks() {
     // 前のページのクリーンアップ
     _tunaCleanup?.();
+
+    // reduced-motion 時は泳ぐ/パニック演出を一切行わない（CSS で .tuna-tank は非表示）
+    if (prefersReducedMotion()) {
+      _tunaCleanup = null;
+      return;
+    }
 
     const ac = new AbortController();
     const signal = ac.signal;

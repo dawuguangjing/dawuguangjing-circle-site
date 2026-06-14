@@ -11,6 +11,7 @@ platformLinks:
 trialLinks:
   fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_730295/d_730295t.zip"
   dlsite: "https://trial.dlsite.com/doujin/RJ01563000/RJ01562523_trial.zip?_gl=1*gwbexe*_gcl_au*MTc3NzkxNzk0Ni4xNzY3MjUwMDQ5LjE5ODM0ODYxODQuMTc2OTA3NTc0MC4xNzY5MDc1NzY4"
+trialNote: "体験版では南雲姫華ルートをお楽しみいただけます。"
 environments:
   windows: true
   mac: false

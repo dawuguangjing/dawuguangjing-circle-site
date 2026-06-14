@@ -47,4 +47,8 @@ export interface ListFilterConfig {
   emptySelector?: string;
   /** 空状態リセットボタンの ID。指定すると最初の dimension をデフォルトに戻すハンドラを自動登録 */
   resetButtonId?: string;
+  /** 1ページあたりの表示件数。指定するとフィルタ結果を先頭 N 件に絞り「もっと見る」で増やす */
+  pageSize?: number;
+  /** 「もっと見る」ボタンの要素 ID（pageSize 指定時に使用） */
+  loadMoreId?: string;
 }

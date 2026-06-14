@@ -1,7 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { withBase } from '../utils/withBase';
 import { formatDate } from '../utils/format';
-import { MS_30_DAYS, COMING_SOON_YEAR, IMAGE_DIMENSIONS, IMAGE_SIZES } from '../utils/constants';
+import { MS_30_DAYS, COMING_SOON_YEAR, IMAGE_SIZES } from '../utils/constants';
 import type { ImageLoadProps } from '../utils/types';
 
 interface Props extends ImageLoadProps {
@@ -42,14 +43,14 @@ const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
 
 <a class="card-interactive work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>
   <div class="work-row-cover img-skeleton">
-    <img
-      src={withBase(cover)}
+    <Image
+      src={cover}
       alt=""
+      inferSize
+      widths={[120, 160, 320]}
+      sizes={IMAGE_SIZES.workCard}
       loading={loading}
       fetchpriority={fetchpriority}
-      sizes={IMAGE_SIZES.workCard}
-      width={IMAGE_DIMENSIONS.workCard.width}
-      height={IMAGE_DIMENSIONS.workCard.height}
       transition:name={`work-cover-${slug}`}
     />
     <div class="work-row-overlay" aria-hidden="true">
