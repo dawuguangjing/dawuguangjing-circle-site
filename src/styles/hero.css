@@ -485,11 +485,15 @@ html.is-client-nav .hero-banner-cover {
   border-radius: var(--radius-md);
 }
 
-/* CTAボタングループ (次回作側) */
+/* CTAボタングループ (次回作側)
+   align-self: center で内容幅に縮めて中央寄せ。全幅ストレッチをやめ、
+   販売側パネルの「FANZAで購入」ボタンと横幅・配置を揃える。
+   内側は align-items: stretch のままなので 2 ボタンは広い方に揃った同幅になる。 */
 .dual-hero-cta-group {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  align-self: center;
 }
 
 /* モバイル: 縦スタック */

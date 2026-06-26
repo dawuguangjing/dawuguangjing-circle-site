@@ -38,7 +38,8 @@ const {
 } = Astro.props;
 
 const isComingSoon = releaseDate.getFullYear() >= COMING_SOON_YEAR;
-const isNew = !isComingSoon && Date.now() - releaseDate.getTime() < MS_30_DAYS;
+// 制作中（近日公開）の新規告知作品、または公開から30日以内の作品に NEW を付与
+const isNew = isComingSoon || Date.now() - releaseDate.getTime() < MS_30_DAYS;
 ---
 
 <a class="card-interactive work-row" href={withBase(`works/${slug}/`)} data-astro-prefetch>

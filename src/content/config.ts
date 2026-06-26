@@ -14,6 +14,8 @@ const works = defineCollection({
     shortDescription: z.string(),
     metaDescription: z.string().optional(),
     releaseDate: z.date(),
+    /** リリース日の表示を上書きする任意テキスト（例: "7月中"）。未設定時は releaseDate /「未定」を表示 */
+    releaseDateText: z.string().optional(),
     isR18: z.boolean(),
     platformLinks: storeLinks,
     trialLinks: storeLinks.optional(),
@@ -31,7 +33,7 @@ const works = defineCollection({
       playTimeMin: z.number().int().nonnegative(),
       cgCount: z.number().int().nonnegative(),
       standingPoseCount: z.number().int().nonnegative().optional(),
-      branching: z.enum(['none', 'light', 'multi'])
+      branching: z.enum(['none', 'light', 'multi']).optional()
     }),
     aiUsage: z.object({
       level: z.enum(['none', 'partial', 'major']),

@@ -221,7 +221,11 @@ const { purchase: platformLinks, trial: trialLinks } = getStoreLinks(data);
               <tbody>
                 <tr>
                   <td>リリース日</td>
-                  <td>{isComingSoon ? '未定' : formatDate(data.releaseDate)}</td>
+                  <td
+                    >{
+                      data.releaseDateText ?? (isComingSoon ? '未定' : formatDate(data.releaseDate))
+                    }</td
+                  >
                 </tr>
                 <tr>
                   <td>プレイ時間</td>
@@ -239,10 +243,14 @@ const { purchase: platformLinks, trial: trialLinks } = getStoreLinks(data);
                     </tr>
                   )
                 }
-                <tr>
-                  <td>分岐</td>
-                  <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
-                </tr>
+                {
+                  data.volume.branching && (
+                    <tr>
+                      <td>分岐</td>
+                      <td>{branchingLabels[data.volume.branching] ?? data.volume.branching}</td>
+                    </tr>
+                  )
+                }
               </tbody>
             </table>
 
