@@ -41,7 +41,14 @@
       "Bash(ORIG=\"git -C /Users/yurupro/Desktop/projects/dawuguangjing-circle-site show HEAD:src/styles/global.css\")",
       "Bash(STYLES=\"/Users/yurupro/Desktop/projects/dawuguangjing-circle-site/src/styles\")",
       "Bash(__NEW_LINE_a5bfada9659a55f9__ $ORIG)",
-      "Bash(brew list:*)"
+      "Bash(brew list:*)",
+      "Bash(sed -n '24,30p' src/styles/navigation.css)",
+      "Bash(sed -n '162,168p' src/styles/navigation.css)",
+      "Bash(sed -n '140,146p' src/styles/utilities.css)",
+      "Bash(sed -n '90,98p' src/styles/utilities.css)",
+      "Bash(npx astro *)",
+      "Read(//private/tmp/**)",
+      "Bash(identify duelgoblins-slide-1.jpg)"
     ]
   }
 }
