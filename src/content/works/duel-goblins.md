@@ -27,7 +27,12 @@ sellingPoints:
   - "超美麗なHシーンCGを収録"
 images:
   cover: "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-slide-1.png"
-  screenshots: []
+  screenshots: 
+    - "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-gallary-3.png"
+    - "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-gallary-4.png"
+    - "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-gallary-5.png"
+    - "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-gallary-6.png"
+    - "https://storage.googleapis.com/dawuguangjing-assets/duelgoblins-gallary-7.png"
 ---
 
 ## ストーリー
