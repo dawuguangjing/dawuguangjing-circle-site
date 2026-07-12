@@ -33,22 +33,25 @@ const characters = (await getCollection('characters')).sort((a, b) => a.data.ord
 // 本番ビルドでも公開日当日のデプロイで最新作がヒーローへ確実に反映される。
 const JST_OFFSET_MS = 9 * 60 * 60 * 1000;
 const nowMs = Date.now();
-const heroWork =
-  allWorks.find((w) => w.data.releaseDate.getTime() - JST_OFFSET_MS <= nowMs) ?? null;
-const comingWork =
-  allWorks.find((w) => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ?? null;
+const releasedWorks = allWorks.filter((w) => w.data.releaseDate.getTime() - JST_OFFSET_MS <= nowMs);
+const heroWork = releasedWorks[0] ?? null;
+// 未発売の次回作があれば優先。なければ発売済み2作目（例: 従順審査2）を並べる
+const secondaryWork =
+  allWorks.find((w) => w.data.releaseDate.getFullYear() >= COMING_SOON_YEAR) ??
+  releasedWorks[1] ??
+  null;
 const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
 ---
 
 <BaseLayout
   title={SITE_NAME}
-  description="ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。成人向け同人ゲーム『従順審査』『従順審査2』の作品情報、開発ログ、キャラクター紹介を掲載。"
+  description="ダウグアングジング（読み：だうぐあんぐじんぐ）公式サイト。成人向け同人ゲーム『デュエルゴブリンズ』『従順審査2』『従順審査』の作品情報、開発ログ、キャラクター紹介を掲載。"
   jsonLd={websiteSchema}
 >
   <div class="page-content">
     {
-      heroWork && comingWork ? (
-        <DualHero releasedWork={heroWork} comingWork={comingWork} />
+      heroWork && secondaryWork ? (
+        <DualHero releasedWork={heroWork} secondaryWork={secondaryWork} />
       ) : (
         heroWork && (
           <HeroBanner

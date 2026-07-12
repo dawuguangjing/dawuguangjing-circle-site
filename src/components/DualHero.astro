@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import { withBase } from '../utils/withBase';
 import { Image } from 'astro:assets';
-import { EXTERNAL_LINKS } from '../utils/constants';
+import { EXTERNAL_LINKS, COMING_SOON_YEAR } from '../utils/constants';
 import { getStoreLinks } from '../utils/types';
 import TunaTank from './TunaTank.astro';
 import StoreButtonGroup from './StoreButtonGroup.astro';
@@ -10,12 +10,15 @@ import TrialLinks from './TrialLinks.astro';
 
 interface Props {
   releasedWork: CollectionEntry<'works'>;
-  comingWork: CollectionEntry<'works'>;
+  /** 次回作（未発売）または2番目の発売済み作品 */
+  secondaryWork: CollectionEntry<'works'>;
 }
 
-const { releasedWork: rw, comingWork: cw } = Astro.props;
+const { releasedWork: rw, secondaryWork: sw } = Astro.props;
 
 const rwLinks = getStoreLinks(rw.data).purchase;
+const swLinks = getStoreLinks(sw.data).purchase;
+const isUpcoming = sw.data.releaseDate.getFullYear() >= COMING_SOON_YEAR;
 ---
 
 <section class="dual-hero">
@@ -33,7 +36,7 @@ const rwLinks = getStoreLinks(rw.data).purchase;
   />
 
   <div class="dual-hero-inner container">
-    <!-- 左: 今すぐ遊ぶ -->
+    <!-- 左: 今すぐ遊ぶ（最新作） -->
     <div class="dual-hero-panel">
       <div class="hero-banner-eyebrow">
         <span class="hero-banner-tag">今すぐ遊ぶ</span>
@@ -85,47 +88,97 @@ const rwLinks = getStoreLinks(rw.data).purchase;
     <!-- 区切り線 -->
     <div class="dual-hero-divider" aria-hidden="true"></div>
 
-    <!-- 右: 次回作を追う -->
-    <div class="dual-hero-panel dual-hero-panel--upcoming">
-      <div class="hero-banner-eyebrow">
-        <span class="hero-banner-tag dual-hero-tag--upcoming">次回作を追う</span>
-        {cw.data.isR18 && <span class="badge badge--r18">R18</span>}
-      </div>
+    {
+      isUpcoming ? (
+        /* 右: 次回作を追う */
+        <div class="dual-hero-panel dual-hero-panel--upcoming">
+          <div class="hero-banner-eyebrow">
+            <span class="hero-banner-tag dual-hero-tag--upcoming">次回作を追う</span>
+            {sw.data.isR18 && <span class="badge badge--r18">R18</span>}
+          </div>
 
-      <a class="dual-hero-cover-link" href={withBase(`works/${cw.slug}/`)} data-astro-prefetch>
-        <Image
-          class="dual-hero-cover dual-hero-cover--upcoming"
-          src={cw.data.images.cover}
-          alt={`${cw.data.title} cover`}
-          inferSize
-          widths={[480, 720, 960]}
-          sizes="(max-width: 900px) 100vw, 480px"
-          loading="lazy"
-        />
-      </a>
+          <a class="dual-hero-cover-link" href={withBase(`works/${sw.slug}/`)} data-astro-prefetch>
+            <Image
+              class="dual-hero-cover dual-hero-cover--upcoming"
+              src={sw.data.images.cover}
+              alt={`${sw.data.title} cover`}
+              inferSize
+              widths={[480, 720, 960]}
+              sizes="(max-width: 900px) 100vw, 480px"
+              loading="lazy"
+            />
+          </a>
 
-      <h2 class="dual-hero-title">{cw.data.title}</h2>
-      <p class="hero-banner-catch line-clamp-3">{cw.data.catch}</p>
+          <h2 class="dual-hero-title">{sw.data.title}</h2>
+          <p class="hero-banner-catch line-clamp-3">{sw.data.catch}</p>
 
-      <span class="dual-hero-status-badge">近日公開</span>
+          <span class="dual-hero-status-badge">近日公開</span>
 
-      <div class="dual-hero-cta-group">
-        <a class="button" href={withBase(`works/${cw.slug}/`)} data-astro-prefetch
-          >詳細・進捗を見る</a
-        >
-        <a
-          class="button button--cien"
-          href={EXTERNAL_LINKS.cien}
-          target="_blank"
-          rel="noopener noreferrer"
-          data-ga-event="cien_click"
-          data-ga-location="dual_hero_upcoming">Ci-en でフォロー ↗</a
-        >
-      </div>
+          <div class="dual-hero-cta-group">
+            <a class="button" href={withBase(`works/${sw.slug}/`)} data-astro-prefetch>
+              詳細・進捗を見る
+            </a>
+            <a
+              class="button button--cien"
+              href={EXTERNAL_LINKS.cien}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-ga-event="cien_click"
+              data-ga-location="dual_hero_upcoming"
+            >
+              Ci-en でフォロー ↗
+            </a>
+          </div>
 
-      <a class="hero-banner-detail-link" href={withBase('news/')}
-        >開発ログを見る <span class="hero-detail-arrow">→</span></a
-      >
-    </div>
+          <a class="hero-banner-detail-link" href={withBase('news/')}>
+            開発ログを見る <span class="hero-detail-arrow">→</span>
+          </a>
+        </div>
+      ) : (
+        /* 右: 発売済みのもう1作品 */
+        <div class="dual-hero-panel">
+          <div class="hero-banner-eyebrow">
+            <span class="hero-banner-tag">好評発売中</span>
+            {sw.data.isR18 && <span class="badge badge--r18">R18</span>}
+          </div>
+
+          <a class="dual-hero-cover-link" href={withBase(`works/${sw.slug}/`)} data-astro-prefetch>
+            <Image
+              class="dual-hero-cover"
+              src={sw.data.images.cover}
+              alt={`${sw.data.title} cover`}
+              inferSize
+              widths={[480, 720, 960]}
+              sizes="(max-width: 900px) 100vw, 480px"
+              loading="lazy"
+            />
+          </a>
+
+          <h2 class="dual-hero-title">{sw.data.title}</h2>
+          <p class="hero-banner-catch line-clamp-3">{sw.data.catch}</p>
+
+          {sw.data.sellingPoints && sw.data.sellingPoints.length > 0 && (
+            <ul class="selling-points">
+              {sw.data.sellingPoints.map((point) => (
+                <li>{point}</li>
+              ))}
+            </ul>
+          )}
+
+          {swLinks.length > 0 && (
+            <div class="hero-banner-cta">
+              <StoreButtonGroup links={swLinks} location="dual_hero_secondary" />
+            </div>
+          )}
+
+          <div class="hero-banner-sub">
+            <TrialLinks trialLinks={sw.data.trialLinks} location="dual_hero_secondary" />
+            <a class="hero-banner-detail-link" href={withBase(`works/${sw.slug}/`)}>
+              詳細を見る <span class="hero-detail-arrow">→</span>
+            </a>
+          </div>
+        </div>
+      )
+    }
   </div>
 </section>

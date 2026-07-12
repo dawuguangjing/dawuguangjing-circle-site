@@ -45,10 +45,10 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
-  id: 'shinsa2-released',
+  id: 'duelgoblins-released',
   // \n はスマホ幅でのみ改行される位置マーカー（PCでは1行のまま）
-  message: '🎉従順審査2 リリース！\n各ストアにて好評発売中',
-  href: 'https://dlaf.jp/aix/dlaf/=/t/s/link/work/aid/dawuguangjing/id/RJ01642373.html'
+  message: '🎉デュエルゴブリンズ リリース！\nFANZAにて好評発売中',
+  href: 'https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_790263%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link'
 };
 
 /** ダークモードの localStorage キー */
