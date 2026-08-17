@@ -48,7 +48,8 @@
       "Bash(sed -n '90,98p' src/styles/utilities.css)",
       "Bash(npx astro *)",
       "Read(//private/tmp/**)",
-      "Bash(identify duelgoblins-slide-1.jpg)"
+      "Bash(identify duelgoblins-slide-1.jpg)",
+      "WebFetch(domain:www.dmm.co.jp)"
     ]
   }
 }
