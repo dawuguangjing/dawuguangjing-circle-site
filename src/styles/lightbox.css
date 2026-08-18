@@ -242,14 +242,33 @@
   border-color: var(--lightbox-thumb-border-active);
   transform: scale(1.12);
 }
-.lightbox-thumb img {
+.lightbox-thumb img,
+.lightbox-thumb video {
   width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0.75;
 }
-.lightbox-thumb.is-active img {
+.lightbox-thumb.is-active img,
+.lightbox-thumb.is-active video {
   opacity: 1;
+}
+/* 動画サムネイル: 先頭フレームの上に再生マークを重ねる */
+.lightbox-thumb--video {
+  position: relative;
+}
+.lightbox-thumb-play {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  line-height: 1;
+  color: var(--text-on-dark);
+  background: var(--overlay-video);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
 }
 .lightbox-thumb:focus-visible {
   outline-color: var(--lightbox-focus-ring);

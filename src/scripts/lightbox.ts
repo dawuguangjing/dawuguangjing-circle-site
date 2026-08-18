@@ -378,7 +378,20 @@ function initLightbox() {
         img.setAttribute('aria-hidden', 'true');
         btn.appendChild(img);
       } else {
-        btn.textContent = '▶';
+        // 動画は先頭フレームをサムネイルに表示し、再生マークを重ねる
+        btn.classList.add('lightbox-thumb--video');
+        const vid = document.createElement('video');
+        vid.src = `${item.src}#t=0.1`;
+        vid.muted = true;
+        vid.playsInline = true;
+        vid.preload = 'metadata';
+        vid.setAttribute('aria-hidden', 'true');
+        btn.appendChild(vid);
+        const badge = document.createElement('span');
+        badge.className = 'lightbox-thumb-play';
+        badge.setAttribute('aria-hidden', 'true');
+        badge.textContent = '▶';
+        btn.appendChild(badge);
       }
       btn.addEventListener('click', (e) => {
         e.stopPropagation();

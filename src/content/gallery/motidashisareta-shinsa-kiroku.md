@@ -13,9 +13,15 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-6.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-7.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-8.jpg"
-  - "https://storage.googleapis.com/dawuguangjing-assets/msk-9.gif"
-  - "https://storage.googleapis.com/dawuguangjing-assets/msk-10.gif"
-  - "https://storage.googleapis.com/dawuguangjing-assets/msk-11.gif"
+videos:
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-9.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-10.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-11.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-12.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-13.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-14.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-15.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-16.mp4"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---

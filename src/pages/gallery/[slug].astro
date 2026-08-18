@@ -121,12 +121,11 @@ const sidebarChars = relatedCharacters.map((c) => ({
                     aria-label={`${data.title} 動画 ${vi + 1} を開く`}
                   >
                     <video
-                      src={videoUrl}
+                      src={`${videoUrl}#t=0.1`}
                       muted
                       loop
                       playsinline
                       preload="metadata"
-                      poster={data.cover}
                       class="gallery-detail-video"
                     />
                     <div class="gallery-detail-play-icon" aria-hidden="true">
@@ -255,37 +254,26 @@ const sidebarChars = relatedCharacters.map((c) => ({
     </section>
   </div>
 
-  <!-- ホバー／フォーカス／ビューポート内で動画プレビューを再生 -->
+  <!-- ビューポート内の動画プレビューを自動ループ再生（画面外では一時停止して省電力） -->
   <script>
     import { prefersReducedMotion } from '../../scripts/motion';
 
     if (!prefersReducedMotion()) {
-      const isTouch = matchMedia('(hover: none)').matches;
-
       document.querySelectorAll<HTMLElement>('.gallery-detail-item--video').forEach((item) => {
         const video = item.querySelector('video');
         if (!video) return;
         const play = () => video.play().catch(() => {});
-        const reset = () => {
-          video.pause();
-          video.currentTime = 0;
-        };
 
-        if (isTouch) {
-          const io = new IntersectionObserver(
-            ([e]) => {
-              e.isIntersecting ? play() : reset();
-            },
-            { threshold: 0.5 }
-          );
-          io.observe(item);
-        } else {
-          item.addEventListener('mouseenter', play);
-          item.addEventListener('mouseleave', reset);
-        }
+        // 画面内に入ったら自動再生、出たら一時停止（再入場で続きから再生）
+        const io = new IntersectionObserver(
+          ([e]) => {
+            e.isIntersecting ? play() : video.pause();
+          },
+          { threshold: 0.25 }
+        );
+        io.observe(item);
 
         item.addEventListener('focusin', play);
-        item.addEventListener('focusout', reset);
       });
     }
   </script>
