@@ -16,7 +16,7 @@ environments:
   windows: true
   mac: true
   browserPc: false
-  browserMobileBeta: false
+  browserMobileBeta: true
   ios: false
   android: false
 volume:
