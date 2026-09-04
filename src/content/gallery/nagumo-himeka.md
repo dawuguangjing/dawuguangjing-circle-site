@@ -9,5 +9,6 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/himeka-coffee.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/himeka-eye-catch.jpg"
 relatedWorkSlugs:
+  - "jyunjun-shinsa-1"
   - "jyunjun-shinsa"
 ---

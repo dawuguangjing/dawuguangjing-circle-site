@@ -10,5 +10,6 @@ images:
   - "https://storage.googleapis.com/dawuguangjing-assets/kanon-book.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/kanon-eye-catch.jpg"
 relatedWorkSlugs:
+  - "jyunjun-shinsa-1"
   - "jyunjun-shinsa"
 ---

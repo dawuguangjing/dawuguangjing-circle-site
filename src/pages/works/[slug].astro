@@ -229,7 +229,11 @@ const { purchase: platformLinks, trial: trialLinks } = getStoreLinks(data);
                 </tr>
                 <tr>
                   <td>プレイ時間</td>
-                  <td>{data.volume.playTimeMin} 分</td>
+                  <td
+                    >{
+                      data.volume.playTimeMin === 0 ? '後日公開' : `${data.volume.playTimeMin} 分`
+                    }</td
+                  >
                 </tr>
                 <tr>
                   <td>CG枚数</td>
@@ -240,6 +244,14 @@ const { purchase: platformLinks, trial: trialLinks } = getStoreLinks(data);
                     <tr>
                       <td>立ち絵数</td>
                       <td>{data.volume.standingPoseCount} 枚</td>
+                    </tr>
+                  )
+                }
+                {
+                  data.volume.movieCount !== undefined && (
+                    <tr>
+                      <td>ムービー本数</td>
+                      <td>{data.volume.movieCount} 本</td>
                     </tr>
                   )
                 }

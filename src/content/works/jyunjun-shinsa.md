@@ -16,7 +16,7 @@ environments:
   windows: true
   mac: false
   browserPc: false
-  browserMobileBeta: false
+  browserMobileBeta: true
   ios: false
   android: false
 volume:
@@ -73,6 +73,11 @@ A国が我が国へ持ち込んだのは、支援と協力を名目にした「�
 
 製品版は森宮花音、佐藤真希、南雲姫華の3ルートプレイできます。（各種4エンド）
 体験版では南雲姫華ルートをお楽しみいただけます。
+
+## リメイク版について
+
+本作をシリーズ最高クオリティで作り直した[「従順審査1」](../jyunjun-shinsa-1/)を近日リリース予定です。
+完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録しています。
 
 ## レビューについて
 
