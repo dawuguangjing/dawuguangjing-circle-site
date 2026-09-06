@@ -13,7 +13,7 @@ relatedWorkSlugs:
 
 ....ばんっ！
 
-![従順審査2 タイトルロゴ](https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2.jpg)
+![従順審査２ タイトルロゴ](https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2.jpg)
 
 <span style="font-size: 150%">**従順審査２（ツー）です！**</span>
 

@@ -1,15 +1,15 @@
 ---
-title: "従順審査1"
+title: "従順審査１"
 catch: "シリーズ第1作「従順審査（無印）」が、シリーズ最高クオリティで徹底フルリメイク。男尊女卑常識世界の審査員シミュレーション。"
 shortDescription: "「従順審査」のフルリメイク版。基本CG95枚＋・ムービー57本＋を収録した審査員シミュレーションゲーム。"
-metaDescription: "「従順審査1」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録し、DLsite・FANZAにて近日リリース予定。"
+metaDescription: "「従順審査１」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録し、DLsite・FANZAにて近日リリース予定。"
 releaseDate: 2099-01-01
 isR18: true
 platformLinks: {}
 environments:
   windows: true
   mac: true
-  browserPc: false
+  browserPc: true
   browserMobileBeta: true
   ios: false
   android: false
@@ -72,7 +72,7 @@ videoUrl: "https://storage.googleapis.com/dawuguangjing-assets/re1.mp4"
 製品版では森宮花音・佐藤真希・南雲姫華の3ルートをプレイできます。
 各ルートは「犯す」タイミングによって展開が分岐し、複数のエンディングを収録しています。
 
-なお、リメイク元となったシリーズ第1作は[「従順審査」](../jyunjun-shinsa/)、シリーズ最新作は[「従順審査2」](../jyunjun-shinsa-2/)の作品ページからご覧いただけます。
+なお、リメイク元となったシリーズ第1作は[「従順審査」](../jyunjun-shinsa/)、シリーズ最新作は[「従順審査２」](../jyunjun-shinsa-2/)の作品ページからご覧いただけます。
 
 ## 制作進捗
 

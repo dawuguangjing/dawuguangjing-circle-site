@@ -1,5 +1,5 @@
 ---
-title: "「従順審査（無印）」を徹底フルリメイク！「従順審査1」近日リリース！"
+title: "「従順審査（無印）」を徹底フルリメイク！「従順審査１」近日リリース！"
 date: 2026-09-04
 category: "devlog"
 eyecatch: "https://storage.googleapis.com/dawuguangjing-assets/re1-1.png"
@@ -14,15 +14,15 @@ relatedWorkSlugs:
 
 ....ばんっ！
 
-![従順審査1 キービジュアル](https://storage.googleapis.com/dawuguangjing-assets/re1-1.png)
+![従順審査１ キービジュアル](https://storage.googleapis.com/dawuguangjing-assets/re1-1.png)
 
-<span style="font-size: 150%">**「従順審査1」です！**</span>
+<span style="font-size: 150%">**「従順審査１」です！**</span>
 
 シリーズ最高クオリティで、無印を丸ごと作り直した一作になります。
 リメイクの見どころはココ👇
 
 - **完全新規イベントCG**を多数追加し、**基本CG95枚＋を収録**
-- **ムービー57本＋を新たに搭載**し、審査の一部始終をアニメーションで描写
+- **ムービー57本＋を新たに搭載**し、臨場感のある実技審査シーンを実現。
 - 森宮花音・佐藤真希・南雲姫華、**3ヒロインの立ち絵・デザインを一新**
 - **「犯す」タイミングでルートが分岐**するマルチシナリオ構成
 

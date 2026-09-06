@@ -15,7 +15,7 @@ trialNote: "体験版では南雲姫華ルートをお楽しみいただけま�
 environments:
   windows: true
   mac: false
-  browserPc: false
+  browserPc: true
   browserMobileBeta: true
   ios: false
   android: false
@@ -76,7 +76,7 @@ A国が我が国へ持ち込んだのは、支援と協力を名目にした「�
 
 ## リメイク版について
 
-本作をシリーズ最高クオリティで作り直した[「従順審査1」](../jyunjun-shinsa-1/)を近日リリース予定です。
+本作をシリーズ最高クオリティで作り直した[「従順審査１」](../jyunjun-shinsa-1/)を近日リリース予定です。
 完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録しています。
 
 ## レビューについて

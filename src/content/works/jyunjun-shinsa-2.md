@@ -1,8 +1,8 @@
 ---
-title: "従順審査2"
+title: "従順審査２"
 catch: "従順審査シリーズ最新作。新キャラクター・新シナリオで再び審査員の座に。"
 shortDescription: "従順審査シリーズ第2弾。新ルート・新キャラクターを追加した最新作。"
-metaDescription: "「従順審査2」は同人ゲーム「従順審査」シリーズ最新作。新キャラクター・新シナリオで再び審査員として美女を審査。CG113枚・立ち絵21種・マルチエンド収録。Windows / Mac 対応。DLsite・FANZAで発売中。体験版あり。"
+metaDescription: "「従順審査２」は同人ゲーム「従順審査」シリーズ最新作。新キャラクター・新シナリオで再び審査員として美女を審査。CG113枚・立ち絵21種・マルチエンド収録。Windows / Mac 対応。DLsite・FANZAで発売中。体験版あり。"
 releaseDate: 2026-06-14
 isR18: true
 platformLinks:
@@ -15,7 +15,7 @@ trialNote: "体験版では中村莉緒ルートを最後までお試しいた�
 environments:
   windows: true
   mac: true
-  browserPc: false
+  browserPc: true
   browserMobileBeta: true
   ios: false
   android: false

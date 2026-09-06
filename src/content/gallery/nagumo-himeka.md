@@ -1,6 +1,6 @@
 ---
 title: "南雲 姫華（新デザイン）"
-description: "「従順審査1」のヒロイン、南雲 姫華（新デザイン）"
+description: "「従順審査１」のヒロイン、南雲 姫華（新デザイン）"
 releaseDate: 2026-03-11
 isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/himeka-eye-catch.jpg"

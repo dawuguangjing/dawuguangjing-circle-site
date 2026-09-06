@@ -14,7 +14,7 @@ trialLinks:
 environments:
   windows: true
   mac: false
-  browserPc: false
+  browserPc: true
   browserMobileBeta: true
   ios: false
   android: false

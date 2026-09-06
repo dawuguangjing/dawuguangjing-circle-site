@@ -47,7 +47,7 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
   id: 'jyuujyun-shinsa-1-coming-soon',
   // \n はスマホ幅でのみ改行される位置マーカー（PCでは1行のまま）
-  message: '📢「従順審査」フルリメイク版『従順審査1』\n近日リリース！',
+  message: '📢「従順審査」フルリメイク版『従順審査１』\n近日リリース！',
   // 外部URL・サイト内パスのどちらも可（サイト内は base 付与＆同一タブで開く）
   href: 'works/jyunjun-shinsa-1/'
 };
