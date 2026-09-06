@@ -2,10 +2,13 @@
 title: "従順審査１"
 catch: "シリーズ第1作「従順審査（無印）」が、シリーズ最高クオリティで徹底フルリメイク。男尊女卑常識世界の審査員シミュレーション。"
 shortDescription: "「従順審査」のフルリメイク版。基本CG95枚＋・ムービー57本＋を収録した審査員シミュレーションゲーム。"
-metaDescription: "「従順審査１」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録し、DLsite・FANZAにて近日リリース予定。"
-releaseDate: 2099-01-01
+metaDescription: "「従順審査１」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録。FANZAにて発売中・体験版あり。DLsite版は近日配信予定。"
+releaseDate: 2026-09-06
 isR18: true
-platformLinks: {}
+platformLinks:
+  fanza: "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_818248%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link"
+trialLinks:
+  fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_818248/d_818248t.zip"
 environments:
   windows: true
   mac: true
@@ -26,6 +29,7 @@ sellingPoints:
   - "基本CG95枚＋・ムービー57本＋の大ボリューム"
   - "完全新規イベントCGを多数追加"
   - "「犯す」タイミングでルートが分岐 — 森宮花音・佐藤真希・南雲姫華の3ルート"
+  - "無料体験版あり — お気軽にお試しください！"
 images:
   cover: "https://storage.googleapis.com/dawuguangjing-assets/re1-1.png"
   screenshots:
@@ -69,49 +73,17 @@ videoUrl: "https://storage.googleapis.com/dawuguangjing-assets/re1.mp4"
 
 ## この製品について
 
-製品版では森宮花音・佐藤真希・南雲姫華の3ルートをプレイできます。
+製品版では森宮花音・佐藤真希・南雲姫華の3ルートをプレイできます。無料体験版も配信中です。
 各ルートは「犯す」タイミングによって展開が分岐し、複数のエンディングを収録しています。
 
 なお、リメイク元となったシリーズ第1作は[「従順審査」](../jyunjun-shinsa/)、シリーズ最新作は[「従順審査２」](../jyunjun-shinsa-2/)の作品ページからご覧いただけます。
 
-## 制作進捗
+## 配信状況
 
-<ul class="timeline">
-  <li class="timeline-item is-done">
-    <div class="timeline-dot"></div>
-    <div class="timeline-body">
-      <p class="timeline-phase">シナリオ・キャラクターデザイン刷新</p>
-      <p class="timeline-status">完了</p>
-    </div>
-  </li>
-  <li class="timeline-item is-done">
-    <div class="timeline-dot"></div>
-    <div class="timeline-body">
-      <p class="timeline-phase">CG・ムービー制作</p>
-      <p class="timeline-status">完了</p>
-    </div>
-  </li>
-  <li class="timeline-item is-done">
-    <div class="timeline-dot"></div>
-    <div class="timeline-body">
-      <p class="timeline-phase">プログラミング・実装</p>
-      <p class="timeline-status">完了</p>
-    </div>
-  </li>
-  <li class="timeline-item is-active">
-    <div class="timeline-dot"></div>
-    <div class="timeline-body">
-      <p class="timeline-phase">ストア申請・配信準備</p>
-      <p class="timeline-status">進行中</p>
-    </div>
-  </li>
-  <li class="timeline-item">
-    <div class="timeline-dot"></div>
-    <div class="timeline-body">
-      <p class="timeline-phase">DLsite・FANZA リリース</p>
-      <p class="timeline-status">近日公開</p>
-    </div>
-  </li>
-</ul>
+現在、FANZA にて配信中です。このページの購入ボタンから、製品版の購入と無料体験版のダウンロードができます。
+DLsite 版は配信準備中です。開始が決まり次第、本サイトの[開発ログ](../../news/)および Ci-en にてお知らせします。
 
-配信開始のお知らせは、本サイトの[開発ログ](../../news/)および Ci-en にて公開します。
+## レビューについて
+
+もしお気に入りいただけましたら、
+短い一言でも感想をいただけると励みになります。

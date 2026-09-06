@@ -10,6 +10,9 @@ personality: "森宮グループの会長を父に持つ、世間知らずの一
 order: 5
 gallerySlugs:
   - "morimiya-kanon"
+relatedWorkSlugs:
+  - "jyunjun-shinsa-1"
+  - "jyunjun-shinsa"
 ---
 
 「……わたしは、私なりに一生懸命に頑張ります！」

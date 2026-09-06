@@ -2,10 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Lightbox from '../../components/Lightbox.astro';
 import StoreCtaPair from '../../components/StoreCtaPair.astro';
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
-import { getGalleryIndex, buildPrevNext } from '../../utils/collections';
+import { getGalleryIndex, getWorkIndex, buildPrevNext } from '../../utils/collections';
 import { getStoreLinks } from '../../utils/types';
 
 export async function getStaticPaths() {
@@ -15,14 +15,14 @@ export async function getStaticPaths() {
 const { entry: char, prev: nextChar, next: prevChar } = Astro.props;
 const { Content } = await char.render();
 
-// 関連作品を取得
-const work = char.data.workSlug
-  ? ((await getEntry('works', char.data.workSlug)?.catch(() => null)) ?? null)
-  : null;
+// 関連作品を取得（relatedWorkSlugs の記載順。未設定なら workSlug の1件のみ）
+const workIndex = await getWorkIndex();
+const work = workIndex.get(char.data.workSlug) ?? null;
 
-const { purchase: workPlatformLinks, trial: workTrialLinks } = work
-  ? getStoreLinks(work.data)
-  : { purchase: [], trial: [] };
+const relatedWorks = (char.data.relatedWorkSlugs ?? [char.data.workSlug]).flatMap((slug) => {
+  const w = workIndex.get(slug);
+  return w ? [{ entry: w, ...getStoreLinks(w.data) }] : [];
+});
 
 // 関連ギャラリーを取得
 const galleryIndex = await getGalleryIndex();
@@ -174,31 +174,45 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
       }
 
       {
-        work && (workTrialLinks.length > 0 || workPlatformLinks.length > 0) && (
+        relatedWorks.length > 0 && (
           <div class="char-detail-block" data-anim>
             <h2>この作品を入手する</h2>
-            <div class="char-work-info">
-              <img
-                class="char-work-thumb"
-                src={work.data.images.cover}
-                alt={work.data.title}
-                width="120"
-                height="80"
-                loading="lazy"
-              />
-              <div class="char-work-meta">
-                <p class="char-work-title">{work.data.title}</p>
-                {work.data.shortDescription && (
-                  <p class="char-work-desc">{work.data.shortDescription}</p>
+            {relatedWorks.map(({ entry: w, purchase, trial }) => (
+              <div class="char-work-entry">
+                <div class="char-work-info">
+                  <img
+                    class="char-work-thumb"
+                    src={w.data.images.cover}
+                    alt={w.data.title}
+                    width="120"
+                    height="80"
+                    loading="lazy"
+                  />
+                  <div class="char-work-meta">
+                    <p class="char-work-title">{w.data.title}</p>
+                    {w.data.shortDescription && (
+                      <p class="char-work-desc">{w.data.shortDescription}</p>
+                    )}
+                  </div>
+                </div>
+                {trial.length > 0 || purchase.length > 0 ? (
+                  <StoreCtaPair
+                    trialLinks={trial}
+                    purchaseLinks={purchase}
+                    location="char_detail"
+                    labels
+                  />
+                ) : (
+                  /* 未発売作品は購入導線の代わりに作品ページへ誘導 */
+                  <>
+                    <p class="char-work-upcoming">近日リリース予定</p>
+                    <a class="button button--block" href={withBase(`works/${w.slug}/`)}>
+                      作品ページを見る →
+                    </a>
+                  </>
                 )}
               </div>
-            </div>
-            <StoreCtaPair
-              trialLinks={workTrialLinks}
-              purchaseLinks={workPlatformLinks}
-              location="char_detail"
-              labels
-            />
+            ))}
           </div>
         )
       }
@@ -413,6 +427,18 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   }
 
   /* ── Work Info in CTA block ── */
+  .char-work-entry + .char-work-entry {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--stroke);
+  }
+
+  .char-work-upcoming {
+    font-size: var(--fs-ui);
+    color: var(--ink-dim);
+    margin: 0 0 6px;
+  }
+
   .char-work-info {
     display: flex;
     gap: 12px;

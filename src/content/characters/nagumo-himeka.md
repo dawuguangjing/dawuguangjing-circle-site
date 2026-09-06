@@ -10,6 +10,9 @@ personality: "社会への諦めを抱えた、冷静で頭脳明晰な大学生
 order: 4
 gallerySlugs:
   - "nagumo-himeka"
+relatedWorkSlugs:
+  - "jyunjun-shinsa-1"
+  - "jyunjun-shinsa"
 ---
 
 「……従うだけが正解だなんて、誰が決めたんですか。」

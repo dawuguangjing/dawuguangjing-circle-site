@@ -8,6 +8,9 @@ personality: "やる気に満ち溢れた、家族思いの大学生。制度へ
 order: 6
 gallerySlugs:
   - "sato-maki"
+relatedWorkSlugs:
+  - "jyunjun-shinsa-1"
+  - "jyunjun-shinsa"
 ---
 
 「家族のためにも……私、絶対に合格してみせます！」

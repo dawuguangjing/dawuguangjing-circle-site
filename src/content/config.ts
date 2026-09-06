@@ -102,7 +102,9 @@ const characters = defineCollection({
     height: z.number().int().nonnegative().optional(),
     personality: z.string(),
     order: z.number().int().default(0),
-    gallerySlugs: z.array(z.string()).optional()
+    gallerySlugs: z.array(z.string()).optional(),
+    /** 「この作品を入手する」に並べる作品スラッグ（記載順に表示）。未設定時は workSlug のみ */
+    relatedWorkSlugs: z.array(z.string()).optional()
   })
 });
 
