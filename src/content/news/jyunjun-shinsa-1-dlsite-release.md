@@ -1,6 +1,6 @@
 ---
 title: "従順審査１ DLsite版も配信開始！"
-date: 2026-09-27
+date: 2026-09-12
 category: "release"
 relatedWorkSlugs:
   - "jyunjun-shinsa-1"
