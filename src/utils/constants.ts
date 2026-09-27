@@ -45,11 +45,11 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
-  id: 'jyuujyun-shinsa-1-fanza-release',
+  id: 'jyuujyun-shinsa-pocket-release',
   // \n はスマホ幅でのみ改行される位置マーカー（PCでは1行のまま）
-  message: '🎉従順審査１ リリース！\nFANZAにて好評発売中',
+  message: '🎉従順審査ポケット リリース！\nFANZA・DLsiteにて好評発売中',
   // 外部URL・サイト内パスのどちらも可（サイト内は base 付与＆同一タブで開く）
-  href: 'https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_818248%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link'
+  href: 'works/jyunjun-shinsa-pocket/'
 };
 
 /** ダークモードの localStorage キー */

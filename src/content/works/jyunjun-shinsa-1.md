@@ -2,13 +2,15 @@
 title: "従順審査１"
 catch: "シリーズ第1作「従順審査（無印）」が、シリーズ最高クオリティで徹底フルリメイク。男尊女卑常識世界の審査員シミュレーション。"
 shortDescription: "「従順審査」のフルリメイク版。基本CG95枚＋・ムービー57本＋を収録した審査員シミュレーションゲーム。"
-metaDescription: "「従順審査１」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録。FANZAにて発売中・体験版あり。DLsite版は近日配信予定。"
+metaDescription: "「従順審査１」は同人ゲーム「従順審査」をシリーズ最高クオリティでフルリメイクした一作。完全新規イベントCGを追加し、基本CG95枚＋・ムービー57本＋を収録。森宮花音・佐藤真希・南雲姫華の3ルートを収録。FANZA・DLsiteにて発売中・体験版あり。"
 releaseDate: 2026-09-06
 isR18: true
 platformLinks:
   fanza: "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_818248%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link"
+  dlsite: "https://dlaf.jp/aix/dlaf/=/t/s/link/work/aid/dawuguangjing/id/RJ01714874.html"
 trialLinks:
   fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_818248/d_818248t.zip"
+  dlsite: "https://trial.dlsite.com/doujin/RJ01715000/RJ01714874_trial.zip"
 environments:
   windows: true
   mac: true
@@ -80,8 +82,7 @@ videoUrl: "https://storage.googleapis.com/dawuguangjing-assets/re1.mp4"
 
 ## 配信状況
 
-現在、FANZA にて配信中です。このページの購入ボタンから、製品版の購入と無料体験版のダウンロードができます。
-DLsite 版は配信準備中です。開始が決まり次第、本サイトの[開発ログ](../../news/)および Ci-en にてお知らせします。
+現在、FANZA・DLsite の両ストアにて配信中です。このページの購入ボタンから、お好きなストアで製品版の購入と無料体験版のダウンロードができます。
 
 ## レビューについて
 
