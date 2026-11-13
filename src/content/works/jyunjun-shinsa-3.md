@@ -15,8 +15,8 @@ environments:
   ios: false
   android: false
 volume:
-  playTimeMin: 0
-  cgCount: 0
+  playTimeMin: 120
+  cgCount: 230
   movieCount: 230
   branching: "multi"
 aiUsage:
