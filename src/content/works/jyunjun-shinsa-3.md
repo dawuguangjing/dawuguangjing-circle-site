@@ -21,7 +21,19 @@ aiUsage:
   noteShort: "一部のグラフィック素材にAIを使用しています。"
 images:
   cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-3-logo.jpg"
-  screenshots: []
+  screenshots:
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-1.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-2.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-3.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-4.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-5.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-6.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-7.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-8.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-9.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-10.jpg"
+    - "https://storage.googleapis.com/dawuguangjing-assets/J3-11.jpg"
+videoUrl: "https://storage.googleapis.com/dawuguangjing-assets/J3.mp4"
 ---
 
 ## 制作進捗
