@@ -32,7 +32,6 @@ images:
     - "https://storage.googleapis.com/dawuguangjing-assets/J3-8.jpg"
     - "https://storage.googleapis.com/dawuguangjing-assets/J3-9.jpg"
     - "https://storage.googleapis.com/dawuguangjing-assets/J3-10.jpg"
-    - "https://storage.googleapis.com/dawuguangjing-assets/J3-11.jpg"
 videoUrl: "https://storage.googleapis.com/dawuguangjing-assets/J3.mp4"
 ---
 
