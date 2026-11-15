@@ -10,6 +10,9 @@ personality: "明るくポジティブで人懐っこい。誰とでもすぐに
 order: 1
 gallerySlugs:
   - "kanai-miho"
+relatedWorkSlugs:
+  - "jyunjun-shinsa-3"
+  - "jyunjun-shinsa-2"
 ---
 
 「大丈夫です……ちゃんと、合格できます。合格しなきゃ。」
@@ -17,3 +20,5 @@ gallerySlugs:
 明るい笑顔と溌剌とした雰囲気で周りを照らす存在。就職活動をうまく乗り越えようと、前向きに審査に挑む姿が印象的。
 
 奨学金返済のために、毎日居酒屋でアルバイトをしている。
+
+![金井 美穂（従順審査３）](https://storage.googleapis.com/dawuguangjing-assets/J3-8.png)

@@ -11,6 +11,7 @@ order: 5
 gallerySlugs:
   - "morimiya-kanon"
 relatedWorkSlugs:
+  - "jyunjun-shinsa-3"
   - "jyunjun-shinsa-1"
   - "jyunjun-shinsa"
 ---
@@ -19,3 +20,5 @@ relatedWorkSlugs:
 
 森宮グループの会長を父に持つ、箱入りのお嬢様。世間の厳しさを知らずに育ったため、審査制度の現実に直面したときは戸惑いを隠せない。  
 それでも持ち前の素直さと責任感で逃げずに向き合い、自分の価値観で「正しさ」を掴もうとする。
+
+![森宮 花音（従順審査３）](https://storage.googleapis.com/dawuguangjing-assets/J3-9.png)
