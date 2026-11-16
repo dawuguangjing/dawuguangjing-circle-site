@@ -22,6 +22,11 @@ videos:
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-14.mp4"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-15.mp4"
   - "https://storage.googleapis.com/dawuguangjing-assets/msk-16.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-17.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-18.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-19.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-20.mp4"
+  - "https://storage.googleapis.com/dawuguangjing-assets/msk-21.mp4"
 relatedWorkSlugs:
   - "jyunjun-shinsa-2"
 ---
