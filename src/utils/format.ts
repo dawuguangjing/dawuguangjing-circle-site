@@ -1,12 +1,19 @@
 /** ja-JP の日付フォーマット（例: 2025年12月15日） */
 export const formatDate = (date: Date) =>
-  new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' }).format(date);
+  new Intl.DateTimeFormat('ja-JP', { year: 'numeric', month: 'short', day: 'numeric' }).format(
+    date
+  );
+
+/** キャラカラーの CSS 変数（ライト/ダーク）。.char-page / .char-card が --char-color へ解決する */
+export function charColorVars(data: { color: string; colorDark?: string }) {
+  return `--char-color-light: ${data.color};${data.colorDark ? ` --char-color-dark: ${data.colorDark};` : ''}`;
+}
 
 /** 一覧ページの画像ローディング属性（先頭アイテムは eager、それ以降は lazy） */
 export function imageLoadingProps(index: number) {
   return {
     loading: index === 0 ? ('eager' as const) : ('lazy' as const),
-    fetchpriority: index === 0 ? ('high' as const) : undefined,
+    fetchpriority: index === 0 ? ('high' as const) : undefined
   };
 }
 

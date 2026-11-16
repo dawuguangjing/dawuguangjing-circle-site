@@ -543,6 +543,17 @@
   color: var(--char-color, var(--accent));
 }
 
+/* キャラカラー: インラインの --char-color-light / --char-color-dark（charColorVars）をテーマで切替 */
+.char-page,
+.char-card {
+  --char-color: var(--char-color-light, var(--accent));
+}
+
+html[data-theme='dark'] .char-page,
+html[data-theme='dark'] .char-card {
+  --char-color: var(--char-color-dark, var(--char-color-light, var(--accent)));
+}
+
 /* キャラカラーの縁取り（colorOutline: true）: 内側に細い黒縁、その外に細い白縁。
    縁の分だけ文字が大きく見えるので、--char-text-scale で少しだけ縮める */
 .char-color-outlined {
@@ -569,6 +580,17 @@
     -2px -2px #fff,
     2px -2px #fff,
     -2px 2px #fff;
+}
+
+/* ダークモードでは白文字がそのまま読めるので縁取り・縮小なし */
+html[data-theme='dark'] .char-color-outlined {
+  --char-text-scale: 1;
+}
+
+html[data-theme='dark'] .char-color-outlined .char-accent,
+html[data-theme='dark'] .char-color-outlined .char-card-name,
+html[data-theme='dark'] .char-color-outlined .char-list-cta {
+  text-shadow: none;
 }
 
 .char-card-accent {

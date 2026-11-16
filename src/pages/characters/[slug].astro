@@ -7,6 +7,7 @@ import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
 import { getGalleryIndex, getWorkIndex, buildPrevNext } from '../../utils/collections';
 import { getStoreLinks } from '../../utils/types';
+import { charColorVars } from '../../utils/format';
 
 export async function getStaticPaths() {
   return buildPrevNext(await getCollection('characters'));
@@ -38,8 +39,8 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   image={char.data.cover}
 >
   <div
-    class:list={['page-content', { 'char-color-outlined': char.data.colorOutline }]}
-    style={`--char-color: ${char.data.color}`}
+    class:list={['page-content char-page', { 'char-color-outlined': char.data.colorOutline }]}
+    style={charColorVars(char.data)}
   >
     <div class="char-hero">
       <div class="char-hero-bg" aria-hidden="true"></div>
@@ -244,7 +245,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 </BaseLayout>
 
 <style>
-  /* キャラクターカラー（--char-color は .page-content にインラインで設定し子孫へ継承） */
+  /* キャラクターカラー（--char-color は .char-page で解決され子孫へ継承。components.css 参照） */
   .char-accent {
     color: var(--char-color);
   }

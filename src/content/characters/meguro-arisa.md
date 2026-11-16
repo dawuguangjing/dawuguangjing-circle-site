@@ -4,6 +4,7 @@ nameReading: "めぐろ ありさ"
 workSlug: "jyunjun-shinsa-3"
 cover: "https://storage.googleapis.com/dawuguangjing-assets/arisa-eye-catch.png"
 color: "#1C2340"
+colorDark: "#7A90D0"
 age: 22
 personality: "無口でクール。夢を諦め、就職を決めた。"
 order: 7

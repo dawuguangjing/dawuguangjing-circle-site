@@ -15,7 +15,7 @@ import {
   animDelay,
   COMING_SOON_YEAR
 } from '../utils/constants';
-import { imageLoadingProps } from '../utils/format';
+import { imageLoadingProps, charColorVars } from '../utils/format';
 import {
   getSortedWorks,
   getSortedNews,
@@ -102,7 +102,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
                 ]}
                 href={withBase(`characters/${char.slug}/`)}
                 data-anim
-                style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
+                style={`--anim-delay: ${animDelay(i)}; ${charColorVars(char.data)}`}
               >
                 <div class="char-card-img-wrap img-skeleton">
                   <img
