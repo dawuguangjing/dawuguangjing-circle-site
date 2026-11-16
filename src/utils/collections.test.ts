@@ -2,7 +2,12 @@ import { describe, expect, test, vi } from 'vitest';
 
 vi.mock('astro:content', () => ({ getCollection: vi.fn() }));
 
-import { extractFirstImageUrl, resolveImageCount, buildPrevNext } from './collections';
+import {
+  extractFirstImageUrl,
+  resolveImageCount,
+  resolveMediaCount,
+  buildPrevNext
+} from './collections';
 
 describe('extractFirstImageUrl', () => {
   test('Markdown 画像の URL を抽出する', () => {
@@ -35,6 +40,20 @@ describe('resolveImageCount', () => {
 
   test('空配列で imageCount 未指定時は 0', () => {
     expect(resolveImageCount({ images: [] })).toBe(0);
+  });
+});
+
+describe('resolveMediaCount', () => {
+  test('画像枚数と動画本数を合計する', () => {
+    expect(resolveMediaCount({ images: ['a', 'b'], videos: ['v1', 'v2', 'v3'] })).toBe(5);
+  });
+
+  test('imageCount 指定時はそれに動画本数を足す', () => {
+    expect(resolveMediaCount({ imageCount: 10, images: ['a'], videos: ['v1'] })).toBe(11);
+  });
+
+  test('動画なしは画像枚数のみ', () => {
+    expect(resolveMediaCount({ images: ['a', 'b'] })).toBe(2);
   });
 });
 

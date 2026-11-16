@@ -29,19 +29,29 @@ export function extractFirstImageUrl(body: string): string | undefined {
   return match?.[1];
 }
 
-/** ギャラリーをリリース日の降順で取得。imageCount を解決済みの値として付与する */
+/** ギャラリーをリリース日の降順で取得。画像枚数・画像＋動画の合計数を解決済みの値として付与する */
 export async function getSortedGallery() {
   return (await safeGetCollection('gallery'))
     .sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime())
     .map((entry) => ({
       ...entry,
-      resolvedImageCount: resolveImageCount(entry.data)
+      resolvedImageCount: resolveImageCount(entry.data),
+      resolvedMediaCount: resolveMediaCount(entry.data)
     }));
 }
 
 /** ギャラリーエントリーの実効画像枚数を返す */
 export function resolveImageCount(data: { imageCount?: number; images: string[] }): number {
   return data.imageCount ?? data.images.length;
+}
+
+/** 一覧表示用: 画像枚数と動画本数の合計を返す */
+export function resolveMediaCount(data: {
+  imageCount?: number;
+  images: string[];
+  videos?: string[];
+}): number {
+  return resolveImageCount(data) + (data.videos?.length ?? 0);
 }
 
 /** slug → work の Map を返す */

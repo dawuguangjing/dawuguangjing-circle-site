@@ -5,7 +5,12 @@ import StoreCtaPair from '../../components/StoreCtaPair.astro';
 import { getCollection } from 'astro:content';
 import { withBase } from '../../utils/withBase';
 import { SITE_NAME } from '../../utils/constants';
-import { getGalleryIndex, getWorkIndex, buildPrevNext } from '../../utils/collections';
+import {
+  getGalleryIndex,
+  getWorkIndex,
+  buildPrevNext,
+  resolveMediaCount
+} from '../../utils/collections';
 import { getStoreLinks } from '../../utils/types';
 import { charColorVars } from '../../utils/format';
 
@@ -120,7 +125,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
             <div class="char-gallery-list">
               {relatedGalleries.map((gallery) => {
                 const previewImages = gallery.data.images.slice(0, 3);
-                const totalCount = gallery.data.imageCount ?? gallery.data.images.length;
+                const totalCount = resolveMediaCount(gallery.data);
                 return (
                   <a
                     class={`char-gallery-preview-card${previewImages.length > 0 ? ' char-gallery-preview-card--split' : ''}`}
