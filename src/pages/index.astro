@@ -96,7 +96,10 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
           <div class="home-char-grid">
             {characters.map((char, i) => (
               <a
-                class="card-interactive char-card home-char-card"
+                class:list={[
+                  'card-interactive char-card home-char-card',
+                  { 'char-color-outlined': char.data.colorOutline }
+                ]}
                 href={withBase(`characters/${char.slug}/`)}
                 data-anim
                 style={`--anim-delay: ${animDelay(i)}; --char-color: ${char.data.color}`}
@@ -233,7 +236,7 @@ const websiteSchema = buildWebSiteSchema(Astro.site?.toString());
   }
 
   .char-card-name {
-    font-size: var(--fs-body-sm);
+    font-size: calc(var(--fs-body-sm) * var(--char-text-scale, 1));
     letter-spacing: 0.02em;
   }
 

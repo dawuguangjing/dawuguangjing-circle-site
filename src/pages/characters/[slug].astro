@@ -37,7 +37,10 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
   description={char.data.personality}
   image={char.data.cover}
 >
-  <div class="page-content" style={`--char-color: ${char.data.color}`}>
+  <div
+    class:list={['page-content', { 'char-color-outlined': char.data.colorOutline }]}
+    style={`--char-color: ${char.data.color}`}
+  >
     <div class="char-hero">
       <div class="char-hero-bg" aria-hidden="true"></div>
       <div class="container char-hero-inner">
@@ -341,7 +344,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
   .char-hero-name {
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-size: calc(clamp(1.8rem, 4vw, 2.6rem) * var(--char-text-scale, 1));
     font-weight: 700;
     margin: 0;
     line-height: 1.2;
@@ -380,7 +383,7 @@ const relatedGalleries = (char.data.gallerySlugs ?? []).flatMap((slug) => {
 
   .char-stat-value {
     font-weight: 700;
-    font-size: var(--fs-heading);
+    font-size: calc(var(--fs-heading) * var(--char-text-scale, 1));
   }
 
   .char-stat-link {

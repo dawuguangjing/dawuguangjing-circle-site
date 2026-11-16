@@ -57,7 +57,10 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
         {
           characters.map((char, i) => (
             <a
-              class="card-interactive char-card char-list-card"
+              class:list={[
+                'card-interactive char-card char-list-card',
+                { 'char-color-outlined': char.data.colorOutline }
+              ]}
               href={withBase(`characters/${char.slug}/`)}
               data-anim
               data-work={char.data.workSlug}
@@ -127,7 +130,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
   }
 
   .char-card-name {
-    font-size: var(--fs-heading-lg);
+    font-size: calc(var(--fs-heading-lg) * var(--char-text-scale, 1));
     letter-spacing: 0.03em;
   }
 
@@ -149,7 +152,7 @@ const filterWorks = uniqueWorkSlugs.map((slug) => ({ slug, title: workMap.get(sl
 
   /* タッチデバイス向け常時表示 CTA */
   .char-list-cta {
-    font-size: var(--fs-xs);
+    font-size: calc(var(--fs-xs) * var(--char-text-scale, 1));
     color: var(--char-color, var(--accent));
     font-weight: 600;
     letter-spacing: 0.03em;

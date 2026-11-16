@@ -543,6 +543,34 @@
   color: var(--char-color, var(--accent));
 }
 
+/* キャラカラーの縁取り（colorOutline: true）: 内側に細い黒縁、その外に細い白縁。
+   縁の分だけ文字が大きく見えるので、--char-text-scale で少しだけ縮める */
+.char-color-outlined {
+  --char-text-scale: 0.94;
+}
+
+.char-color-outlined .char-accent,
+.char-color-outlined .char-card-name,
+.char-color-outlined .char-list-cta {
+  text-shadow:
+    1px 0 #000,
+    -1px 0 #000,
+    0 1px #000,
+    0 -1px #000,
+    1px 1px #000,
+    -1px -1px #000,
+    1px -1px #000,
+    -1px 1px #000,
+    2px 0 #fff,
+    -2px 0 #fff,
+    0 2px #fff,
+    0 -2px #fff,
+    2px 2px #fff,
+    -2px -2px #fff,
+    2px -2px #fff,
+    -2px 2px #fff;
+}
+
 .char-card-accent {
   height: 3px;
   background: var(--char-color, var(--accent));

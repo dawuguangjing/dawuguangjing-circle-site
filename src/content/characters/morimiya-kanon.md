@@ -3,7 +3,8 @@ name: "森宮 花音"
 nameReading: "もりみや かのん"
 workSlug: "jyunjun-shinsa"
 cover: "https://storage.googleapis.com/dawuguangjing-assets/kanon-eye-catch.jpg"
-color: "#E2437F"
+color: "#FFFFFF"
+colorOutline: true
 age: 22
 height: 159
 personality: "森宮グループの会長を父に持つ、世間知らずの一人娘。育ちの良さゆえに現実との距離はあるが、根は素直で、理不尽を前にすると不器用ながらも真正面から向き合おうとする。"

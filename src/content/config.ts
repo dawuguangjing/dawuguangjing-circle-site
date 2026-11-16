@@ -98,6 +98,8 @@ const characters = defineCollection({
     workSlug: z.string(),
     cover: z.string(),
     color: z.string().default('#0068B7'),
+    /** true でキャラカラーの文字に黒の縁取り＋外側に白の縁を付ける（白など背景に溶ける色向け） */
+    colorOutline: z.boolean().optional(),
     age: z.number().int().nonnegative().optional(),
     height: z.number().int().nonnegative().optional(),
     personality: z.string(),
