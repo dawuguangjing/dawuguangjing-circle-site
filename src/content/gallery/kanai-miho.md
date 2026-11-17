@@ -5,6 +5,7 @@ releaseDate: 2026-02-26
 isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-2.jpg"
 images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/j3-miho-01.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/J3-8.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-izakaya.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/miho-karaoke.jpg"

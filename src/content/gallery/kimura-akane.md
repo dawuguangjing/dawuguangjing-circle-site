@@ -7,6 +7,7 @@ isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/akane-eye-catch.png"
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/j3-akane-01.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j3-akane-02.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/J3-6.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/akane-eye-catch.png"
 relatedWorkSlugs:
