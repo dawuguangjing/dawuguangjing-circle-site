@@ -7,6 +7,8 @@ color: "#F08A24"
 age: 22
 personality: "裕福な家庭のお嬢様。内定を守るため、審査を受けることに。"
 order: 9
+gallerySlugs:
+  - "shirosaki-kurumi"
 relatedWorkSlugs:
   - "jyunjun-shinsa-3"
 ---

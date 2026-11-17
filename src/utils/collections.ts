@@ -32,7 +32,11 @@ export function extractFirstImageUrl(body: string): string | undefined {
 /** ギャラリーをリリース日の降順で取得。画像枚数・画像＋動画の合計数を解決済みの値として付与する */
 export async function getSortedGallery() {
   return (await safeGetCollection('gallery'))
-    .sort((a, b) => b.data.releaseDate.getTime() - a.data.releaseDate.getTime())
+    .sort(
+      (a, b) =>
+        b.data.releaseDate.getTime() - a.data.releaseDate.getTime() ||
+        (a.data.order ?? 0) - (b.data.order ?? 0)
+    )
     .map((entry) => ({
       ...entry,
       resolvedImageCount: resolveImageCount(entry.data),

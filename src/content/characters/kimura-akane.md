@@ -6,6 +6,8 @@ cover: "https://storage.googleapis.com/dawuguangjing-assets/akane-eye-catch.png"
 color: "#F0609E"
 personality: "気弱で怖がり。それでも就職のため、審査を受ける。"
 order: 8
+gallerySlugs:
+  - "kimura-akane"
 relatedWorkSlugs:
   - "jyunjun-shinsa-3"
   - "jyunjun-shinsa-pocket"

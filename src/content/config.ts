@@ -80,6 +80,8 @@ const gallery = defineCollection({
     title: z.string(),
     description: z.string(),
     releaseDate: z.date(),
+    /** 同じ releaseDate のギャラリー間の並び順（小さいほど先）。未設定は 0 */
+    order: z.number().int().optional(),
     isR18: z.boolean(),
     cover: z.string(),
     images: z.array(z.string()),

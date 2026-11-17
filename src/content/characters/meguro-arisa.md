@@ -8,6 +8,8 @@ colorDark: "#7A90D0"
 age: 22
 personality: "無口でクール。夢を諦め、就職を決めた。"
 order: 7
+gallerySlugs:
+  - "meguro-arisa"
 relatedWorkSlugs:
   - "jyunjun-shinsa-3"
 ---
