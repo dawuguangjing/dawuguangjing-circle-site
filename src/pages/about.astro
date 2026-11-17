@@ -2,57 +2,144 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Breadcrumb from '../components/Breadcrumb.astro';
 import { withBase } from '../utils/withBase';
-import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS } from '../utils/constants';
+import { animDelay, ANIM_STAGGER, EXTERNAL_LINKS, CIRCLE_NAME } from '../utils/constants';
+
+// 外部サイト貼り付け用は常に本番の絶対URLにする
+const SITE_URL = new URL(withBase(''), Astro.site ?? 'https://www.dawuguangjing.com/').href;
+const bannerSrc = new URL(withBase('images/banner/banner-header-logo-200x40.png'), SITE_URL).href;
+const bannerCode = `<a href="${SITE_URL}" target="_blank" rel="noopener"><img src="${bannerSrc}" width="200" height="40" alt="${CIRCLE_NAME}"></a>`;
 ---
 
 <BaseLayout title="サークル情報" description="サークル概要と方針。">
   <div class="page-content about-page">
-  <section class="section container">
-    <Breadcrumb crumbs={[{ label: 'サークル情報' }]} />
-    <h1 class="section-title" data-anim>サークル情報</h1>
-    <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>
-      訪問者・ストア・関係者向けの簡潔なプロフィールです。
-    </p>
-    <div class="grid grid-2">
-      <div class="card" data-anim style={`--anim-delay: ${animDelay(0, 0.04)}`}>
-        <h2 class="section-title">サークル概要</h2>
-        <p>
-          ダウグアングジング（読み：だうぐあんぐじんぐ）は、短編のストーリー作品を中心に制作している同人ゲームサークルです。公式リンクと告知はこのハブに集約しています。
-        </p>
-        <ul class="list-inline">
-          <li class="badge">ビジュアルノベル</li>
-          <li class="badge">ストーリー</li>
-          <li class="badge">インディー</li>
-        </ul>
+    <section class="section container">
+      <Breadcrumb crumbs={[{ label: 'サークル情報' }]} />
+      <h1 class="section-title" data-anim>サークル情報</h1>
+      <p class="section-lead" data-anim style={`--anim-delay: ${ANIM_STAGGER}s`}>
+        訪問者・ストア・関係者向けの簡潔なプロフィールです。
+      </p>
+      <div class="grid grid-2">
+        <div class="card" data-anim style={`--anim-delay: ${animDelay(0, 0.04)}`}>
+          <h2 class="section-title">サークル概要</h2>
+          <p>
+            ダウグアングジング（読み：だうぐあんぐじんぐ）は、短編のストーリー作品を中心に制作している同人ゲームサークルです。公式リンクと告知はこのハブに集約しています。
+          </p>
+          <ul class="list-inline">
+            <li class="badge">ビジュアルノベル</li>
+            <li class="badge">ストーリー</li>
+            <li class="badge">インディー</li>
+          </ul>
+        </div>
+        <div class="card" data-anim style={`--anim-delay: ${animDelay(1, 0.04)}`}>
+          <h2 class="section-title">ポリシー</h2>
+          <p>
+            決済・納品・アカウント対応は外部ストアが担当します。当サイトは決済情報を保持しません。
+          </p>
+          <a class="button button--cien" href={withBase('privacy/')}>プライバシー</a>
+        </div>
       </div>
-      <div class="card" data-anim style={`--anim-delay: ${animDelay(1, 0.04)}`}>
-        <h2 class="section-title">ポリシー</h2>
-        <p>
-          決済・納品・アカウント対応は外部ストアが担当します。当サイトは決済情報を保持しません。
-        </p>
-        <a class="button button--cien" href={withBase('privacy/')}>プライバシー</a>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="section container">
-    <div class="section-header" data-anim>
-      <h2 class="section-title">外部リンク</h2>
-    </div>
-    <div class="grid grid-2">
-      <a class="external-link-card" data-anim style={`--anim-delay: ${animDelay(0)}`} href={EXTERNAL_LINKS.cien} target="_blank" rel="noopener noreferrer">
-        <div class="external-link-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-        </div>
-        <div class="external-link-body">
-          <span class="external-link-name">Ci-en</span>
-          <span class="external-link-desc">活動報告・制作裏話を発信しています</span>
-        </div>
-        <span class="external-link-arrow" aria-hidden="true">&#8599;</span>
-      </a>
-    </div>
-  </section>
+    <section class="section container">
+      <div class="section-header" data-anim>
+        <h2 class="section-title">外部リンク</h2>
+      </div>
+      <div class="grid grid-2">
+        <a
+          class="external-link-card"
+          data-anim
+          style={`--anim-delay: ${animDelay(0)}`}
+          href={EXTERNAL_LINKS.cien}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="external-link-icon">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path
+                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
+              ></path>
+            </svg>
+          </div>
+          <div class="external-link-body">
+            <span class="external-link-name">Ci-en</span>
+            <span class="external-link-desc">活動報告・制作裏話を発信しています</span>
+          </div>
+          <span class="external-link-arrow" aria-hidden="true">&#8599;</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-header" data-anim>
+        <h2 class="section-title">リンクバナー</h2>
+      </div>
+      <div class="card link-banner" data-anim style={`--anim-delay: ${animDelay(0)}`}>
+        <p>
+          当サイトはリンクフリーです。バナーをご利用の際は直リンクでも、ダウンロードしてご自身のサーバーに置いていただいても構いません。
+        </p>
+        <a href={withBase('')} class="link-banner-preview">
+          <img
+            src={withBase('images/banner/banner-header-logo-200x40.png')}
+            srcset={`${withBase('images/banner/banner-header-logo-200x40@2x.png')} 2x`}
+            width="200"
+            height="40"
+            alt={CIRCLE_NAME}
+          />
+        </a>
+        <p class="link-banner-meta">サイズ：200×40px ／ URL：{SITE_URL}</p>
+        <label class="link-banner-label" for="link-banner-code">貼り付け用HTML</label>
+        <textarea
+          id="link-banner-code"
+          class="link-banner-code"
+          readonly
+          rows="3"
+          onfocus="this.select()">{bannerCode}</textarea
+        >
+      </div>
+    </section>
   </div>
 </BaseLayout>
+
+<style>
+  .link-banner-preview {
+    display: inline-block;
+    margin: 0.75rem 0 0.25rem;
+    line-height: 0;
+  }
+  .link-banner-preview img {
+    display: block;
+  }
+  .link-banner-meta {
+    font-size: 0.85rem;
+    color: var(--ink-dim);
+    word-break: break-all;
+  }
+  .link-banner-label {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .link-banner-code {
+    width: 100%;
+    margin-top: 0.35rem;
+    padding: 0.6rem;
+    box-sizing: border-box;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--stroke);
+    border-radius: 6px;
+    resize: vertical;
+  }
+</style>
