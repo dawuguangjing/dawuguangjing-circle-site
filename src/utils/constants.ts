@@ -45,9 +45,9 @@ export const RETURN_HIGHLIGHT_MS = 1500;
 
 /** アナウンスバー設定（null にすると非表示） */
 export const ANNOUNCEMENT: { id: string; message: string; href?: string } | null = {
-  id: 'jyunjun-shinsa-3-release',
+  id: 'jyunjun-shinsa-3-dlsite-release',
   // \n はスマホ幅でのみ改行される位置マーカー（PCでは1行のまま）
-  message: '🎉従順審査３ リリース！\nFANZAにて好評発売中',
+  message: '🎉従順審査３ DLsite版も配信開始！\nFANZA・DLsiteにて好評発売中',
   // 外部URL・サイト内パスのどちらも可（サイト内は base 付与＆同一タブで開く）
   href: 'works/jyunjun-shinsa-3/'
 };

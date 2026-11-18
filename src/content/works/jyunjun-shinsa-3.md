@@ -2,13 +2,15 @@
 title: "従順審査３"
 catch: "測られるのは、能力ではない。――反抗しない姿勢。ヒロインはシリーズ最多の5人、エロシーンのCGはすべて動画。動画数230本以上でお届けする「従順審査」シリーズ最新作。"
 shortDescription: "女性にだけ求められる「従順審査合格票」。「私は、男性の命令に逆らいません」――そう宣誓させられた彼女たちは、あなたの命令に逆らえない。ヒロインはシリーズ最多の5人。エロシーンのCGはすべて動画、動画数230本以上でお届けする「従順審査」シリーズ最新作です。"
-metaDescription: "「従順審査３」はダウグアングジングの同人ゲーム「従順審査」シリーズ最新作。ヒロインはシリーズ最多の5人、エロシーンのCGはすべて動画で動画数230本以上・Hルート全18本。Windows / Mac 対応。FANZAにて発売中・体験版あり。DLsite版は近日配信予定。"
+metaDescription: "「従順審査３」はダウグアングジングの同人ゲーム「従順審査」シリーズ最新作。ヒロインはシリーズ最多の5人、エロシーンのCGはすべて動画で動画数230本以上・Hルート全18本。Windows / Mac 対応。FANZA・DLsiteにて発売中・体験版あり。"
 releaseDate: 2026-11-16
 isR18: true
 platformLinks:
   fanza: "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fwww.dmm.co.jp%2Fdc%2Fdoujin%2F-%2Fdetail%2F%3D%2Fcid%3Dd_852477%2F&af_id=dawuguangjin-001&ch=search_link&ch_id=link"
+  dlsite: "https://dlaf.jp/aix/dlaf/=/t/s/link/work/aid/dawuguangjing/id/RJ01770827.html"
 trialLinks:
   fanza: "https://sample9.dmm.co.jp/digital/cg_game/d_852477/d_852477t.zip"
+  dlsite: "https://trial.dlsite.com/doujin/RJ01771000/RJ01770827_trial.zip"
 environments:
   windows: true
   mac: true
@@ -179,8 +181,7 @@ A. セーブ25枠に加えて、履歴から行を選んで戻れます。早送
 
 ## 配信状況
 
-現在、FANZA にて配信中です。このページの購入ボタンから、製品版の購入と無料体験版のダウンロードができます。
-DLsite 版は配信準備中です。開始が決まり次第、本サイトの[開発ログ](../../news/)および Ci-en にてお知らせします。
+現在、FANZA・DLsite にて配信中です。このページの購入ボタンから、各ストアでの製品版の購入と無料体験版のダウンロードができます。
 
 ## ご注意
 
