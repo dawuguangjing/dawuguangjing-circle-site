@@ -5,6 +5,9 @@ releaseDate: 2026-02-26
 isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-3.jpg"
 images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/j2-rio-01.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j2-rio-02.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j2-rio-03.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-cafe.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-shopping.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rio-pc-1.jpg"  
