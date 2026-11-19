@@ -11,6 +11,8 @@ personality: "森宮グループの会長を父に持つ、世間知らずの一
 order: 5
 gallerySlugs:
   - "morimiya-kanon"
+appearsInWorkSlugs:
+  - "jyunjun-shinsa-3"
 relatedWorkSlugs:
   - "jyunjun-shinsa-3"
   - "jyunjun-shinsa-1"

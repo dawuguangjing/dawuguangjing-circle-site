@@ -10,6 +10,8 @@ personality: "明るくポジティブで人懐っこい。誰とでもすぐに
 order: 1
 gallerySlugs:
   - "kanai-miho"
+appearsInWorkSlugs:
+  - "jyunjun-shinsa-3"
 relatedWorkSlugs:
   - "jyunjun-shinsa-3"
   - "jyunjun-shinsa-2"

@@ -70,12 +70,18 @@ export async function getGalleryIndex() {
   return new Map(galleries.map((g) => [g.slug, g]));
 }
 
-/** 作品に属するキャラクター一覧を取得（order 昇順） */
+/** 作品の登場人物一覧を取得。workSlug が一致するキャラを先に、
+ *  appearsInWorkSlugs で再登場するキャラを後に並べる（それぞれ order 昇順） */
 export async function getCharactersByWork(workSlug: string) {
   const all = await safeGetCollection('characters');
-  return all
-    .filter((c) => c.data.workSlug === workSlug)
-    .sort((a, b) => a.data.order - b.data.order);
+  const byOrder = (a: (typeof all)[number], b: (typeof all)[number]) => a.data.order - b.data.order;
+  const main = all.filter((c) => c.data.workSlug === workSlug).sort(byOrder);
+  const guests = all
+    .filter(
+      (c) => c.data.workSlug !== workSlug && (c.data.appearsInWorkSlugs ?? []).includes(workSlug)
+    )
+    .sort(byOrder);
+  return [...main, ...guests];
 }
 
 /** ギャラリーに関連するキャラクター一覧を取得（order 昇順） */

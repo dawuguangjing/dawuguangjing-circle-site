@@ -110,7 +110,9 @@ const characters = defineCollection({
     order: z.number().int().default(0),
     gallerySlugs: z.array(z.string()).optional(),
     /** 「この作品を入手する」に並べる作品スラッグ（記載順に表示）。未設定時は workSlug のみ */
-    relatedWorkSlugs: z.array(z.string()).optional()
+    relatedWorkSlugs: z.array(z.string()).optional(),
+    /** workSlug 以外に登場する作品スラッグ（再登場など）。その作品ページの登場人物にも表示される */
+    appearsInWorkSlugs: z.array(z.string()).optional()
   })
 });
 
