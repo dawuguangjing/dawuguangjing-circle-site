@@ -78,6 +78,10 @@ const purchaseLinks = getStoreLinks({ platformLinks }).purchase;
     </div>
 
     <!-- 右: カバー画像 -->
+    {
+      /* 他のカードと違い inferSize のまま: .hero-banner-cover img は CSS で縦横比を固定していない（height: auto）ため、
+        固定の width/height を渡すと実画像と比率がずれ、読み込み時にレイアウトがずれる */
+    }
     <a class="hero-banner-cover" href={withBase(`works/${slug}/`)}>
       <Image
         src={cover}
