@@ -6,6 +6,7 @@ isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/maki-eye-catch.jpg"
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/j1-maki-01.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j1-maki-02.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/maki-eye-catch.jpg"
 relatedWorkSlugs:
   - "jyunjun-shinsa-1"
