@@ -5,6 +5,7 @@ releaseDate: 2026-02-26
 isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/jyuujyun-shinsa-2-sample-4.jpg"
 images:
+  - "https://storage.googleapis.com/dawuguangjing-assets/j2-rin-01.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-figure.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-santa.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/rin-shopping.jpg"
