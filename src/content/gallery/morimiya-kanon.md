@@ -6,6 +6,8 @@ isR18: true
 cover: "https://storage.googleapis.com/dawuguangjing-assets/kanon-eye-catch.jpg"
 images:
   - "https://storage.googleapis.com/dawuguangjing-assets/j3-kanon-01.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j3-kanon-02.png"
+  - "https://storage.googleapis.com/dawuguangjing-assets/j3-kanon-03.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/J3-9.png"
   - "https://storage.googleapis.com/dawuguangjing-assets/kanon-dress.jpg"
   - "https://storage.googleapis.com/dawuguangjing-assets/kanon-air.jpg"
